@@ -1,0 +1,46 @@
+import Sequelize, { Model } from 'sequelize';
+import { unset, clone } from 'lodash'
+
+const { dbName, port, user, password, host } = global.config.database
+const sequelize = new Sequelize(dbName, user, password, {
+  dialect: 'mysql',
+  host,
+  port,
+  logging: true,
+  timezone: '+08:00',//时区
+  define: {
+    // timestamps:false // create and update time
+    paranoid: true, // delete time
+    underscored: true, // 下划线命名
+    scopes: {
+      bh: {
+        attributes: {
+          // exclude: ['updatedAt', 'deletedAt', 'createdAt']
+        }
+      }
+    }
+  }
+})
+sequelize.sync({
+  // force:true//删除原表并新增
+})
+
+Model.prototype.toJSON = function () {
+  let data = clone(this.dataValues) // 存储的是原始的字符串
+  unset(data, 'updatedAt')
+  unset(data, 'created_at')
+  unset(data, 'deleted_at')
+  for (key in data) {
+    if (key === 'image') {
+      // 处理图片的地址
+    }
+  }
+  if (Array.isArray(this.exclude)) {
+    this.exclude.forEach(ex => {
+      unset(data, ex)
+    })
+  }
+  return data
+}
+
+export default sequelize
