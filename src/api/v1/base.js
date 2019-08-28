@@ -5,7 +5,6 @@ const router = new Router({
 })
 
 router.get('/', (ctx) => {
-  console.log('进入')
   ctx.body = {
     success: true
   }

@@ -1,32 +1,32 @@
 import { Sequelize, Model } from 'sequelize'
 import sequelize from '../../core/db'
 
-class Blog extends Model {
+class Sms extends Model {
 
 }
 
-Blog.init(
+Sms.init(
   {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true
     },
-    author: {
-      type: Sequelize.STRING
+    tel: {
+      type: Sequelize.BIGINT(11),
+      unique: true
     },
-    content: {
-      type: Sequelize.STRING,
+    smsNum: {
+      type: Sequelize.INTEGER(6)
     },
-    likeNum: {
-      type: Sequelize.INTEGER,
-      defaultValue: 0
+    effectiveTime: {
+      type: Sequelize.BIGINT
     }
   },
   {
     sequelize,
-    tableName: 'blog'
+    tableName: 'sms'
   }
 )
 
-export default Blog
+export default Sms

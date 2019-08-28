@@ -1,12 +1,13 @@
 import Router from 'koa-router'
 import requireDirectory from 'require-directory'
 import config from '../config/config'
-
+import errors from './http-exception'
 export class InitManager {
   static initCore(app) {
     InitManager.app = app
     InitManager.loadConfig()
     InitManager.initLoadRouters()
+    InitManager.loadHttpException()
   }
   static initLoadRouters() {
     const whenLoadModule = (obj) => {
@@ -19,6 +20,9 @@ export class InitManager {
   }
   static loadConfig() {
     global.config = config
+  }
+  static loadHttpException() {
+    global.errs = errors
   }
 }
 
