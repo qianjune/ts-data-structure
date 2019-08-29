@@ -9,6 +9,10 @@ export default {
   },
   security: {
     secretKey: "abcdefg",
+    expiresIn: 60 * 60 * 24 * 15
+  },
+  refresh: {
+    secretKey: 'hijklmn',
     expiresIn: 60 * 60 * 24 * 30
   },
   wx: {

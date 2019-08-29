@@ -11,7 +11,6 @@ router.post('/register', async (ctx) => {
   const userData = {
     tel: v.get('body.tel'),
     password: v.get('body.password'),
-    smsCode:v.get('body.smsCode')
   }
 
   await User.create(userData)
