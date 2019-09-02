@@ -9,6 +9,7 @@ const catchError = async (ctx, next) => {
     if (isDev && !isHttpException) {
       console.log(error) 
     }
+    // 普通Error也可以用一个统一的格式处理下
     if (isHttpException) {
       ctx.body = {
         msg: error.msg,

@@ -2,8 +2,9 @@ import Koa from 'koa'
 import parser from 'koa-bodyparser'
 import { InitManager } from './core/init'
 import catchError from './middleware/exception'
-
+import cors from 'koa2-cors'
 const app = new Koa()
+app.use(cors())
 app.use(catchError)
 app.use(parser())
 InitManager.initCore(app)

@@ -1,5 +1,6 @@
 import Sequelize, { Model } from 'sequelize';
 import { unset, clone } from 'lodash'
+import { log } from 'util';
 
 const { dbName, port, user, password, host } = global.config.database
 const sequelize = new Sequelize(dbName, user, password, {
@@ -28,13 +29,14 @@ sequelize.sync({
 Model.prototype.toJSON = function () {
   let data = clone(this.dataValues) // 存储的是原始的字符串
   unset(data, 'updatedAt')
-  unset(data, 'created_at')
-  unset(data, 'deleted_at')
-  for (key in data) {
-    if (key === 'image') {
-      // 处理图片的地址
-    }
-  }
+  unset(data, 'createdAt')
+  unset(data, 'deletedAt')
+  console.log(data)
+  // for (key in data) { // 这里key in有问题
+  //   if (key === 'image') {
+  //     // 处理图片的地址
+  //   }
+  // }
   if (Array.isArray(this.exclude)) {
     this.exclude.forEach(ex => {
       unset(data, ex)

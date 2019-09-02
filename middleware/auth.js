@@ -33,6 +33,7 @@ class Auth {
       } else {
         throw new global.errs.AuthFailed('token缺失')
       }
+      console.log('通过')
       await next()
     }
   }

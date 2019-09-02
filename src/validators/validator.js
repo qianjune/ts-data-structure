@@ -1,7 +1,7 @@
 import { LinValidator, Rule } from '../../core/lin-validator-v2'
 import User from '../models/user'
 import Sms from '../models/sms'
-import { LoginType } from '../lib/enum'
+import { LoginType, BlogType } from '../lib/enum'
 
 const telRule = [
   new Rule('isLength', '手机号必须为11位数字', {
@@ -22,8 +22,22 @@ class BlogValidator extends LinValidator {
   constructor() {
     super()
     this.content = [
-      new Rule('isLength','内容不能为空')
+      new Rule('isLength', '内容不能为空', {
+        min: 1
+      })
     ]
+    this.title = [
+      new Rule('isLength', '标题不能为空', {
+        min: 1
+      })
+    ]
+
+  }
+  async validateType(vals) {
+    const type = vals.body.type // vals.type 不会报错，json格式不对也不会报错
+    if(!BlogType.isThisType(type)){
+      throw new Error('博客类型不合法')
+    }
   }
 }
 // 注册验证
@@ -80,7 +94,14 @@ class RegisterValidator extends LinValidator {
     }
   }
 }
-
+class PositiveIntegerValidator extends LinValidator {
+  constructor() {
+    super()
+    this.id = [
+      new Rule('isInt', '需要正整数', { min: 1 })
+    ]
+  }
+}
 class TokenValidator extends LinValidator {
   constructor() {
     super()
@@ -121,5 +142,6 @@ export {
   TokenVerifyValidator,
   SmsValidator,
   TokenValidator,
-  BlogValidator
+  BlogValidator,
+  PositiveIntegerValidator
 }
