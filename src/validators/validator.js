@@ -19,12 +19,13 @@ const passwordRule = [
 ]
 // blog创建
 class BlogValidator extends LinValidator {
-  constructor() {
+  constructor(action = 'create') {
     super()
     this.content = [
       new Rule('isLength', '内容不能为空', {
         min: 1
       })
+
     ]
     this.title = [
       new Rule('isLength', '标题不能为空', {
@@ -35,8 +36,8 @@ class BlogValidator extends LinValidator {
   }
   async validateType(vals) {
     const type = vals.body.type // vals.type 不会报错，json格式不对也不会报错
-    if(!BlogType.isThisType(type)){
-      throw new Error('博客类型不合法')
+    if (!BlogType.isThisType(type)) {
+      throw new Error('博客保存类型不合法')
     }
   }
 }
@@ -137,7 +138,32 @@ class SmsValidator extends LinValidator {
 
   }
 }
+
+class PaginationValidator extends LinValidator {
+  constructor() {
+    super()
+    this.page = [
+      new Rule('isNumeric', '必须为数字'),
+      new Rule('isOptional')
+    ]
+    this.pageSize = [
+      new Rule('isNumeric', '必须为数字'),
+      new Rule('isOptional')
+    ]
+  }
+}
+
+class ShoppingCartValidator extends LinValidator {
+  constructor() {
+    super()
+    this.productId = [
+      new Rule('isNumeric', '不能为空')
+    ]
+  }
+}
 export {
+  ShoppingCartValidator,
+  PaginationValidator,
   RegisterValidator,
   TokenVerifyValidator,
   SmsValidator,

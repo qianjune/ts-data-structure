@@ -2,12 +2,15 @@ import Router from 'koa-router'
 import requireDirectory from 'require-directory'
 import config from '../config/config'
 import errors from './http-exception'
+import socketLoader from './socket'
+
 export class InitManager {
   static initCore(app) {
     InitManager.app = app
     InitManager.loadConfig()
     InitManager.initLoadRouters()
     InitManager.loadHttpException()
+    InitManager.loadSocket()
   }
   static initLoadRouters() {
     const whenLoadModule = (obj) => {
@@ -24,6 +27,11 @@ export class InitManager {
   static loadHttpException() {
     global.errs = errors
   }
+  static loadSocket(){
+    console.log('loadSocket')
+    socketLoader(InitManager.app)
+  }
+
 }
 
 export default InitManager

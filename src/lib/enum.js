@@ -19,6 +19,7 @@ const BlogType = {
   HTML: 11,
   isThisType
 }
+
 module.exports = {
   LoginType,
   BlogType

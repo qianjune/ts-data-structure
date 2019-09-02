@@ -1,9 +1,11 @@
 import Router from 'koa-router'
 import Blog from '../../models/blog'
-import { BlogValidator, PositiveIntegerValidator } from '../../validators/validator'
-import { success } from '../../lib/common'
+import { BlogValidator, PositiveIntegerValidator, PaginationValidator } from '../../validators/validator'
+import { success, paginationParamsTransform } from '../../lib/common'
 import Auth from '../../../middleware/auth'
 import { BlogType } from '../../lib/enum'
+
+
 const router = new Router({
   prefix: '/v1/blog'
 })
@@ -14,7 +16,6 @@ const formatContent = (content, type) => {
     case BlogType.MARKDOWN:
       result = content.replace('↵', '\n')
       break;
-
     default:
       break;
   }
@@ -41,23 +42,24 @@ router.post('/create', new Auth().m, async (ctx) => {
 router.get('/:id/detail', async (ctx) => {
   const v = await new PositiveIntegerValidator().validate(ctx)
   const blog = await new Blog().getDetail(v.get('path.id'))
-  console.log(blog.dataValues)
-
   ctx.body = blog
-
 })
 router.post('/:id/edit', new Auth().m, async (ctx) => {
-  const v = await new PositiveIntegerValidator().validate(ctx)
-  const blog = await new Blog().getDetail(v.get('path.id'))
-  blog.setDataValue('title','new title')
+  const query = await new PositiveIntegerValidator().validate(ctx)
+  let body = await new BlogValidator().validate(ctx)
+  const blog = await new Blog().getDetail(query.get('path.id'))
+  body = body.get('body')
+  console.log(body)
+  Object.keys(body).forEach(key => {
+    blog.setDataValue(key, body[key])
+  })
+
   blog.save()
   success()
 })
 router.get('/list', async (ctx) => {
-  const blogs = await Blog.findAll({
-    offset: 0,
-    limit: 10
-  })
+  const v = await new PaginationValidator().validate(ctx)
+  const blogs = await Blog.findAll(paginationParamsTransform({ page: v.get('query.page'), pageSize: v.get('query.pageSize') }))
   ctx.body = {
     data: blogs
   }
