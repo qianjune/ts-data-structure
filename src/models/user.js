@@ -33,6 +33,9 @@ User.init(
     nickName: {
       type: Sequelize.STRING
     },
+    address: {
+      type: Sequelize.STRING
+    },
     password: {
       type: Sequelize.STRING,
       set(val) {
@@ -51,5 +54,5 @@ User.init(
     tableName: 'user'
   }
 )
-
+// await User.sync({ alter: true });
 export default User
