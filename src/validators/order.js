@@ -1,11 +1,10 @@
 import { LinValidator, Rule } from '../../core/lin-validator-v2'
+import Joi from '@hapi/joi'
 
-const checkProducts = (data) => {
-  if (Array.isArray(data) &&
-    data.length > 0) {
-
-  }
-}
+const schema = Joi.array().items(Joi.object().keys({
+  id: Joi.string().min(1).required(),
+  amount: Joi.number().required()
+})).min(1).required()
 
 class OrderValidator extends LinValidator {
   constructor() {
@@ -16,7 +15,11 @@ class OrderValidator extends LinValidator {
   }
   async validateProducts(vals) {
     const products = vals.body.products
-
+    const result = schema.validate(products)
+    if (result.error) {
+      console.log(result.error)
+      throw new Error('products参数不合法')
+    }
   }
 }
 

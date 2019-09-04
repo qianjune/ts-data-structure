@@ -41,8 +41,7 @@ const asyncLoop = async (products) => {
         id: key
       }
     })
-    console.log(product.dataValues)
-    productGroup.push(product.dataValues)
+    productGroup.push(product.exclude(['belong','status']).toJSON())
   }
 
   return productGroup

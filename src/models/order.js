@@ -1,9 +1,12 @@
 import { Sequelize, Model } from 'sequelize'
 import sequelize from '../../core/db'
-import { mysqlArrayStringHandler } from '../lib/common'
+import { mysqlJsonHandler } from '../lib/common'
 
 class Order extends Model {
-
+  static WAIT_PAY = 'WAIT_PAY'
+  static WAIT_SHIP = 'WAIT_SHIP'
+  static SHIPING = 'SHIPING'
+  static FINISH_SHIP = 'FINISH_SHIP'
 }
 
 Order.init(
@@ -16,14 +19,14 @@ Order.init(
     belong: {
       type: Sequelize.STRING
     },
-    products:{
+    products: {
       type: Sequelize.STRING,
       allowNull: false,
       defaultValue: '',
-      ...mysqlArrayStringHandler('products')
+      ...mysqlJsonHandler('products')
     },
-    status:{
-      type:Sequelize.STRING
+    status: {
+      type: Sequelize.STRING
     }
   },
   {

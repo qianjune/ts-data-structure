@@ -21,4 +21,14 @@ const mysqlArrayStringHandler = (key) => {
     },
   }
 }
-module.exports = { success, paginationParamsTransform, mysqlArrayStringHandler }
+const mysqlJsonHandler = (key) => {
+  return {
+    get() {
+      return JSON.parse(this.getDataValue(key))
+    },
+    set(val) {
+      this.setDataValue(key, JSON.stringify(val))
+    }
+  }
+}
+module.exports = { success, paginationParamsTransform, mysqlArrayStringHandler,mysqlJsonHandler }

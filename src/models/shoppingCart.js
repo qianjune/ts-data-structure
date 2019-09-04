@@ -1,6 +1,6 @@
 import { Sequelize, Model } from 'sequelize'
 import sequelize from '../../core/db'
-import { mysqlArrayStringHandler } from '../lib/common'
+import { mysqlJsonHandler } from '../lib/common'
 import { success } from '../lib/common'
 const productHandler = (productId) => {
   const product = {}
@@ -76,7 +76,6 @@ ShoppingCart.init(
       type: Sequelize.STRING,
       allowNull: false,
       defaultValue: '',
-      // ...mysqlArrayStringHandler('products')
       get() {
         return JSON.parse(this.getDataValue('products'))
       },

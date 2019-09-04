@@ -1,6 +1,5 @@
-import Sequelize, { Model } from 'sequelize';
-import { unset, clone } from 'lodash'
-import { log } from 'util';
+import Sequelize, { Model, ExclusionConstraintError } from 'sequelize';
+import { unset, clone, omit } from 'lodash'
 
 const { dbName, port, user, password, host } = global.config.database
 const sequelize = new Sequelize(dbName, user, password, {
@@ -43,6 +42,12 @@ Model.prototype.toJSON = function () {
     })
   }
   return data
+}
+Model.prototype.exclude = function (excludeProps) {
+  if (Array.isArray(excludeProps)) {
+    this.dataValues = omit(this.dataValues,excludeProps)
+  }
+  return this
 }
 
 export default sequelize
