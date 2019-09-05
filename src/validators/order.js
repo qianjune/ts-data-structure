@@ -22,5 +22,15 @@ class OrderValidator extends LinValidator {
     }
   }
 }
-
+export class OrderPayValidator extends LinValidator {
+  constructor() {
+    super()
+    this.id = [
+      new Rule('isNumeric','id不合法')
+    ]
+    this.sum = [
+      new Rule('isNumeric', '总价不合法')
+    ]
+  }
+}
 export default OrderValidator

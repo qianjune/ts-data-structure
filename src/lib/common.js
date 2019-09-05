@@ -24,6 +24,7 @@ const mysqlArrayStringHandler = (key) => {
 const mysqlJsonHandler = (key) => {
   return {
     get() {
+      console.log('json.parse')
       return JSON.parse(this.getDataValue(key))
     },
     set(val) {
@@ -31,4 +32,4 @@ const mysqlJsonHandler = (key) => {
     }
   }
 }
-module.exports = { success, paginationParamsTransform, mysqlArrayStringHandler,mysqlJsonHandler }
+module.exports = { success, paginationParamsTransform, mysqlArrayStringHandler, mysqlJsonHandler }

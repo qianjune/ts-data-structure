@@ -17,7 +17,6 @@ router.post('/create', new Auth().m, async (ctx) => {
     desc: v.get('body.desc'),
     belong: ctx.auth.uid
   }
-  console.log(product)
   await Product.create(product)
   success()
 })

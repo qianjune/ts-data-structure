@@ -23,10 +23,8 @@ const formatContent = (content, type) => {
 }
 
 router.post('/create', new Auth().m, async (ctx) => {
-  console.log('进入')
   const v = await new BlogValidator().validate(ctx)
   const type = v.get('body.type')
-  console.log('type', type)
   const blog = {
     author: ctx.auth.uid,
     title: v.get('body.title'),
@@ -34,7 +32,6 @@ router.post('/create', new Auth().m, async (ctx) => {
     content: formatContent(v.get('body.content'), type),
     type
   }
-  console.log(blog)
   await Blog.create(blog)
   success()
 })
@@ -49,7 +46,6 @@ router.post('/:id/edit', new Auth().m, async (ctx) => {
   let body = await new BlogValidator().validate(ctx)
   const blog = await new Blog().getDetail(query.get('path.id'))
   body = body.get('body')
-  console.log(body)
   Object.keys(body).forEach(key => {
     blog.setDataValue(key, body[key])
   })
