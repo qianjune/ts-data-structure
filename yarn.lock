@@ -829,6 +829,13 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.7.2.tgz#c4e63af5e8823ce9cc3f0b34f7b998c2171f0c44"
   integrity sha512-dyYO+f6ihZEtNPDcWNR1fkoTDf3zAK3lAABDze3mz6POyIercH0lEUawUFXlG8xaQZmm1yEBON/4TsYv/laDYg==
 
+"@types/ramda@^0.26.21":
+  version "0.26.21"
+  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.26.21.tgz#cfd552c679453d153a9e2fd89ffc5dd5aa93d2c9"
+  integrity sha512-zMYtIZMceA6BvH+or6LmewLBgojbXg5+FGCwjO8K+Z+d/ZWxILmhhASXkehW0PqJL+V0QbyDeeAHix0dvEKXfQ==
+  dependencies:
+    ts-toolbelt "^3.8.4"
+
 "@types/range-parser@*":
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.3.tgz#7ee330ba7caafb98090bece86a5ee44115904c2c"
@@ -3064,6 +3071,11 @@ qs@^6.5.2:
   resolved "https://registry.npm.taobao.org/qs/download/qs-6.8.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fqs%2Fdownload%2Fqs-6.8.0.tgz#87b763f0d37ca54200334cd57bb2ef8f68a1d081"
   integrity sha1-h7dj8NN8pUIAM0zVe7Lvj2ih0IE=
 
+ramda@^0.26.1:
+  version "0.26.1"
+  resolved "https://registry.npm.taobao.org/ramda/download/ramda-0.26.1.tgz#8d41351eb8111c55353617fc3bbffad8e4d35d06"
+  integrity sha1-jUE1HrgRHFU1Nhf8O7/62OTTXQY=
+
 raw-body@^2.3.3:
   version "2.4.1"
   resolved "https://registry.npm.taobao.org/raw-body/download/raw-body-2.4.1.tgz#30ac82f98bb5ae8c152e67149dac8d55153b168c"
@@ -3655,6 +3667,11 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/trim-right/download/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
   integrity sha1-yy4SAwZ+DI3h9hQJS5/kVwTqYAM=
+
+ts-toolbelt@^3.8.4:
+  version "3.8.72"
+  resolved "https://registry.npm.taobao.org/ts-toolbelt/download/ts-toolbelt-3.8.72.tgz#647ba67a3bd55f1e5a8057c1a7621c38b2e418a5"
+  integrity sha1-ZHumejvVXx5agFfBp2IcOLLkGKU=
 
 type-is@^1.6.16:
   version "1.6.18"
