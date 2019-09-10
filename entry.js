@@ -8,8 +8,11 @@ require('@babel/register')({
       }
     }]
   ],
-  plugins:[
-    "@babel/plugin-proposal-class-properties"
+  plugins: [
+    "@babel/plugin-proposal-class-properties",
+    ["@babel/plugin-proposal-decorators", {
+      "decoratorsBeforeExport": true
+    }]
   ]
 })
 require('./app')

@@ -4,8 +4,9 @@ import Order from '../../models/order'
 import OrderValidator, { OrderPayValidator } from '../../validators/order'
 import { success, paginationParamsTransform } from '../../lib/common'
 import Product from '../../models/product'
-import R from 'ramda'
+import OrderService from '../../services/order'
 import { PositiveIntegerValidator, PaginationValidator } from '../../validators/validator';
+
 const router = new Router({
   prefix: '/v1/order'
 })
@@ -38,19 +39,6 @@ router.post('/:id/pay', new Auth().m, async (ctx) => {
   success()
 })
 
-const fetchProduct = product => Product.findOne({
-  where: {
-    id: product.id
-  }
-})
-const asyncMap = async (func, data) => {
-  const result = []
-  for (const d of data) {
-    result.push(await func(d))
-  }
-  return result
-}
-const prAll = async ps => await Promise.all(ps)
 router.get('/list', new Auth().m, async (ctx) => {
   const v = await new PaginationValidator().validate(ctx)
   const orders = await Order.findAll({
@@ -59,28 +47,10 @@ router.get('/list', new Auth().m, async (ctx) => {
       pageSize: v.get('path.pageSize')
     })
   })
-  const productLoop = async order => R.pipe(
-    R.map(fetchProduct),
-    prAll,
-  )(order.products)
-  const orderLoop = R.pipe(
-    R.map(await productLoop),
-    async (orders) => {
-      return await orders
-    }
-  )
-
   ctx.body = {
-    data: await asyncMap(await productLoop, orders)
+    data: await new OrderService().fetchList(orders)
   }
-  // for (var i = 0; i < orders.length; i++) {
-  //   const order = orders[i]
-  //   order.setDataValue('products', await asyncLoop(order.products))
-  //   orders[i] = order
-  // }
-  // ctx.body = {
-  //   data: orders
-  // }
+
 })
 router.del('/:id', new Auth().m, async (ctx) => { }) // 未支付的订单可以直接删除，支付后的只能软删除软删除
 

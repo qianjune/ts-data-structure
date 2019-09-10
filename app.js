@@ -5,9 +5,10 @@ import catchError from './middleware/exception'
 import cors from 'koa2-cors'
 import serve from 'koa-static'
 import path from 'path'
+import { ApolloServer, gql } from 'apollo-server-koa'
 const app = new Koa()
 app.use(cors())
-app.use(serve(path.join(__dirname,'public/')))
+app.use(serve(path.join(__dirname, 'public/')))
 app.use(catchError)
 app.use(parser())
 InitManager.initCore(app)
