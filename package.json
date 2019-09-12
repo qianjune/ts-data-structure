@@ -26,6 +26,7 @@
     "bcryptjs": "^2.4.3",
     "graphql": "^14.5.4",
     "joi-to-json-schema": "^5.1.0",
+    "joi-to-swagger": "^3.2.0",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.8.1",
     "koa-bodyparser": "^4.2.1",

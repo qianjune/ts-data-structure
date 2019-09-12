@@ -1,96 +1,13 @@
 import joi from '@hapi/joi'
-import Router from 'koa-router'
 import Auth from '../../../middleware/auth'
-function prefix(path) {
-  return function (target) {
-    target.prototype.prefix = path
-  }
-}
+import BaseRouter, { get, post, middleware, parameter, prefix, put } from '../../lib/router-decorator'
 
-const methodBuilder = (method = 'get') => (path = '/') => (target, key, descriptor) => {
-  // descriptor对象原来的值如下
-  // {
-  //   value: specifiedFunction,
-  //   enumerable: false,
-  //   configurable: true,
-  //   writable: true
-  // };
-  if (!target.apis) {
-    target.apis = {}
-  }
-  if (!target.apis[key]) {
-    target.apis[key] = {}
-  }
-  target.apis[key].method = method
-  target.apis[key].path = path
-}
-
-
-const get = methodBuilder('get')
-const post = methodBuilder('post')
-
-const registerMiddleware = (target, key, middleware) => {
-  if (!target.apis) {
-    target.apis = {}
-  }
-  if (!target.apis[key]) {
-    target.apis[key] = {}
-  }
-  if (!target.apis[key].middleware) {
-    target.apis[key].middleware = []
-  }
-  if (target.apis[key].middleware.length === 0) {
-    target.apis[key].middleware.push(target[key])
-  }
-  target.apis[key].middleware.unshift(middleware)
-  console.log(target.apis[key])
-}
-
-const parameter = (name, joiScheme, location) => (target, key, descriptor) => {
-  console.log('1')
-  const joiValiate = async (ctx, next) => {
-    try {
-      const result = await joiScheme.validate(ctx[location][name])
-      if (result.error) {
-        throw new global.errs.HttpException(result.error)
-      }
-      await next()
-    } catch (err) {
-      throw new global.errs.HttpException(err)
-    }
-  }
-  registerMiddleware(target, key, joiValiate)
-}
-
-const middleware = (middleware) => (target, key) => {
-  if (Array.isArray(middleware)) {
-    middleware.forEach(mw => {
-      registerMiddleware(target, key, mw)
-    })
-  } else {
-    registerMiddleware(target, key, middleware)
-  }
-}
-
-class BaseRouter {
-  constructor() {
-    this.router = new Router({ prefix: this.prefix })
-  }
-  init() {
-    Object.keys(this.apis).forEach(key => {
-      const api = this.apis[key]
-      console.log(api)
-      this.router[api.method](api.path, ...(api.middleware || []))
-    })
-    return this.router
-  }
-}
-
+  // const path = ctx.params
+  // const query = ctx.request.query
+  // const header = ctx.request.header
+  // const body = ctx.request.body
 @prefix('/v1/decorator')
 class TestApi extends BaseRouter {
-  constructor() {
-    super()
-  }
   @get('/:id')
   @parameter('id', joi.number().required(), 'params')
   @middleware(new Auth().m)
@@ -103,9 +20,30 @@ class TestApi extends BaseRouter {
   }
 
   @post('/create')
+  @parameter(joi.object({
+    username:joi.string().min(6).required(),
+    password:joi.string().min(6).required(),
+    name:joi.string().default('mock_name'),
+    age:joi.number().min(0).max(100)
+  }),'body')
+  @middleware(new Auth().m)
   createData(ctx) {
     ctx.body = {
       data: 'create'
+    }
+  }
+
+  @put('/:id/edit')
+  @parameter('id', joi.number().required(), 'params')
+  @parameter(joi.object({
+    password:joi.string().min(6).required(),
+    name:joi.string().default('mock_name'),
+    age:joi.number().min(0).max(100)
+  }),'body')
+  @middleware(new Auth().m)
+  editData(ctx) {
+    ctx.body = {
+      data: 'edit'
     }
   }
 }

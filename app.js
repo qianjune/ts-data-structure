@@ -32,7 +32,7 @@ app.use(
   koaSwagger({
     routePrefix:'/v1/swagger',
     swaggerOptions:{
-      url:'http://localhost:3111/swagger.json'
+      url:'http://localhost:3111/v1/swagger-scheme'
     }
   })
 )
