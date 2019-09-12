@@ -4,7 +4,7 @@ export * from './parameter'
 export * from './prefix'
 import Router from 'koa-router'
 import { set } from 'lodash'
-import baseScheme from '../../lib/swagger/base'
+import baseSchema from '../../lib/swagger/base'
 const buildParameters = (parameterGroup) => {
   const keys = Object.keys(parameterGroup)
   const parameters = []
@@ -12,7 +12,7 @@ const buildParameters = (parameterGroup) => {
     const prop = {
       name: key === 'params' ? parameterGroup[key].required[0] : key,
       in: key === 'params' ? 'path' : key,
-      scheme: parameterGroup[key]
+      schema: parameterGroup[key]
     }
     console.log(prop)
     parameters.push(prop)
@@ -23,8 +23,8 @@ const buildParameters = (parameterGroup) => {
   }
 }
 
-const buildScheme = (prefix, apiData, parameters) => {
-  const scheme = {
+const buildSchema = (prefix, apiData, parameters) => {
+  const schema = {
     summary: `${prefix}${apiData.path}`,
     // operationId: '',
     responses: {
@@ -37,7 +37,7 @@ const buildScheme = (prefix, apiData, parameters) => {
   }
   const result = {}
   result[`${prefix}${apiData.path}`] = {}
-  set(result[`${prefix}${apiData.path}`], apiData.method, scheme)
+  set(result[`${prefix}${apiData.path}`], apiData.method, schema)
   return result
 }
 
@@ -51,19 +51,19 @@ class BaseRouter {
       const api = this.apis[key]
       // console.log(api)
       const parameters = buildParameters(api.parameter)
-      const scheme = buildScheme(this.prefix, api, parameters)
-      paths = { ...paths, ...scheme }
+      const schema = buildSchema(this.prefix, api, parameters)
+      paths = { ...paths, ...schema }
     })
     // console.log(paths)
     if (!global.swagger) {
       global.swagger = {}
     }
-    if (!global.swagger.scheme) {
-      global.swagger.scheme = {}
+    if (!global.swagger.schema) {
+      global.swagger.schema = {}
     }
-    baseScheme.paths = { ...baseScheme.paths, ...paths }
-    // console.log(baseScheme)
-    global.swagger.scheme = baseScheme
+    baseSchema.paths = { ...baseSchema.paths, ...paths }
+    // console.log(baseSchema)
+    global.swagger.schema = baseSchema
   }
   init() {
     this.buildSwaggerJson()

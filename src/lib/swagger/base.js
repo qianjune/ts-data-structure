@@ -4,7 +4,7 @@ const base = {
     "title": "feature.proto",
     "version": "version not set"
   },
-  "schemes": [
+  "schemas": [
     "http",
     "https"
   ],

@@ -2,27 +2,27 @@ import { registerMiddleware } from './middleware'
 import convert from 'joi-to-json-schema'
 import joi from '@hapi/joi'
 import { cloneDeep } from 'lodash'
-const registerSwaggerParameter = (target, key, location, joiScheme) => {
+const registerSwaggerParameter = (target, key, location, joiSchema) => {
   if (!target.apis[key].parameter) {
     target.apis[key].parameter = {}
   }
-  target.apis[key].parameter[location] = convert(joiScheme)
+  target.apis[key].parameter[location] = convert(joiSchema)
 }
 
-const parameter = (name, joiScheme, location) => (target, key, descriptor) => {
+const parameter = (name, joiSchema, location) => (target, key, descriptor) => {
   if (typeof name !== 'string') {
-    location = joiScheme
-    joiScheme = name
+    location = joiSchema
+    joiSchema = name
     name = null
   }
-  let finalScheme = cloneDeep(joiScheme)
+  let finalSchema = cloneDeep(joiSchema)
   if (name) {
     // 如果同个location的属性单个写，是否要合并在一起
-    const objectScheme = {}
-    objectScheme[name] = joiScheme
-    finalScheme = joi.object(objectScheme)
+    const objectSchema = {}
+    objectSchema[name] = joiSchema
+    finalSchema = joi.object(objectSchema)
   }
-  registerSwaggerParameter(target, key, location, finalScheme)
+  registerSwaggerParameter(target, key, location, finalSchema)
   const joiValiate = async (ctx, next) => {
     try {
       let parameter = ctx.request[location]
@@ -34,7 +34,7 @@ const parameter = (name, joiScheme, location) => (target, key, descriptor) => {
         objectData[name] = parameter[name]
         parameter = objectData
       }
-      await finalScheme.validate(parameter)
+      await finalSchema.validate(parameter)
       // if (result.error) {
       //   throw new global.errs.HttpException(result.error.msg.details.message)
       // }
