@@ -1,3 +1,9 @@
+import { registerMiddleware } from "./middleware"
+
+/**
+ * method注解
+ * @param {*} method 
+ */
 const methodBuilder = (method = 'get') => (path = '/') => (target, key, descriptor) => {
   // descriptor对象原来的值如下
   // {
@@ -14,6 +20,7 @@ const methodBuilder = (method = 'get') => (path = '/') => (target, key, descript
   }
   target.apis[key].method = method
   target.apis[key].path = path
+  registerMiddleware(target,key)
 }
 
 

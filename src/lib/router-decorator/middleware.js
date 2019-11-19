@@ -1,3 +1,9 @@
+/**
+ * 注册中间件
+ * @param {Object} target 类
+ * @param {String} key 方法名
+ * @param {Function} middleware 中间件
+ */
 const registerMiddleware = (target, key, middleware) => {
   if (!target.apis) {
     target.apis = {}
@@ -8,11 +14,19 @@ const registerMiddleware = (target, key, middleware) => {
   if (!target.apis[key].middleware) {
     target.apis[key].middleware = []
   }
+  // 初始化方法作为中间件的最后一项
   if (target.apis[key].middleware.length === 0) {
     target.apis[key].middleware.push(target[key])
   }
-  target.apis[key].middleware.unshift(middleware)
+  if(middleware){
+    target.apis[key].middleware.unshift(middleware)
+  }
 }
+
+/**
+ * 注册多个验证的middleware
+ * @param {*} middleware 
+ */
 const middleware = (middleware) => (target, key) => {
   if (Array.isArray(middleware)) {
     middleware.forEach(mw => {

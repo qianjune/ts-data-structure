@@ -50,6 +50,6 @@ class TestApi extends BaseRouter {
 
 const testApi = new TestApi()
 
-export default testApi.init()
+// export default testApi.init()
 
 

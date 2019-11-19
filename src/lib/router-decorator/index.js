@@ -6,6 +6,9 @@ import Router from 'koa-router'
 import { set } from 'lodash'
 import baseSchema from '../../lib/swagger/base'
 const buildParameters = (parameterGroup) => {
+  if(!parameterGroup){
+    return []
+  }
   const keys = Object.keys(parameterGroup)
   const parameters = []
   keys.forEach(key => {
@@ -41,6 +44,7 @@ const buildSchema = (prefix, apiData, parameters) => {
   return result
 }
 
+
 class BaseRouter {
   constructor() {
     this.router = new Router({ prefix: this.prefix })
@@ -49,8 +53,9 @@ class BaseRouter {
     let paths = {}
     Object.keys(this.apis).forEach(key => {
       const api = this.apis[key]
-      // console.log(api)
+      
       const parameters = buildParameters(api.parameter)
+      console.log(parameters)
       const schema = buildSchema(this.prefix, api, parameters)
       paths = { ...paths, ...schema }
     })
@@ -66,11 +71,14 @@ class BaseRouter {
     global.swagger.schema = baseSchema
   }
   init() {
-    this.buildSwaggerJson()
+    // this.buildSwaggerJson()
     Object.keys(this.apis).forEach(key => {
       const api = this.apis[key]
       this.router[api.method](api.path, ...(api.middleware || []))
+      console.log(api.path)
+      console.log(api.middleware)
     })
+    console.log(this.router)
     return this.router
   }
 }

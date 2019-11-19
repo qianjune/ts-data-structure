@@ -36,7 +36,6 @@ router.post('/', async (ctx) => {
     }
   })
   if(telWithSms){
-    console.log(telWithSms.dataValues)
     await telWithSms.update({
       smsNum:smsBody.smsNum,
       effectiveTime:smsBody.effectiveTime

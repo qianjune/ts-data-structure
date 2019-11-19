@@ -9,7 +9,14 @@ const registerSwaggerParameter = (target, key, location, joiSchema) => {
   target.apis[key].parameter[location] = convert(joiSchema)
 }
 
+/**
+ * 设置参数及验证的注解
+ * @param {String} name 参数名
+ * @param {Objet} joiSchema 验证的模型
+ * @param {String} location 取值的位置
+ */
 const parameter = (name, joiSchema, location) => (target, key, descriptor) => {
+  // 判断验证验证的是单个参数还是一个body
   if (typeof name !== 'string') {
     location = joiSchema
     joiSchema = name
@@ -22,7 +29,7 @@ const parameter = (name, joiSchema, location) => (target, key, descriptor) => {
     objectSchema[name] = joiSchema
     finalSchema = joi.object(objectSchema)
   }
-  registerSwaggerParameter(target, key, location, finalSchema)
+  // registerSwaggerParameter(target, key, location, finalSchema)
   const joiValiate = async (ctx, next) => {
     try {
       let parameter = ctx.request[location]

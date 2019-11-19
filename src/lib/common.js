@@ -24,7 +24,6 @@ const mysqlArrayStringHandler = (key) => {
 const mysqlJsonHandler = (key) => {
   return {
     get() {
-      console.log('json.parse')
       return JSON.parse(this.getDataValue(key))
     },
     set(val) {
