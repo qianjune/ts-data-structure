@@ -23,7 +23,7 @@ Blog.init(
       autoIncrement: true
     },
     author: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     content: {
       type: Sequelize.STRING,
