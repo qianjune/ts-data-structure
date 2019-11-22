@@ -75,10 +75,8 @@ class BaseRouter {
     Object.keys(this.apis).forEach(key => {
       const api = this.apis[key]
       this.router[api.method](api.path, ...(api.middleware || []))
-      console.log(api.path)
-      console.log(api.middleware)
+
     })
-    console.log(this.router)
     return this.router
   }
 }

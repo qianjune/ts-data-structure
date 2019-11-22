@@ -945,6 +945,18 @@
     "@types/koa-compose" "*"
     "@types/node" "*"
 
+"@types/koa@^2.0.52":
+  version "2.0.52"
+  resolved "https://registry.yarnpkg.com/@types/koa/-/koa-2.0.52.tgz#7dd11de4189ab339ad66c4ccad153716b14e525f"
+  integrity sha512-cp/GTOhOYwomlSKqEoG0kaVEVJEzP4ojYmfa7EKaGkmkkRwJ4B/1VBLbQZ49Z+WJNvzXejQB/9GIKqMo9XLgFQ==
+  dependencies:
+    "@types/accepts" "*"
+    "@types/cookies" "*"
+    "@types/http-assert" "*"
+    "@types/keygrip" "*"
+    "@types/koa-compose" "*"
+    "@types/node" "*"
+
 "@types/koa__cors@^2.2.1":
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@types/koa__cors/-/koa__cors-2.2.3.tgz#227154b4c70439083b33c89627eb780a517cd05b"
@@ -1106,6 +1118,11 @@ alipay-sdk@^3.0.8:
     request "^2.86.0"
     snakecase-keys "^1.1.1"
     urllib "^2.17.0"
+
+alipay_sdk2@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.npm.taobao.org/alipay_sdk2/download/alipay_sdk2-1.0.9.tgz#03b3005e31d2440457cc46b13d37d2e6c1e0c21f"
+  integrity sha1-A7MAXjHSRARXzEaxPTfS5sHgwh8=
 
 ansi-align@^2.0.0:
   version "2.0.0"
