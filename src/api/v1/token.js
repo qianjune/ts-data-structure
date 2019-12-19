@@ -14,7 +14,7 @@ router.post('/', async (ctx) => {
   let token
   switch (v.get('body.type')) {
     case LoginType.USER_MOBILE:
-      token = await telLogin(v.get('body.tel'), v.get('body.password'))
+      token = await telLogin(v.get('body.mobile'), v.get('body.password'))
       break;
 
     default:
@@ -43,8 +43,8 @@ router.post('/fresh', new Auth().m, async (ctx) => {
   }
 })
 
-const telLogin = async (tel, password) => {
-  const user = await User.verifyTelAndPassword(tel, password)
+const telLogin = async (mobile, password) => {
+  const user = await User.verifyTelAndPassword(mobile, password)
   console.log(Auth.verifyToken);
   return genNewToken(user.id, Auth.USER)
 

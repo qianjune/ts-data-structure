@@ -1,10 +1,15 @@
+/**
+ * @description 支付宝model
+ * @author June
+ */
 import AlipaySdk from 'alipay-sdk'
+import axios from 'axios'
 import config from '../../config/config'
 
 const alipaySdk = new AlipaySdk({
   appId: config.alipay.appId,
   privateKey: config.alipay.private_key,
-  alipayPublicKey:config.alipay.alipay_public_key
+  alipayPublicKey: config.alipay.alipay_public_key
 })
 
 
@@ -39,6 +44,29 @@ class AliPayModel {
   }
 
   /**
+   * @description 处理encryptedData，一种是直接responseStr,一种是呆签名
+   * @param {String} encryptedDataStr 前端传过来的encryptedData
+   */
+  encryptedDataFormat(encryptedDataStr) {
+    let encryptedData = ''
+    try {
+      encryptedData = JSON.parse(encryptedDataStr)
+    } catch (error) {
+      encryptedData = {
+        response: encryptedDataStr
+      }
+    }
+    return encryptedData
+  }
+
+  /**
+   * @description 解密 response
+   * @param {Object} encryptedData
+   */
+  async decrypt(encryptedData) {
+    return await axios.post(`${config.spring.baseUrl}decrypt`, encryptedData)
+  }
+  /**
    * 生成二维码
    */
   async buildQrcode() {
@@ -57,7 +85,7 @@ class AliPayModel {
       console.log(error)
     }
   }
-  
+
   /**
    * 已下架
    */

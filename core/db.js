@@ -1,7 +1,7 @@
 import Sequelize, { Model, ExclusionConstraintError } from 'sequelize';
 import { unset, clone, omit } from 'lodash'
-
-const { dbName, port, user, password, host } = global.config.database
+import config from '../config/config'
+const { dbName, port, user, password, host } = config.database
 const sequelize = new Sequelize(dbName, user, password, {
   dialect: 'mysql',
   host,

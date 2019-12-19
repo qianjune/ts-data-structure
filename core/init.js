@@ -1,5 +1,6 @@
 import Router from 'koa-router'
 import requireDirectory from 'require-directory'
+import redisStore from 'koa-redis'
 import config from '../config/config'
 import errors from './http-exception'
 import socketLoader from './socket'
@@ -27,10 +28,15 @@ export class InitManager {
   static loadHttpException() {
     global.errs = errors
   }
-  static loadSocket(){
+  static loadSocket() {
     console.log('loadSocket')
     socketLoader(InitManager.app)
   }
+  // session 配置
+  // static loadSession(){
+  //   InitManager.app.use(session)
+  // }
+
 
 }
 

@@ -17,6 +17,13 @@ const passwordRule = [
   }),
   new Rule('matches', '密码不符合规范', '^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]')
 ]
+const smsCodeRule = [
+  new Rule('isLength', '验证码为6位数字', {
+    min: 6,
+    max: 6
+  }),
+  new Rule('isNumeric', '验证码为6位数字')
+]
 // blog创建
 class BlogValidator extends LinValidator {
   constructor(action = 'create') {
@@ -45,7 +52,7 @@ class BlogValidator extends LinValidator {
 class RegisterValidator extends LinValidator {
   constructor() {
     super()
-    this.tel = telRule
+    this.mobile = telRule
     this.password = passwordRule
     this.smsCode = [
       new Rule('isLength', '验证码为6位数字', {
@@ -63,10 +70,10 @@ class RegisterValidator extends LinValidator {
     ]
   }
   async validateTel(vals) {
-    const tel = vals.body.tel
+    const mobile = vals.body.mobile
     const user = await User.findOne({
       where: {
-        tel
+        mobile
       }
     })
     if (user) {
@@ -77,7 +84,7 @@ class RegisterValidator extends LinValidator {
     const smsCode = vals.body.smsCode
     const telWithSms = await Sms.findOne({
       where: {
-        tel: vals.body.tel
+        mobile: vals.body.mobile
       }
     })
     if (smsCode) {
@@ -106,7 +113,7 @@ class PositiveIntegerValidator extends LinValidator {
 class TokenValidator extends LinValidator {
   constructor() {
     super()
-    this.tel = telRule
+    this.mobile = telRule
     this.password = passwordRule
 
   }
@@ -128,17 +135,47 @@ class TokenVerifyValidator extends LinValidator {
     ]
   }
 }
-class SmsValidator extends LinValidator {
+class SendSmsValidator extends LinValidator {
   constructor() {
     super()
-    this.tel = telRule
-    // this.smsNum = [
-    //   new Rule('')
-    // ]
-
+    this.mobile = telRule
   }
 }
 
+
+class ValidateSmsValidator extends LinValidator {
+  constructor() {
+    super()
+    this.mobile = telRule
+    this.smsCode = smsCodeRule
+  }
+}
+
+class LoginWithIdentifyAndPassword extends LinValidator {
+  constructor() {
+    super()
+    this.identify = telRule
+    this.password = [
+      new Rule('isLength', '密码为8-16位', {
+        min: 8,
+        max: 16
+      }),
+    ]
+  }
+}
+class EditPasswordValidator extends LinValidator{
+  constructor(){
+    super()
+    this.mobile = telRule
+    this.smsCode = smsCodeRule
+    this.password = [
+      new Rule('isLength', '密码为8-16位', {
+        min: 8,
+        max: 16
+      }),
+    ]
+  }
+}
 class PaginationValidator extends LinValidator {
   constructor() {
     super()
@@ -166,8 +203,11 @@ export {
   PaginationValidator,
   RegisterValidator,
   TokenVerifyValidator,
-  SmsValidator,
+  SendSmsValidator,
   TokenValidator,
   BlogValidator,
-  PositiveIntegerValidator
+  PositiveIntegerValidator,
+  ValidateSmsValidator,
+  LoginWithIdentifyAndPassword,
+  EditPasswordValidator
 }

@@ -23,8 +23,8 @@ class AuthFailed extends HttpException {
     this.errorCode = errorCode || 10004
   }
 }
-class Forbbiden extends HttpException{
-  constructor(msg,errorCode){
+class Forbbiden extends HttpException {
+  constructor(msg, errorCode) {
     super()
     this.code = 403
     this.msg = msg || '禁止访问'
@@ -39,11 +39,33 @@ class Success extends HttpException {
     this.code = 201
   }
 }
+class HttpExceptionForMini extends Error {
+  constructor(error = '参数错误', code) { // constructor 要设默认值，不然会返回0
+    super()
+    console.log(error, code)
+    this.success = false
+    this.error = error
+    this.code = 201
+  }
+}
+// 小程序
+class SuccessForMini extends HttpExceptionForMini {
+  constructor() {
+    super()
+    this.success = true
+    this.error = ''
+    this.code = 201
+  }
+}
+
+
 
 module.exports = {
   HttpException,
   ParameterException,
   Success,
   AuthFailed,
-  Forbbiden
+  Forbbiden,
+  SuccessForMini,
+  HttpExceptionForMini
 }

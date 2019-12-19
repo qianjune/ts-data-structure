@@ -9,7 +9,7 @@ const router = new Router({
 router.post('/register', async (ctx) => {
   const v = await new RegisterValidator().validate(ctx)
   const userData = {
-    tel: v.get('body.tel'),
+    mobile: v.get('body.mobile'),
     password: v.get('body.password'),
   }
 

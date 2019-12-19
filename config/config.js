@@ -7,6 +7,10 @@ export default {
     user: 'root',
     password: 'Aa47896321'
   },
+  REDIS_CONF:{
+    port: 6379,
+    host: '121.43.158.38'
+  },
   security: {
     secretKey: "abcdefg",
     expiresIn: 60 * 60 * 24 * 15

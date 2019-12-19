@@ -1,64 +1,39 @@
+/**
+ * @description 短信相关 api
+ * @author June_end
+ */
 import Router from 'koa-router'
-import axios from 'axios'
-import querystring from 'querystring'
 import Sms from '../../models/sms'
-import { SmsValidator } from '../../validators/validator'
+import { SendSmsValidator, ValidateSmsValidator } from '../../validators/validator'
 import { success } from '../../lib/common'
+const smsModel = new Sms()
 
 const router = new Router({
   prefix: '/v1/sms'
 })
-
-const genValidateCode = () => Math.random().toString().slice(-6)
-// const timeValidate = (time) =>{
-//   const current = new Date().getTime()
-// }
-const sendSms = async (data) => {
-  const content = querystring.stringify(data);
-
-  const res = await axios.post(global.config.luosimao.smsUrl, content, {
-    auth: { username: 'api', password: 'key-' + global.config.luosimao.password },
-  })
-  return res
-}
-
-router.post('/', async (ctx) => {
-  const v = await new SmsValidator().validate(ctx)
-
-  const smsBody = {
-    tel: v.get('body.tel'),
-    smsNum: genValidateCode(),
-    effectiveTime: new Date().getTime() + 60 * 5
+router.post('/validate', async (ctx) => {
+  const v = await new ValidateSmsValidator().validate(ctx)
+  const mobile = v.get('body.mobile')
+  const smsCode = v.get('body.smsCode')
+  console.log(mobile,smsCode)
+  const res = await smsModel.validateSmsCode({mobile,smsCode})
+  const { error } = res
+  console.log(res)
+  if (error === 0) {
+    success()
+  } else {
+    throw new global.errs.ParameterException()
   }
-  const telWithSms = await Sms.findOne({
-    where:{
-      tel:v.get('body.tel')
-    }
-  })
-  if(telWithSms){
-    await telWithSms.update({
-      smsNum:smsBody.smsNum,
-      effectiveTime:smsBody.effectiveTime
-    })
-  }else{
-    await Sms.create(smsBody)
-  }
-  
-  const postSmsData = {
-    mobile: smsBody.tel,
-    message: `${smsBody.smsNum},验证码有效时间为5分钟【Qjune】`
-  }
-
-
-  const res = await sendSms(postSmsData)
+})
+router.post('/sendCode', async (ctx) => {
+  const v = await new SendSmsValidator().validate(ctx)
+  const mobile = v.get('body.mobile')
+  const res = await smsModel.sendSms(mobile)
   const { error, msg } = res.data
   if (error === 0) {
     success()
   } else {
     throw new global.errs.ParameterException(msg, error)
   }
-
-
-
 })
 export default router

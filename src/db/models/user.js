@@ -1,10 +1,11 @@
 import { Sequelize, Model } from 'sequelize'
-import sequelize from '../../core/db'
+import sequelize from '../../../core/db'
 import bcrypt from 'bcryptjs'
-import SmsForMini from './sms'
-import { MemberController } from '../controllers/member'
+import SmsForMini from '../../models/sms'
+import { MemberController } from '../../controllers/member'
 
 const smsForMiniModel = new SmsForMini()
+
 class User extends Model {
   /**
    * 手机登录

@@ -1,3 +1,7 @@
+/**
+ * @description 支付宝小程序接口controller
+ * @author June
+ */
 import BaseRouter, { get, prefix, parameter, post } from '../../lib/router-decorator'
 import joi from '@hapi/joi'
 import moment from 'moment'
@@ -11,13 +15,13 @@ const alipay = new AliPayModel()
 
 @prefix('/v1/alipay')
 class AliPayApi extends BaseRouter {
+  /**
+   * 通过authToken获得accessToken
+   * @param {Object} ctx ctx
+   */
   @get('/userInfo_new')
   @parameter('authCode', joi.string().required(), 'query')
   async getUserInfo(ctx) {
-    // const aliPay = new AliPayUtil(fs.readFileSync(path.join(__dirname,'public_key.txt')),path.join(__dirname,'private_key.txt'))
-    // console.log(aliPay.privateKey)
-    // console.log(aliPay.publicKey)
-    // console.log('123',await aliPay.rsaCheck())
     const { authCode } = ctx.query
     const params = {
       method: 'alipay.system.oauth.token',
@@ -29,13 +33,10 @@ class AliPayApi extends BaseRouter {
       code: authCode,
       charset: 'utf-8'
     }
-    console.log(params)
     const result = await axios.get('https://openapi.alipay.com/gateway.do', {
       params,
       headers: { 'Content-Type': 'application/json;charset=UTF8' }
     })
-
-
     ctx.body = {
       data: result.json()
     }
@@ -70,25 +71,49 @@ class AliPayApi extends BaseRouter {
 
   /**
    * 获取用户手机号
-   * @param {Object}} ctx ctx
+   * @param {Object} ctx ctx
    */
   @post('/telphone')
   @parameter(joi.object({
     encryptedData: joi.string().required()
   }), 'body')
   async getUserTelphone(ctx) {
-    console.log('触达')
+    const { encryptedData } = ctx.request.body
+    console.log('encryptedData',encryptedData)
     try {
-      console.log(ctx.request.body.encryptedData)
-      const encryptedData = JSON.parse(ctx.request.body.encryptedData)
+      const data = alipay.encryptedDataFormat(encryptedData)
       console.log(encryptedData)
-      const result = await axios.post(`${config.spring.baseUrl}telphone`, encryptedData)
+      const result = await alipay.decrypt(data)
       console.log(result.data)
       ctx.body = {
         data: result.data
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
+    }
+  }
+
+  /**
+   * 获取用运动步数
+   * @param {Object} ctx ctx
+   */
+  @post('/runData')
+  @parameter(joi.object({
+    encryptedData: joi.string().required()
+  }), 'body')
+  async getUserRunData(ctx) {
+    const { encryptedData } = ctx.request.body
+    console.log('encryptedData',encryptedData)
+    try {
+      const data = alipay.encryptedDataFormat(encryptedData)
+      console.log(encryptedData)
+      const result = await alipay.decrypt(data)
+      console.log(result.data)
+      ctx.body = {
+        data: result.data
+      }
+    } catch (error) {
+      // console.log(error)
     }
   }
 }
