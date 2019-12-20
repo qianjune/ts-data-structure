@@ -1,0 +1,16 @@
+{
+  "apps": {
+    "name": "jblog",
+    "script": "entry",
+    "watch": true,
+    "ignore_watch": [
+      "node_modules",
+      "logs",
+      "uploadFiles"
+    ],
+    "instances": 1,
+    "error_file:": "./logs/errlog",
+    "out_file":"./logs/out.log",
+    "log_date_format":"YYYY-MM-DD HH:mm:ss"
+  }
+}
