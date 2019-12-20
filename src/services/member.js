@@ -21,6 +21,30 @@ class MemberService {
     const result = await Member.create(data)
     return result
   }
+  static async updateGrowthValue(data) {
+    const { num, type, userId } = this.data
+    const member = await Member.findOne({
+      where: {
+        id: userId
+      }
+    })
+    if (!member) {
+      return
+    }
+    const growthValue = member.getDataValue('growthValue')
+    switch (type) {
+      case 'increase':
+        growthValue += num
+        break
+      case 'increase':
+        growthValue -= num
+        break
+      default:
+        break
+    }
+    member.setDataValue('growthValue',growthValue)
+    const result = member.update()
+  }
 }
 
 export {

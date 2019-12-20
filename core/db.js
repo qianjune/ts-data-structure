@@ -22,7 +22,7 @@ const sequelize = new Sequelize(dbName, user, password, {
   }
 })
 sequelize.sync({
-  // force:true//删除原表并新增
+  force:true//删除原表并新增
 })
 Model.prototype.toJSON = function () {
   let data = clone(this.dataValues) // 存储的是原始的字符串

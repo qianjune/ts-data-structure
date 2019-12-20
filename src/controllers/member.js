@@ -8,10 +8,25 @@ import ErrorInfo from "../../models/ErrorInfo"
  */
 
 class MemberController {
-  static async addNewMember(data){
+  static async addNewMember(data) {
     const result = await MemberService.create(data)
-    if(!result){
+    if (!result) {
       return ErrorModel(ErrorInfo.addMemberFailInfo)
+    }
+    return SuccessModel(result)
+  }
+  /**
+   * 
+   * @param {*} param0 num:增加的数值
+   */
+  static async addGrowthValue({ userId, num }) {
+    const result = await MemberService.updateGrowthValue({
+      userId,
+      num,
+      type: 'increase'
+    })
+    if(!result){
+      return ErrorModel(ErrorInfo.addMemberGrowthValueInfo)
     }
     return SuccessModel(result)
   }
