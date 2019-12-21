@@ -1,7 +1,7 @@
 {
   "apps": {
     "name": "jblog",
-    "script": "entry",
+    "script": "entry.js",
     "watch": true,
     "ignore_watch": [
       "node_modules",

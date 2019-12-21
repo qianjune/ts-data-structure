@@ -24,6 +24,9 @@ Points.init({
     type: STRING,
     comment: '变化方式（increase 增加，reduce 减少）'
   },
+  currentSum: {
+    comment: '当前积分总数'
+  },
   pattern: {
     type: STRING,
     comment: '变化种类'
