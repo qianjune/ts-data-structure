@@ -1,9 +1,10 @@
 import Address from './address'
 import IdCard from './idCard'
 import Member from './member'
-import User from './user'
 import Points from './points'
-
+import User from './user'
+import Test from './test'
+console.log(Test)
 Address.belongsTo(Member, {
   foreignKey: 'memberId'
 })
@@ -12,9 +13,9 @@ IdCard.belongsTo(Member, {
   foreignKey: 'memberId'
 })
 
-Member.belongsTo(User, {
-  foreignKey: 'userId'
-})
+console.log('1')
+console.log(Points)
+console.log(User)
 
 Points.belongsTo(Member, {
   foreignKey: 'memberId'

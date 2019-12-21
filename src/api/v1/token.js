@@ -1,7 +1,7 @@
 import Router from 'koa-router'
 import { TokenValidator, TokenVerifyValidator } from '../../validators/validator'
 import { LoginType } from '../../lib/enum'
-import User from '../../models/user'
+import User from '../../db/models/user'
 import { generateToken } from '../../../core/util'
 import Auth from '../../../middleware/auth'
 

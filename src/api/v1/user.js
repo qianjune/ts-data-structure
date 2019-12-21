@@ -1,5 +1,5 @@
 import Router from 'koa-router'
-import User from '../../models/user'
+import User from '../../db/models/user'
 import { RegisterValidator } from '../../validators/validator'
 import { success } from '../../lib/common'
 const router = new Router({

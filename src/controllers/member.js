@@ -19,16 +19,23 @@ class MemberController {
    * 
    * @param {*} param0 num:增加的数值
    */
-  static async addGrowthValue({ userId, num }) {
-    const result = await MemberService.updateGrowthValue({
+  static async addGrowthValueAndPoints({ userId, num }) {
+    const growthValueResult = await MemberService.updateGrowthValue({
       userId,
       num,
       type: 'increase'
     })
-    if(!result){
-      return ErrorModel(ErrorInfo.addMemberGrowthValueInfo)
-    }
-    return SuccessModel(result)
+    const pointsResult = await MemberService.updatePoints({
+      userId,
+      num,
+      type: 'increase'
+    })
+    console.log(growthValueResult)
+    console.log(pointsResult)
+    // if(!result){
+    //   return ErrorModel(ErrorInfo.addMemberGrowthValueInfo)
+    // }
+    // return SuccessModel(result)
   }
 }
 

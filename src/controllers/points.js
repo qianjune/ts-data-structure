@@ -14,10 +14,10 @@ class PointsController {
     if (result === null) {
       return new ErrorModel(ErrorInfo.addPointsFailInfo)
     }
-    // 要调用 成长值 增加,后面要用mq，防止失败
-    const growthResult = MemberController.addGrowthValue({ userId: data.userId, num: data.num })
-    if (growthResult.errno) {
-      return growthResult
+    // 新增积分条后，要调用增加用户的积分和成长值,后面要用mq，防止失败
+    const memberResult = MemberController.addGrowthValueAndPoints({ userId: data.userId, num: data.num })
+    if (memberResult.errno) {
+      return memberResult
     }
     return new SuccessModel()
   }

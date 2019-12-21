@@ -1,10 +1,11 @@
 import { Sequelize, Model } from 'sequelize'
-import sequelize from '../../core/db'
+import sequelize from '../../../core/db'
 import bcrypt from 'bcryptjs'
-import SmsForMini from './sms'
-import { MemberController } from '../controllers/member'
+import SmsForMini from '../../models/sms'
+import { MemberController } from '../../controllers/member'
 
 const smsForMiniModel = new SmsForMini()
+
 class User extends Model {
   /**
    * 手机登录
@@ -35,9 +36,9 @@ class User extends Model {
             address: '',
             password: '',
           })
-          console.log('快捷登录创建用户',result)
-          if(result.getDataValue('id')){
-            MemberController.addNewMember({userId:result.getDataValue('id')})
+          console.log('快捷登录创建用户', result.getDataValue('id'))
+          if (result.getDataValue('id')) {
+            MemberController.addNewMember({ userId: result.getDataValue('id') })
           }
           throw new global.errs.SuccessForMini()
         }
@@ -118,12 +119,6 @@ User.init(
       type: Sequelize.BIGINT(11),
       unique: true,
     },
-    nickName: {
-      type: Sequelize.STRING
-    },
-    address: {
-      type: Sequelize.STRING
-    },
     password: {
       type: Sequelize.STRING,
       set(val) {
@@ -146,5 +141,10 @@ User.init(
     tableName: 'user'
   }
 )
+
+console.log('内部')
+console.log(User)
 // await User.sync({ alter: true });
-export default User
+export default {
+  a: 1
+}

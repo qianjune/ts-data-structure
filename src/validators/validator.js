@@ -1,5 +1,5 @@
 import { LinValidator, Rule } from '../../core/lin-validator-v2'
-import User from '../models/user'
+import User from '../db/models/user'
 import Sms from '../models/sms'
 import { LoginType, BlogType } from '../lib/enum'
 

@@ -4,7 +4,7 @@
  */
 import Router from 'koa-router'
 import Sms from '../../models/sms'
-import User from '../../models/user'
+import User from '../../db/models/user'
 import { SendSmsValidator, ValidateSmsValidator, LoginWithIdentifyAndPassword, EditPasswordValidator } from '../../validators/validator'
 
 const smsModel = new Sms()
