@@ -6,7 +6,9 @@ const catchError = async (ctx, next) => {
   } catch (error) {
     const isHttpException = error instanceof HttpException
     const isDev = global.config.environment === 'dev'
+
     if (isDev && !isHttpException) {
+      
       console.log(error)
     }
     // 普通Error也可以用一个统一的格式处理下

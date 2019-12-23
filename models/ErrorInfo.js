@@ -89,5 +89,9 @@ export default {
   addPointsFailInfo: {
     errno: 12001,
     message: '添加积分失败，请稍后重试'
+  },
+  pointsPatternInvalid:{
+    errno: 12002,
+    message: '积分模式不合法'
   }
 }

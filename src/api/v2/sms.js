@@ -4,9 +4,8 @@
  */
 import Router from 'koa-router'
 import Sms from '../../models/sms'
-import User from '../../db/models/user'
 import { SendSmsValidator, ValidateSmsValidator, LoginWithIdentifyAndPassword, EditPasswordValidator } from '../../validators/validator'
-
+import {UserController} from '../../controllers/user'
 const smsModel = new Sms()
 
 const router = new Router({
@@ -36,7 +35,7 @@ router.post('/login/login-by-sms-code', async (ctx) => {
   const v = await new ValidateSmsValidator().validate(ctx)
   const mobile = v.get('body.mobile')
   const smsCode = v.get('body.smsCode')
-  await User.mobileLogin(mobile, smsCode, 'smsCode')
+  await UserController.mobileLogin(mobile, smsCode, 'smsCode')
 })
 
 // 忘记密码-通过短信重置密码
@@ -47,7 +46,7 @@ router.post('/password/reset-by-sms', async (ctx) => {
   const password = v.get('body.password')
   const smsCode = v.get('body.smsCode')
   console.log(mobile, password, smsCode)
-  await User.editPassword(mobile, password, smsCode, 'password')
+  await UserController.editPassword(mobile, password, smsCode, 'password')
 })
 
 // 密码混登接口

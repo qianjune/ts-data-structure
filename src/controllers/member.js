@@ -11,27 +11,30 @@ class MemberController {
   static async addNewMember(data) {
     const result = await MemberService.create(data)
     if (!result) {
-      return ErrorModel(ErrorInfo.addMemberFailInfo)
+      return new ErrorModel(ErrorInfo.addMemberFailInfo)
     }
-    return SuccessModel(result)
+    return new SuccessModel(result)
   }
   /**
    * 
    * @param {*} param0 num:增加的数值
    */
-  static async addGrowthValueAndPoints({ userId, num }) {
+  static async addGrowthValueAndPoints({ id, num }) {
+    console.log('memberId', id)
     const growthValueResult = await MemberService.updateGrowthValue({
-      userId,
+      id,
       num,
       type: 'increase'
     })
     const pointsResult = await MemberService.updatePoints({
-      userId,
+      id,
       num,
       type: 'increase'
     })
-    console.log(growthValueResult)
-    console.log(pointsResult)
+    if (growthValueResult && pointsResult) {
+      return new SuccessModel()
+    }
+    return new ErrorModel(ErrorInfo.addMemberGrowthValueInfo)
     // if(!result){
     //   return ErrorModel(ErrorInfo.addMemberGrowthValueInfo)
     // }

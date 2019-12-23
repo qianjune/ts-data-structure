@@ -23,11 +23,12 @@ class PointsRouter extends BaseRouter {
   @parameter(joi.object({
     memberId: joi.number().required(),
     pattern: joi.string().required(),
-    num: joi.string().required()
+    num: joi.number().required()
   }), 'body')
   async addPoints(ctx) {
+    console.log('进入')
     const body = ctx.request.body
-    body.type = POINTS_TYPE_ENUM.INCREASEs
+    body.type = POINTS_TYPE_ENUM.INCREASE
     const result = await PointsController.addPoints(body)
     ctx.body = result
   }

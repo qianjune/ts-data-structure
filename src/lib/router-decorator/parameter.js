@@ -31,7 +31,7 @@ const parameter = (name, joiSchema, location) => (target, key, descriptor) => {
   }
   // registerSwaggerParameter(target, key, location, finalSchema)
   const joiValiate = async (ctx, next) => {
-    try {
+    // try {
       let parameter = ctx.request[location]
       if (location === 'params') {
         parameter = ctx[location]
@@ -41,19 +41,21 @@ const parameter = (name, joiSchema, location) => (target, key, descriptor) => {
         objectData[name] = parameter[name]
         parameter = objectData
       }
-      await finalSchema.validate(parameter)
-      // if (result.error) {
-      //   throw new global.errs.HttpException(result.error.msg.details.message)
-      // }
-      await next()
-    }
-    catch (err) {
-      let finalErr = err
-      if (Array.isArray(err.details) && err.details.length > 0) {
-        finalErr = err.details[0].message
+
+      const result = finalSchema.validate(parameter)
+      if (result.error) {
+        throw new global.errs.HttpException(result.error.details[0].message)
       }
-      throw new global.errs.HttpException(finalErr)
-    }
+      await next()
+    // }
+    // catch (err) {
+    //   let finalErr = err
+    //   if (Array.isArray(err.details) && err.details.length > 0) {
+    //     finalErr = err.details[0].message
+    //   }
+    //   throw err
+      
+    // }
   }
   registerMiddleware(target, key, joiValiate)
 }

@@ -1,12 +1,10 @@
-import { Sequelize, Model } from 'sequelize'
-import sequelize from '../../../core/db'
-import bcrypt from 'bcryptjs'
-import SmsForMini from '../../models/sms'
-import { MemberController } from '../../controllers/member'
 
+import { MemberController } from './member'
+import SmsForMini from '../models/sms'
+import User from '../db/models/user'
 const smsForMiniModel = new SmsForMini()
 
-class User extends Model {
+class UserController {
   /**
    * 手机登录
    * @param {Number} mobile 手机号
@@ -108,43 +106,6 @@ class User extends Model {
   }
 }
 
-User.init(
-  {
-    id: {
-      type: Sequelize.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    mobile: {
-      type: Sequelize.BIGINT(11),
-      unique: true,
-    },
-    password: {
-      type: Sequelize.STRING,
-      set(val) {
-        const salt = bcrypt.genSaltSync(10)
-        const psw = bcrypt.hashSync(val, salt)
-        this.setDataValue('password', psw)
-      }
-    },
-    email: {
-      type: Sequelize.STRING,
-      unique: true
-    },
-    openid: {
-      type: Sequelize.STRING(64),
-      unique: true
-    }
-  },
-  {
-    sequelize,
-    tableName: 'user'
-  }
-)
-
-console.log('内部')
-console.log(User)
-// await User.sync({ alter: true });
-export default {
-  a: 1
+export {
+  UserController
 }

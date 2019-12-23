@@ -11,10 +11,10 @@ class MemberService {
    * @param {*} data 
    */
   static async create(data) {
-    const userId = data.userId
+    const { userId } = data
     const member = await User.findOne({
       where: {
-        id:userId
+        id: userId
       }
     })
     if (member === null) {
@@ -30,59 +30,68 @@ class MemberService {
    * @param {*} data 
    */
   static async updateGrowthValue(data) {
-    const { num, type, userId } = data
+    const { num, type, id } = data
+    console.log('开始更新成长值')
     const member = await Member.findOne({
       where: {
-        id: userId
+        id
       }
     })
     if (!member) {
       return
     }
-    const growthValue = member.getDataValue('growthValue')
+    let growthValue = member.getDataValue('growthValue')
     switch (type) {
       case 'increase':
         growthValue += num
         break
-      case 'increase':
+      case 'decrease':
         growthValue -= num
         break
       default:
         break
     }
-    member.setDataValue('growthValue',growthValue)
-    const result = member.update()
-    return result
+    const result = await Member.update({ growthValue }, {
+      where: {
+        id
+      }
+    })
+    console.log(result)
+    return result[0] > 0
   }
 
-   /**
-   * 更新积分
-   * @param {*} data 
-   */
+  /**
+  * 更新积分
+  * @param {*} data 
+  */
   static async updatePoints(data) {
-    const { num, type, userId } = data
+    const { num, type, id } = data
     const member = await Member.findOne({
       where: {
-        id: userId
+        id
       }
     })
     if (!member) {
       return
     }
-    const growthValue = member.getDataValue('points')
+    let points = member.getDataValue('points')
     switch (type) {
       case 'increase':
-        growthValue += num
+        points += num
         break
-      case 'increase':
-        growthValue -= num
+      case 'decrease':
+        points -= num
         break
       default:
         break
     }
-    member.setDataValue('points',growthValue)
-    const result = member.update()
-    return result
+    const result = await Member.update({ points }, {
+      where: {
+        id
+      }
+    })
+    console.log(result)
+    return result[0] > 0
   }
 }
 
