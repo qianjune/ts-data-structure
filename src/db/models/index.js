@@ -3,6 +3,8 @@ import IdCard from './idCard'
 import Member from './member'
 import Points from './points'
 import User from './user'
+import Right from './right'
+
 Address.belongsTo(Member, {
   foreignKey: 'memberId'
 })
@@ -18,5 +20,5 @@ Points.belongsTo(Member, {
 })
 
 export {
-  Address, IdCard, Member, User, Points
+  Address, IdCard, Member, User, Points, Right
 }

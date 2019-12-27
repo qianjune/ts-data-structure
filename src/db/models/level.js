@@ -12,9 +12,20 @@ class Level extends Model {
 
 Level.init({
   name: {
+    type: STRING,
     comment: '等级名'
   },
-  nextLevelId: {
-    comment: '下个等级id'
+  weight: {
+    type: INTEGER,
+    comment: '权重'
+  },
+  num: {
+    type: INTEGER,
+    comment: '该等级需要的数值'
   }
+}, {
+  sequelize,
+  tableName: 'level'
 })
+
+export default Level
