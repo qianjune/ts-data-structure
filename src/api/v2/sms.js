@@ -56,7 +56,7 @@ router.post('/login/identify', async (ctx) => {
   const identify = v.get('body.identify')
   const password = v.get('body.password')
   console.log(identify, password)
-  await User.mobileLogin(identify, password, 'password')
+  await UserController.mobileLogin(identify, password, 'password')
 })
 
 export default router

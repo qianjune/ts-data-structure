@@ -11,9 +11,11 @@ class RightPackage extends Model { }
 
 RightPackage.init({
   name: {
+    type: STRING,
     comment: '权益包名字'
   },
   levelId: {
+    type: INTEGER,
     comment: '等级id'
   }
 })

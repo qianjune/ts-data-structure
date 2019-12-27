@@ -11,12 +11,35 @@ import BaseRouter, { get, post, middleware, parameter, prefix, put } from '../..
 class RightRouter extends BaseRouter {
   @post('/add')
   @parameter(joi.object({
-    name:joi.string().required(),
-    num:joi.number().required(),
-    pattern:joi.string().required(),
+    name: joi.string().required(),
+    num: joi.number().required(),
+    pattern: joi.string().required(),
     // expired:joi.
-  }),'body')
+  }), 'body')
   async addRight(ctx) {
+    const { body } = ctx.request
+    const result = await RightController.addRight(body)
+    ctx.body = result
+  }
+
+  @post('/edit/:id')
+  @parameter(joi.object({
+    name: joi.string().required(),
+    num: joi.number().required(),
+    pattern: joi.string().required(),
+    // expired:joi.
+  }), 'body')
+  async editRight(ctx) {
+    const { body } = ctx.request
+    const result = await RightController.editRight(body)
+    ctx.body = result
+  }
+
+  @post('/add/package')
+  @parameter(joi.object({
+    
+  }))
+  async createRightPackage(ctx){
 
   }
 }
