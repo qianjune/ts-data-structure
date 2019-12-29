@@ -1,8 +1,8 @@
 import { isThisEnum } from "./utils"
 
 const PointsEnum = {
-  SHOPPING: "shopping",
-  SIGN_IN: 'signIn',
+  SHOPPING: "shopping", // 购物
+  SIGN_IN: 'signIn', // 签到
   isThisEnum: isThisEnum
 }
 

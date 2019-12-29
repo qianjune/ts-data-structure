@@ -28,4 +28,8 @@ Level.init({
   tableName: 'level'
 })
 
+Level.sync({
+  alter: true
+})
+
 export default Level

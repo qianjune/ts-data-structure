@@ -18,4 +18,9 @@ RightPackage.init({
     type: INTEGER,
     comment: '等级id'
   }
+}, {
+  sequelize,
+  tableName: "rightPackage"
 })
+
+export default RightPackage

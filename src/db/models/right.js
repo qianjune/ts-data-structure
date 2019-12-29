@@ -10,6 +10,8 @@ class Right extends Model {
 
 }
 
+// 权益类型，权益说明
+
 Right.init({
   name: {
     type: STRING,

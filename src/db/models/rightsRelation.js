@@ -9,16 +9,23 @@ class RightsRelation extends Model {
 
 RightsRelation.init({
   packageId: {
-    type:INTEGER,
-    comment:'权益包id'
+    type: INTEGER,
+    comment: '权益包id'
   },
   rightId: {
-    type:INTEGER,
-    comment:'权益id'
+    type: INTEGER,
+    comment: '权益id'
+  },
+  weight: {
+    type: INTEGER,
+    comment: "权重"
   }
-},{
+}, {
   sequelize,
-  tableName:'rightRelation'
+  tableName: 'rightRelation'
+})
+RightsRelation.sync({
+  alter: true
 })
 
 export default RightsRelation
