@@ -50,11 +50,12 @@ class HttpExceptionForMini extends Error {
 }
 // 小程序
 class SuccessForMini extends HttpExceptionForMini {
-  constructor() {
+  constructor({ data } = {}) {
     super()
     this.success = true
     this.error = ''
     this.code = 201
+    this.data = data
   }
 }
 

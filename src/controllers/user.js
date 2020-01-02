@@ -1,7 +1,10 @@
 
+import bcrypt from 'bcryptjs'
+import uuidv1 from 'uuid/v1'
 import { MemberController } from './member'
 import SmsForMini from '../models/sms'
 import User from '../db/models/user'
+import { set, get } from '../../cache/_redis'
 const smsForMiniModel = new SmsForMini()
 
 class UserController {
@@ -59,15 +62,22 @@ class UserController {
     } else {
       // 密码验证
       if (password) {
-        if (user.getDataValue('password') === password) {
-          throw new global.errs.SuccessForMini()
+        console.log(password,user.getDataValue('password'))
+        if (bcrypt.compareSync(password,user.getDataValue('password'))) {
+          const token = uuidv1()
+          set(`${mobile}_token`, token, 60 * 60)
+          throw new global.errs.SuccessForMini({
+            data: {
+              token
+            }
+          })
         } else {
           throw new global.errs.HttpExceptionForMini('账号或密码不正确')
         }
       }
     }
   }
-  static async editPassword(mobile, password, smsCode, type = 'password') {
+  static async verifySmsCode(mobile, smsCode, type = 'password') {
     const user = await User.findOne({
       where: {
         mobile
@@ -78,12 +88,36 @@ class UserController {
         mobile, key: type, smsCode
       })
       if (result) {
-        user.setDataValue('password', password)
-        await user.save()
-        throw new global.errs.SuccessForMini()
-
+        // 生成 verifyToken redis
+        const verifyToken = uuidv1()
+        set(`${mobile}_verifyToken`, verifyToken)
+        throw new global.errs.SuccessForMini({
+          data: {
+            verifyToken
+          }
+        })
       } else {
         throw new global.errs.HttpExceptionForMini('验证码不正确')
+      }
+    } else {
+      throw new global.errs.HttpExceptionForMini('账号不存在')
+    }
+  }
+  static async editPassword(mobile, password, verifyToken) {
+    const user = await User.findOne({
+      where: {
+        mobile
+      }
+    })
+    if (user) {
+      // 验证 verifyToken
+      const redis_verifyToken = await get(`${mobile}_verifyToken`)
+      if (redis_verifyToken === verifyToken) {
+        user.password = password
+        await user.save()
+        throw new global.errs.SuccessForMini()
+      } else {
+        throw new global.errs.HttpExceptionForMini('验证失败')
       }
     } else {
       throw new global.errs.HttpExceptionForMini('账号不存在')

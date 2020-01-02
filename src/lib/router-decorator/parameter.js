@@ -41,7 +41,6 @@ const parameter = (name, joiSchema, location) => (target, key, descriptor) => {
         objectData[name] = parameter[name]
         parameter = objectData
       }
-
       const result = finalSchema.validate(parameter)
       if (result.error) {
         throw new global.errs.HttpException(result.error.details[0].message)
