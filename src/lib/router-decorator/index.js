@@ -2,11 +2,12 @@ export * from './method'
 export * from './middleware'
 export * from './parameter'
 export * from './prefix'
+export * from './swagger'
 import Router from 'koa-router'
 import { set } from 'lodash'
 import baseSchema from '../../lib/swagger/base'
 const buildParameters = (parameterGroup) => {
-  if(!parameterGroup){
+  if (!parameterGroup) {
     return []
   }
   const keys = Object.keys(parameterGroup)
@@ -26,9 +27,9 @@ const buildParameters = (parameterGroup) => {
   }
 }
 
-const buildSchema = (prefix, apiData, parameters) => {
+const buildSchema = ({ prefix, apiData, parameters }) => {
   const schema = {
-    summary: `${prefix}${apiData.path}`,
+    summary: apiData.swagger && apiData.swagger.summary || `${prefix}${apiData.path}`,
     // operationId: '',
     responses: {
       200: {
@@ -53,10 +54,10 @@ class BaseRouter {
     let paths = {}
     Object.keys(this.apis).forEach(key => {
       const api = this.apis[key]
-      
+
       const parameters = buildParameters(api.parameter)
       console.log(parameters)
-      const schema = buildSchema(this.prefix, api, parameters)
+      const schema = buildSchema({ prefix: this.prefix, apiData: api, parameters })
       paths = { ...paths, ...schema }
     })
     // console.log(paths)
@@ -71,7 +72,7 @@ class BaseRouter {
     global.swagger.schema = baseSchema
   }
   init() {
-    // this.buildSwaggerJson()
+    this.buildSwaggerJson()
     Object.keys(this.apis).forEach(key => {
       const api = this.apis[key]
       this.router[api.method](api.path, ...(api.middleware || []))

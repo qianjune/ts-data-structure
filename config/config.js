@@ -13,7 +13,7 @@ export default {
     password: 'redis@47896321'
   },
   security: {
-    secretKey: "abcdefg",
+    secretKey: 'abcdefg',
     expiresIn: 60 * 60 * 24 * 15
   },
   refresh: {

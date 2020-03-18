@@ -2,20 +2,28 @@
  * @description 短信相关 api
  * @author June_end
  */
-import Sms from '../../models/sms'
+import Sms from '../../models/code/sms'
 import { UserController } from '../../controllers/user'
 
 import joi from '@hapi/joi'
 import Auth from '../../../middleware/auth'
-import BaseRouter, { get, post, middleware, parameter, prefix, put } from '../../lib/router-decorator'
-
+import BaseRouter, { get, post, middleware, parameter, prefix, put, summary } from '../../lib/router-decorator'
+import { EmailModel } from '../../models/code/email'
+const emailService = new EmailModel()
 const smsModel = new Sms()
 
 
 @prefix('/api/user/web')
 class SmsRouter extends BaseRouter {
+  @post('/email/test')
+  async emailTest(ctx) {
+    ctx.body = await emailService.sendEmail()
+  }
+
+
   // 忘记密码-发送短信验证码
   @post('/password/send-sms')
+  @summary('忘记密码-发送短信验证码')
   @parameter(joi.object({
     mobile: joi.string().length(11).required(),
     captcha: joi.string(),
@@ -27,6 +35,7 @@ class SmsRouter extends BaseRouter {
   }
 
   @post('/password/reset-sms-code-verify')
+  @summary('验证忘记密码收到的短信')
   @parameter(joi.object({
     mobile: joi.string().length(11).required(),
     smsCode: joi.number().required(),
@@ -39,6 +48,7 @@ class SmsRouter extends BaseRouter {
 
   // 登录发送手机验证码
   @post('/login/login-send-sms-code')
+  @summary('登录发送手机验证码')
   @parameter(joi.object({
     mobile: joi.string().length(11).required(),
     captcha: joi.string(),
@@ -53,6 +63,7 @@ class SmsRouter extends BaseRouter {
 
   // 根据手机验证码登录
   @post('/login/login-by-sms-code')
+  @summary('根据手机验证码登录')
   @parameter(joi.object({
     mobile: joi.string().length(11).required(),
     smsCode: joi.number().required(),
@@ -68,6 +79,7 @@ class SmsRouter extends BaseRouter {
 
   // 忘记密码-通过短信重置密码
   @post('/password/reset-by-sms-verify-token')
+  @summary('忘记密码-通过短信重置密码')
   @parameter(joi.object({
     mobile: joi.string().length(11).required(),
     confirm: joi.string().required(),
@@ -82,6 +94,7 @@ class SmsRouter extends BaseRouter {
 
   // 密码混登接口
   @post('/login/identify')
+  @summary('密码混登接口')
   @parameter(joi.object({
     identify: joi.string().required(),
     password: joi.string().required(),
