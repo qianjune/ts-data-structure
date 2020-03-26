@@ -30,10 +30,14 @@ User.init(
       type: Sequelize.STRING,
       unique: true
     },
-    openid: {
-      type: Sequelize.STRING(64),
+    status: {
+      type: Sequelize.STRING,
       unique: true
     }
+    // openid: {
+    //   type: Sequelize.STRING(64),
+    //   unique: true
+    // }
   },
   {
     sequelize,

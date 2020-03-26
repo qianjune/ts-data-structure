@@ -13,7 +13,7 @@ class Sms {
    * 生成短信数据
    * @param {number} mobile 手机号
    */
-  static _buildSmsContent(mobile, smsCode) {
+  static _buildSmsContent(mobile: string | number, smsCode: string) {
     const content = querystring.stringify(
       {
         mobile,
@@ -23,22 +23,12 @@ class Sms {
 
     return content
   }
-  static async validateSmsCode({ mobile, key = 'common', smsCode }) {
-    console.log(mobile, smsCode)
-    const data = await get(this._buildSaveKey(mobile, key))
-    console.log(data, smsCode)
-    if (parseInt(data) === parseInt(smsCode) || parseInt('999999') === parseInt(smsCode)) {
-      return true
-    } else {
-      return false
-    }
-  }
   /**
    * 发送短信
    * @param {number} mobile 手机号
    * @param {string} message 短信信息
    */
-  static async sendSms(mobile, key = 'common') {
+  static async sendSms(mobile: number | string, key = 'common') {
     const smsCode = CodeBuilder.buildValidateCode()
     const content = this._buildSmsContent(mobile, smsCode)
 
@@ -58,10 +48,10 @@ class Sms {
     //   },
     //   'Content-Type': 'application/x-www-form-urlencoded',
     // })
-    const res = await axios(option)
+    const res = await axios(option as any)
     console.log('短信发送结果', res.data)
     if (res.data.error === 0) {
-      ValidateCodeModel.saveCode(mobile, key)
+      ValidateCodeModel.saveCode({ user: mobile, key, code: smsCode })
       throw new global.errs.SuccessForMini()
     }
     let msg = ''
@@ -71,7 +61,7 @@ class Sms {
     throw new global.errs.HttpExceptionForMini(msg)
   }
 
-  static async validateSms(mobile, key, code) {
+  static async validateSms(mobile: number, key: string, code: string) {
     return await ValidateCodeModel.validateCode({ user: mobile, key, code })
   }
 }

@@ -16,6 +16,7 @@ export class InitManager {
   static initLoadRouters() {
     const whenLoadModule = (obj) => {
       if (obj.default instanceof Router) {
+        console.log(obj.default.routes)
         InitManager.app.use(obj.default.routes())
       }
     }

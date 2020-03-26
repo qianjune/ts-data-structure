@@ -3,7 +3,7 @@ import { EmailModel } from './code/email';
 import Sms from './code/sms';
 
 class CodeModel {
-  sendCode({ user, key, path }) {
+  sendCode({ user, key, path }: { user: string; key: string; path: string }) {
     const combineKey = `${path}_${key}`
     if (path === CODE_ACTION_PATH.EMAIL) {
       return EmailModel.sendEmail(user, combineKey)

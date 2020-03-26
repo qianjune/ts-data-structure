@@ -1,0 +1,31 @@
+{
+  "verbose": false,
+  "debug": false,
+  "exec": "ts-node  ./app.ts",
+  "ignore": [
+    "mochawesome-report",
+    "node_modules",
+    "./test",
+    "**/*.d.ts",
+    "*.test.ts",
+    "*.spec.ts",
+    "fixtures/*",
+    "test/**/*",
+    "docs/*"
+  ],
+  "events": {
+    "restart": ""
+  },
+  "watch": [
+    "./src",
+    "./config",
+    "./cache",
+    "./core",
+    "./middleware",
+    "./models",
+    "./tsconfig.json",
+    "./app.ts"
+  ],
+  "ext": "ts js",
+  "inspect": true
+}

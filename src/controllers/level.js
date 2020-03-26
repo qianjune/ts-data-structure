@@ -1,7 +1,7 @@
 import ErrorInfo from "../../models/ErrorInfo"
 import { ErrorModel, SuccessModel } from "../../models/ResModel"
 
-class levelController {
+class LevelController {
   static async createLevel(data){
     const result = await LevelService.create(data)
     if (!result) {
@@ -19,5 +19,5 @@ class levelController {
 }
 
 export {
-  levelController
+  LevelController
 }

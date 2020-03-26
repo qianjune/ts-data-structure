@@ -3,9 +3,9 @@ import { ValidateCodeModel } from '../../../cache/validateCode'
 import { CodeBuilder } from '../../../cache/codeBuilder'
 
 class EmailModel {
-  static async sendEmail(email = '418694294@qq.com', key) {
+  static async sendEmail(email = '418694294@qq.com', key: string) {
     // let testAccount = await nodemailer.createTestAccount()
-    let transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
       service: 'qq',
       port: 465,
       secure: false,
@@ -16,7 +16,7 @@ class EmailModel {
       }
     })
     const code = CodeBuilder.buildValidateCode()
-    let info = await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: '3190741842@qq.com',
       to: email,
       // to: 'qjhj8ftn@gmail.com',
@@ -33,7 +33,7 @@ class EmailModel {
 
     return info
   }
-  static async validateEmail(email, key, code) {
+  static async validateEmail(email: string, key: string, code: string) {
     return await ValidateCodeModel.validateCode({ user: email, key, code })
   }
 }

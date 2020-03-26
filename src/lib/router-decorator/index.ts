@@ -6,19 +6,23 @@ export * from './swagger'
 import Router from 'koa-router'
 import { set } from 'lodash'
 import baseSchema from '../../lib/swagger/base'
-const buildParameters = (parameterGroup) => {
+
+
+const buildParameters = (parameterGroup: any): { parameters: [] } => {
   if (!parameterGroup) {
-    return []
+    return {
+      parameters: []
+    }
   }
   const keys = Object.keys(parameterGroup)
-  const parameters = []
+  const parameters: any = []
   keys.forEach(key => {
     const prop = {
       name: key === 'params' ? parameterGroup[key].required[0] : key,
       in: key === 'params' ? 'path' : key,
       schema: parameterGroup[key]
     }
-    console.log(prop)
+    // console.log(prop)
     parameters.push(prop)
   })
   // console.log(parameters)
@@ -27,8 +31,20 @@ const buildParameters = (parameterGroup) => {
   }
 }
 
-const buildSchema = ({ prefix, apiData, parameters }) => {
+const buildSchema = ({ prefix, apiData, parameters, tag = '' }: {
+  prefix: string;
+  tag: string;
+  parameters: {};
+  apiData: {
+    method: string;
+    path: string;
+    swagger: {
+      summary: string;
+    };
+  };
+}): any => {
   const schema = {
+    // 设置api的描述
     summary: apiData.swagger && apiData.swagger.summary || `${prefix}${apiData.path}`,
     // operationId: '',
     responses: {
@@ -36,10 +52,10 @@ const buildSchema = ({ prefix, apiData, parameters }) => {
         description: ""
       }
     },
-    tags: [prefix],
+    tags: [tag || prefix],
     ...parameters
   }
-  const result = {}
+  const result: any = {}
   result[`${prefix}${apiData.path}`] = {}
   set(result[`${prefix}${apiData.path}`], apiData.method, schema)
   return result
@@ -47,17 +63,26 @@ const buildSchema = ({ prefix, apiData, parameters }) => {
 
 
 class BaseRouter {
+  apis: {
+    [propsName: string]: any;
+  }
+  router: {
+    [propsName: string]: any;
+  }
+  prefix: string
+  tag: string
   constructor() {
     this.router = new Router({ prefix: this.prefix })
   }
   buildSwaggerJson() {
     let paths = {}
-    Object.keys(this.apis).forEach(key => {
+    console.log('this.apis:', this.apis)
+    this.apis && Object.keys(this.apis).forEach(key => {
       const api = this.apis[key]
 
       const parameters = buildParameters(api.parameter)
-      console.log(parameters)
-      const schema = buildSchema({ prefix: this.prefix, apiData: api, parameters })
+      // console.log(parameters)
+      const schema = buildSchema({ prefix: this.prefix, apiData: api, parameters, tag: this.tag })
       paths = { ...paths, ...schema }
     })
     // console.log(paths)
@@ -71,9 +96,10 @@ class BaseRouter {
     // console.log(baseSchema)
     global.swagger.schema = baseSchema
   }
-  init() {
+  init(name?: string) {
+    // console.log(name)
     this.buildSwaggerJson()
-    Object.keys(this.apis).forEach(key => {
+    this.apis && Object.keys(this.apis).forEach(key => {
       const api = this.apis[key]
       this.router[api.method](api.path, ...(api.middleware || []))
 

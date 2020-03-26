@@ -2,22 +2,20 @@
  * @description 短信相关 api
  * @author June_end
  */
-import Sms from '../../models/code/sms'
-import { UserController } from '../../controllers/user'
-
+import Sms from '../../../models/code/sms'
+import { UserController } from '../../../controllers/user'
 import joi from '@hapi/joi'
-import Auth from '../../../middleware/auth'
-import BaseRouter, { get, post, middleware, parameter, prefix, put, summary } from '../../lib/router-decorator'
-import { EmailModel } from '../../models/code/email'
-const emailService = new EmailModel()
-const smsModel = new Sms()
+import Auth from '../../../../middleware/auth'
+import BaseRouter, { get, post, middleware, parameter, prefix, put, summary, tag } from '../../../lib/router-decorator'
+import { EmailModel } from '../../../models/code/email'
 
 
 @prefix('/api/user/web')
+@tag('用户服务')
 class SmsRouter extends BaseRouter {
   @post('/email/test')
-  async emailTest(ctx) {
-    ctx.body = await emailService.sendEmail()
+  async emailTest(ctx: any): Promise<void> {
+    ctx.body = await EmailModel.sendEmail('418694294@qq.com', 'test')
   }
 
 
@@ -29,9 +27,9 @@ class SmsRouter extends BaseRouter {
     captcha: joi.string(),
     token: joi.string()
   }), 'body')
-  async sendSmsCodeForForgetPassword(ctx) {
+  async sendSmsCodeForForgetPassword(ctx: any): Promise<void> {
     const { mobile } = ctx.request.body
-    await smsModel.sendSms(mobile, 'password')
+    await Sms.sendSms(mobile, 'password')
   }
 
   @post('/password/reset-sms-code-verify')
@@ -40,7 +38,7 @@ class SmsRouter extends BaseRouter {
     mobile: joi.string().length(11).required(),
     smsCode: joi.number().required(),
   }), 'body')
-  async verifySmsCodeForResetPassword(ctx) {
+  async verifySmsCodeForResetPassword(ctx: any): Promise<void> {
     console.log('触发验证码')
     const { mobile, smsCode } = ctx.request.body
     await UserController.verifySmsCode(mobile, smsCode)
@@ -55,10 +53,10 @@ class SmsRouter extends BaseRouter {
     prefix: joi.string(),
     token: joi.string()
   }), 'body')
-  async sendSmsCodeForLogin(ctx) {
+  async sendSmsCodeForLogin(ctx: any): Promise<void> {
     const { mobile } = ctx.request.body
     console.log('mobile', mobile)
-    await smsModel.sendSms(mobile, 'login')
+    await Sms.sendSms(mobile, 'login')
   }
 
   // 根据手机验证码登录
@@ -72,7 +70,7 @@ class SmsRouter extends BaseRouter {
     prefix: joi.string(),
 
   }), 'body')
-  async loginBySmsCode(ctx) {
+  async loginBySmsCode(ctx: any): Promise<void> {
     const { mobile, smsCode } = ctx.request.body
     await UserController.mobileLogin(mobile, smsCode, 'smsCode')
   }
@@ -86,10 +84,10 @@ class SmsRouter extends BaseRouter {
     password: joi.string().required(),
     verifyToken: joi.string().required()
   }), 'body')
-  async resetPasswordBySmsCode(ctx) {
+  async resetPasswordBySmsCode(ctx: any): Promise<void> {
     const { mobile, password, verifyToken } = ctx.request.body
     console.log(mobile, password, verifyToken)
-    await UserController.editPassword(mobile, password, verifyToken, 'password')
+    // await UserController.editPassword(mobile, password, verifyToken, 'password')
   }
 
   // 密码混登接口
@@ -103,7 +101,7 @@ class SmsRouter extends BaseRouter {
     prefix: joi.string(),
     token: joi.string().allow('')
   }), 'body')
-  async loginIdentify(ctx) {
+  async loginIdentify(ctx: any): Promise<void> {
     const { identify, password } = ctx.request.body
     console.log(identify, password)
     await UserController.mobileLogin(identify, password, 'password')

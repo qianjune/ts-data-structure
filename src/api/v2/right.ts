@@ -6,6 +6,7 @@
 import joi from '@hapi/joi'
 import Auth from '../../../middleware/auth'
 import BaseRouter, { get, post, middleware, parameter, prefix, put } from '../../lib/router-decorator'
+import { RightController } from '../../controllers/right'
 
 @prefix('/v2/right')
 class RightRouter extends BaseRouter {
@@ -20,7 +21,7 @@ class RightRouter extends BaseRouter {
     pattern: joi.string().required(),
     // expired:joi.
   }), 'body')
-  async addRight(ctx) {
+  async addRight(ctx: any): Promise<void> {
     const { body } = ctx.request
     const result = await RightController.createRight(body)
     ctx.body = result
@@ -38,7 +39,7 @@ class RightRouter extends BaseRouter {
     pattern: joi.string().required(),
     // expired:joi.
   }), 'body')
-  async editRight(ctx) {
+  async editRight(ctx: any): Promise<void> {
     const { body } = ctx.request
     const result = await RightController.editRight(body)
     ctx.body = result
@@ -54,7 +55,7 @@ class RightRouter extends BaseRouter {
     levelId: joi.number(),
     rightGroup: joi.array().items(joi.number())
   }), 'body')
-  async createRightPackage(ctx) {
+  async createRightPackage(ctx: any): Promise<void> {
     const { body } = ctx.request
     const result = await RightController.createRightPackage(body)
     ctx.body = result
@@ -68,7 +69,7 @@ class RightRouter extends BaseRouter {
     levelId: joi.number(),
     rightGroup: joi.array().items(joi.number())
   }), 'body')
-  async editRightPackage(ctx) {
+  async editRightPackage(ctx: any): Promise<void> {
     const { body } = ctx.request
     const result = await RightController.editRightPackage(body)
     ctx.body = result

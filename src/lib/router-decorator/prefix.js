@@ -4,6 +4,13 @@ function prefix(path) {
   }
 }
 
+function tag(tagData) {
+  return function (target) {
+    target.prototype.tag = tagData
+  }
+}
+
 export {
-  prefix
+  prefix,
+  tag
 }

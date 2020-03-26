@@ -9,7 +9,7 @@ class MemberRouter extends BaseRouter {
   @parameter(joi.object({
     userId: joi.string().required()
   }), 'body')
-  async createNewMember(ctx) {
+  async createNewMember(ctx: any): Promise<void> {
     console.log(ctx.request.body)
     const body = ctx.request.body
     const result = await MemberController.addNewMember(body)
@@ -26,11 +26,11 @@ class MemberRouter extends BaseRouter {
     residence: joi.string(),
     // email: joi.string() // 绑定邮箱
   }), 'body')
-  async editMemberInfo(ctx) {
+  async editMemberInfo(ctx: any): Promise<void> {
     const body = ctx.request.body
     console.log(body)
-    const result = await editInfo()
-    ctx.body = result
+    // const result = await editInfo()
+    // ctx.body = result
   }
 }
 

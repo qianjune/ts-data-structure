@@ -30,4 +30,4 @@ const socketLoader = (app) => {
   });
 }
 
-module.exports = socketLoader
+export default socketLoader

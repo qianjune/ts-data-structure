@@ -1,5 +1,15 @@
 import Koa from 'koa'
 import parser from 'koa-bodyparser'
+
+declare global {
+  namespace NodeJS {
+    interface Global {
+      config: any;
+      errs: any;
+      swagger: any;
+    }
+  }
+}
 import { InitManager } from './core/init'
 import catchError from './middleware/exception'
 import cors from 'koa2-cors'
@@ -30,13 +40,13 @@ app.use(parser())
 InitManager.initCore(app)
 app.use(
   koaSwagger({
-    routePrefix:'/v1/swagger',
-    swaggerOptions:{
-      url:'http://localhost:3111/v1/swagger-schema'
+    routePrefix: '/v1/swagger',
+    swaggerOptions: {
+      url: 'http://localhost:3111/v1/swagger-schema'
     }
   })
 )
-server.applyMiddleware({app})
+server.applyMiddleware({ app: app as any })
 app.listen(3111)
 console.log(`server is running on port 3111${server.graphqlPath}`)
 

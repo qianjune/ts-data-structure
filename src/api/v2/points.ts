@@ -25,7 +25,7 @@ class PointsRouter extends BaseRouter {
     pattern: joi.string().required(),
     num: joi.number().required()
   }), 'body')
-  async addPoints(ctx) {
+  async addPoints(ctx: any): Promise<void> {
     console.log('进入')
     const body = ctx.request.body
     body.type = POINTS_TYPE_ENUM.INCREASE
@@ -43,7 +43,7 @@ class PointsRouter extends BaseRouter {
     pattern: joi.string().required(),
     num: joi.string().required()
   }), 'body')
-  async consumePoints(ctx) {
+  async consumePoints(ctx: any): Promise<void> {
     const body = ctx.request.body
     body.type = POINTS_TYPE_ENUM.REDUCE
     const result = await PointsController.consumePoints(body)
@@ -54,7 +54,9 @@ class PointsRouter extends BaseRouter {
    * 积分过期，一般内部处理
    * @param {*} ctx 
    */
-  async expiredPoints(ctx) { }
+  async expiredPoints(ctx: any): Promise<void> {
+    ctx.body = {}
+  }
 }
 
 const pointsRouter = new PointsRouter()
