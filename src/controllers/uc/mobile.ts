@@ -2,30 +2,36 @@
  * @description 手机相关服务
  */
 
+import { CODE_ACTION_TYPE } from "../../enum";
+import Sms from "../../models/code/sms";
+
 interface MobileBody {
   mobile: string;
   smsCode: string;
   picCode: string;
   token: string;
 }
-interface MobileCode {
-  smsCode: string;
-  picCode: string;
-  type: string;
+export interface MobileCode {
+  code: string;
+  // picCode: string;
+  type: CODE_ACTION_TYPE;
+  mobile: string;
 }
+
 interface CommonClass {
   bind(data: MobileBody): void;
   unbind(data: MobileBody): void;
   reset(data: MobileBody): void;
   replace(data: MobileBody): void;
   sendCode(data: MobileCode): void;
-  validateCode(data: MobileCode): void;
+  validateCode(data: MobileCode): Promise<boolean>;
   _validateCode(): void;
 }
 
 class MobileService implements CommonClass {
   bind(data: MobileBody): void {
-    throw new Error("Method not implemented.");
+    // 检查是否已有绑定
+
   }
   unbind(data: MobileBody): void {
     throw new Error("Method not implemented.");
@@ -39,8 +45,9 @@ class MobileService implements CommonClass {
   sendCode(data: MobileCode): void {
     throw new Error("Method not implemented.");
   }
-  validateCode(data: MobileCode): void {
-    throw new Error("Method not implemented.");
+  async validateCode(data: MobileCode): Promise<boolean> {
+    const { mobile, code } = data
+    return Sms.validateSms(mobile,,code)
   }
   _validateCode(): void {
     throw new Error("Method not implemented.");

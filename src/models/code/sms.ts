@@ -61,7 +61,7 @@ class Sms {
     throw new global.errs.HttpExceptionForMini(msg)
   }
 
-  static async validateSms(mobile: number, key: string, code: string) {
+  static async validateSms(mobile: number, key: string, code: string): Promise<boolean> {
     return await ValidateCodeModel.validateCode({ user: mobile, key, code })
   }
 }

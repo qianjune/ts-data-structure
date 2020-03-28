@@ -5,9 +5,9 @@
 import { User } from "../db/models";
 
 interface UserBody {
-  mobile: number;
-  password: string;
-  email: string;
+  mobile?: number|string;
+  password?: string;
+  email?: string;
 }
 interface UserPutBody {
   mobile?: number;
@@ -26,20 +26,20 @@ interface UserServiceInterface {
   getUserInfo(id: string): void;
   // 登录过期
   // 检查用户是否已存在
-  _getValidUser(data: {}): Promise<any>;
+  getValidUser(data: {}): Promise<any>;
 
 }
 
 class UserService implements UserServiceInterface {
-  async _getValidUser(data: {}): Promise<User | undefined> {
+  async getValidUser(data: {}): Promise<User | undefined> {
     const user = await User.findOne({
       where: data
     })
     return user
   }
-  async createUser(data: UserBody): Promise<void> {
+  async createUser(data: UserBody): Promise<any> {
 
-    if (this._getValidUser({ mobile: data.mobile })) {
+    if (this.getValidUser({ mobile: data.mobile })) {
       // 该手机已注册
       return
     }
@@ -52,13 +52,13 @@ class UserService implements UserServiceInterface {
 
   }
   async updateUser(data: UserPutBody): Promise<void> {
-    const user = await this._getValidUser({id:data.id})
+    const user = await this.getValidUser({id:data.id})
     if(user){
       
     }
   }
   async destroyUser(id: string): Promise<void> {
-    const user = await this._getValidUser({ id })
+    const user = await this.getValidUser({ id })
     if (user) {
       const result = await User.update({ status: 'destroy' }, { where: { id } })
       if (result[0] > 0) {
@@ -71,7 +71,7 @@ class UserService implements UserServiceInterface {
     }
   }
   async getUserInfo(id: string): Promise<void> {
-    const user = await this._getValidUser({ id })
+    const user = await this.getValidUser({ id })
   }
 
 }
