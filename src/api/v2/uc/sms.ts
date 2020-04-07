@@ -2,12 +2,12 @@
  * @description 短信相关 api
  * @author June_end
  */
-import Sms from '../../../models/code/sms'
+import Sms from '../../../manager/code/sms'
 import { UserController } from '../../../controllers/pre-user'
 import joi from '@hapi/joi'
 import Auth from '../../../../middleware/auth'
 import BaseRouter, { get, post, middleware, parameter, prefix, put, summary, tag } from '../../../lib/router-decorator'
-import { EmailModel } from '../../../models/code/email'
+import { EmailModel } from '../../../manager/code/email'
 
 
 @prefix('/api/user/web')

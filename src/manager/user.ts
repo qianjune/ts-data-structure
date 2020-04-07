@@ -1,5 +1,5 @@
 /**
- * @description 用户服务
+ * @description 用户 manager
  */
 
 import { User } from "../db/models";
@@ -30,7 +30,7 @@ interface UserServiceInterface {
 
 }
 
-class UserService implements UserServiceInterface {
+class UserManager implements UserServiceInterface {
   async getValidUser(data: {}): Promise<User | undefined> {
     const user = await User.findOne({
       where: data
@@ -38,16 +38,20 @@ class UserService implements UserServiceInterface {
     return user
   }
   async createUser(data: UserBody): Promise<any> {
-
-    if (this.getValidUser({ mobile: data.mobile })) {
+    let user = await this.getValidUser({ mobile: data.mobile })
+    if (user) {
       // 该手机已注册
-      return
+      console.log('用户已存在')
+      return user.toJSON()
     }
-    const result = await User.create(data)
-    if (result.getDataValue('id')) {
+    user = await User.create(data)
+    if (user) {
       // 成功创建
+      console.log('成功创建')
+      return user.toJSON()
     } else {
       // 失败
+      return false
     }
 
   }
@@ -77,7 +81,7 @@ class UserService implements UserServiceInterface {
 }
 
 export {
-  UserService
+  UserManager
 
 }
 

@@ -3,7 +3,7 @@ import { ValidateCodeModel } from '../../../cache/validateCode'
 import { CodeBuilder } from '../../../cache/codeBuilder'
 
 class EmailModel {
-  static async sendEmail(email = '418694294@qq.com', key: string) {
+  static async sendEmail(email = '418694294@qq.com', key: string): Promise<any> {
     // let testAccount = await nodemailer.createTestAccount()
     const transporter = nodemailer.createTransport({
       service: 'qq',
@@ -33,7 +33,7 @@ class EmailModel {
 
     return info
   }
-  static async validateEmail(email: string, key: string, code: string) {
+  static async validateEmail(email: string, key: string, code: string): Promise<any> {
     return await ValidateCodeModel.validateCode({ user: email, key, code })
   }
 }

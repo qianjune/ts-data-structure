@@ -1,4 +1,11 @@
+
+
+
+
 class HttpException extends Error {
+  msg: string
+  errorCode: number
+  code: number
   constructor(msg = '服务器异常', errorCode = 10000, code = 400) {
     super()
     this.msg = msg
@@ -16,41 +23,45 @@ class ParameterException extends HttpException {
 }
 
 class AuthFailed extends HttpException {
-  constructor(msg, errorCode) {
+  constructor(msg = '授权失败', errorCode = 10004) {
     super()
     this.code = 401
-    this.msg = msg || '授权失败'
-    this.errorCode = errorCode || 10004
+    this.msg = msg
+    this.errorCode = errorCode
   }
 }
 class Forbbiden extends HttpException {
-  constructor(msg, errorCode) {
+  constructor(msg = '禁止访问', errorCode = 10006) {
     super()
     this.code = 403
-    this.msg = msg || '禁止访问'
-    this.errorCode = errorCode || 10006
+    this.msg = msg
+    this.errorCode = errorCode
   }
 }
 class Success extends HttpException {
-  constructor(msg, errorCode) {
+  constructor(msg = 'success', errorCode = 0) {
     super()
-    this.msg = msg || 'success'
-    this.errorCode = errorCode || 0
+    this.msg = msg
+    this.errorCode = errorCode
     this.code = 201
   }
 }
 class HttpExceptionForMini extends Error {
-  constructor(error = '参数错误', code) { // constructor 要设默认值，不然会返回0
+  success: boolean
+  error: string
+  code: number
+  constructor(error = '参数错误', code = 201) { // constructor 要设默认值，不然会返回0
     super()
     console.log(error, code)
     this.success = false
     this.error = error
-    this.code = 201
+    this.code = code
   }
 }
 // 小程序
 class SuccessForMini extends HttpExceptionForMini {
-  constructor({ data } = {}) {
+  data: any
+  constructor({ data } = { data: {} }) {
     super()
     this.success = true
     this.error = ''
