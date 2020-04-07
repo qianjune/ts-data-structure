@@ -1,6 +1,6 @@
-
-
-
+/**
+ * @description 错误类定义
+ */
 
 class HttpException extends Error {
   msg: string
@@ -13,6 +13,7 @@ class HttpException extends Error {
     this.code = code
   }
 }
+
 class ParameterException extends HttpException {
   constructor(msg = '参数错误', errorCode = 10000) {
     super()
@@ -70,9 +71,13 @@ class SuccessForMini extends HttpExceptionForMini {
   }
 }
 
+export interface GlobalErrorInterface {
+  HttpException: new (msg: string, errorCode?: number, code?: number) => HttpException;
+  SuccessForMini: new () => SuccessForMini;
+  HttpExceptionForMini: new (data: any) => HttpExceptionForMini;
 
-
-module.exports = {
+}
+const globalErrors = {
   HttpException,
   ParameterException,
   Success,
@@ -81,3 +86,4 @@ module.exports = {
   SuccessForMini,
   HttpExceptionForMini
 }
+export default globalErrors

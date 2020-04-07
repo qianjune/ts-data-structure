@@ -1,15 +1,7 @@
 import Koa from 'koa'
 import parser from 'koa-bodyparser'
 
-declare global {
-  namespace NodeJS {
-    interface Global {
-      config: any;
-      errs: any;
-      swagger: any;
-    }
-  }
-}
+
 import { InitManager } from './core/init'
 import catchError from './middleware/exception'
 import cors from 'koa2-cors'
@@ -17,6 +9,17 @@ import serve from 'koa-static'
 import path from 'path'
 import { ApolloServer, gql } from 'apollo-server-koa'
 import koaSwagger from 'koa2-swagger-ui'
+import { GlobalErrorInterface } from './core/http-exception'
+
+declare global {
+  namespace NodeJS {
+    interface Global {
+      config: any;
+      errs: GlobalErrorInterface;
+      swagger: any;
+    }
+  }
+}
 
 const typeDefs = gql`
   type Query {

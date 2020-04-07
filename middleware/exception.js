@@ -1,4 +1,5 @@
-import { HttpException, HttpExceptionForMini } from '../core/http-exception'
+import globalErrors from '../core/http-exception'
+const { HttpException, HttpExceptionForMini } = globalErrors
 
 const catchError = async (ctx, next) => {
   try {

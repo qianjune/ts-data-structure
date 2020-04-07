@@ -3,7 +3,6 @@
  */
 
 import BaseRouter, { prefix, tag, post, summary, parameter } from "../../../lib/router-decorator";
-import { User } from "../../../db/models";
 import Joi from "@hapi/joi";
 import UserService from "../../../services/user";
 
