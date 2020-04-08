@@ -1,10 +1,10 @@
 import nodemailer from 'nodemailer'
 import { ValidateCodeModel } from '../../../cache/validateCode'
 import { CodeBuilder } from '../../../cache/codeBuilder'
+import { CodeManagerInterface } from './sms'
 
-class EmailModel {
-  static async sendEmail(email = '418694294@qq.com', key: string): Promise<any> {
-    // let testAccount = await nodemailer.createTestAccount()
+class EmailModel implements CodeManagerInterface {
+  async sendCode(user: string, type: import("../../enum/codeActionType").CODE_ACTION_TYPE): Promise<boolean> {
     const transporter = nodemailer.createTransport({
       service: 'qq',
       port: 465,
@@ -18,7 +18,7 @@ class EmailModel {
     const code = CodeBuilder.buildValidateCode()
     const info = await transporter.sendMail({
       from: '3190741842@qq.com',
-      to: email,
+      to: user,
       // to: 'qjhj8ftn@gmail.com',
       // to: '418694294@qq.com',
       subject: 'hello',
@@ -27,14 +27,14 @@ class EmailModel {
     })
     // if (info.response.starWith('250')) {
     console.log('进入这里')
-    ValidateCodeModel.saveCode({ user: email, key: 'register', code })
+    ValidateCodeModel.saveCode({ user: user, key: 'register', code })
     // }
     console.log(info.messageId)
 
     return info
   }
-  static async validateEmail(email: string, key: string, code: string): Promise<any> {
-    return await ValidateCodeModel.validateCode({ user: email, key, code })
+  async validateCode(user: string, type: import("../../enum/codeActionType").CODE_ACTION_TYPE, code: string): Promise<boolean> {
+    return await ValidateCodeModel.validateCode({ user: user, key: type, code })
   }
 }
 
