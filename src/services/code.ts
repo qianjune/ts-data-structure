@@ -14,6 +14,14 @@ class CodeService {
     })
     console.log('最终结果：', result)
   }
+  static async sendCodeByEmail(user: string) {
+    const result = await codeManager.sendCode({
+      user,
+      type: CODE_ACTION_TYPE.REGISTER,
+      path: CODE_ACTION_PATH.EMAIL
+    })
+    console.log('最终结果：', result)
+  }
 }
 
 export default CodeService

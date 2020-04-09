@@ -15,7 +15,7 @@ import { EmailModel } from '../../../manager/code/email'
 class SmsRouter extends BaseRouter {
   @post('/email/test')
   async emailTest(ctx: any): Promise<void> {
-    ctx.body = await EmailModel.sendEmail('418694294@qq.com', 'test')
+    // ctx.body = await EmailModel.sendEmail('418694294@qq.com', 'test')
   }
 
 
@@ -29,7 +29,7 @@ class SmsRouter extends BaseRouter {
   }), 'body')
   async sendSmsCodeForForgetPassword(ctx: any): Promise<void> {
     const { mobile } = ctx.request.body
-    await Sms.sendSms(mobile, 'password')
+    // await Sms.sendSms(mobile, 'password')
   }
 
   @post('/password/reset-sms-code-verify')
@@ -56,7 +56,7 @@ class SmsRouter extends BaseRouter {
   async sendSmsCodeForLogin(ctx: any): Promise<void> {
     const { mobile } = ctx.request.body
     console.log('mobile', mobile)
-    await Sms.sendSms(mobile, 'login')
+    // await Sms.sendSms(mobile, 'login')
   }
 
   // 根据手机验证码登录
