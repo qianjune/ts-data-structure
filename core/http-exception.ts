@@ -62,19 +62,28 @@ class HttpExceptionForMini extends Error {
 // 小程序
 class SuccessForMini extends HttpExceptionForMini {
   data: any
-  constructor({ data } = { data: {} }) {
+  constructor(msg: string, data: any) {
     super()
     this.success = true
-    this.error = ''
+    this.error = msg
     this.code = 201
     this.data = data
+  }
+}
+class FailForMini extends HttpExceptionForMini {
+  constructor(msg = '请求错误') {
+    super()
+    this.success = false
+    this.error = msg
+    this.code = 401
   }
 }
 
 export interface GlobalErrorInterface {
   HttpException: new (msg: string, errorCode?: number, code?: number) => HttpException;
-  SuccessForMini: new () => SuccessForMini;
+  SuccessForMini: new (msg?: string, data?: any) => SuccessForMini;
   HttpExceptionForMini: new (data: any) => HttpExceptionForMini;
+  FailForMini: new (msg?: string) => FailForMini;
 
 }
 const globalErrors = {
@@ -84,6 +93,7 @@ const globalErrors = {
   AuthFailed,
   Forbbiden,
   SuccessForMini,
-  HttpExceptionForMini
+  HttpExceptionForMini,
+  FailForMini
 }
 export default globalErrors

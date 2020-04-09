@@ -1,14 +1,19 @@
+/**
+ * @description 螺丝钉发送短信服务
+ */
 import querystring from 'querystring'
 import axios from 'axios'
 
 import { ValidateCodeModel } from '../../../cache/validateCode'
 import { CodeBuilder } from '../../../cache/codeBuilder';
 import { CODE_ACTION_TYPE } from '../../enum';
+import { ManageResponse } from '../response';
+import tryCatch from 'ramda/es/tryCatch';
 
 
 export interface CodeManagerInterface {
-  sendCode(user: string, type: CODE_ACTION_TYPE): Promise<boolean>;
-  validateCode(user: string, type: CODE_ACTION_TYPE, code: string): Promise<boolean>;
+  sendCode(user: string, type: CODE_ACTION_TYPE): Promise<ManageResponse>;
+  validateCode(user: string, type: CODE_ACTION_TYPE, code: string): Promise<ManageResponse>;
 }
 
 // tel_type:smsCode
@@ -20,7 +25,7 @@ class Sms implements CodeManagerInterface {
  * @param {number} mobile 手机号
  * @param {string} message 短信信息
  */
-  async sendCode(user: string, type: CODE_ACTION_TYPE): Promise<boolean> {
+  async sendCode(user: string, type: CODE_ACTION_TYPE): Promise<ManageResponse> {
     const smsCode = CodeBuilder.buildValidateCode()
     const content = this._buildSmsContent(user, smsCode)
 
@@ -40,20 +45,22 @@ class Sms implements CodeManagerInterface {
     //   },
     //   'Content-Type': 'application/x-www-form-urlencoded',
     // })
+    
     const res = await axios(option as any)
     console.log('短信发送结果', res.data)
     if (res.data.error === 0) {
       ValidateCodeModel.saveCode({ user, key: type, code: smsCode })
-      throw new global.errs.SuccessForMini()
+      return new ManageResponse(true, '短信发送成功')
     }
-    let msg = ''
+    let msg = '发送失败，请稍后再试'
     if (res.data.error == -42) {
       msg = '发送过于频繁，请稍等'
     }
-    throw new global.errs.HttpExceptionForMini(msg)
+    return new ManageResponse(false, msg)
   }
-  async validateCode(user: string, type: CODE_ACTION_TYPE, code: string): Promise<boolean> {
-    return await ValidateCodeModel.validateCode({ user: user, key: type, code })
+  async validateCode(user: string, type: CODE_ACTION_TYPE, code: string): Promise<ManageResponse> {
+    const result = await ValidateCodeModel.validateCode({ user: user, key: type, code })
+    return new ManageResponse(result, result ? '验证成功' : '验证失败')
 
   }
 

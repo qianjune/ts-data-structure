@@ -6,11 +6,20 @@ const catchError = async (ctx, next) => {
     await next()
   } catch (error) {
     const isHttpException = error instanceof HttpException
+    const isHttpExceptionForMini = error instanceof HttpExceptionForMini
+
     const isDev = global.config.environment === 'dev'
+    console.log(error)
+    if (isDev && !isHttpException && !isHttpExceptionForMini) {
 
-    if (isDev && !isHttpException) {
-
-      console.log(error)
+      // console.log(error)
+      console.log('意外错误')
+      ctx.status = 500
+      ctx.body = {
+        success: false,
+        msg: '意外错误',
+        data: error
+      }
     }
     // 普通Error也可以用一个统一的格式处理下
     if (isHttpException) {
@@ -20,9 +29,11 @@ const catchError = async (ctx, next) => {
         request: `${ctx.method} ${ctx.path}`
       }
       ctx.status = error.code
+
     }
+    console.log()
     // 小程序
-    if (error instanceof HttpExceptionForMini) {
+    if (isHttpExceptionForMini) {
       console.log(error)
       const result = {
         success: error.success,

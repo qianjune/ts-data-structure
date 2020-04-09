@@ -28,6 +28,16 @@ class CodeRouter extends BaseRouter {
     const { user } = ctx.request.body
     await CodeService.sendCodeByEmail(user)
   }
+  @post('/email/validate/code')
+  @summary('验证邮箱验证码')
+  @parameter(Joi.object({
+    user: Joi.string().email().required(),
+    code: Joi.string().required()
+  }), 'body')
+  async validateCodeForEmail(ctx: any): Promise<void> {
+    const { user, code } = ctx.request.body
+    await CodeService.validateCodeByEmail(user, code)
+  }
 }
 
 const codeRouter = new CodeRouter()

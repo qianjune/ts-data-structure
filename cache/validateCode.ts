@@ -14,8 +14,10 @@ class ValidateCodeModel {
     set(this._buildSaveKey(user, key), code, 60 * 60)
   }
   static async validateCode({ user, code, key }: ValidateCodeProps): Promise<boolean> {
+    console.log(user, code, key)
     const savedCode = await get(this._buildSaveKey(user, key))
-    return savedCode === code
+    console.log("savedCode:",savedCode)
+    return savedCode.toString() === code.toString()
   }
 }
 

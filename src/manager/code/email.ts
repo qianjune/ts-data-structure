@@ -2,9 +2,10 @@ import nodemailer from 'nodemailer'
 import { ValidateCodeModel } from '../../../cache/validateCode'
 import { CodeBuilder } from '../../../cache/codeBuilder'
 import { CodeManagerInterface } from './sms'
+import { ManageResponse } from '../response'
 
 class EmailModel implements CodeManagerInterface {
-  async sendCode(user: string, type: import("../../enum/codeActionType").CODE_ACTION_TYPE): Promise<boolean> {
+  async sendCode(user: string, type: import("../../enum/codeActionType").CODE_ACTION_TYPE): Promise<ManageResponse> {
     const transporter = nodemailer.createTransport({
       service: 'qq',
       port: 465,
@@ -27,14 +28,15 @@ class EmailModel implements CodeManagerInterface {
     })
     // if (info.response.starWith('250')) {
     console.log('进入这里')
-    ValidateCodeModel.saveCode({ user: user, key: 'register', code })
+    ValidateCodeModel.saveCode({ user: user, key: type, code })
     // }
     console.log(info.messageId)
 
-    return info
+    return new ManageResponse(true, '邮箱验证码发送成功')
   }
-  async validateCode(user: string, type: import("../../enum/codeActionType").CODE_ACTION_TYPE, code: string): Promise<boolean> {
-    return await ValidateCodeModel.validateCode({ user: user, key: type, code })
+  async validateCode(user: string, type: import("../../enum/codeActionType").CODE_ACTION_TYPE, code: string): Promise<ManageResponse> {
+    const result = await ValidateCodeModel.validateCode({ user: user, key: type, code })
+    return new ManageResponse(result, result ? '验证成功' : '验证失败')
   }
 }
 

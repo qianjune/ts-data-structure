@@ -5,6 +5,7 @@
 import { CODE_ACTION_TYPE, CODE_ACTION_PATH } from "../../enum";
 import { EmailModel } from "./email";
 import Sms, { CodeManagerInterface } from "./sms";
+import { ManageResponse } from "../response";
 
 interface SendCodeProps {
   user: string;
@@ -30,23 +31,23 @@ class CodeManager {
     }
     return manager
   }
-  async sendCode(data: SendCodeProps) {
+  async sendCode(data: SendCodeProps): Promise<ManageResponse> {
     const { user, path, type } = data
     const manager = this._selectManage(path)
     if (!manager) {
       return
     }
     const result = await manager.sendCode(user, type)
-    console.log(result)
+    return result
   }
-  async validateCode(data: ValidateCodeProps) {
+  async validateCode(data: ValidateCodeProps): Promise<ManageResponse> {
     const { user, path, type, code } = data
     const manager = this._selectManage(path)
     if (!manager) {
       return
     }
     const result = await manager.validateCode(user, type, code)
-    console.log(result)
+    return result
   }
 }
 
