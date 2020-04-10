@@ -10,6 +10,7 @@ import path from 'path'
 import { ApolloServer, gql } from 'apollo-server-koa'
 import koaSwagger from 'koa2-swagger-ui'
 import { GlobalErrorInterface } from './core/http-exception'
+import status from 'http-status'
 
 declare global {
   namespace NodeJS {
@@ -17,6 +18,7 @@ declare global {
       config: any;
       errs: GlobalErrorInterface;
       swagger: any;
+      status: status.HttpStatus;
     }
   }
 }

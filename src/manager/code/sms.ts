@@ -25,7 +25,7 @@ class Sms implements CodeManagerInterface {
  * @param {number} mobile 手机号
  * @param {string} message 短信信息
  */
-  async sendCode(user: string, type: CODE_ACTION_TYPE): Promise<ManageResponse> {
+  async sendCode(user: string, type: string): Promise<ManageResponse> {
     const smsCode = CodeBuilder.buildValidateCode()
     const content = this._buildSmsContent(user, smsCode)
 
@@ -45,7 +45,7 @@ class Sms implements CodeManagerInterface {
     //   },
     //   'Content-Type': 'application/x-www-form-urlencoded',
     // })
-    
+
     const res = await axios(option as any)
     console.log('短信发送结果', res.data)
     if (res.data.error === 0) {
@@ -58,7 +58,7 @@ class Sms implements CodeManagerInterface {
     }
     return new ManageResponse(false, msg)
   }
-  async validateCode(user: string, type: CODE_ACTION_TYPE, code: string): Promise<ManageResponse> {
+  async validateCode(user: string, type: string, code: string): Promise<ManageResponse> {
     const result = await ValidateCodeModel.validateCode({ user: user, key: type, code })
     return new ManageResponse(result, result ? '验证成功' : '验证失败')
 

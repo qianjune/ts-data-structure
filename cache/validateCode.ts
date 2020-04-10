@@ -1,4 +1,4 @@
-import { get, set } from './_redis'
+import { get, set, del } from './_redis'
 
 interface ValidateCodeProps {
   user: string | number;
@@ -14,10 +14,15 @@ class ValidateCodeModel {
     set(this._buildSaveKey(user, key), code, 60 * 60)
   }
   static async validateCode({ user, code, key }: ValidateCodeProps): Promise<boolean> {
-    console.log(user, code, key)
-    const savedCode = await get(this._buildSaveKey(user, key))
-    console.log("savedCode:",savedCode)
-    return savedCode.toString() === code.toString()
+    const saveKey = this._buildSaveKey(user, key)
+    const savedCode = await get(saveKey)
+    console.log("savedCode:", savedCode)
+    const result = savedCode.toString() === code.toString()
+    if (result) {
+      // 如果验证成功后，把之前保存的验证码删除
+      await del(saveKey)
+    }
+    return result
   }
 }
 

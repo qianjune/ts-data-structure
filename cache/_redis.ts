@@ -28,7 +28,9 @@ const set = (key: string, val: string | number, timeout = 60 * 60): void => {
   redisClient.set(key, val.toString())
   redisClient.expire(key, timeout)
 }
-
+const del = (key: string): void => {
+  redisClient.del(key)
+}
 /**
  *
  * @param {string} key key
@@ -59,5 +61,6 @@ const get = (key: string): Promise<unknown> => {
 
 export {
   set,
-  get
+  get,
+  del
 }

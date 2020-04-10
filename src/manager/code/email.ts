@@ -5,7 +5,7 @@ import { CodeManagerInterface } from './sms'
 import { ManageResponse } from '../response'
 
 class EmailModel implements CodeManagerInterface {
-  async sendCode(user: string, type: import("../../enum/codeActionType").CODE_ACTION_TYPE): Promise<ManageResponse> {
+  async sendCode(user: string, type: string): Promise<ManageResponse> {
     const transporter = nodemailer.createTransport({
       service: 'qq',
       port: 465,
@@ -34,7 +34,7 @@ class EmailModel implements CodeManagerInterface {
 
     return new ManageResponse(true, '邮箱验证码发送成功')
   }
-  async validateCode(user: string, type: import("../../enum/codeActionType").CODE_ACTION_TYPE, code: string): Promise<ManageResponse> {
+  async validateCode(user: string, type: string, code: string): Promise<ManageResponse> {
     const result = await ValidateCodeModel.validateCode({ user: user, key: type, code })
     return new ManageResponse(result, result ? '验证成功' : '验证失败')
   }

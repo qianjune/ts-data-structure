@@ -5,6 +5,7 @@
 import BaseRouter, { prefix, tag, post, summary, parameter } from "../../../lib/router-decorator";
 import Joi from "@hapi/joi";
 import CodeService from "../../../services/code";
+import { CODE_ACTION_TYPE } from "../../../enum";
 
 @prefix('/api/common')
 @tag('验证码服务')
@@ -16,7 +17,17 @@ class CodeRouter extends BaseRouter {
   }), 'body')
   async sendCodeForMobile(ctx: any): Promise<void> {
     const { user } = ctx.request.body
-    await CodeService.sendCodeByMobile(user)
+    await CodeService.sendCodeByMobile(user, CODE_ACTION_TYPE.REGISTER)
+  }
+  @post('/mobile/validate/code')
+  @summary('验证手机验证码')
+  @parameter(Joi.object({
+    user: Joi.string().length(11).required(),
+    code: Joi.string().required()
+  }), 'body')
+  async validateCodeForMobile(ctx: any): Promise<void> {
+    const { user, code } = ctx.request.body
+    await CodeService.validateCodeByEmail(user, CODE_ACTION_TYPE.REGISTER, code)
   }
 
   @post('/email/send/code')
@@ -26,7 +37,7 @@ class CodeRouter extends BaseRouter {
   }), 'body')
   async sendCodeForEmail(ctx: any): Promise<void> {
     const { user } = ctx.request.body
-    await CodeService.sendCodeByEmail(user)
+    await CodeService.sendCodeByEmail(user, CODE_ACTION_TYPE.REGISTER)
   }
   @post('/email/validate/code')
   @summary('验证邮箱验证码')
@@ -36,7 +47,7 @@ class CodeRouter extends BaseRouter {
   }), 'body')
   async validateCodeForEmail(ctx: any): Promise<void> {
     const { user, code } = ctx.request.body
-    await CodeService.validateCodeByEmail(user, code)
+    await CodeService.validateCodeByEmail(user, CODE_ACTION_TYPE.REGISTER, code)
   }
 }
 

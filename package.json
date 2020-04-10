@@ -33,6 +33,7 @@
     "bcryptjs": "^2.4.3",
     "form-data": "^3.0.0",
     "graphql": "^14.5.4",
+    "http-status": "^1.4.2",
     "joi-to-json-schema": "^5.1.0",
     "joi-to-swagger": "^3.2.0",
     "jsonwebtoken": "^8.5.1",

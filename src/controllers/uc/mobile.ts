@@ -47,7 +47,8 @@ class MobileService implements CommonClass {
   }
   async validateCode(data: MobileCode): Promise<boolean> {
     const { mobile, code } = data
-    return Sms.validateSms(mobile,,code)
+    // return Sms.validateSms(mobile,,code)
+    return false
   }
   _validateCode(): void {
     throw new Error("Method not implemented.");

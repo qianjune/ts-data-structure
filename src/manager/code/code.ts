@@ -16,8 +16,9 @@ interface ValidateCodeProps extends SendCodeProps {
   code: string;
 }
 
+
 class CodeManager {
-  _selectManage(path: CODE_ACTION_PATH): null | EmailModel | Sms {
+  private _selectManage(path: CODE_ACTION_PATH): null | EmailModel | Sms {
     let manager = null as CodeManagerInterface
     switch (path) {
       case CODE_ACTION_PATH.EMAIL:
@@ -31,13 +32,20 @@ class CodeManager {
     }
     return manager
   }
+  private _safeRequestCheckBeforeSendCode(user: string, type: CODE_ACTION_TYPE): boolean {
+    // 安全检查，如果短时间内多次请求视为不合法
+    return false
+  }
+  private _typeStringBuilder(path: CODE_ACTION_PATH, type: CODE_ACTION_TYPE): string {
+    return `${path}_${type}`
+  }
   async sendCode(data: SendCodeProps): Promise<ManageResponse> {
     const { user, path, type } = data
     const manager = this._selectManage(path)
     if (!manager) {
       return
     }
-    const result = await manager.sendCode(user, type)
+    const result = await manager.sendCode(user, this._typeStringBuilder(path, type))
     return result
   }
   async validateCode(data: ValidateCodeProps): Promise<ManageResponse> {
@@ -46,7 +54,7 @@ class CodeManager {
     if (!manager) {
       return
     }
-    const result = await manager.validateCode(user, type, code)
+    const result = await manager.validateCode(user, this._typeStringBuilder(path, type), code)
     return result
   }
 }
