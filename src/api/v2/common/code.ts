@@ -27,7 +27,7 @@ class CodeRouter extends BaseRouter {
   }), 'body')
   async validateCodeForMobile(ctx: any): Promise<void> {
     const { user, code } = ctx.request.body
-    await CodeService.validateCodeByEmail(user, CODE_ACTION_TYPE.REGISTER, code)
+    await CodeService.validateCodeByMobile(user, CODE_ACTION_TYPE.REGISTER, code)
   }
 
   @post('/email/send/code')

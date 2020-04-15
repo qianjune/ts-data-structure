@@ -77,7 +77,9 @@ class UserManager implements UserServiceInterface {
   async getUserInfo(id: string): Promise<void> {
     const user = await this.getValidUser({ id })
   }
-
+  async login(uid: string){
+    // 生成session 或者 jwt
+  }
 }
 
 export {
