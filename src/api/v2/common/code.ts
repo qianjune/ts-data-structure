@@ -30,6 +30,28 @@ class CodeRouter extends BaseRouter {
     await CodeService.validateCodeByMobile(user, CODE_ACTION_TYPE.REGISTER, code)
   }
 
+  // 手一键登录
+  @post('/mobile/send/code/one-click-login')
+  @summary('发送一键登录手机验证码')
+  @parameter(Joi.object({
+    user: Joi.string().length(11).required()
+  }), 'body')
+  async sendCodeForOnClickLoginByMobile(ctx: any): Promise<void> {
+    const { user } = ctx.request.body
+    await CodeService.sendCodeByMobile(user, CODE_ACTION_TYPE.REGISTER_AND_LOGIN)
+  }
+  @post('/mobile/validate/one-click-login')
+  @summary('验证一键登录手机验证码')
+  @parameter(Joi.object({
+    user: Joi.string().length(11).required(),
+    code: Joi.string().required()
+  }), 'body')
+  async validateCodeForOnClickLoginByMobile(ctx: any): Promise<void> {
+    const { user, code } = ctx.request.body
+    await CodeService.validateCodeByMobile(user, CODE_ACTION_TYPE.REGISTER_AND_LOGIN, code)
+  }
+  // end
+
   @post('/email/send/code')
   @summary('发送邮箱验证码')
   @parameter(Joi.object({

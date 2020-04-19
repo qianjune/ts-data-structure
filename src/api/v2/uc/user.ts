@@ -6,8 +6,9 @@ import BaseRouter, { prefix, tag, post, summary, parameter } from "../../../lib/
 import Joi from "@hapi/joi";
 import UserService from "../../../services/user";
 import CodeService from "../../../services/code";
-import { CODE_ACTION_TYPE } from "../../../enum";
-
+import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "../../../enum";
+import CodeManager from "../../../manager/code/code";
+const codeManager = new CodeManager()
 @prefix('/api/user')
 @tag('用户服务')
 class UserRouter extends BaseRouter {
@@ -31,8 +32,14 @@ class UserRouter extends BaseRouter {
   }), 'body')
   async registerAndLoginForApp(ctx: any): Promise<any> {
     const { user, code } = ctx.request.body
-    const result = await CodeService.validateCodeByMobile(user,CODE_ACTION_TYPE.REGISTER,code)
     // 首先验证验证码
+    const result = await codeManager.validateCode({
+      user, code, path: CODE_ACTION_PATH.MOBILE, type: CODE_ACTION_TYPE.REGISTER_AND_LOGIN,platform:CODE_PLATFORM.MINI
+    })
+    if(!result.success){
+      throw new global.errs.FailForMini(result.msg)
+    }
+    
     await UserService.registerAndLoginForApp(user)
   }
 }

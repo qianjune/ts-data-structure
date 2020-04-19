@@ -1,3 +1,4 @@
 export * from './points'
-export * from './codeActionPath'
-export * from './codeActionType'
+export * from './code/codeActionPath'
+export * from './code/codeActionType'
+export * from './code/codePlatform'
