@@ -30,7 +30,7 @@ class CodeRouter extends BaseRouter {
     await CodeService.validateCodeByMobile(user, CODE_ACTION_TYPE.REGISTER, code)
   }
 
-  // 手一键登录
+  // 手机一键登录
   @post('/mobile/send/code/one-click-login')
   @summary('发送一键登录手机验证码')
   @parameter(Joi.object({
