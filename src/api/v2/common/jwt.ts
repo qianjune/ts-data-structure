@@ -2,7 +2,7 @@
  * @description jwt 功能测试api
  */
 
-import BaseRouter, { prefix, tag, post, summary, parameter, get } from "../../../lib/router-decorator";
+import BaseRouter, { prefix, tag, post, summary, parameter, get, middleware } from "../../../lib/router-decorator";
 import Joi from "@hapi/joi";
 import JwtHandler from "../../../utils/jwt_handler";
 
@@ -38,6 +38,13 @@ class JwtRouter extends BaseRouter {
     // const result = await JwtHandler.verify(token)
     ctx.body = ctx.header
   }
+  @get('/validate/oauth2.0/middleware')
+  @summary('检测jwt中间件是否有效')
+  @middleware(JwtHandler.loginCheck)
+  async validateJwtMiddleware(ctx: any): Promise<void> {
+    ctx.body = 'jwt中间件通过'
+  }
+
 }
 
 const jwtRouter = new JwtRouter()
