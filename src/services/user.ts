@@ -12,7 +12,7 @@ class UserService {
     // if(!result) throw global.errs.
   }
 
-  static async registerAndLoginForApp(user: string): Promise<any> {
+  static async registerAndLoginForApp(user: string, model: 'jwt' | 'session' = 'jwt'): Promise<any> {
     // 首先验证验证码
     // 查找是否有该用户
     let realUser = await userManager.getValidUser({ mobile: user })
@@ -23,6 +23,14 @@ class UserService {
       realUser = createdUser
     }
     // 调用登录，返回session或者jwt
+    if (model === 'jwt') {
+      return userManager.loginJwt((realUser.toJSON() as any).id)
+
+    } else {
+      return {
+        userInfo: realUser.toJSON()
+      }
+    }
   }
 }
 

@@ -44,7 +44,6 @@ class JwtRouter extends BaseRouter {
   async validateJwtMiddleware(ctx: any): Promise<void> {
     ctx.body = `jwt中间件通过,id:${global.data.id}`
   }
-
 }
 
 const jwtRouter = new JwtRouter()

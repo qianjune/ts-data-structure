@@ -3,6 +3,8 @@
  */
 
 import { User } from "../db/models";
+import JwtHandler from "../utils/jwt_handler";
+import SessionCookieHandler from "../utils/session_cookie";
 
 interface UserBody {
   mobile?: number | string;
@@ -77,8 +79,10 @@ class UserManager implements UserServiceInterface {
   async getUserInfo(id: string): Promise<void> {
     const user = await this.getValidUser({ id })
   }
-  async login(uid: string){
+  async loginJwt(uid: string){
     // 生成session 或者 jwt
+    const jwt = JwtHandler.encrypt({id:uid})
+    return jwt
   }
 }
 

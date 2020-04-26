@@ -15,13 +15,13 @@ class ValidateCodeModel {
   }
   static async validateCode({ user, code, key }: ValidateCodeProps): Promise<boolean> {
     const saveKey = this._buildSaveKey(user, key)
-    console.log('saveKey:',saveKey)
-    const savedCode = await get(saveKey)
+    console.log('saveKey:', saveKey)
+    const savedCode = await get(saveKey) || ''
     console.log("savedCode:", savedCode)
     const result = savedCode.toString() === code.toString()
     if (result) {
       // 如果验证成功后，把之前保存的验证码删除
-      await del(saveKey)
+      // await del(saveKey)
     }
     return result
   }

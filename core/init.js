@@ -1,10 +1,10 @@
 import Router from 'koa-router'
 import requireDirectory from 'require-directory'
-import redisStore from 'koa-redis'
 import status from 'http-status'
 import config from '../config/config'
 import errors from './http-exception'
 import socketLoader from './socket'
+import SessionCookieHandler from '../src/utils/session_cookie'
 
 export class InitManager {
   static initCore(app) {
@@ -14,6 +14,7 @@ export class InitManager {
     InitManager.loadHttpException()
     InitManager.loadHttpStatus()
     InitManager.loadSocket()
+    // SessionCookieHandler.init(InitManager.app)
   }
   static initLoadRouters() {
     const whenLoadModule = (obj) => {

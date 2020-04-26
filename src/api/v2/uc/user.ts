@@ -33,14 +33,32 @@ class UserRouter extends BaseRouter {
   async registerAndLoginForApp(ctx: any): Promise<any> {
     const { user, code } = ctx.request.body
     // 首先验证验证码
-    const result = await codeManager.validateCode({
-      user, code, path: CODE_ACTION_PATH.MOBILE, type: CODE_ACTION_TYPE.REGISTER_AND_LOGIN,platform:CODE_PLATFORM.MINI
+    let result = await codeManager.validateCode({
+      user, code, path: CODE_ACTION_PATH.MOBILE, type: CODE_ACTION_TYPE.REGISTER_AND_LOGIN, platform: CODE_PLATFORM.MINI
     })
-    if(!result.success){
+    if (!result.success) {
       throw new global.errs.FailForMini(result.msg)
     }
-    
-    await UserService.registerAndLoginForApp(user)
+    const model = 'session'
+    result = await UserService.registerAndLoginForApp(user, model)
+    if (model === 'session') {
+      console.log('ctx.session:', ctx.session)
+      // if (!ctx.session) {
+      //   ctx.session = {}
+      // }
+      ctx.session.userInfo = (result as any).userInfo
+      console.log('发送成功前', ctx.session.userInfo)
+      ctx.body = '登录成功'
+      // throw new global.errs.SuccessForMini('登录成功')
+    } else {
+      ctx.body = {
+        data: {
+          jwtToken: result
+        }
+      }
+    }
+
+
   }
 }
 
