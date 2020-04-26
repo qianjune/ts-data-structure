@@ -2,35 +2,59 @@
  * @description jwt相关处理
  */
 import jwt from 'jsonwebtoken'
-
+import { UserManager } from '../manager/user'
+const userManager = new UserManager()
 class JwtHandler {
-  static secretOrPrivateKey = 'private_key'
-  // 解密
-  static verify(token: string): any {
-    return jwt.verify(token, this.secretOrPrivateKey)
-  }
-  // 返回加密token
-  static encrypt(data: any, expiresIn: string | number = '1h'): string {
-    return jwt.sign(data, this.secretOrPrivateKey, { expiresIn })
-  }
-  //
-  static tokenValidateCheck(token: string): boolean {
-    // 验证id和有效时间
-    const result = this.verify(token)
-    console.log('token')
-    console.log(result)
-    return false
-  }
-  static async loginCheck(ctx: any, next: () => void): Promise<void> {
-    const authorization = ctx.header.authorization
-    if (!authorization) {
-      throw new global.errs.FailForMini('请正确登录(auth2.0)')
+    static secretOrPrivateKey = 'private_key'
+    // 解密
+    static verify(token: string): any {
+        if (token.includes('Bearer ')) {
+            token = token.replace('Bearer ', '')
+        }
+        // try {
+            const result = jwt.verify(token, this.secretOrPrivateKey)
+            return result
+        // } catch (e) {
+        //     console.log('解密过程中捕获到错误：', e.message)
+        //     throw new global.errs.FailForMini(e.message)
+        // }
     }
-    if (!this.tokenValidateCheck(authorization)) {
-      throw new global.errs.FailForMini('请正确登录(auth2.0)')
+    // 返回加密token
+    static encrypt(data: any, expiresIn: string | number = '1h'): string {
+        return jwt.sign(data, this.secretOrPrivateKey, { expiresIn })
     }
-    await next()
-  }
+    //
+    private static async tokenValidateCheck(token: string): Promise<boolean> {
+        // 验证id和有效时间
+        const result = this.verify(token)
+        console.log('token:', result)
+        if (!result || !result.id) {
+
+            return false
+        }
+        const validateUser = await userManager.getValidUser({ id: result.id })
+        console.log(validateUser)
+        if (!validateUser) {
+            return false
+        }
+        global.data.id = (validateUser.toJSON() as any).id
+        return true
+    }
+    static async loginCheck(ctx: any, next: () => void): Promise<void> {
+        const authorization = ctx.header.authorization
+        if (!authorization) {
+            throw new global.errs.FailForMini('请正确登录(auth2.0)')
+        }
+        const checkResult = await JwtHandler.tokenValidateCheck(authorization)
+        .catch((e) => {
+            throw new global.errs.FailForMini(e.message)
+        })
+        console.log('checkResult:', checkResult)
+        if (!checkResult) {
+            throw new global.errs.FailForMini('请正确登录(auth2.0)')
+        }
+        await next()
+    }
 }
 
 export default JwtHandler

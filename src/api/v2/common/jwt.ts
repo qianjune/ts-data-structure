@@ -42,7 +42,7 @@ class JwtRouter extends BaseRouter {
   @summary('检测jwt中间件是否有效')
   @middleware(JwtHandler.loginCheck)
   async validateJwtMiddleware(ctx: any): Promise<void> {
-    ctx.body = 'jwt中间件通过'
+    ctx.body = `jwt中间件通过,id:${global.data.id}`
   }
 
 }

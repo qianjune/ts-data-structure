@@ -19,10 +19,13 @@ declare global {
       errs: GlobalErrorInterface;
       swagger: any;
       status: status.HttpStatus;
+      data: any;
     }
   }
 }
-
+if (!global.data) {
+  global.data = {}
+}
 const typeDefs = gql`
   type Query {
     hello: String
