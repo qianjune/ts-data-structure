@@ -22,10 +22,8 @@ const buildParameters = (parameterGroup: any): { parameters: [] } => {
       in: key === 'params' ? 'path' : key,
       schema: parameterGroup[key]
     }
-    // console.log(prop)
     parameters.push(prop)
   })
-  // console.log(parameters)
   return {
     parameters
   }
@@ -76,16 +74,13 @@ class BaseRouter {
   }
   buildSwaggerJson() {
     let paths = {}
-    console.log('this.apis:', this.apis)
     this.apis && Object.keys(this.apis).forEach(key => {
       const api = this.apis[key]
 
       const parameters = buildParameters(api.parameter)
-      // console.log(parameters)
       const schema = buildSchema({ prefix: this.prefix, apiData: api, parameters, tag: this.tag })
       paths = { ...paths, ...schema }
     })
-    // console.log(paths)
     if (!global.swagger) {
       global.swagger = {}
     }
@@ -93,11 +88,9 @@ class BaseRouter {
       global.swagger.schema = {}
     }
     baseSchema.paths = { ...baseSchema.paths, ...paths }
-    // console.log(baseSchema)
     global.swagger.schema = baseSchema
   }
   init(name?: string) {
-    // console.log(name)
     this.buildSwaggerJson()
     this.apis && Object.keys(this.apis).forEach(key => {
       const api = this.apis[key]

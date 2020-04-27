@@ -38,6 +38,7 @@ const del = (key: string): void => {
 const get = (key: string): Promise<unknown> => {
   const promise = new Promise((resolve, reject) => {
     redisClient.get(key, (err, val) => {
+      console.log('val:', val)
       if (err) {
         reject(err)
         return
@@ -46,6 +47,7 @@ const get = (key: string): Promise<unknown> => {
         resolve(null)
         return
       }
+
       try {
         resolve(
           JSON.parse(val)

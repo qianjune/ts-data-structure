@@ -1,30 +1,21 @@
 Arguments: 
-  /Users/qianjun/.nvm/versions/node/v12.14.1/bin/node /usr/local/Cellar/yarn/1.21.1/libexec/bin/yarn.js add @types/joi-to-json-schema -D
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.22.4/libexec/bin/yarn.js install
 
 PATH: 
-  /Users/qianjun/.nvm/versions/node/v12.14.1/bin:/Users/qianjun/.nvm/versions/node/v10.16.0/bin:/Users/qianjun/.oh-my-zsh/custom/plugins/git-open:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/qianjun/.nvm/versions/node/v10.16.0/bin:/Users/qianjun/.oh-my-zsh/custom/plugins/git-open:/Users/qianjun/code/self/fluter_sdk/flutter/bin:/Users/qianjun/code/self/fluter_sdk/flutter/bin
+  /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/harryjim8/code/flutter_lib/flutter/bin:/Users/harryjim8/code/flutter_lib/flutter/bin
 
 Yarn version: 
-  1.21.1
+  1.22.4
 
 Node version: 
-  12.14.1
+  12.16.1
 
 Platform: 
   darwin x64
 
 Trace: 
-  Error: https://registry.npm.terminus.io/@types%2fjoi-to-json-schema: Not found
-      at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.21.1/libexec/lib/cli.js:66947:18)
-      at Request.self.callback (/usr/local/Cellar/yarn/1.21.1/libexec/lib/cli.js:140665:22)
-      at Request.emit (events.js:223:5)
-      at Request.<anonymous> (/usr/local/Cellar/yarn/1.21.1/libexec/lib/cli.js:141637:10)
-      at Request.emit (events.js:223:5)
-      at IncomingMessage.<anonymous> (/usr/local/Cellar/yarn/1.21.1/libexec/lib/cli.js:141559:12)
-      at Object.onceWrapper (events.js:312:28)
-      at IncomingMessage.emit (events.js:228:7)
-      at endReadableNT (_stream_readable.js:1185:12)
-      at processTicksAndRejections (internal/process/task_queues.js:81:21)
+  Error: https://registry.npm.taobao.org/crc/download/crc-3.5.0.tgz: unexpected end of file
+      at Zlib.zlibOnError [as onerror] (zlib.js:180:17)
 
 npm manifest: 
   {
@@ -62,11 +53,13 @@ npm manifest:
       "bcryptjs": "^2.4.3",
       "form-data": "^3.0.0",
       "graphql": "^14.5.4",
+      "http-status": "^1.4.2",
       "joi-to-json-schema": "^5.1.0",
       "joi-to-swagger": "^3.2.0",
       "jsonwebtoken": "^8.5.1",
       "koa": "^2.8.1",
       "koa-bodyparser": "^4.2.1",
+      "koa-generic-session": "^2.0.4",
       "koa-redis": "^4.0.0",
       "koa-router": "^7.4.0",
       "koa-socket-2": "^1.2.0",
@@ -93,13 +86,17 @@ npm manifest:
       "@babel/register": "^7.5.5",
       "@types/bcryptjs": "^2.4.2",
       "@types/hapi__joi": "16",
+      "@types/jsonwebtoken": "^8.3.9",
       "@types/koa": "^2.0.52",
+      "@types/koa-generic-session": "^1.0.3",
+      "@types/koa-redis": "^4.0.0",
       "@types/koa-router": "^7.0.42",
       "@types/koa-static": "^4.0.1",
       "@types/koa2-cors": "^2.0.1",
       "@types/nodemailer": "^6.4.0",
       "@types/ramda": "^0.26.21",
       "@types/redis": "^2.8.16",
+      "@types/require-directory": "^2.1.1",
       "@types/sequelize": "^4.28.4",
       "@typescript-eslint/eslint-plugin": "^2.24.0",
       "@typescript-eslint/parser": "^2.24.0",
@@ -1144,6 +1141,13 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.4.tgz#38fd73ddfd9b55abb1e1b2ed578cb55bd7b7d339"
     integrity sha512-8+KAKzEvSUdeo+kmqnKrqgeE+LcA0tjYWFY7RPProVYwnqDjukzO+3b6dLD56rYX5TdWejnEOLJYOIeh4CXKuA==
   
+  "@types/jsonwebtoken@^8.3.9":
+    version "8.3.9"
+    resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-8.3.9.tgz#48da9a49997e4eb046733e6878f583d7448f0594"
+    integrity sha512-00rI8GbOKuRtoYxltFSRTVUXCRLbuYwln2/nUMPtFU9JGS7if+nnmLjeoFGmqsNCmblPLAaeQ/zMLVsHr6T5bg==
+    dependencies:
+      "@types/node" "*"
+  
   "@types/keygrip@*":
     version "1.0.1"
     resolved "https://registry.yarnpkg.com/@types/keygrip/-/keygrip-1.0.1.tgz#ff540462d2fb4d0a88441ceaf27d287b01c3d878"
@@ -1163,6 +1167,21 @@ Lockfile:
     dependencies:
       "@types/koa" "*"
   
+  "@types/koa-generic-session@^1.0.3":
+    version "1.0.3"
+    resolved "https://registry.yarnpkg.com/@types/koa-generic-session/-/koa-generic-session-1.0.3.tgz#02f09959f3377dc40d980529c10705c42888b6ed"
+    integrity sha512-AjkljI9G627vEu0OOFk3WGAnr1MtSjF/twruvjC3DadmeF/nVzasfLCn5jJqW7YrVEELChsAwZkJ3+z2qzI6tg==
+    dependencies:
+      "@types/koa" "*"
+  
+  "@types/koa-redis@^4.0.0":
+    version "4.0.0"
+    resolved "https://registry.yarnpkg.com/@types/koa-redis/-/koa-redis-4.0.0.tgz#648db9682353715e288c65fe50f9aaec6ad87608"
+    integrity sha512-eY1M9FG9Sou3+qdqasjAhGTAL6prWo9T8z7N1mYnPbJ6Xe18N1OOLm6hMxfQkpTJ9qbNVsVdAGA74qXGpbwtLg==
+    dependencies:
+      "@types/koa-session" "*"
+      "@types/redis" "*"
+  
   "@types/koa-router@^7.0.42":
     version "7.0.42"
     resolved "https://registry.yarnpkg.com/@types/koa-router/-/koa-router-7.0.42.tgz#0e5c01d4d0a2873d402d432114f08372d7c50eb1"
@@ -1175,6 +1194,14 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@types/koa-send/-/koa-send-4.1.2.tgz#978f8267ad116d12ac6a18fecd8f34c5657e09ad"
     integrity sha512-rfqKIv9bFds39Jxvsp8o3YJLnEQVPVriYA14AuO2OY65IHh/4UX4U/iMs5L0wATpcRmm1bbe0BNk23TRwx3VQQ==
     dependencies:
+      "@types/koa" "*"
+  
+  "@types/koa-session@*":
+    version "5.10.2"
+    resolved "https://registry.yarnpkg.com/@types/koa-session/-/koa-session-5.10.2.tgz#5f07931313e5c0000b47bbd59a64e69bbaf08e84"
+    integrity sha512-BAEiWtYAh0L2PutFkuQgWE6JJHjQiSxtmriLVBbReZmrt3SlMbhjzC3lxhdazjrcHuDSj89DlYIxLMNTMq9Bag==
+    dependencies:
+      "@types/cookies" "*"
       "@types/koa" "*"
   
   "@types/koa-static@^4.0.1":
@@ -1277,10 +1304,24 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.3.tgz#7ee330ba7caafb98090bece86a5ee44115904c2c"
     integrity sha512-ewFXqrQHlFsgc09MK5jP5iR7vumV/BYayNC6PgJO2LPe8vrnNFyjQjSppfEngITi0qvfKtzFvgKymGheFM9UOA==
   
+  "@types/redis@*":
+    version "2.8.18"
+    resolved "https://registry.yarnpkg.com/@types/redis/-/redis-2.8.18.tgz#6e95de50d848cd9c0aacb89aa8a6aef07a0a34b3"
+    integrity sha512-29ffRZITbLRs4zboL31EPJVDhSC/pHommWpf0rRcpwz45fvH6U2VxdRM6wWPSJu23l/kXQNKrMR8SAlLB7OqbQ==
+    dependencies:
+      "@types/node" "*"
+  
   "@types/redis@^2.8.16":
     version "2.8.16"
     resolved "https://registry.yarnpkg.com/@types/redis/-/redis-2.8.16.tgz#62dd5176d53c5f133f99661000f548a75b9761e2"
     integrity sha512-7iJzu9OvKPuKiZxlIVG7P3UM7C3XX4FxXk9f24MkAvucze93Zp4XzoERmDaKQnaZP0Qv1pMAq25lAvUPCKXCHQ==
+    dependencies:
+      "@types/node" "*"
+  
+  "@types/require-directory@^2.1.1":
+    version "2.1.1"
+    resolved "https://registry.yarnpkg.com/@types/require-directory/-/require-directory-2.1.1.tgz#c5d7676694c61309cd7d72404276bb25c46be091"
+    integrity sha512-4TTBpntB/k5BzK43/FcfU1BoTUkbXyC2Xt3cujMf0vV28d9lLO8AlxamICfHQ7XtdHt5SWdnUotDzoXvn4tRBA==
     dependencies:
       "@types/node" "*"
   
@@ -2306,7 +2347,7 @@ Lockfile:
     resolved "https://registry.npm.taobao.org/copy-descriptor/download/copy-descriptor-0.1.1.tgz#676f6eb3c39997c2ee1ac3a924fd6124748f578d"
     integrity sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
   
-  copy-to@^2.0.1:
+  copy-to@^2.0.1, copy-to@~2.0.1:
     version "2.0.1"
     resolved "https://registry.npm.taobao.org/copy-to/download/copy-to-2.0.1.tgz#2680fbb8068a48d08656b6098092bdafc906f4a5"
     integrity sha1-JoD7uAaKSNCGVrYJgJK9r8kG9KU=
@@ -2341,6 +2382,11 @@ Lockfile:
     dependencies:
       exit-on-epipe "~1.0.1"
       printj "~1.1.0"
+  
+  crc@~3.5.0:
+    version "3.5.0"
+    resolved "https://registry.npm.taobao.org/crc/download/crc-3.5.0.tgz#98b8ba7d489665ba3979f59b21381374101a1964"
+    integrity sha1-mLi6fUiWZbo5efWbITgTdBAaGWQ=
   
   create-error-class@^3.0.0:
     version "3.0.2"
@@ -3499,6 +3545,11 @@ Lockfile:
       jsprim "^1.2.2"
       sshpk "^1.7.0"
   
+  http-status@^1.4.2:
+    version "1.4.2"
+    resolved "https://registry.npm.taobao.org/http-status/download/http-status-1.4.2.tgz#75406e829dca9bfdf92972c579b47cd6a58ab6c8"
+    integrity sha1-dUBugp3Km/35KXLFebR81qWKtsg=
+  
   https-proxy-agent@^3.0.0:
     version "3.0.1"
     resolved "https://registry.npm.taobao.org/https-proxy-agent/download/https-proxy-agent-3.0.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fhttps-proxy-agent%2Fdownload%2Fhttps-proxy-agent-3.0.1.tgz#b8c286433e87602311b01c8ea34413d856a4af81"
@@ -4026,8 +4077,8 @@ Lockfile:
   
   jsonwebtoken@^8.5.1:
     version "8.5.1"
-    resolved "https://registry.npm.taobao.org/jsonwebtoken/download/jsonwebtoken-8.5.1.tgz#00e71e0b8df54c2121a1f26137df2280673bcc0d"
-    integrity sha1-AOceC431TCEhofJhN98igGc7zA0=
+    resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-8.5.1.tgz#00e71e0b8df54c2121a1f26137df2280673bcc0d"
+    integrity sha512-XjwVfRS6jTMsqYs0EsuJ4LGxXV14zQybNd4L2r0UvbVnSF9Af8x7p5MzbJ90Ioz/9TI41/hTCvznF/loiSzn8w==
     dependencies:
       jws "^3.2.2"
       lodash.includes "^4.3.0"
@@ -4123,6 +4174,17 @@ Lockfile:
     dependencies:
       co "^4.6.0"
       koa-compose "^3.0.0"
+  
+  koa-generic-session@^2.0.4:
+    version "2.0.4"
+    resolved "https://registry.npm.taobao.org/koa-generic-session/download/koa-generic-session-2.0.4.tgz#e212395d344a52c24ce2567f04dbd30c32dc0aa2"
+    integrity sha1-4hI5XTRKUsJM4lZ/BNvTDDLcCqI=
+    dependencies:
+      copy-to "~2.0.1"
+      crc "~3.5.0"
+      debug "~3.1.0"
+      parseurl "~1.3.1"
+      uid-safe "~2.1.4"
   
   koa-is-json@^1.0.0:
     version "1.0.0"
@@ -5005,7 +5067,7 @@ Lockfile:
     dependencies:
       better-assert "~1.0.0"
   
-  parseurl@^1.3.2:
+  parseurl@^1.3.2, parseurl@~1.3.1:
     version "1.3.3"
     resolved "https://registry.npm.taobao.org/parseurl/download/parseurl-1.3.3.tgz#9da19e7bee8d12dff0513ed5b76957793bc2e8d4"
     integrity sha1-naGee+6NEt/wUT7Vt2lXeTvC6NQ=
@@ -5223,6 +5285,11 @@ Lockfile:
     version "0.26.1"
     resolved "https://registry.npm.taobao.org/ramda/download/ramda-0.26.1.tgz#8d41351eb8111c55353617fc3bbffad8e4d35d06"
     integrity sha1-jUE1HrgRHFU1Nhf8O7/62OTTXQY=
+  
+  random-bytes@~1.0.0:
+    version "1.0.0"
+    resolved "https://registry.npm.taobao.org/random-bytes/download/random-bytes-1.0.0.tgz#4f68a1dc0ae58bd3fb95848c30324db75d64360b"
+    integrity sha1-T2ih3Arli9P7lYSMMDJNt11kNgs=
   
   raw-body@^2.2.0, raw-body@^2.3.3:
     version "2.4.1"
@@ -6328,6 +6395,13 @@ Lockfile:
     dependencies:
       commander "~2.20.0"
       source-map "~0.6.1"
+  
+  uid-safe@~2.1.4:
+    version "2.1.5"
+    resolved "https://registry.npm.taobao.org/uid-safe/download/uid-safe-2.1.5.tgz#2b3d5c7240e8fc2e58f8aa269e5ee49c0857bd3a"
+    integrity sha1-Kz1cckDo/C5Y+Komnl7knAhXvTo=
+    dependencies:
+      random-bytes "~1.0.0"
   
   undefsafe@^2.0.2:
     version "2.0.2"

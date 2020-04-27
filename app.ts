@@ -51,26 +51,29 @@ app.use(cors())
 app.use(serve(path.join(__dirname, 'public/')))
 app.use(catchError)
 app.use(parser())
-InitManager.initCore(app)
 //
 app.keys = ['keys', 'keykeys']
 app.use(session({
-    key: 'weibo.sid', // cookie name 默认是 `koa.sid`
-    prefix: 'weibo:sess:', // redis key的前缀，默认是`koa:sess:`
-    cookie: {
-        path: '/',
-        httpOnly: true, // 客户端不能修改cookie
-        maxAge: 24 * 60 * 60 * 1000 // ms
-    },
-    ttl: 24 * 60 * 60 * 1000, // redis过期时间，默认和maxAge相同
-    store: redisStore({
-        // all: `${REDIS_CONF.host}:${REDIS_CONF.port}`
-        host: config.REDIS_CONF.host,
-        port: config.REDIS_CONF.port,
-        password: config.REDIS_CONF.password
-    }) as any
+  // key: 'weibo.sid', // cookie name 默认是 `koa.sid`
+  // prefix: 'weibo:sess:', // redis key的前缀，默认是`koa:sess:`
+  // cookie: {
+  //   path: '/',
+  //   httpOnly: true, // 客户端不能修改cookie
+  //   maxAge: 24 * 60 * 60 * 1000 // ms
+  // },
+  // ttl: 24 * 60 * 60 * 1000, // redis过期时间，默认和maxAge相同
+  store: redisStore({
+    // all: `${REDIS_CONF.host}:${REDIS_CONF.port}`
+    host: config.REDIS_CONF.host,
+    port: config.REDIS_CONF.port,
+    password: config.REDIS_CONF.password,
+    db: 1
+  }) as any
 }))
+
 //
+InitManager.initCore(app)
+
 app.use(
   koaSwagger({
     routePrefix: '/v1/swagger',

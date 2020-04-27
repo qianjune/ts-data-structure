@@ -17,7 +17,7 @@ class CodeRouter extends BaseRouter {
   }), 'body')
   async sendCodeForMobile(ctx: any): Promise<void> {
     const { user } = ctx.request.body
-    await CodeService.sendCodeByMobile(user, CODE_ACTION_TYPE.REGISTER)
+    await CodeService.sendCodeByMobile(user, CODE_ACTION_TYPE.REGISTER_AND_LOGIN)
   }
   @post('/mobile/validate/code')
   @summary('验证手机验证码')
@@ -27,7 +27,7 @@ class CodeRouter extends BaseRouter {
   }), 'body')
   async validateCodeForMobile(ctx: any): Promise<void> {
     const { user, code } = ctx.request.body
-    await CodeService.validateCodeByMobile(user, CODE_ACTION_TYPE.REGISTER, code)
+    await CodeService.validateCodeByMobile(user, CODE_ACTION_TYPE.REGISTER_AND_LOGIN, code)
   }
 
   // 手机一键登录
