@@ -5,7 +5,6 @@
 import BaseRouter, { prefix, tag, post, summary, parameter } from "../../../lib/router-decorator";
 import Joi from "@hapi/joi";
 import UserService from "../../../services/user";
-import CodeService from "../../../services/code";
 import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "../../../enum";
 import CodeManager from "../../../manager/code/code";
 const codeManager = new CodeManager()
@@ -57,8 +56,6 @@ class UserRouter extends BaseRouter {
         }
       }
     }
-
-
   }
 }
 

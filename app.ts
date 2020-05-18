@@ -83,6 +83,11 @@ app.use(
   })
 )
 server.applyMiddleware({ app: app as any })
-app.listen(3111)
-console.log(`server is running on port 3111${server.graphqlPath}`)
+export {
+  server
+}
+// app.listen(3111)
+// console.log(`server is running on port 3111${server.graphqlPath}`)
+
+export default app
 

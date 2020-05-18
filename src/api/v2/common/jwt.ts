@@ -17,7 +17,9 @@ class JwtRouter extends BaseRouter {
   async sign(ctx: any): Promise<void> {
     const { data } = ctx.request.body
     const result = await JwtHandler.encrypt(data)
-    ctx.body = result
+    ctx.body = {
+      token:result
+    }
   }
 
   @post('/verify')

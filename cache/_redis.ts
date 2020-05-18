@@ -4,16 +4,27 @@
  */
 
 import redis from 'redis'
+console.log('redis.....')
+console.log(redis)
 import config from '../config/config'
 const { REDIS_CONF } = config
 // 创建客户端
-const redisClient = redis.createClient(REDIS_CONF.port, REDIS_CONF.host, {
-  password: REDIS_CONF.password
-})
-redisClient.on('error', err => {
-  console.error('redis error', err)
-})
-
+// const redisClient = redis.createClient(REDIS_CONF.port, REDIS_CONF.host, {
+//   password: REDIS_CONF.password
+// })
+// redisClient.on('error', err => {
+//   console.error('redis error', err)
+// })
+const createClient = () => {
+  const redisClient = redis.createClient(REDIS_CONF.port, REDIS_CONF.host, {
+    password: REDIS_CONF.password
+  })
+  redisClient.on('error', err => {
+    console.error('redis error', err)
+  })
+  return redisClient
+}
+// 查一个处理退出
 /**
  *
  * @param {string} key key
@@ -25,10 +36,12 @@ const set = (key: string, val: string | number, timeout = 60 * 60): void => {
     val = JSON.stringify(val)
   }
   console.log(key, val)
+  const redisClient = createClient()
   redisClient.set(key, val.toString())
   redisClient.expire(key, timeout)
 }
 const del = (key: string): void => {
+  const redisClient = createClient()
   redisClient.del(key)
 }
 /**
@@ -36,6 +49,7 @@ const del = (key: string): void => {
  * @param {string} key key
  */
 const get = (key: string): Promise<unknown> => {
+  const redisClient = createClient()
   const promise = new Promise((resolve, reject) => {
     redisClient.get(key, (err, val) => {
       console.log('val:', val)

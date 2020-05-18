@@ -8,9 +8,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon entry.js --watch",
-    "ts": "nodemon"
+    "ts": "nodemon",
+    "test": "cross-env NODE_ENV=test jest --config ./jest.config.js --detectOpenHandles --runInBand --forceExit --colors"
   },
   "repository": {
     "type": "git",
@@ -66,6 +66,7 @@
     "@babel/register": "^7.5.5",
     "@types/bcryptjs": "^2.4.2",
     "@types/hapi__joi": "16",
+    "@types/jest": "^25.2.2",
     "@types/jsonwebtoken": "^8.3.9",
     "@types/koa": "^2.0.52",
     "@types/koa-generic-session": "^1.0.3",
@@ -78,12 +79,17 @@
     "@types/redis": "^2.8.16",
     "@types/require-directory": "^2.1.1",
     "@types/sequelize": "^4.28.4",
+    "@types/supertest": "^2.0.9",
     "@typescript-eslint/eslint-plugin": "^2.24.0",
     "@typescript-eslint/parser": "^2.24.0",
     "babel-eslint": "^10.1.0",
+    "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-plugin-node": "^11.0.0",
+    "jest": "^26.0.1",
     "nodemon": "^1.19.1",
+    "supertest": "^4.0.2",
+    "ts-jest": "^26.0.0",
     "ts-node": "^8.6.2",
     "typescript": "^3.8.3"
   }
