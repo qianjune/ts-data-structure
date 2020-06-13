@@ -2,7 +2,7 @@
  * @description 手机相关服务
  */
 
-import { CODE_ACTION_TYPE } from "../../enum";
+import { CODE_ACTION_TYPE } from "@src/enum";
 import Sms from "../../manager/code/sms";
 
 interface MobileBody {

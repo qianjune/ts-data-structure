@@ -4,9 +4,7 @@
  */
 
 import redis from 'redis'
-console.log('redis.....')
-console.log(redis)
-import config from '../config/config'
+import config from '@root/config/config'
 const { REDIS_CONF } = config
 // 创建客户端
 // const redisClient = redis.createClient(REDIS_CONF.port, REDIS_CONF.host, {
@@ -35,7 +33,6 @@ const set = (key: string, val: string | number, timeout = 60 * 60): void => {
   if (typeof val === 'object') {
     val = JSON.stringify(val)
   }
-  console.log(key, val)
   const redisClient = createClient()
   redisClient.set(key, val.toString())
   redisClient.expire(key, timeout)
@@ -52,7 +49,6 @@ const get = (key: string): Promise<unknown> => {
   const redisClient = createClient()
   const promise = new Promise((resolve, reject) => {
     redisClient.get(key, (err, val) => {
-      console.log('val:', val)
       if (err) {
         reject(err)
         return

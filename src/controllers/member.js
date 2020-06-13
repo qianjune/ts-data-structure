@@ -1,6 +1,6 @@
-import { MemberService } from "../services/member"
-import { ErrorModel, SuccessModel } from "../../models/ResModel"
-import ErrorInfo from "../../models/ErrorInfo"
+import { MemberService } from "@src/services/member"
+import { ErrorModel, SuccessModel } from "@root/models/ResModel"
+import ErrorInfo from "@root/models/ErrorInfo"
 
 /**
  * @description 会员 controller

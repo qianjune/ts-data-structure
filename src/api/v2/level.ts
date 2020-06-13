@@ -4,9 +4,9 @@
  */
 
 import joi from '@hapi/joi'
-import Auth from '../../../middleware/auth'
-import BaseRouter, { get, post, middleware, parameter, prefix, put } from '../../lib/router-decorator'
-import { LevelController } from '../../controllers/level'
+import Auth from '@root/middleware/auth'
+import BaseRouter, { get, post, middleware, parameter, prefix, put } from '@src/lib/router-decorator'
+import { LevelController } from '@src/controllers/level'
 
 @prefix('/v2/level')
 class LevelRouter extends BaseRouter {

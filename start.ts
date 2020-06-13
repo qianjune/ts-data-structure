@@ -1,3 +1,4 @@
+import 'module-alias/register'
 import app,{server} from './app'
 
 app.listen(3111)

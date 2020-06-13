@@ -2,7 +2,7 @@
  * 整合 手机验证码 和 邮箱验证码
  */
 
-import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "../../enum";
+import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "@src/enum";
 import { EmailModel } from "./email";
 import Sms, { CodeManagerInterface } from "./sms";
 import { ManageResponse } from "../response";

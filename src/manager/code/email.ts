@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
-import { ValidateCodeModel } from '../../../cache/validateCode'
-import { CodeBuilder } from '../../../cache/codeBuilder'
+import { ValidateCodeModel } from '@root/cache/validateCode'
+import { CodeBuilder } from '@root/cache/codeBuilder'
 import { CodeManagerInterface } from './sms'
 import { ManageResponse } from '../response'
 

@@ -1,4 +1,4 @@
-import { CODE_ACTION_PATH } from '../enum';
+import { CODE_ACTION_PATH } from '@src/enum';
 import { EmailModel } from '../manager/code/email';
 import Sms from '../manager/code/sms';
 

@@ -32,7 +32,7 @@ class JwtHandler {
 
       return false
     }
-    const validateUser = await userManager.getValidUser({ id: result.id })
+    const validateUser = await userManager.getValidateData({ id: result.id })
     console.log(validateUser)
     if (!validateUser) {
       throw new global.errs.FailForMini('用户不存在，请正确登录')

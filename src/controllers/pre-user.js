@@ -4,7 +4,7 @@ import uuidv1 from 'uuid/v1'
 import { MemberController } from './member'
 import SmsForMini from '../manager/code/sms'
 import User from '../db/models/user'
-import { set } from '../../cache/_redis'
+import { set } from '@root/cache/_redis'
 const smsForMiniModel = new SmsForMini()
 
 class UserController {

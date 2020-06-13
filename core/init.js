@@ -1,10 +1,10 @@
 import Router from 'koa-router'
 import requireDirectory from 'require-directory'
 import status from 'http-status'
-import config from '../config/config'
+import config from '@root/config/config'
 import errors from './http-exception'
 import socketLoader from './socket'
-import SessionCookieHandler from '../src/utils/session_cookie'
+import SessionCookieHandler from '@src/utils/session_cookie'
 
 export class InitManager {
   static initCore(app) {

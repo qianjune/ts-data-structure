@@ -1,9 +1,9 @@
 import Router from 'koa-router'
-import Blog from '../../models/blog'
+import Blog from '@src/models/blog'
 import { BlogValidator, PositiveIntegerValidator, PaginationValidator } from '../../validators/validator'
-import { success, paginationParamsTransform } from '../../lib/common'
-import Auth from '../../../middleware/auth'
-import { BlogType } from '../../lib/enum'
+import { success, paginationParamsTransform } from '@src/lib/common'
+import Auth from '@root/middleware/auth'
+import { BlogType } from '@src/lib/enum'
 
 
 const router = new Router({

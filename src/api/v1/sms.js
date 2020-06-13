@@ -5,7 +5,7 @@
 import Router from 'koa-router'
 import Sms from '../../manager/code/sms'
 import { SendSmsValidator, ValidateSmsValidator } from '../../validators/validator'
-import { success } from '../../lib/common'
+import { success } from '@src/lib/common'
 const smsModel = new Sms()
 
 const router = new Router({

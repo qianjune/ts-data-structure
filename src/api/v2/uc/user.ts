@@ -2,11 +2,11 @@
  * @description user api 层
  */
 
-import BaseRouter, { prefix, tag, post, summary, parameter } from "../../../lib/router-decorator";
+import BaseRouter, { prefix, tag, post, summary, parameter } from "@src/lib/router-decorator";
 import Joi from "@hapi/joi";
-import UserService from "../../../services/user";
-import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "../../../enum";
-import CodeManager from "../../../manager/code/code";
+import UserService from "@src/services/user";
+import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "@src/enum";
+import CodeManager from "@src/manager/code/code";
 const codeManager = new CodeManager()
 @prefix('/api/user')
 @tag('用户服务')

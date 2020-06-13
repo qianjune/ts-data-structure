@@ -2,9 +2,9 @@
  * @description jwt 功能测试api
  */
 
-import BaseRouter, { prefix, tag, post, summary, parameter, get, middleware } from "../../../lib/router-decorator";
+import BaseRouter, { prefix, tag, post, summary, parameter, get, middleware } from "@src/lib/router-decorator";
 import Joi from "@hapi/joi";
-import JwtHandler from "../../../utils/jwt_handler";
+import JwtHandler from "@src/utils/jwt_handler";
 
 @prefix('/api/jwt')
 @tag('jwt功能测试')

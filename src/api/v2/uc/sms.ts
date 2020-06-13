@@ -2,12 +2,12 @@
  * @description 短信相关 api
  * @author June_end
  */
-import Sms from '../../../manager/code/sms'
-import { UserController } from '../../../controllers/pre-user'
+import Sms from '@src/manager/code/sms'
+import { UserController } from '@src/controllers/pre-user'
 import joi from '@hapi/joi'
-import Auth from '../../../../middleware/auth'
-import BaseRouter, { get, post, middleware, parameter, prefix, put, summary, tag } from '../../../lib/router-decorator'
-import { EmailModel } from '../../../manager/code/email'
+import Auth from '@root/middleware/auth'
+import BaseRouter, { get, post, middleware, parameter, prefix, put, summary, tag } from '@src/lib/router-decorator'
+import { EmailModel } from '@src/manager/code/email'
 
 
 @prefix('/api/user/web')
@@ -103,7 +103,6 @@ class SmsRouter extends BaseRouter {
   }), 'body')
   async loginIdentify(ctx: any): Promise<void> {
     const { identify, password } = ctx.request.body
-    console.log(identify, password)
     await UserController.mobileLogin(identify, password, 'password')
   }
 }

@@ -1,6 +1,6 @@
 import joi from '@hapi/joi'
-import Auth from '../../../middleware/auth'
-import BaseRouter, { get, post, middleware, parameter, prefix, put } from '../../lib/router-decorator'
+import Auth from '@root/middleware/auth'
+import BaseRouter, { get, post, middleware, parameter, prefix, put } from '@src/lib/router-decorator'
 
   // const path = ctx.params
   // const query = ctx.request.query

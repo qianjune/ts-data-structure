@@ -4,9 +4,9 @@
  */
 
 import joi from '@hapi/joi'
-import Auth from '../../../middleware/auth'
-import BaseRouter, { get, post, middleware, parameter, prefix, put } from '../../lib/router-decorator'
-import { RightController } from '../../controllers/right'
+import Auth from '@root/middleware/auth'
+import BaseRouter, { get, post, middleware, parameter, prefix, put } from '@src/lib/router-decorator'
+import { RightController } from '@src/controllers/right'
 
 @prefix('/v2/right')
 class RightRouter extends BaseRouter {

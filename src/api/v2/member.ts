@@ -1,7 +1,7 @@
 import joi from '@hapi/joi'
-import Auth from '../../../middleware/auth'
-import BaseRouter, { get, post, middleware, parameter, prefix, put } from '../../lib/router-decorator'
-import { MemberController } from '../../controllers/member'
+import Auth from '@root/middleware/auth'
+import BaseRouter, { get, post, middleware, parameter, prefix, put } from '@src/lib/router-decorator'
+import { MemberController } from '@src/controllers/member'
 
 @prefix('/v2/member')
 class MemberRouter extends BaseRouter {

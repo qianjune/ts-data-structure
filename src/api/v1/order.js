@@ -1,10 +1,10 @@
 import Router from 'koa-router'
-import Auth from '../../../middleware/auth'
-import Order from '../../models/order'
+import Auth from '@root/middleware/auth'
+import Order from '@src/models/order'
 import OrderValidator, { OrderPayValidator } from '../../validators/order'
-import { success, paginationParamsTransform } from '../../lib/common'
-import Product from '../../models/product'
-import OrderService from '../../services/order'
+import { success, paginationParamsTransform } from '@src/lib/common'
+import Product from '@src/models/product'
+import OrderService from '@src/services/order'
 import { PositiveIntegerValidator, PaginationValidator } from '../../validators/validator';
 
 const router = new Router({

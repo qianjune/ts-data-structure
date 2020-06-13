@@ -53,7 +53,6 @@ class HttpExceptionForMini extends Error {
   code: number
   constructor(error = '参数错误', code = 201) { // constructor 要设默认值，不然会返回0
     super()
-    console.log(error, code)
     this.success = false
     this.error = error
     this.code = code

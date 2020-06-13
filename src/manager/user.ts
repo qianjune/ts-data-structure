@@ -2,9 +2,10 @@
  * @description 用户 manager
  */
 
-import { User } from "../db/models";
-import JwtHandler from "../utils/jwt_handler";
-import SessionCookieHandler from "../utils/session_cookie";
+import { User } from "@src/db/models";
+import JwtHandler from "@src/utils/jwt_handler";
+import SessionCookieHandler from "@src/utils/session_cookie";
+import { CommonManagerInterface } from './interface'
 
 interface UserBody {
   mobile?: number | string;
@@ -17,30 +18,17 @@ interface UserPutBody {
   email?: string;
   id: string;
 }
-interface UserServiceInterface {
-  // 新增
-  createUser(data: UserBody): void;
-  // 更新     
-  updateUser(data: UserPutBody): void;
-  // 销毁
-  destroyUser(id: string): void;
-  // 获取用户信息
-  getUserInfo(id: string): void;
-  // 登录过期
-  // 检查用户是否已存在
-  getValidUser(data: {}): Promise<any>;
-
-}
+type UserServiceInterface = CommonManagerInterface<UserBody,UserPutBody> 
 
 class UserManager implements UserServiceInterface {
-  async getValidUser(data: {}): Promise<User | undefined> {
+  async getValidateData(data: {}): Promise<User | undefined> {
     const user = await User.findOne({
       where: data
     })
     return user
   }
-  async createUser(data: UserBody): Promise<any> {
-    let user = await this.getValidUser({ mobile: data.mobile })
+  async creat(data: UserBody): Promise<any> {
+    let user = await this.getValidateData({ mobile: data.mobile })
     if (user) {
       // 该手机已注册
       console.log('用户已存在')
@@ -57,14 +45,14 @@ class UserManager implements UserServiceInterface {
     }
 
   }
-  async updateUser(data: UserPutBody): Promise<void> {
-    const user = await this.getValidUser({ id: data.id })
+  async update(data: UserPutBody): Promise<void> {
+    const user = await this.getValidateData({ id: data.id })
     if (user) {
 
     }
   }
-  async destroyUser(id: string): Promise<void> {
-    const user = await this.getValidUser({ id })
+  async destroy(id: string): Promise<void> {
+    const user = await this.getValidateData({ id })
     if (user) {
       const result = await User.update({ status: 'destroy' }, { where: { id } })
       if (result[0] > 0) {
@@ -75,9 +63,6 @@ class UserManager implements UserServiceInterface {
     } else {
       // 没有该用户
     }
-  }
-  async getUserInfo(id: string): Promise<void> {
-    const user = await this.getValidUser({ id })
   }
   async loginJwt(uid: string){
     // 生成session 或者 jwt

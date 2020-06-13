@@ -2,10 +2,10 @@
  * @description 验证码 api
  */
 
-import BaseRouter, { prefix, tag, post, summary, parameter } from "../../../lib/router-decorator";
+import BaseRouter, { prefix, tag, post, summary, parameter } from "@src/lib/router-decorator";
 import Joi from "@hapi/joi";
-import CodeService from "../../../services/code";
-import { CODE_ACTION_TYPE } from "../../../enum";
+import CodeService from "@src/services/code";
+import { CODE_ACTION_TYPE } from "@src/enum";
 
 @prefix('/api/common')
 @tag('验证码服务')

@@ -4,7 +4,7 @@
  */
 import AlipaySdk from 'alipay-sdk'
 import axios from 'axios'
-import config from '../../config/config'
+import config from '@root/config/config'
 
 const alipaySdk = new AlipaySdk({
   appId: config.alipay.appId,

@@ -3,7 +3,7 @@
  */
 
 import CodeManager from "../manager/code/code";
-import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "../enum";
+import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "@src/enum";
 const codeManager = new CodeManager()
 class CodeService {
   /**

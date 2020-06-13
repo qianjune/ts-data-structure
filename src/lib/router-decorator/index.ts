@@ -5,7 +5,7 @@ export * from './prefix'
 export * from './swagger'
 import Router from 'koa-router'
 import { set } from 'lodash'
-import baseSchema from '../../lib/swagger/base'
+import baseSchema from '@src/lib/swagger/base'
 
 
 const buildParameters = (parameterGroup: any): { parameters: [] } => {

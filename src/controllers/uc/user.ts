@@ -1,6 +1,6 @@
-import { UserService } from "../../models/user";
+import { UserService } from "@src/models/user";
 import { MobileService } from "./mobile";
-import { CODE_ACTION_TYPE } from "../../enum";
+import { CODE_ACTION_TYPE } from "@src/enum";
 const userService = new UserService()
 const mobileService = new MobileService()
 

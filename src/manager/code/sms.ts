@@ -4,9 +4,9 @@
 import querystring from 'querystring'
 import axios from 'axios'
 
-import { ValidateCodeModel } from '../../../cache/validateCode'
-import { CodeBuilder } from '../../../cache/codeBuilder';
-import { CODE_ACTION_TYPE } from '../../enum';
+import { ValidateCodeModel } from '@root/cache/validateCode'
+import { CodeBuilder } from '@root/cache/codeBuilder';
+import { CODE_ACTION_TYPE } from '@src/enum';
 import { ManageResponse } from '../response';
 import tryCatch from 'ramda/es/tryCatch';
 

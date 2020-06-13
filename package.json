@@ -12,6 +12,10 @@
     "ts": "nodemon",
     "test": "cross-env NODE_ENV=test jest --config ./jest.config.js --detectOpenHandles --runInBand --forceExit --colors"
   },
+  "_moduleAliases": {
+    "@src": "src",
+    "@root": "./"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/qianjune/JBlog.git"
@@ -47,6 +51,7 @@
     "koa2-cors": "^2.0.6",
     "koa2-swagger-ui": "^2.15.3",
     "lodash": "^4.17.15",
+    "module-alias": "^2.2.2",
     "moment": "^2.24.0",
     "mysql2": "^1.6.5",
     "node-xlsx": "^0.15.0",

@@ -2,12 +2,12 @@
  * @description 支付宝小程序接口controller
  * @author June
  */
-import BaseRouter, { get, prefix, parameter, post } from '../../lib/router-decorator'
+import BaseRouter, { get, prefix, parameter, post } from '@src/lib/router-decorator'
 import joi from '@hapi/joi'
 import moment from 'moment'
 import axios from 'axios'
-import config from '../../../config/config'
-import AliPayModel from '../../models/alipay'
+import config from '@root/config/config'
+import AliPayModel from '@src/models/alipay'
 
 axios.defaults.headers['Content-Type'] = 'application/json';
 

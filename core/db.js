@@ -1,6 +1,6 @@
 import Sequelize, { Model, ExclusionConstraintError } from 'sequelize';
 import { unset, clone, omit } from 'lodash'
-import config from '../config/config'
+import config from '@root/config/config'
 const { dbName, port, user, password, host } = config.database
 const sequelize = new Sequelize(dbName, user, password, {
   dialect: 'mysql',

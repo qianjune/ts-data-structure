@@ -1,8 +1,8 @@
 import Router from 'koa-router'
-import Product from '../../models/product'
-import Auth from '../../../middleware/auth'
+import Product from '@src/models/product'
+import Auth from '@root/middleware/auth'
 import { ProductValidator } from '../../validators/product'
-import { success } from '../../lib/common'
+import { success } from '@src/lib/common'
 
 const router = new Router({
   prefix: '/v1/product'

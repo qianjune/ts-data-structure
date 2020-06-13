@@ -17,6 +17,15 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "noImplicitAny": true,
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": [
+        "src/*"
+      ],
+      "@root/*":[
+        "*"
+      ]
+    }
   },
   "exclude": [
     "node_modules",

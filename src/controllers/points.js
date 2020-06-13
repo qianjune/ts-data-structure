@@ -1,8 +1,8 @@
-import { ErrorModel, SuccessModel } from "../../models/ResModel"
-import ErrorInfo from "../../models/ErrorInfo"
-import { PointsService } from "../services/points"
+import { ErrorModel, SuccessModel } from "@root/models/ResModel"
+import ErrorInfo from "@root/models/ErrorInfo"
+import { PointsService } from "@src/services/points"
 import { MemberController } from "./member"
-import { PointsEnum } from "../enum"
+import { PointsEnum } from "@src/enum"
 
 /**
  * @description 积分 controller

@@ -3,7 +3,7 @@
  */
 import redisStore from 'koa-redis'
 import session, { SessionStore } from 'koa-generic-session'
-import config from '../../config/config'
+import config from '@root/config/config'
 config
 class SessionCookieHandler {
   static init(app: any) {
