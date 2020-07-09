@@ -5,7 +5,7 @@
 
 import Sequelize from 'sequelize'
 
-export default {
+export const TYPES = {
   STRING: Sequelize.STRING,
   DECIMAL: Sequelize.DECIMAL,
   TEXT: Sequelize.TEXT,

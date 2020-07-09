@@ -1,5 +1,5 @@
 import Router from 'koa-router'
-import Product from '@src/models/product'
+import Product from '@src/models_discard/product'
 import Auth from '@root/middleware/auth'
 import { ProductValidator } from '../../validators/product'
 import { success } from '@src/lib/common'

@@ -1,5 +1,5 @@
 import Router from 'koa-router'
-import requireDirectory from 'require-directory'
+import requireDirectory from '@src/utils/require-directory'
 import status from 'http-status'
 import config from '@root/config/config'
 import errors from './http-exception'

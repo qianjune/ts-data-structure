@@ -1,9 +1,9 @@
 import Router from 'koa-router'
 import Auth from '@root/middleware/auth'
 import { ShoppingCartValidator, PositiveIntegerValidator } from '../../validators/validator'
-import ShoppingCart from '@src/models/shoppingCart'
+import ShoppingCart from '@src/models_discard/shoppingCart'
 import { success } from '@src/lib/common'
-import Product from '@src/models/product'
+import Product from '@src/models_discard/product'
 
 const shoppingCartModel = new ShoppingCart()
 const router = new Router({
