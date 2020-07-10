@@ -1,4 +1,4 @@
-import Koa from 'koa'
+import Koa, { Context } from 'koa'
 import parser from 'koa-bodyparser'
 
 
@@ -48,7 +48,7 @@ const resolvers = {
 const server = new ApolloServer({ typeDefs, resolvers });
 const app = new Koa()
 app.use(cors({
-  origin: function (ctx) { //设置允许来自指定域名请求
+  origin: function (ctx: Context) { //设置允许来自指定域名请求
     return 'http://local.test.com:3001'; //只允许http://localhost:8080这个域名的请求
   },
   maxAge: 5, //指定本次预检请求的有效期，单位为秒。

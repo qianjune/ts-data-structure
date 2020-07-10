@@ -2,10 +2,10 @@ import nodemailer from 'nodemailer'
 import { ValidateCodeModel } from '@root/cache/validateCode'
 import { CodeBuilder } from '@root/cache/codeBuilder'
 import { CodeManagerInterface } from './sms'
-import { ManageResponse } from '../response'
+import { ManagerResponse } from '../response'
 
 class EmailModel implements CodeManagerInterface {
-  async sendCode(user: string, type: string): Promise<ManageResponse> {
+  async sendCode(user: string, type: string): Promise<ManagerResponse> {
     const transporter = nodemailer.createTransport({
       service: 'qq',
       port: 465,
@@ -32,11 +32,11 @@ class EmailModel implements CodeManagerInterface {
     // }
     console.log(info.messageId)
 
-    return new ManageResponse(true, '邮箱验证码发送成功')
+    return new ManagerResponse({ success: true, msg: '邮箱验证码发送成功' })
   }
-  async validateCode(user: string, type: string, code: string): Promise<ManageResponse> {
+  async validateCode(user: string, type: string, code: string): Promise<ManagerResponse> {
     const result = await ValidateCodeModel.validateCode({ user: user, key: type, code })
-    return new ManageResponse(result, result ? '验证成功' : '验证失败')
+    return new ManagerResponse({ success: result, msg: result ? '验证成功' : '验证失败' })
   }
 }
 

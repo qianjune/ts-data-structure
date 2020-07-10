@@ -49,13 +49,15 @@ class Success extends HttpException {
 }
 class HttpExceptionForMini extends Error {
   success: boolean
-  error: string
+  msg: string
   code: number
-  constructor(error = '参数错误', code = 201) { // constructor 要设默认值，不然会返回0
+  data: any
+  constructor(msg = '参数错误', code = 201) { // constructor 要设默认值，不然会返回0
     super()
     this.success = false
-    this.error = error
+    this.msg = msg
     this.code = code
+    this.data = null
   }
 }
 // 小程序
@@ -64,7 +66,7 @@ class SuccessForMini extends HttpExceptionForMini {
   constructor(msg: string, data: any) {
     super()
     this.success = true
-    this.error = msg
+    this.msg = msg
     this.code = 201
     this.data = data
   }
@@ -73,8 +75,9 @@ class FailForMini extends HttpExceptionForMini {
   constructor(msg = '请求错误') {
     super()
     this.success = false
-    this.error = msg
+    this.msg = msg
     this.code = 401
+    this.data = null
   }
 }
 

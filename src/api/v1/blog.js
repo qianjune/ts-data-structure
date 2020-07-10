@@ -1,5 +1,5 @@
 import Router from 'koa-router'
-import Blog from '@src/models/blog'
+import Blog from '@src/models_discard/blog'
 import { BlogValidator, PositiveIntegerValidator, PaginationValidator } from '../../validators/validator'
 import { success, paginationParamsTransform } from '@src/lib/common'
 import Auth from '@root/middleware/auth'

@@ -4,8 +4,8 @@
 
 import { Model } from 'sequelize'
 import sequelize from '../../../core/db'
-import types from '../types'
-const { INTEGER } = types
+import { TYPES } from '../types'
+const { INTEGER } = TYPES
 
 class UserRoleRelation extends Model { }
 

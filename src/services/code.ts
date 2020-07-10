@@ -4,6 +4,7 @@
 
 import CodeManager from "../manager/code/code";
 import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "@src/enum";
+import { ResponseHandler } from "@src/utils/responseHandler";
 const codeManager = new CodeManager()
 class CodeService {
   /**
@@ -18,10 +19,7 @@ class CodeService {
       path: CODE_ACTION_PATH.MOBILE,
       platform:CODE_PLATFORM.MINI
     })
-    if (result.success) {
-      throw new global.errs.SuccessForMini(result.msg, result.data)
-    }
-    throw new global.errs.FailForMini(result.msg)
+    ResponseHandler.send(result)
   }
    /**
    * 验证手机验证码
@@ -56,10 +54,7 @@ class CodeService {
       code,
       platform:CODE_PLATFORM.MINI
     })
-    if (result.success) {
-      throw new global.errs.SuccessForMini(result.msg, result.data)
-    }
-    throw new global.errs.FailForMini(result.msg)
+    ResponseHandler.send(result)
   }
   /**
    * 发送邮箱验证码
@@ -73,10 +68,7 @@ class CodeService {
       path: CODE_ACTION_PATH.EMAIL,
       platform:CODE_PLATFORM.MINI
     })
-    if (result.success) {
-      throw new global.errs.SuccessForMini(result.msg, result.data)
-    }
-    throw new global.errs.FailForMini(result.msg)
+    ResponseHandler.send(result)
   }
   /**
    * 验证邮箱验证码
@@ -93,10 +85,7 @@ class CodeService {
       platform:CODE_PLATFORM.MINI
     })
     console.log('service层', result)
-    if (result.success) {
-      throw new global.errs.SuccessForMini(result.msg, result.data)
-    }
-    throw new global.errs.FailForMini(result.msg)
+    ResponseHandler.send(result)
   }
 }
 
