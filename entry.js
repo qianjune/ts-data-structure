@@ -1,3 +1,6 @@
+/**
+ * @description babel方式的入口
+ */
 // 让代码能使用import
 require("@babel/polyfill")
 require('@babel/register')({

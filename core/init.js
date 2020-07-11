@@ -5,6 +5,7 @@ import config from '@root/config/config'
 import errors from './http-exception'
 import socketLoader from './socket'
 import SessionCookieHandler from '@src/utils/session_cookie'
+import ConsoleBox from '@src/utils/console_box'
 
 export class InitManager {
   static initCore(app) {
@@ -19,7 +20,7 @@ export class InitManager {
   static initLoadRouters() {
     const whenLoadModule = (obj) => {
       if (obj.default instanceof Router) {
-        console.log(obj.default.routes)
+        ConsoleBox.info('路由加载中，请耐心等待。。。')
         InitManager.app.use(obj.default.routes())
       }
     }

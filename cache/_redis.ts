@@ -1,5 +1,5 @@
 /**
- * @description 连接redis的方法 get/set
+ * @description 连接redis的方法 get/set/del
  * @author June_end
  */
 

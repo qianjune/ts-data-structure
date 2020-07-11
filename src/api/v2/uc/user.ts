@@ -47,8 +47,8 @@ class UserRouter extends BaseRouter {
       // }
       ctx.session.userInfo = (result as any).userInfo
       console.log('发送成功前', ctx.session.userInfo)
-      ctx.body = '登录成功'
-      // throw new global.errs.SuccessForMini('登录成功')
+      // ctx.body = '登录成功'
+      throw new global.errs.SuccessForMini('登录成功')
     } else {
       ctx.body = {
         data: {
