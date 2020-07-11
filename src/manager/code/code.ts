@@ -5,7 +5,7 @@
 import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "@src/enum";
 import { EmailModel } from "./email";
 import Sms, { CodeManagerInterface } from "./sms";
-import { ManageResponse } from "../response";
+import { ManagerResponse } from "../response";
 
 interface SendCodeProps {
   user: string;
@@ -40,7 +40,7 @@ class CodeManager {
   private _typeStringBuilder(path: CODE_ACTION_PATH, type: CODE_ACTION_TYPE, platform: CODE_PLATFORM): string {
     return `${path}_${platform}_${type}`
   }
-  async sendCode(data: SendCodeProps): Promise<ManageResponse> {
+  async sendCode(data: SendCodeProps): Promise<ManagerResponse> {
     const { user, path, type, platform } = data
     const manager = this._selectManage(path)
     if (!manager) {
@@ -49,7 +49,7 @@ class CodeManager {
     const result = await manager.sendCode(user, this._typeStringBuilder(path, type, platform))
     return result
   }
-  async validateCode(data: ValidateCodeProps): Promise<ManageResponse> {
+  async validateCode(data: ValidateCodeProps): Promise<ManagerResponse> {
     const { user, path, type, code, platform } = data
     const manager = this._selectManage(path)
     if (!manager) {

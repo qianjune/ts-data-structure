@@ -7,6 +7,8 @@ import Right from './right'
 import RightPackage from './rightPackage'
 import RightRelation from './rightsRelation'
 import Level from './level'
+import ShopModel from './v2/shop'
+
 Address.belongsTo(Member, {
   foreignKey: 'memberId'
 })
@@ -30,5 +32,7 @@ RightPackage.belongsTo(Level, {
 })
 
 export {
-  Address, IdCard, Member, User, Points, Right, RightPackage, RightRelation
+  Address,
+  IdCard, 
+  Member, User, Points, Right, RightPackage, RightRelation, ShopModel
 }

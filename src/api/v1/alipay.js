@@ -7,7 +7,7 @@ import joi from '@hapi/joi'
 import moment from 'moment'
 import axios from 'axios'
 import config from '@root/config/config'
-import AliPayModel from '@src/models/alipay'
+import AliPayModel from '@src/models_discard/alipay'
 
 axios.defaults.headers['Content-Type'] = 'application/json';
 

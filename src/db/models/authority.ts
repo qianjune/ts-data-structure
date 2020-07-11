@@ -3,8 +3,8 @@
  */
 import { Model } from 'sequelize'
 import sequelize from '../../../core/db'
-import types from '../types'
-const { INTEGER, STRING } = types
+import { TYPES } from '../types'
+const { INTEGER, STRING } = TYPES
 
 class Authority extends Model { }
 

@@ -37,8 +37,8 @@ const catchError = async (ctx, next) => {
       const result = {
         success: error.success,
       }
-      if (error.error) {
-        result.error = error.error
+      if (error.msg) {
+        result.msg = error.msg
       }
       if (error.data) {
         result.result = error.data

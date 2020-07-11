@@ -4,8 +4,8 @@
 
 import { Model } from 'sequelize'
 import sequelize from '../../../core/db'
-import types from '../types'
-const { STRING, INTEGER, DECIMAL } = types
+import { TYPES } from '../types'
+const { STRING, INTEGER, DECIMAL } = TYPES
 
 class Points extends Model {
 

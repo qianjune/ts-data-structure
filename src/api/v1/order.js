@@ -1,9 +1,9 @@
 import Router from 'koa-router'
 import Auth from '@root/middleware/auth'
-import Order from '@src/models/order'
+import Order from '@src/models_discard/order'
 import OrderValidator, { OrderPayValidator } from '../../validators/order'
 import { success, paginationParamsTransform } from '@src/lib/common'
-import Product from '@src/models/product'
+import Product from '@src/models_discard/product'
 import OrderService from '@src/services/order'
 import { PositiveIntegerValidator, PaginationValidator } from '../../validators/validator';
 

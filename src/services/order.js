@@ -1,5 +1,5 @@
 import R from 'ramda'
-import Product from '../models/product'
+import Product from '../models_discard/product'
 
 const fetchProduct = product => Product.findOne({
   where: {
