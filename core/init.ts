@@ -1,14 +1,16 @@
 import Router from 'koa-router'
 import requireDirectory from '@src/utils/require-directory'
-import status from 'http-status'
+import status, { HttpStatus } from 'http-status'
 import config from '@root/config/config'
 import errors from './http-exception'
 import socketLoader from './socket'
 import SessionCookieHandler from '@src/utils/session_cookie'
 import ConsoleBox from '@src/utils/console_box'
+import Application from 'koa'
 
 export class InitManager {
-  static initCore(app) {
+  static app: Application
+  static initCore(app: Application): void {
     InitManager.app = app
     InitManager.loadConfig()
     InitManager.initLoadRouters()
@@ -17,8 +19,8 @@ export class InitManager {
     InitManager.loadSocket()
     // SessionCookieHandler.init(InitManager.app)
   }
-  static initLoadRouters() {
-    const whenLoadModule = (obj) => {
+  static initLoadRouters(): void {
+    const whenLoadModule =(obj: any): void => {
       if (obj.default instanceof Router) {
         ConsoleBox.info('路由加载中，请耐心等待。。。')
         InitManager.app.use(obj.default.routes())
@@ -27,16 +29,16 @@ export class InitManager {
     const apiDirectory = `${process.cwd()}/src/api`
     requireDirectory(module, apiDirectory, { visit: whenLoadModule })
   }
-  static loadConfig() {
+  static loadConfig(): void{
     global.config = config
   }
-  static loadHttpException() {
+  static loadHttpException(): void{
     global.errs = errors
   }
-  static loadHttpStatus() {
-    global.status = status
+  static loadHttpStatus(): void {
+    global.status = status as  HttpStatus & string
   }
-  static loadSocket() {
+  static loadSocket(): void {
     console.log('loadSocket')
     socketLoader(InitManager.app)
   }

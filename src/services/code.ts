@@ -5,6 +5,8 @@
 import CodeManager from "../manager/code/code";
 import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "@src/enum";
 import { ResponseHandler } from "@src/utils/responseHandler";
+import JwtHandler from "@src/utils/jwt_handler";
+import UserService from "./user";
 const codeManager = new CodeManager()
 class CodeService {
   /**
@@ -17,23 +19,23 @@ class CodeService {
       user,
       type,
       path: CODE_ACTION_PATH.MOBILE,
-      platform:CODE_PLATFORM.MINI
+      platform: CODE_PLATFORM.MINI
     })
     ResponseHandler.send(result)
   }
-   /**
-   * 验证手机验证码
-   * @param user 
-   * @param type 
-   * @param code 
-   */
+  /**
+  * 验证手机验证码
+  * @param user 
+  * @param type 
+  * @param code 
+  */
   static async validateCodeForOneClickLoginByMobile(user: string, type = CODE_ACTION_TYPE.COMMON, code: string): Promise<void> {
     const result = await codeManager.validateCode({
       user,
-      type:CODE_ACTION_TYPE.REGISTER_AND_LOGIN,
+      type: CODE_ACTION_TYPE.REGISTER_AND_LOGIN,
       path: CODE_ACTION_PATH.MOBILE,
       code,
-      platform:CODE_PLATFORM.MINI
+      platform: CODE_PLATFORM.MINI
     })
     if (result.success) {
       throw new global.errs.SuccessForMini(result.msg, result.data)
@@ -47,13 +49,17 @@ class CodeService {
    * @param code 
    */
   static async validateCodeByMobile(user: string, type = CODE_ACTION_TYPE.COMMON, code: string): Promise<void> {
+
     const result = await codeManager.validateCode({
       user,
       type,
       path: CODE_ACTION_PATH.MOBILE,
       code,
-      platform:CODE_PLATFORM.MINI
+      platform: CODE_PLATFORM.MINI
     })
+    const userInfo = await UserService.registerAndLoginForApp(user)
+    console.log(userInfo, '///')
+    result.data = userInfo
     ResponseHandler.send(result)
   }
   /**
@@ -66,7 +72,7 @@ class CodeService {
       user,
       type,
       path: CODE_ACTION_PATH.EMAIL,
-      platform:CODE_PLATFORM.MINI
+      platform: CODE_PLATFORM.MINI
     })
     ResponseHandler.send(result)
   }
@@ -82,7 +88,7 @@ class CodeService {
       type,
       path: CODE_ACTION_PATH.EMAIL,
       code,
-      platform:CODE_PLATFORM.MINI
+      platform: CODE_PLATFORM.MINI
     })
     console.log('service层', result)
     ResponseHandler.send(result)

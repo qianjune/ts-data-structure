@@ -1,13 +1,15 @@
-import BaseRouter, { prefix, tag, post, summary, parameter } from "@src/lib/router-decorator";
+import BaseRouter, { prefix, tag, post, summary, parameter, middleware } from "@src/lib/router-decorator";
 import Joi from "@hapi/joi";
 import { Context } from "koa";
 import ShopService from "@src/services/v2/shop";
+import JwtHandler from "@src/utils/jwt_handler";
 const shopService = new ShopService()
 @prefix('/api/shop')
 @tag("店铺相关服务")
 class ShopRouter extends BaseRouter {
   @post('/create')
   @summary('店铺创建')
+  @middleware(JwtHandler.loginCheck)
   @parameter(Joi.object({
     name: Joi.string().required()
   }), 'body')

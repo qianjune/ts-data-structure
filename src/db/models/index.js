@@ -8,6 +8,7 @@ import RightPackage from './rightPackage'
 import RightRelation from './rightsRelation'
 import Level from './level'
 import ShopModel from './v2/shop'
+import ShopUserRelation from './v2/shopUserRelation'
 
 Address.belongsTo(Member, {
   foreignKey: 'memberId'
@@ -30,9 +31,12 @@ Right.hasMany(RightRelation, {
 RightPackage.belongsTo(Level, {
   foreignKey: 'levelId'
 })
-
+ShopModel.belongsTo(ShopUserRelation, {
+  foreignKey: 'shopId'
+})
+User.hasMany(ShopUserRelation,{foreignKey:'uid'})
 export {
   Address,
-  IdCard, 
+  IdCard,
   Member, User, Points, Right, RightPackage, RightRelation, ShopModel
 }

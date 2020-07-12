@@ -33,7 +33,6 @@ const catchError = async (ctx, next) => {
     }
     // 小程序
     if (isHttpExceptionForMini) {
-      console.log(error)
       const result = {
         success: error.success,
       }

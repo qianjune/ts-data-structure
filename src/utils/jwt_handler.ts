@@ -2,7 +2,8 @@
  * @description jwt相关处理
  */
 import jwt from 'jsonwebtoken'
-import { UserManager } from '../manager/user'
+import { UserManager } from '@src/manager/user'
+console.log('UserManager', UserManager)
 const userManager = new UserManager()
 class JwtHandler {
   static secretOrPrivateKey = 'private_key'

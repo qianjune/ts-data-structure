@@ -5,6 +5,7 @@
 import BaseRouter, { prefix, tag, post, summary, parameter, get, middleware } from "@src/lib/router-decorator";
 import Joi from "@hapi/joi";
 import JwtHandler from "@src/utils/jwt_handler";
+import { Context } from "koa";
 
 @prefix('/api/jwt')
 @tag('jwt功能测试')
@@ -14,11 +15,12 @@ class JwtRouter extends BaseRouter {
   @parameter(Joi.object({
     data: Joi.object().required()
   }), 'body')
-  async sign(ctx: any): Promise<void> {
+  async sign(ctx: Context): Promise<void> {
     const { data } = ctx.request.body
     const result = await JwtHandler.encrypt(data)
+    ctx.set('authorization', result)
     ctx.body = {
-      token:result
+      token: result
     }
   }
 

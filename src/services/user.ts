@@ -1,8 +1,9 @@
+import { UserManager } from "@src/manager/user"
+import JwtHandler from "@src/utils/jwt_handler"
+
 /**
  * @description 用户 service
  */
-
-import { UserManager } from "../manager/user"
 const userManager = new UserManager()
 class UserService {
   static async login(user: string, code: string): Promise<void> {
@@ -24,8 +25,8 @@ class UserService {
     }
     // 调用登录，返回session或者jwt
     if (model === 'jwt') {
-      return userManager.loginJwt((realUser.toJSON() as any).id)
-
+      // return userManager.loginJwt((realUser.toJSON() as any).id)
+      return JwtHandler.encrypt(realUser.toJSON())
     } else {
       return {
         userInfo: realUser.toJSON()

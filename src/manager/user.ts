@@ -3,7 +3,7 @@
  */
 
 import { User } from "@src/db/models";
-import JwtHandler from "@src/utils/jwt_handler";
+// import JwtHandler from "@src/utils/jwt_handler";
 import SessionCookieHandler from "@src/utils/session_cookie";
 import { CommonManagerInterface } from './interface'
 
@@ -18,9 +18,10 @@ interface UserPutBody {
   email?: string;
   id: string;
 }
-type UserServiceInterface = CommonManagerInterface<UserBody,UserPutBody> 
+type UserServiceInterface = CommonManagerInterface<UserBody, UserPutBody>
 
 class UserManager implements UserServiceInterface {
+
   async getValidateData(data: {}): Promise<User | undefined> {
     const user = await User.findOne({
       where: data
@@ -64,15 +65,14 @@ class UserManager implements UserServiceInterface {
       // 没有该用户
     }
   }
-  async loginJwt(uid: string){
-    // 生成session 或者 jwt
-    const jwt = JwtHandler.encrypt({id:uid})
-    return jwt
-  }
+  // async loginJwt(uid: string) {
+  //   // 生成session 或者 jwt
+  //   const jwt = JwtHandler.encrypt({ id: uid })
+  //   return jwt
+  // }
 }
 
 export {
-  UserManager
-
+  UserManager,
 }
 
