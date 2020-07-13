@@ -3,13 +3,15 @@ import Joi from "@hapi/joi";
 import { Context } from "koa";
 import ShopService from "@src/services/v2/shop";
 import JwtHandler from "@src/utils/jwt_handler";
+import SessionCookieHandler from "@src/utils/session_cookie";
 const shopService = new ShopService()
 @prefix('/api/shop')
 @tag("店铺相关服务")
 class ShopRouter extends BaseRouter {
   @post('/create')
   @summary('店铺创建')
-  @middleware(JwtHandler.loginCheck)
+  // @middleware(JwtHandler.loginCheck)
+  @middleware(SessionCookieHandler.loginCheck)
   @parameter(Joi.object({
     name: Joi.string().required()
   }), 'body')

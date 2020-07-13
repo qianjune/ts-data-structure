@@ -64,7 +64,7 @@ class HttpExceptionForMini extends Error {
 class SuccessForMini extends HttpExceptionForMini {
   data: any
   session: string
-  constructor(msg: string, data: any, session: string) {
+  constructor(msg: string, data: any, session: any) {
     super()
     this.success = true
     this.msg = msg

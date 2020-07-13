@@ -13,14 +13,15 @@ export class InitManager {
   static initCore(app: Application): void {
     InitManager.app = app
     InitManager.loadConfig()
+    // SessionCookieHandler.init(InitManager.app)
+
     InitManager.initLoadRouters()
     InitManager.loadHttpException()
     InitManager.loadHttpStatus()
     InitManager.loadSocket()
-    SessionCookieHandler.init(InitManager.app)
   }
   static initLoadRouters(): void {
-    const whenLoadModule =(obj: any): void => {
+    const whenLoadModule = (obj: any): void => {
       if (obj.default instanceof Router) {
         ConsoleBox.info('路由加载中，请耐心等待。。。')
         InitManager.app.use(obj.default.routes())
@@ -29,14 +30,14 @@ export class InitManager {
     const apiDirectory = `${process.cwd()}/src/api`
     requireDirectory(module, apiDirectory, { visit: whenLoadModule })
   }
-  static loadConfig(): void{
+  static loadConfig(): void {
     global.config = config
   }
-  static loadHttpException(): void{
+  static loadHttpException(): void {
     global.errs = errors
   }
   static loadHttpStatus(): void {
-    global.status = status as  HttpStatus & string
+    global.status = status as HttpStatus & string
   }
   static loadSocket(): void {
     console.log('loadSocket')

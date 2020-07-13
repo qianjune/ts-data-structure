@@ -35,7 +35,7 @@ class UserService {
     } else {
       return {
         userInfo: result,
-        session: true
+        session: result
       }
     }
   }

@@ -60,14 +60,11 @@ class CodeService {
       code,
       platform: CODE_PLATFORM.MINI
     })
-    const { userInfo, session } = await UserService.registerAndLoginForApp(user, 'session')
-    console.log(result, '///')
-    console.log(userInfo, '///')
-
+    const {
+      userInfo,
+      session = ''
+    } = await UserService.registerAndLoginForApp(user, 'session')
     result.data = userInfo
-
-
-    // result.data = userInfo
     ResponseHandler.send(result, { session })
   }
   /**

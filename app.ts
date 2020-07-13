@@ -11,12 +11,8 @@ import { ApolloServer, gql } from 'apollo-server-koa'
 import koaSwagger from 'koa2-swagger-ui'
 import { GlobalErrorInterface } from './core/http-exception'
 import status, { HttpStatus } from 'http-status'
+import SessionCookieHandler from '@src/utils/session_cookie'
 
-//
-import session, { SessionStore } from 'koa-generic-session'
-import redisStore from 'koa-redis'
-import config from './config/config'
-//
 
 declare global {
   namespace NodeJS {
@@ -57,30 +53,11 @@ app.use(cors({
   allowHeaders: ['Content-Type', 'Authorization', 'Accept'], //设置服务器支持的所有头信息字段
   exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'] //设置获取其他自定义字段
 }))
+SessionCookieHandler.init(app)
 app.use(serve(path.join(__dirname, 'public/')))
 app.use(catchError)
 app.use(parser())
-//
-app.keys = ['keys', 'keykeys']
-app.use(session({
-  // key: 'weibo.sid', // cookie name 默认是 `koa.sid`
-  // prefix: 'weibo:sess:', // redis key的前缀，默认是`koa:sess:`
-  // cookie: {
-  //   path: '/',
-  //   httpOnly: true, // 客户端不能修改cookie
-  //   maxAge: 24 * 60 * 60 * 1000 // ms
-  // },
-  // ttl: 24 * 60 * 60 * 1000, // redis过期时间，默认和maxAge相同
-  store: redisStore({
-    // all: `${REDIS_CONF.host}:${REDIS_CONF.port}`
-    host: config.REDIS_CONF.host,
-    port: config.REDIS_CONF.port,
-    password: config.REDIS_CONF.password,
-    db: 1
-  }) as any
-}))
 
-//
 InitManager.initCore(app)
 
 app.use(

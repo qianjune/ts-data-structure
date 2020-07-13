@@ -4,9 +4,9 @@
 import redisStore from 'koa-redis'
 import session, { SessionStore } from 'koa-generic-session'
 import config from '@root/config/config'
-config
+
 class SessionCookieHandler {
-  static init(app: any) {
+  static init(app: any): void {
     app.keys = ['Udke_53098&']
     app.use(session({
       key: 'uc.sid', // cookie name 默认是 `koa.sid`
