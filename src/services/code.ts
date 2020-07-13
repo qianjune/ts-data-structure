@@ -7,6 +7,7 @@ import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "@src/enum";
 import { ResponseHandler } from "@src/utils/responseHandler";
 import JwtHandler from "@src/utils/jwt_handler";
 import UserService from "./user";
+import { ManagerResponse } from "@src/manager/response";
 const codeManager = new CodeManager()
 class CodeService {
   /**
@@ -21,6 +22,8 @@ class CodeService {
       path: CODE_ACTION_PATH.MOBILE,
       platform: CODE_PLATFORM.MINI
     })
+    console.log('result..', result)
+
     ResponseHandler.send(result)
   }
   /**
@@ -57,10 +60,15 @@ class CodeService {
       code,
       platform: CODE_PLATFORM.MINI
     })
-    const userInfo = await UserService.registerAndLoginForApp(user)
+    const { userInfo, session } = await UserService.registerAndLoginForApp(user, 'session')
+    console.log(result, '///')
     console.log(userInfo, '///')
+
     result.data = userInfo
-    ResponseHandler.send(result)
+
+
+    // result.data = userInfo
+    ResponseHandler.send(result, { session })
   }
   /**
    * 发送邮箱验证码

@@ -1,9 +1,17 @@
-import {ManagerResponse} from '@src/manager/response'
+import { ManagerResponse } from '@src/manager/response'
 
-class ResponseHandler{
-  static send(result: ManagerResponse){
+class ResponseHandler {
+  static send(result: ManagerResponse, config?: { session: string }): void {
+    const { session = '' } = config || {}
+    console.log('result..', result.success)
     if (result.success) {
-      throw new global.errs.SuccessForMini(result.msg, result.data)
+      if (session) {
+        throw new global.errs.SuccessForMini(result.msg, result.data, session)
+
+      } else {
+        throw new global.errs.SuccessForMini(result.msg, result.data)
+
+      }
     }
     throw new global.errs.FailForMini(result.msg)
   }

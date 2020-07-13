@@ -1,7 +1,8 @@
 import globalErrors from '../core/http-exception'
+import { Context } from 'koa'
 const { HttpException, HttpExceptionForMini } = globalErrors
 
-const catchError = async (ctx, next) => {
+const catchError = async (ctx: Context, next: any): Promise<void> => {
   try {
     await next()
   } catch (error) {
@@ -33,14 +34,21 @@ const catchError = async (ctx, next) => {
     }
     // 小程序
     if (isHttpExceptionForMini) {
-      const result = {
+      const result: { [keyname: string]: any } = {
         success: error.success,
       }
       if (error.msg) {
         result.msg = error.msg
       }
       if (error.data) {
-        result.result = error.data
+        result.data = error.data
+      }
+     
+      if (error.session && (ctx.session.userInfo === null || ctx.session.userInfo === undefined)) {
+        console.log('error.session', error.session)
+        console.log('ctx.session.userInfo', ctx.session.userInfo)
+        console.log('error.data', error.data)
+        ctx.session.userInfo = error.data
       }
       ctx.body = result
       ctx.status = error.code

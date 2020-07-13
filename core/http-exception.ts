@@ -63,12 +63,14 @@ class HttpExceptionForMini extends Error {
 // 小程序
 class SuccessForMini extends HttpExceptionForMini {
   data: any
-  constructor(msg: string, data: any) {
+  session: string
+  constructor(msg: string, data: any, session: string) {
     super()
     this.success = true
     this.msg = msg
     this.code = 201
     this.data = data
+    this.session = session
   }
 }
 class FailForMini extends HttpExceptionForMini {
@@ -83,7 +85,7 @@ class FailForMini extends HttpExceptionForMini {
 
 export interface GlobalErrorInterface {
   HttpException: new (msg: string, errorCode?: number, code?: number) => HttpException;
-  SuccessForMini: new (msg?: string, data?: any) => SuccessForMini;
+  SuccessForMini: new (msg?: string, data?: any, session?: any) => SuccessForMini;
   HttpExceptionForMini: new (data: any) => HttpExceptionForMini;
   FailForMini: new (msg?: string) => FailForMini;
 

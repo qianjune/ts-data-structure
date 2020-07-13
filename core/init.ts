@@ -17,7 +17,7 @@ export class InitManager {
     InitManager.loadHttpException()
     InitManager.loadHttpStatus()
     InitManager.loadSocket()
-    // SessionCookieHandler.init(InitManager.app)
+    SessionCookieHandler.init(InitManager.app)
   }
   static initLoadRouters(): void {
     const whenLoadModule =(obj: any): void => {

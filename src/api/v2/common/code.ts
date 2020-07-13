@@ -6,6 +6,7 @@ import BaseRouter, { prefix, tag, post, summary, parameter } from "@src/lib/rout
 import Joi from "@hapi/joi";
 import CodeService from "@src/services/code";
 import { CODE_ACTION_TYPE } from "@src/enum";
+import { Context } from "koa";
 
 @prefix('/api/common')
 @tag('验证码服务')
@@ -46,9 +47,11 @@ class CodeRouter extends BaseRouter {
     user: Joi.string().length(11).required(),
     code: Joi.string().required()
   }), 'body')
-  async validateCodeForOnClickLoginByMobile(ctx: any): Promise<void> {
+  async validateCodeForOnClickLoginByMobile(ctx: Context): Promise<void> {
     const { user, code } = ctx.request.body
-    await CodeService.validateCodeByMobile(user, CODE_ACTION_TYPE.REGISTER_AND_LOGIN, code)
+    ctx.session.test={test:1}
+    ctx.body = 'test'
+    // await CodeService.validateCodeByMobile(user, CODE_ACTION_TYPE.REGISTER_AND_LOGIN, code)
   }
   // end
 
