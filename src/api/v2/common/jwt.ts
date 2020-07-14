@@ -29,7 +29,7 @@ class JwtRouter extends BaseRouter {
   @parameter(Joi.object({
     token: Joi.string().required()
   }), 'body')
-  async verify(ctx: any): Promise<void> {
+  async verify(ctx: Context): Promise<void> {
     const { token } = ctx.request.body
     const result = await JwtHandler.verify(token)
     ctx.body = result
@@ -37,7 +37,7 @@ class JwtRouter extends BaseRouter {
 
   @get('/verify/oauth2.0')
   @summary('jwt解密放在header')
-  async verifyByHeader(ctx: any): Promise<void> {
+  async verifyByHeader(ctx: Context): Promise<void> {
     console.log(ctx.header)
     // const result = await JwtHandler.verify(token)
     ctx.body = ctx.header
@@ -45,8 +45,8 @@ class JwtRouter extends BaseRouter {
   @get('/validate/oauth2.0/middleware')
   @summary('检测jwt中间件是否有效')
   @middleware(JwtHandler.loginCheck)
-  async validateJwtMiddleware(ctx: any): Promise<void> {
-    ctx.body = `jwt中间件通过,id:${global.data.id}`
+  async validateJwtMiddleware(ctx: Context): Promise<void> {
+    ctx.body = `jwt中间件通过,id:${global.state.userInfo.id}`
   }
 }
 

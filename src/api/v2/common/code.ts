@@ -16,7 +16,7 @@ class CodeRouter extends BaseRouter {
   @parameter(Joi.object({
     user: Joi.string().length(11).required()
   }), 'body')
-  async sendCodeForMobile(ctx: any): Promise<void> {
+  async sendCodeForMobile(ctx: Context): Promise<void> {
     const { user } = ctx.request.body
     await CodeService.sendCodeByMobile(user, CODE_ACTION_TYPE.REGISTER_AND_LOGIN)
   }
@@ -26,7 +26,7 @@ class CodeRouter extends BaseRouter {
     user: Joi.string().length(11).required(),
     code: Joi.string().required()
   }), 'body')
-  async validateCodeForMobile(ctx: any): Promise<void> {
+  async validateCodeForMobile(ctx: Context): Promise<void> {
     const { user, code } = ctx.request.body
     await CodeService.validateCodeByMobile(user, CODE_ACTION_TYPE.REGISTER_AND_LOGIN, code)
   }
@@ -37,7 +37,7 @@ class CodeRouter extends BaseRouter {
   @parameter(Joi.object({
     user: Joi.string().length(11).required()
   }), 'body')
-  async sendCodeForOnClickLoginByMobile(ctx: any): Promise<void> {
+  async sendCodeForOnClickLoginByMobile(ctx: Context): Promise<void> {
     const { user } = ctx.request.body
     await CodeService.sendCodeByMobile(user, CODE_ACTION_TYPE.REGISTER_AND_LOGIN)
   }
@@ -59,7 +59,7 @@ class CodeRouter extends BaseRouter {
   @parameter(Joi.object({
     user: Joi.string().email().required()
   }), 'body')
-  async sendCodeForEmail(ctx: any): Promise<void> {
+  async sendCodeForEmail(ctx: Context): Promise<void> {
     const { user } = ctx.request.body
     await CodeService.sendCodeByEmail(user, CODE_ACTION_TYPE.REGISTER)
   }
@@ -69,7 +69,7 @@ class CodeRouter extends BaseRouter {
     user: Joi.string().email().required(),
     code: Joi.string().required()
   }), 'body')
-  async validateCodeForEmail(ctx: any): Promise<void> {
+  async validateCodeForEmail(ctx: Context): Promise<void> {
     const { user, code } = ctx.request.body
     await CodeService.validateCodeByEmail(user, CODE_ACTION_TYPE.REGISTER, code)
   }

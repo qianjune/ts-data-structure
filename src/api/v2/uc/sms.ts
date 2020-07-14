@@ -8,13 +8,14 @@ import joi from '@hapi/joi'
 import Auth from '@root/middleware/auth'
 import BaseRouter, { get, post, middleware, parameter, prefix, put, summary, tag } from '@src/lib/router-decorator'
 import { EmailModel } from '@src/manager/code/email'
+import { Context } from 'koa'
 
 
 @prefix('/api/user/web')
 @tag('用户服务')
 class SmsRouter extends BaseRouter {
   @post('/email/test')
-  async emailTest(ctx: any): Promise<void> {
+  async emailTest(ctx: Context): Promise<void> {
     // ctx.body = await EmailModel.sendEmail('418694294@qq.com', 'test')
   }
 
@@ -27,7 +28,7 @@ class SmsRouter extends BaseRouter {
     captcha: joi.string(),
     token: joi.string()
   }), 'body')
-  async sendSmsCodeForForgetPassword(ctx: any): Promise<void> {
+  async sendSmsCodeForForgetPassword(ctx: Context): Promise<void> {
     const { mobile } = ctx.request.body
     // await Sms.sendSms(mobile, 'password')
   }
@@ -38,7 +39,7 @@ class SmsRouter extends BaseRouter {
     mobile: joi.string().length(11).required(),
     smsCode: joi.number().required(),
   }), 'body')
-  async verifySmsCodeForResetPassword(ctx: any): Promise<void> {
+  async verifySmsCodeForResetPassword(ctx: Context): Promise<void> {
     console.log('触发验证码')
     const { mobile, smsCode } = ctx.request.body
     await UserController.verifySmsCode(mobile, smsCode)
@@ -53,7 +54,7 @@ class SmsRouter extends BaseRouter {
     prefix: joi.string(),
     token: joi.string()
   }), 'body')
-  async sendSmsCodeForLogin(ctx: any): Promise<void> {
+  async sendSmsCodeForLogin(ctx: Context): Promise<void> {
     const { mobile } = ctx.request.body
     console.log('mobile', mobile)
     // await Sms.sendSms(mobile, 'login')
@@ -70,7 +71,7 @@ class SmsRouter extends BaseRouter {
     prefix: joi.string(),
 
   }), 'body')
-  async loginBySmsCode(ctx: any): Promise<void> {
+  async loginBySmsCode(ctx: Context): Promise<void> {
     const { mobile, smsCode } = ctx.request.body
     await UserController.mobileLogin(mobile, smsCode, 'smsCode')
   }
@@ -84,7 +85,7 @@ class SmsRouter extends BaseRouter {
     password: joi.string().required(),
     verifyToken: joi.string().required()
   }), 'body')
-  async resetPasswordBySmsCode(ctx: any): Promise<void> {
+  async resetPasswordBySmsCode(ctx: Context): Promise<void> {
     const { mobile, password, verifyToken } = ctx.request.body
     console.log(mobile, password, verifyToken)
     // await UserController.editPassword(mobile, password, verifyToken, 'password')
@@ -101,7 +102,7 @@ class SmsRouter extends BaseRouter {
     prefix: joi.string(),
     token: joi.string().allow('')
   }), 'body')
-  async loginIdentify(ctx: any): Promise<void> {
+  async loginIdentify(ctx: Context): Promise<void> {
     const { identify, password } = ctx.request.body
     await UserController.mobileLogin(identify, password, 'password')
   }

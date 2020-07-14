@@ -21,12 +21,12 @@ declare global {
       errs: GlobalErrorInterface;
       swagger: any;
       status: HttpStatus;
-      data: any;
+      state: { [keyName: string]: any };
     }
   }
 }
-if (!global.data) {
-  global.data = {}
+if (!global.state) {
+  global.state = {}
 }
 const typeDefs = gql`
   type Query {

@@ -7,6 +7,7 @@ import joi from '@hapi/joi'
 import Auth from '@root/middleware/auth'
 import BaseRouter, { get, post, middleware, parameter, prefix, put } from '@src/lib/router-decorator'
 import { PointsController } from '@src/controllers/points'
+import { Context } from 'koa'
 
 const POINTS_TYPE_ENUM = {
   INCREASE: 'increase',
@@ -25,7 +26,7 @@ class PointsRouter extends BaseRouter {
     pattern: joi.string().required(),
     num: joi.number().required()
   }), 'body')
-  async addPoints(ctx: any): Promise<void> {
+  async addPoints(ctx: Context): Promise<void> {
     console.log('进入')
     const body = ctx.request.body
     body.type = POINTS_TYPE_ENUM.INCREASE
@@ -43,7 +44,7 @@ class PointsRouter extends BaseRouter {
     pattern: joi.string().required(),
     num: joi.string().required()
   }), 'body')
-  async consumePoints(ctx: any): Promise<void> {
+  async consumePoints(ctx: Context): Promise<void> {
     const body = ctx.request.body
     body.type = POINTS_TYPE_ENUM.REDUCE
     const result = await PointsController.consumePoints(body)
@@ -54,7 +55,7 @@ class PointsRouter extends BaseRouter {
    * 积分过期，一般内部处理
    * @param {*} ctx 
    */
-  async expiredPoints(ctx: any): Promise<void> {
+  async expiredPoints(ctx: Context): Promise<void> {
     ctx.body = {}
   }
 }

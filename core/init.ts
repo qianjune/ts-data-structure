@@ -40,7 +40,6 @@ export class InitManager {
     global.status = status as HttpStatus & string
   }
   static loadSocket(): void {
-    console.log('loadSocket')
     socketLoader(InitManager.app)
   }
   // session 配置

@@ -7,6 +7,7 @@ import Joi from "@hapi/joi";
 import UserService from "@src/services/user";
 import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "@src/enum";
 import CodeManager from "@src/manager/code/code";
+import { Context } from "koa";
 const codeManager = new CodeManager()
 @prefix('/api/user')
 @tag('用户服务')
@@ -17,7 +18,7 @@ class UserRouter extends BaseRouter {
     user: Joi.string().length(11).required(),
     code: Joi.string().length(6).required()
   }), 'body')
-  async loginForMini(ctx: any): Promise<any> {
+  async loginForMini(ctx: Context): Promise<any> {
     const { user, code } = ctx.request.body
     console.log(user, code)
     await UserService.login(user, code)
@@ -29,7 +30,7 @@ class UserRouter extends BaseRouter {
     user: Joi.string().length(11).required(),
     code: Joi.string().length(6).required()
   }), 'body')
-  async registerAndLoginForApp(ctx: any): Promise<any> {
+  async registerAndLoginForApp(ctx: Context): Promise<any> {
     const { user, code } = ctx.request.body
     // 首先验证验证码
     let result = await codeManager.validateCode({
@@ -46,7 +47,6 @@ class UserRouter extends BaseRouter {
       //   ctx.session = {}
       // }
       ctx.session.userInfo = (result as any).userInfo
-      console.log('发送成功前', ctx.session.userInfo)
       // ctx.body = '登录成功'
       throw new global.errs.SuccessForMini('登录成功')
     } else {

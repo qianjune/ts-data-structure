@@ -4,6 +4,7 @@
 import redisStore from 'koa-redis'
 import session, { SessionStore } from 'koa-generic-session'
 import config from '@root/config/config'
+import { Context } from 'koa'
 
 class SessionCookieHandler {
   static init(app: any): void {
@@ -25,8 +26,9 @@ class SessionCookieHandler {
       }) as any
     }))
   }
-  static async loginCheck(ctx: any, next: () => void): Promise<void> {
+  static async loginCheck(ctx: Context, next: () => void): Promise<void> {
     if (ctx.session && ctx.session.userInfo) {
+      global.state.userInfo = ctx.session.userInfo
       await next()
       return
     }

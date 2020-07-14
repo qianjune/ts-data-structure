@@ -43,8 +43,7 @@ const catchError = async (ctx: Context, next: any): Promise<void> => {
       if (error.data) {
         result.data = error.data
       }
-      console.log('error.session', error.session)
-      console.log('ctx.session.userInfo', ctx.session.userInfo)
+
       if (error.session && (ctx.session.userInfo === null || ctx.session.userInfo === undefined)) {
         ctx.session.userInfo = error.session
       }

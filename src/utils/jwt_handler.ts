@@ -3,7 +3,7 @@
  */
 import jwt from 'jsonwebtoken'
 import { UserManager } from '@src/manager/user'
-console.log('UserManager', UserManager)
+import { Context } from 'koa'
 const userManager = new UserManager()
 class JwtHandler {
   static secretOrPrivateKey = 'private_key'
@@ -21,7 +21,7 @@ class JwtHandler {
     // }
   }
   // 返回加密token
-  static encrypt(data: any, expiresIn: string | number = '1h'): string {
+  static encrypt(data: { [keyName: string]: any }, expiresIn: string | number = '1h'): string {
     return jwt.sign(data, this.secretOrPrivateKey, { expiresIn })
   }
   //
@@ -38,10 +38,10 @@ class JwtHandler {
     if (!validateUser) {
       throw new global.errs.FailForMini('用户不存在，请正确登录')
     }
-    global.data.id = (validateUser.toJSON() as any).id
+    global.state.userInfo = (validateUser.toJSON() as any).id
     return true
   }
-  static async loginCheck(ctx: any, next: () => void): Promise<void> {
+  static async loginCheck(ctx: Context, next: () => void): Promise<void> {
     const authorization = ctx.header.authorization
     if (!authorization) {
       throw new global.errs.FailForMini('请正确登录(auth2.0)')

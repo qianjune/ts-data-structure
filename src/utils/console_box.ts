@@ -1,6 +1,7 @@
 /**
  * @description console样式类
  */
+
 class ConsoleBox {
     static info(msg: string): void {
         const len = msg && msg.length

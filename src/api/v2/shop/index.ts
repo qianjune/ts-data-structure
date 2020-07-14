@@ -17,6 +17,8 @@ class ShopRouter extends BaseRouter {
   }), 'body')
   async createShop(ctx: Context): Promise<void> {
     const { body } = ctx.request
+    console.log(ctx.session, 'ctx.session')
+    console.log(global.state, 'global.state')
     await shopService.create(body)
   }
 }

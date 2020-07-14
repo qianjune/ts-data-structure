@@ -1,5 +1,5 @@
 import { Member, User } from "../db/models"
-import uuidv1 from 'uuid/v1'
+import { v1 as uuidv1 } from 'uuid'
 /**
  * @description 会员 service
  * @author June

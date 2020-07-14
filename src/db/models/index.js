@@ -31,7 +31,7 @@ Right.hasMany(RightRelation, {
 RightPackage.belongsTo(Level, {
   foreignKey: 'levelId'
 })
-ShopModel.belongsTo(ShopUserRelation, {
+ShopModel.hasMany(ShopUserRelation, {
   foreignKey: 'shopId'
 })
 User.hasMany(ShopUserRelation,{foreignKey:'uid'})

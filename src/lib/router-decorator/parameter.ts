@@ -2,6 +2,7 @@ import { registerMiddleware } from './middleware'
 // import convert from 'joi-to-json-schema'
 import joi, { ObjectSchema } from '@hapi/joi'
 import { cloneDeep } from 'lodash'
+import { Context } from 'koa'
 // const registerSwaggerParameter = (target, key, location, joiSchema) => {
 //   if (!target.apis[key].parameter) {
 //     target.apis[key].parameter = {}
@@ -15,7 +16,7 @@ import { cloneDeep } from 'lodash'
  * @param {Objet} joiSchema 验证的模型
  * @param {String} location 取值的位置
  */
-const parameter = (name: string | ObjectSchema, joiSchema: any, location?: string) => (target: any, key: string, descriptor: any) => {
+const parameter = (name: string | ObjectSchema, joiSchema: any, location?: 'body' | 'params') => (target: any, key: string, descriptor: any) => {
   // 判断验证验证的是单个参数还是一个body
   if (typeof name !== 'string') {
     location = joiSchema
@@ -30,11 +31,14 @@ const parameter = (name: string | ObjectSchema, joiSchema: any, location?: strin
     finalSchema = joi.object(objectSchema)
   }
   // registerSwaggerParameter(target, key, location, finalSchema)
-  const joiValiate = async (ctx: any, next: any): Promise<void> => {
+  const joiValiate = async (ctx: Context, next: any): Promise<void> => {
     // try {
-    let parameter = ctx.request[location]
+    let parameter
     if (location === 'params') {
       parameter = ctx[location]
+    }
+    if (location === 'body') {
+      parameter = ctx.request[location]
     }
     if (name) {
       const objectData: any = {}

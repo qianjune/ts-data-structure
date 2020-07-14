@@ -7,6 +7,7 @@ import joi from '@hapi/joi'
 import Auth from '@root/middleware/auth'
 import BaseRouter, { get, post, middleware, parameter, prefix, put } from '@src/lib/router-decorator'
 import { LevelController } from '@src/controllers/level'
+import { Context } from 'koa'
 
 @prefix('/v2/level')
 class LevelRouter extends BaseRouter {
@@ -20,7 +21,7 @@ class LevelRouter extends BaseRouter {
     name: joi.string().required,
     num: joi.number()
   }), 'body')
-  async createLevel(ctx: any): Promise<void> {
+  async createLevel(ctx: Context): Promise<void> {
     const { body } = ctx.request.body
     const result = await LevelController.createLevel(body)
     ctx.body = result
@@ -35,7 +36,7 @@ class LevelRouter extends BaseRouter {
     name: joi.string().required,
     num: joi.number()
   }), 'body')
-  async editLevel(ctx: any): Promise<void> {
+  async editLevel(ctx: Context): Promise<void> {
     const { body } = ctx.request.body
     const result = await LevelController.editLevel(body)
     ctx.body = result

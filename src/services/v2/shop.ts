@@ -6,7 +6,7 @@ import ShopManager from '@src/manager/v2/shop'
 import { ResponseHandler } from '@src/utils/responseHandler'
 const shopManger = new ShopManager()
 class ShopService implements CommonService {
-  async create(data: object): Promise<void> {
+  async create(data: any): Promise<void> {
     const result = await shopManger.create(data)
     ResponseHandler.send(result)
   }
