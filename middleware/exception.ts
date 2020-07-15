@@ -18,7 +18,7 @@ const catchError = async (ctx: Context, next: any): Promise<void> => {
       ctx.status = 500
       ctx.body = {
         success: false,
-        msg: '意外错误',
+        msg: global.status[500],
         data: error
       }
     }

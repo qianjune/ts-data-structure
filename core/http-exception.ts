@@ -83,11 +83,22 @@ class FailForMini extends HttpExceptionForMini {
   }
 }
 
+class FailByAuth extends HttpExceptionForMini {
+  constructor(msg = '请求错误') {
+    super()
+    this.success = false
+    this.msg = msg + global.status[401]
+    this.code = 401
+    this.data = null
+  }
+}
+
 export interface GlobalErrorInterface {
   HttpException: new (msg: string, errorCode?: number, code?: number) => HttpException;
   SuccessForMini: new (msg?: string, data?: any, session?: any) => SuccessForMini;
   HttpExceptionForMini: new (data: any) => HttpExceptionForMini;
   FailForMini: new (msg?: string) => FailForMini;
+  FailByAuth: new (msg?: string) => FailByAuth;
 
 }
 const globalErrors = {

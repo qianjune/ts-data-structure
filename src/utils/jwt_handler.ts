@@ -17,7 +17,7 @@ class JwtHandler {
     return result
     // } catch (e) {
     //     console.log('解密过程中捕获到错误：', e.message)
-    //     throw new global.errs.FailForMini(e.message)
+    //     throw new global.errs.FailByAuth(e.message)
     // }
   }
   // 返回加密token
@@ -36,7 +36,7 @@ class JwtHandler {
     const validateUser = await userManager.getValidateData({ id: result.id })
     console.log(validateUser)
     if (!validateUser) {
-      throw new global.errs.FailForMini('用户不存在，请正确登录')
+      throw new global.errs.FailByAuth('用户不存在，请正确登录')
     }
     global.state.userInfo = (validateUser.toJSON() as any).id
     return true
@@ -44,15 +44,15 @@ class JwtHandler {
   static async loginCheck(ctx: Context, next: () => void): Promise<void> {
     const authorization = ctx.header.authorization
     if (!authorization) {
-      throw new global.errs.FailForMini('请正确登录(auth2.0)')
+      throw new global.errs.FailByAuth('请正确登录(auth2.0)')
     }
     const checkResult = await JwtHandler.tokenValidateCheck(authorization)
       .catch((e) => {
-        throw e.message ? new global.errs.FailForMini(e.message) : e
+        throw e.message ? new global.errs.FailByAuth(e.message) : e
       })
     console.log('checkResult:', checkResult)
     if (!checkResult) {
-      throw new global.errs.FailForMini('请正确登录(auth2.0)')
+      throw new global.errs.FailByAuth('请正确登录(auth2.0)')
     }
     await next()
   }

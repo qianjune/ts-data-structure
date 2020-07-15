@@ -32,7 +32,7 @@ class SessionCookieHandler {
       await next()
       return
     }
-    throw new global.errs.FailForMini('请正确登录（cookie)')
+    throw new global.errs.FailByAuth('请正确登录（cookie)')
   }
 }
 
