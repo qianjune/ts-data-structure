@@ -9,8 +9,8 @@ import sequelize from "@root/core/db";
 
 class ProductManager implements CommonManager {
   async create(data: {
-    name: string,
-    shopId: number
+    name: string;
+    shopId: number;
   }): Promise<ManagerResponse> {
     const productInfo = await Product.findOne({
       where: {

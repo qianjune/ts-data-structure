@@ -57,9 +57,9 @@ app.use(cors({
 SessionCookieHandler.init(app)
 app.use(serve(path.join(__dirname, 'public/')))
 app.use(catchError)
-// app.use(parser({
-//   enableTypes: ['json', 'form', 'text']
-// }))
+app.use(parser({
+  enableTypes: ['json', 'form', 'text']
+}))
 
 InitManager.initCore(app)
 

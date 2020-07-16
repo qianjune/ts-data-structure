@@ -17,7 +17,7 @@ class ProductRouter extends BaseRouter {
     })
     , 'body'
   )
-  async createProduct(ctx: Context) {
+  async createProduct(ctx: Context): Promise<void> {
     const { body } = ctx.request
     await productService.create(body)
   }
@@ -27,16 +27,10 @@ class ProductRouter extends BaseRouter {
   @parameter(Joi.object({
     pageSize: Joi.number().required(),
     pageNo: Joi.number().required(),
-    shopId: Joi.number().required()
+    shopId: Joi.number()
   }), 'query')
-  async getList(ctx: Context) {
-    // ctx.body = ctx.request.query
-    console.log('--------------------')
-    // // const { query } = ctx.request
-    // const query = 
-    console.log(ctx.state.parameter)
-    // ctx.body=query
-    // await productService.getList(query)
+  async getList(ctx: Context): Promise<void>{
+    await productService.getList(ctx.state.parameter)
   }
 }
 

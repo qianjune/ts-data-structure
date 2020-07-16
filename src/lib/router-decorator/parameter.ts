@@ -23,13 +23,15 @@ const parameter = (name: string | ObjectSchema, joiSchema: any, location?: 'body
     joiSchema = name
     name = null
   }
-  let finalSchema = cloneDeep(joiSchema)
+  let finalSchema = cloneDeep(joiSchema) as ObjectSchema
   if (name) {
     // 如果同个location的属性单个写，是否要合并在一起
     const objectSchema: any = {}
     objectSchema[name as string] = joiSchema
     finalSchema = joi.object(objectSchema)
+
   }
+
   // registerSwaggerParameter(target, key, location, finalSchema)
   const joiValiate = async (ctx: Context, next: any): Promise<void> => {
     // try {
@@ -45,12 +47,12 @@ const parameter = (name: string | ObjectSchema, joiSchema: any, location?: 'body
       objectData[name as string] = parameter[name as string]
       parameter = objectData
     }
-    const result = finalSchema.validate(parameter)
+    const result = finalSchema.validate(parameter, { convert: true })
+    console.log(result)
     if (result.error) {
       throw new global.errs.HttpException(result.error.details[0].message)
     }
-    ctx.state.parameter=parameter
-
+    ctx.state.parameter = { ...result.value }
     await next()
     // }
     // catch (err) {
