@@ -1,11 +1,19 @@
 import Router from 'koa-router'
 import Auth from '@root/middleware/auth'
 import Order from '@src/models_discard/order'
-import OrderValidator, { OrderPayValidator } from '../../validators/order'
-import { success, paginationParamsTransform } from '@src/lib/common'
-import Product from '@src/models_discard/product'
+import OrderValidator, {
+  OrderPayValidator
+} from '../../validators/order'
+import {
+  success, paginationParamsTransform
+} from '@src/lib/common'
 import OrderService from '@src/services/order'
-import { PositiveIntegerValidator, PaginationValidator } from '../../validators/validator';
+import {
+  PositiveIntegerValidator, PaginationValidator
+} from '../../validators/validator';
+import {
+  Product
+} from '@src/db/models'
 
 const router = new Router({
   prefix: '/v1/order'

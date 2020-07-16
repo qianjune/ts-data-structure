@@ -16,7 +16,7 @@ import { Context } from 'koa'
  * @param {Objet} joiSchema 验证的模型
  * @param {String} location 取值的位置
  */
-const parameter = (name: string | ObjectSchema, joiSchema: any, location?: 'body' | 'params') => (target: any, key: string, descriptor: any) => {
+const parameter = (name: string | ObjectSchema, joiSchema: any, location?: 'body' | 'params' | 'query') => (target: any, key: string, descriptor: any) => {
   // 判断验证验证的是单个参数还是一个body
   if (typeof name !== 'string') {
     location = joiSchema
@@ -37,7 +37,7 @@ const parameter = (name: string | ObjectSchema, joiSchema: any, location?: 'body
     if (location === 'params') {
       parameter = ctx[location]
     }
-    if (location === 'body') {
+    if (location === 'body' || location === 'query') {
       parameter = ctx.request[location]
     }
     if (name) {
@@ -49,6 +49,8 @@ const parameter = (name: string | ObjectSchema, joiSchema: any, location?: 'body
     if (result.error) {
       throw new global.errs.HttpException(result.error.details[0].message)
     }
+    ctx.state.parameter=parameter
+
     await next()
     // }
     // catch (err) {

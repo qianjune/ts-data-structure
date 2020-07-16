@@ -1,5 +1,6 @@
-import { Sequelize, Model } from 'sequelize'
-import sequelize from '../../core/db'
+import { Model } from 'sequelize'
+import sequelize from '@root/core/db'
+import { TYPES } from '@src/db/types'
 
 class Product extends Model {
   static ONLINE = 1
@@ -9,42 +10,50 @@ class Product extends Model {
 Product.init(
   {
     id: {
-      type: Sequelize.INTEGER,
+      type: TYPES.INTEGER,
       primaryKey: true,
-      autoIncrement: true
+      autoIncrement: true,
+      allowNull: false
     },
     name: {
-      type: Sequelize.STRING
+      type: TYPES.STRING,
+      allowNull: false
     },
     //一般分两种情况：
     //1、只是显示，不做复杂的查询，集中存放在一个文本字段内，用逗号分隔就行，JSON感觉有点大材小用。
     //2、需要做统计分析，如SF上的问题TAG，需要做很多分类统计，比较合理的方案是新建一张问题和TAG的对应表。
     images: { // mysql array的处理方式 
-      type: Sequelize.STRING,
+      type: TYPES.STRING,
       allowNull: false,
       get() {
         return this.getDataValue('images').split(';')
       },
-      set(val) {
+      set(val: []) {
         this.setDataValue('images', val.join(';'))
       },
       defaultValue: ''
     },
     desc: {
-      type: Sequelize.STRING
+      type: TYPES.STRING
     },
     price: {
-      type: Sequelize.FLOAT
+      type: TYPES.FLOAT,
+      defaultValue: 9999999999
     },
     offer: {
       // 优惠
-      type: Sequelize.FLOAT
+      type: TYPES.FLOAT,
+      defaultValue: 1
+    },
+    shopId: {
+      type: TYPES.INTEGER,
+      allowNull: false
     },
     belong: {
-      type: Sequelize.STRING
+      type: TYPES.STRING
     },
     status: {
-      type: Sequelize.STRING,
+      type: TYPES.STRING,
       defaultValue: Product.OFFLINE
     }
   },
@@ -53,5 +62,6 @@ Product.init(
     tableName: 'product'
   }
 )
+Product.sync({ alter: true })
 
 export default Product

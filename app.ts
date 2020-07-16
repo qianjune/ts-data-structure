@@ -43,6 +43,7 @@ const resolvers = {
 
 const server = new ApolloServer({ typeDefs, resolvers });
 const app = new Koa()
+
 app.use(cors({
   origin: function (ctx: Context) { //设置允许来自指定域名请求
     return 'http://local.test.com:3001'; //只允许http://localhost:8080这个域名的请求
@@ -56,7 +57,9 @@ app.use(cors({
 SessionCookieHandler.init(app)
 app.use(serve(path.join(__dirname, 'public/')))
 app.use(catchError)
-app.use(parser())
+// app.use(parser({
+//   enableTypes: ['json', 'form', 'text']
+// }))
 
 InitManager.initCore(app)
 

@@ -109,6 +109,7 @@ const globalErrors = {
   Forbbiden,
   SuccessForMini,
   HttpExceptionForMini,
-  FailForMini
+  FailForMini,
+  FailByAuth
 }
 export default globalErrors

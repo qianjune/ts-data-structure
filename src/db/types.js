@@ -10,5 +10,6 @@ export const TYPES = {
   DECIMAL: Sequelize.DECIMAL,
   TEXT: Sequelize.TEXT,
   INTEGER: Sequelize.INTEGER,
-  BOOLEAN: Sequelize.BOOLEAN
+  BOOLEAN: Sequelize.BOOLEAN,
+  FLOAT: Sequelize.FLOAT
 }

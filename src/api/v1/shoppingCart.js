@@ -1,9 +1,15 @@
 import Router from 'koa-router'
 import Auth from '@root/middleware/auth'
-import { ShoppingCartValidator, PositiveIntegerValidator } from '../../validators/validator'
+import {
+  ShoppingCartValidator, PositiveIntegerValidator
+} from '../../validators/validator'
 import ShoppingCart from '@src/models_discard/shoppingCart'
-import { success } from '@src/lib/common'
-import Product from '@src/models_discard/product'
+import {
+  success
+} from '@src/lib/common'
+import {
+  Product
+} from '@src/db/models'
 
 const shoppingCartModel = new ShoppingCart()
 const router = new Router({
@@ -41,7 +47,7 @@ const asyncLoop = async (products) => {
         id: key
       }
     })
-    productGroup.push(product.exclude(['belong','status']).toJSON())
+    productGroup.push(product.exclude(['belong', 'status']).toJSON())
   }
 
   return productGroup
