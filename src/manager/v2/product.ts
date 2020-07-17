@@ -6,7 +6,6 @@ import { CommonManager, ListFilterInterface } from "../interface/commonManager";
 import { Product } from "@src/db/models";
 import { ManagerResponse } from "../response";
 import sequelize from "@root/core/db";
-
 class ProductManager implements CommonManager {
   async create(data: {
     name: string;
@@ -47,15 +46,15 @@ class ProductManager implements CommonManager {
     console.log('pageSize', pageSize)
     console.log('pageNo', pageNo)
     console.log('shopId', shopId)
+    const where = global.util.lodash.omitNil({ shopId })
+    console.log('where', where)
     const result = await Product.findAndCountAll({
       limit: pageSize,
       offset: pageSize * (pageNo - 1),
       order: [
         ['id', 'desc']
       ],
-      where: {
-        shopId
-      }
+      where
     })
     const productList = result.rows.map(row => row.toJSON())
     return new ManagerResponse({ success: true, data: productList, msg: '商品列表请求成功' })

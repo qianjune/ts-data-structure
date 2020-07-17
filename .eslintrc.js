@@ -9,6 +9,7 @@ module.exports = {
   rules: {
     // 禁止使用 var
     'no-var': "error",
+    'object-shorthand': "error",
     'object-curly-newline': ["error", {
       "ObjectPattern": { "multiline": true },
     }],

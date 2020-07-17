@@ -1,3 +1,6 @@
+/**
+ * @description 产品api
+ */
 import BaseRouter, { tag, prefix, post, summary, middleware, parameter, get } from "@src/lib/router-decorator";
 import { Context } from "koa";
 import SessionCookieHandler from "@src/utils/session_cookie";
