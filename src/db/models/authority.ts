@@ -12,7 +12,7 @@ Authority.init({
     id: {
         type: INTEGER,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
     },
     name: {
         type: STRING,

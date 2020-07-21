@@ -13,7 +13,6 @@ Product.init(
       type: TYPES.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      allowNull: false
     },
     name: {
       type: TYPES.STRING,

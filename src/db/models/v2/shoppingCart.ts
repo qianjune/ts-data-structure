@@ -18,19 +18,22 @@ ShoppingCart.init(
       type: TYPES.INTEGER,
       autoIncrement: true,
       primaryKey: true,
-      allowNull: false
+      comment: '购物车id'
     },
     uid: {
       type: TYPES.INTEGER,
-      allowNull: false
+      allowNull: false,
+      comment: '用户id'
     },
     productId: {
       type: TYPES.INTEGER,
-      allowNull: false
+      allowNull: false,
+      comment: '商品id'
     },
     num: {
       type: TYPES.INTEGER,
-      defaultValue: 1
+      defaultValue: 1,
+      comment: '数量'
     },
   },
   {
@@ -38,5 +41,5 @@ ShoppingCart.init(
     tableName: 'shoppingCart'
   }
 )
-ShoppingCart.sync({alter: true})
+ShoppingCart.sync({ alter: true })
 export default ShoppingCart

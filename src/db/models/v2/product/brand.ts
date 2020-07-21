@@ -11,21 +11,27 @@ class ProductBrand extends Model { }
 ProductBrand.init({
   id: {
     type: TYPES.INTEGER,
-    comment: "品牌id"
+    comment: "品牌id",
+    primaryKey: true,
+    autoIncrement: true
   },
   name: {
     type: TYPES.STRING,
+    allowNull: false,
     comment: "品牌名字"
   },
   logo: {
-    type: TYPES.STRING
+    type: TYPES.STRING,
+    allowNull: false,
+    comment: '品牌logo'
   },
   desc: {
-    type: TYPES.STRING
+    type: TYPES.STRING,
+    comment: '品牌描述'
   }
 },
   {
-    sequelize: sequelize,
+    sequelize,
     tableName: "productBrand"
   }
 )

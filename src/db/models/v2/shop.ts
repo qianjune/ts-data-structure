@@ -10,7 +10,6 @@ ShopModel.init({
   id: {
     type: TYPES.INTEGER,
     comment: "店铺id",
-    allowNull: false,
     autoIncrement: true,
     primaryKey: true
   },

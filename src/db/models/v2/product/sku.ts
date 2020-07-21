@@ -12,18 +12,27 @@ class ProductSku extends Model {
 
 ProductSku.init({
   id: {
-    type: TYPES.INTEGER
+    type: TYPES.INTEGER,
+    comment: 'sku id',
+    autoIncrement: true,
+    primaryKey: true
+  },
+  code: {
+    type: TYPES.STRING
   },
   price: {
-    type: TYPES.INTEGER,
-    comment: '价格'
+    type: TYPES.FLOAT,
+    comment: 'sku价格',
+    defaultValue: 99999999
   },
   stock: {
     type: TYPES.INTEGER,
-    comment: "库存"
+    comment: "sku库存",
+    defaultValue: 0
   },
   attributes: {
     type: TYPES.STRING, // 1-23;2-34;3-45
+    comment: 'sku 拥有的属性'
   },
   spuId: {
     type: TYPES.INTEGER,
@@ -31,9 +40,10 @@ ProductSku.init({
   },
   status: {
     type: TYPES.INTEGER,
-    comment: "sku的状态"
+    comment: "sku的状态",
+    defaultValue: 1
   }
 }, {
-  sequelize: sequelize,
+  sequelize,
   tableName: 'productSku'
 })
