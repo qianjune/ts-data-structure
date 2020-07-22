@@ -13,7 +13,7 @@ import SessionCookieHandler from '@src/utils/session_cookie'
 import _, { omitBy, isNil, LoDashStatic } from 'lodash'
 
 _.mixin({
-  omitNil: function (data) {
+  omitNil (data) {
     return omitBy(data, isNil)
   }
 })
@@ -60,8 +60,8 @@ if (!global.util) {
   const app = new Koa()
 
   app.use(cors({
-    origin: function (ctx: Context) { //设置允许来自指定域名请求
-      return 'http://local.test.com:3001'; //只允许http://localhost:8080这个域名的请求
+    origin (ctx: Context) { //设置允许来自指定域名请求
+      return 'http://localhost:9000'; //只允许http://localhost:8080这个域名的请求
     },
     maxAge: 5, //指定本次预检请求的有效期，单位为秒。
     credentials: true, //是否允许发送Cookie

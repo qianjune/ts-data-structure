@@ -18,7 +18,7 @@ ProductBrand.init({
   name: {
     type: TYPES.STRING,
     allowNull: false,
-    comment: "品牌名字"
+    comment: "品牌名"
   },
   logo: {
     type: TYPES.STRING,
@@ -35,3 +35,5 @@ ProductBrand.init({
     tableName: "productBrand"
   }
 )
+
+export default ProductBrand
