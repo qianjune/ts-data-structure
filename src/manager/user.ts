@@ -5,7 +5,7 @@
 import { User } from "@src/db/models";
 // import JwtHandler from "@src/utils/jwt_handler";
 import SessionCookieHandler from "@src/utils/session_cookie";
-import { CommonManagerInterface } from './interface'
+import { CommonManagerInterface } from './interface/interface'
 
 interface UserBody {
   mobile?: number | string;

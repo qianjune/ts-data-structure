@@ -1,7 +1,7 @@
 import Router from 'koa-router'
 
 const router = new Router({
-  prefix: '/v1/swagger-schema'
+  prefix: '/v2/swagger-schema'
 })
 
 router.get('/', (ctx) => {

@@ -7,7 +7,8 @@ import { ManagerResponse } from "../response";
 
 export interface ListFilterInterface {
   pageSize: number,
-  pageNo: number, [keyName: string]: any
+  pageNo: number,
+  [keyName: string]: any
 }
 export interface CommonManager {
   create(data: any): Promise<ManagerResponse>;

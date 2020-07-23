@@ -6,4 +6,5 @@ export interface CommonService {
   edit<T>(data: T): void;
   del(id: number): void;
   getInfo(id: number): void;
+  getList?(data: any): Promise<void>
 }

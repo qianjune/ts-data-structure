@@ -11,6 +11,7 @@ import ShopModel from './v2/shop'
 import ShopUserRelation from './v2/shopUserRelation'
 import Product from './v2/product'
 import ShoppingCart from './v2/shoppingCart'
+import ProductBrand from './v2/product/brand'
 // import ShopProductRelation from './v2/shopProductRelation'
 
 Address.belongsTo(Member, {
@@ -49,11 +50,16 @@ Product.hasMany(ShoppingCart, {
 User.hasMany(ShoppingCart, {
   foreignKey: "uid"
 })
-
+ProductBrand.belongsTo(ShopModel, {
+  as: 'shopDetail',
+  foreignKey: 'shopId'
+})
 export {
   Address,
   IdCard,
   Member, User, Points, Right, RightPackage, RightRelation, ShopModel,
   Product,
-  ShoppingCart
+  ShoppingCart,
+  ProductBrand
+
 }

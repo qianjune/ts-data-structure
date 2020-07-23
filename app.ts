@@ -80,9 +80,9 @@ if (!global.util) {
 
   app.use(
     koaSwagger({
-      routePrefix: '/v1/swagger',
+      routePrefix: '/v2/swagger',
       swaggerOptions: {
-        url: 'http://localhost:3111/v1/swagger-schema'
+        url: 'http://localhost:3111/v2/swagger-schema'
       }
     })
   )

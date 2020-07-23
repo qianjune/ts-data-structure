@@ -5,6 +5,7 @@
 import { Model } from "sequelize";
 import sequelize from "@root/core/db";
 import { TYPES } from "@src/db/types";
+import shop from "@src/api/v2/shop";
 
 class ProductBrand extends Model { }
 
@@ -22,12 +23,15 @@ ProductBrand.init({
   },
   logo: {
     type: TYPES.STRING,
-    allowNull: false,
     comment: '品牌logo'
   },
   desc: {
     type: TYPES.STRING,
     comment: '品牌描述'
+  },
+  shopId: {
+    type: TYPES.INTEGER,
+    comment: '关联的店铺id'
   }
 },
   {
@@ -35,5 +39,5 @@ ProductBrand.init({
     tableName: "productBrand"
   }
 )
-
+ProductBrand.sync({ alter: true })
 export default ProductBrand

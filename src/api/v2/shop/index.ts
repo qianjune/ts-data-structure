@@ -1,4 +1,4 @@
-import BaseRouter, { prefix, tag, post, summary, parameter, middleware } from "@src/lib/router-decorator";
+import BaseRouter, { prefix, tag, post, summary, parameter, middleware, get } from "@src/lib/router-decorator";
 import Joi from "@hapi/joi";
 import { Context } from "koa";
 import ShopService from "@src/services/v2/shop";
@@ -20,6 +20,15 @@ class ShopRouter extends BaseRouter {
     console.log(ctx.session, 'ctx.session')
     console.log(global.state, 'global.state')
     await shopService.create(body)
+  }
+  @get('/list')
+  @summary('产品列表')
+  @parameter(Joi.object({
+    pageSize: Joi.number().required(),
+    pageNo: Joi.number().required(),
+  }), 'query')
+  async getList(ctx:Context){
+    await shopService.getList(ctx.state.parameter)
   }
 }
 

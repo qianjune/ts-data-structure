@@ -2,7 +2,7 @@
  * @description 权限 manager
  */
 
-import { CommonManagerInterface } from './interface'
+import { CommonManagerInterface } from './interface/interface'
 import Authority from '../db/models/authority'
 
 interface AuthorityCreateBody{
