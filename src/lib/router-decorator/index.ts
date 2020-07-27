@@ -15,6 +15,7 @@ const buildParameters = (parameterGroup: any): { parameters: [] } => {
     }
   }
   const keys = Object.keys(parameterGroup)
+  console.log('keys:',keys)
   const parameters: any = []
   keys.forEach(key => {
     const prop = {
@@ -76,7 +77,6 @@ class BaseRouter {
     let paths = {}
     this.apis && Object.keys(this.apis).forEach(key => {
       const api = this.apis[key]
-
       const parameters = buildParameters(api.parameter)
       const schema = buildSchema({ prefix: this.prefix, apiData: api, parameters, tag: this.tag })
       paths = { ...paths, ...schema }

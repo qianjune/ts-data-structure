@@ -3,7 +3,7 @@
  */
 
 import { CommonService } from "../interface/common";
-import CategoryManager, { CategoryItemInterface } from "@src/manager/v2/category";
+import CategoryManager, { CategoryItemInterface, CategoryListParamsInterface } from "@src/manager/v2/category";
 import { ResponseHandler } from "@src/utils/responseHandler";
 const categoryManager = new CategoryManager()
 class CategoryService implements CommonService {
@@ -20,8 +20,9 @@ class CategoryService implements CommonService {
   getInfo(id: number): void {
     throw new Error("Method not implemented.");
   }
-  getList?(data: any): Promise<void> {
-    throw new Error("Method not implemented.");
+  async getList?(data: CategoryListParamsInterface): Promise<void> {
+    const result = await categoryManager.getList(data)
+    ResponseHandler.send(result)
   }
 
 }

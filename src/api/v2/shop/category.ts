@@ -32,6 +32,7 @@ class CategoryRouter extends BaseRouter {
     Joi.object({
       pageSize: Joi.number().required(),
       pageNo: Joi.number().required(),
+      parentId: Joi.number()
     }),
     'query'
   )

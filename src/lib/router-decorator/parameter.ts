@@ -31,6 +31,21 @@ const parameter = (name: string | ObjectSchema, joiSchema: any, location?: 'body
     finalSchema = joi.object(objectSchema)
 
   }
+  const handleSwaggerParameter = () => {
+    // 需要后续处理把Joi转换成JSON
+    if (!target.apis) {
+      target.apis = {}
+    }
+    if (!target.apis[key]) {
+      target.apis[key] = {}
+    }
+    target.apis[key].parameter = {
+      // params: 'abc'
+    }
+  }
+
+  handleSwaggerParameter()
+
 
   // registerSwaggerParameter(target, key, location, finalSchema)
   const joiValiate = async (ctx: Context, next: any): Promise<void> => {
@@ -64,6 +79,7 @@ const parameter = (name: string | ObjectSchema, joiSchema: any, location?: 'body
 
     // }
   }
+
   registerMiddleware(target, key, joiValiate)
 }
 
