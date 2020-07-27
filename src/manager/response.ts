@@ -29,6 +29,14 @@ class ManagerResponseSuccess extends ManagerResponse {
   }
 }
 
+class ManagerResponseFailure extends ManagerResponse {
+  constructor({ data = null, msg = '' }: { data?: any, msg: string }) {
+    super({ success: false })
+    this.data = data
+    this.msg = msg
+  }
+}
+
 class ListDataModel {
   data: any[]
   empty: boolean
@@ -47,6 +55,7 @@ class ListDataModel {
 export {
   ManagerResponse,
   ManagerResponseSuccess,
+  ManagerResponseFailure,
   ResponseMsg,
   ListDataModel
 }

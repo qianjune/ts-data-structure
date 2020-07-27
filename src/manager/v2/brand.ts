@@ -31,10 +31,10 @@ class BrandManager implements CommonManager {
       }
     })
   }
-  edit<T>(data: T): void {
+  edit<T>(data: T): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  del(id: number): void {
+  del(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
   getInfo(id: number): void {
@@ -52,7 +52,7 @@ class BrandManager implements CommonManager {
         include: [
           {
             model: ShopModel,
-            as:'shopDetail',
+            as: 'shopDetail',
             attributes: ['name']
           }
         ]

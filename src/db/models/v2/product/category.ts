@@ -15,6 +15,11 @@ ProductCategory.init({
     autoIncrement: true,
     comment: '分类id'
   },
+  name: {
+    type: TYPES.STRING,
+    allowNull: false,
+    comment: '分类名称'
+  },
   parentId: {
     type: TYPES.INTEGER,
     allowNull: false,
@@ -31,9 +36,13 @@ ProductCategory.init({
   status: {
     type: TYPES.INTEGER,
     comment: '启用状态',
-    defaultValue: 1
+    defaultValue: 0
   }
 }, {
   sequelize,
   tableName: "productCategory"
 })
+
+ProductCategory.sync({alter:true})
+
+export default ProductCategory

@@ -12,6 +12,7 @@ import ShopUserRelation from './v2/shopUserRelation'
 import Product from './v2/product'
 import ShoppingCart from './v2/shoppingCart'
 import ProductBrand from './v2/product/brand'
+import ProductCategory from './v2/product/category'
 // import ShopProductRelation from './v2/shopProductRelation'
 
 Address.belongsTo(Member, {
@@ -54,12 +55,15 @@ ProductBrand.belongsTo(ShopModel, {
   as: 'shopDetail',
   foreignKey: 'shopId'
 })
+
+
 export {
   Address,
   IdCard,
   Member, User, Points, Right, RightPackage, RightRelation, ShopModel,
   Product,
   ShoppingCart,
-  ProductBrand
+  ProductBrand,
+  ProductCategory
 
 }
