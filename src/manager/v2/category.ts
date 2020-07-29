@@ -59,8 +59,21 @@ class CategoryManager implements CommonManager {
     if (!category) {
       return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
     }
+    const list = await ProductCategory.findAndCountAll({
+      where: {
+        parentId: id
+      }
+    })
+    if (list.count > 0) {
+      return new ManagerResponseFailure({ msg: responseMsg.DELETE_FAIL_BY_HAVE_LINKED_CHILD })
+    }
     return await sequelize.transaction(async (t: any) => {
-      const result = category.destroy()
+      const result = await ProductCategory.destroy({
+        where:{
+          id
+        }
+      })
+      console.log(result, 'result')
       if (result) {
         return new ManagerResponseSuccess({ msg: responseMsg.DELETE_SUCCESS, data: true })
       } else {
