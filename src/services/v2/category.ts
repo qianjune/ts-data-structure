@@ -14,8 +14,9 @@ class CategoryService implements CommonService {
   edit<T>(data: T): void {
     throw new Error("Method not implemented.");
   }
-  del(id: number): void {
-    throw new Error("Method not implemented.");
+  async del(id: number): Promise<void> {
+    const result = await categoryManager.del(id)
+    ResponseHandler.send(result)
   }
   getInfo(id: number): void {
     throw new Error("Method not implemented.");

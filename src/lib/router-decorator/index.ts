@@ -15,7 +15,6 @@ const buildParameters = (parameterGroup: any): { parameters: [] } => {
     }
   }
   const keys = Object.keys(parameterGroup)
-  console.log('keys:',keys)
   const parameters: any = []
   keys.forEach(key => {
     const prop = {

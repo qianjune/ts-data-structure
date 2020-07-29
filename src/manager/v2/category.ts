@@ -4,77 +4,100 @@ import { ManagerResponseSuccess, ManagerResponseFailure, ResponseMsg, ManagerRes
 import sequelize from "@root/core/db";
 
 export interface CategoryItemInterface {
-    name: string,
-    parentId?: number
+  name: string,
+  parentId?: number
 }
 export interface CategoryListParamsInterface extends ListFilterInterface {
-    arentId?: number
+  arentId?: number
 }
 const placeholder = '分类'
 const responseMsg = ResponseMsg(placeholder)
 class CategoryManager implements CommonManager {
-    async create(data: CategoryItemInterface): Promise<import("../response").ManagerResponse> {
-        const { name, parentId = 0 } = data
-        const category = await ProductCategory.findOne({
-            where: {
-                name,
-                parentId
-            }
-        })
-        if (category) {
-            return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL_BY_NAME_OCCUPIED })
-        }
-        return await sequelize.transaction(async (t: any) => {
-            console.log('data...', data)
-            // 分类第一级
-            if (global.util.lodash.isNil(data.parentId)) {
-                data.parentId = 0
-            }
-            const result = await ProductCategory.create(data, { transaction: t })
-            console.log(result)
-            if (result) {
-                return new ManagerResponseSuccess({ msg: responseMsg.CREATE_SUCCESS, data: result })
-            } else {
-                return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL })
-            }
-        })
+  async create(data: CategoryItemInterface): Promise<import("../response").ManagerResponse> {
+    const { name, parentId = 0 } = data
+    const category = await ProductCategory.findOne({
+      where: {
+        name,
+        parentId
+      }
+    })
+    if (category) {
+      return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL_BY_NAME_OCCUPIED })
     }
-    edit<T>(data: T): Promise<ManagerResponse> {
-        throw new Error("Method not implemented.");
+    return await sequelize.transaction(async (t: any) => {
+      console.log('data...', data)
+      // 分类第一级
+      if (global.util.lodash.isNil(data.parentId)) {
+        data.parentId = 0
+      }
+      const result = await ProductCategory.create(data, { transaction: t })
+      console.log(result)
+      if (result) {
+        return new ManagerResponseSuccess({ msg: responseMsg.CREATE_SUCCESS, data: result })
+      } else {
+        return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL })
+      }
+    })
+  }
+  async edit(data: { id: number }): Promise<ManagerResponse> {
+    const { id } = data
+    const category = await ProductCategory.findOne({
+      where: {
+        id
+      }
+    })
+    if (!category) {
+      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
     }
-    del(id: number): Promise<ManagerResponse> {
-        throw new Error("Method not implemented.");
+  }
+  async del(id: number): Promise<ManagerResponse> {
+    const category = await ProductCategory.findOne({
+      where: {
+        id
+      }
+    })
+    if (!category) {
+      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
     }
-    getInfo(id: number): void {
-        throw new Error("Method not implemented.");
-    }
-    async getList?(data: CategoryListParamsInterface): Promise<ManagerResponse> {
-        const { pageSize = 10, pageNo = 1, parentId = 0 } = data
-        return await sequelize.transaction(async (t: any) => {
-            const result = await ProductCategory.findAndCountAll({
-                limit: pageSize,
-                offset: pageSize * (pageNo - 1),
-                where: {
-                    parentId
-                },
-                order: [
-                    ['id', 'desc']
-                ],
-            })
-            const { count, rows } = result
-            const categoryList = rows.map(row => {
-                const data: any = row.toJSON()
-                // data.shopName = data.shopModel.name
-                // delete data.shopModel
-                return data
-            })
+    return await sequelize.transaction(async (t: any) => {
+      const result = category.destroy()
+      if (result) {
+        return new ManagerResponseSuccess({ msg: responseMsg.DELETE_SUCCESS, data: true })
+      } else {
+        return new ManagerResponseFailure({ msg: responseMsg.DELETE_FAIL })
+      }
+    })
+  }
+  getInfo(id: number): void {
+    throw new Error("Method not implemented.");
+  }
+  async getList?(data: CategoryListParamsInterface): Promise<ManagerResponse> {
+    const { pageSize = 10, pageNo = 1, parentId = 0 } = data
+    return await sequelize.transaction(async (t: any) => {
+      const result = await ProductCategory.findAndCountAll({
+        limit: pageSize,
+        offset: pageSize * (pageNo - 1),
+        where: {
+          parentId
+        },
+        order: [
+          ['id', 'desc']
+        ],
+      })
+      const { count, rows } = result
+      const categoryList = rows.map(row => {
+        const data: any = row.toJSON()
+        // data.shopName = data.shopModel.name
+        // delete data.shopModel
+        return data
+      })
 
-            return new ManagerResponseSuccess({
-                data: new ListDataModel({ data: categoryList, total: count, pageNo, pageSize }),
-                msg: responseMsg.FETCH_LIST_SUCCESS
-            })
-        })
-    }
+      return new ManagerResponseSuccess({
+        data: new ListDataModel({ data: categoryList, total: count, pageNo, pageSize }),
+        msg: responseMsg.FETCH_LIST_SUCCESS
+      })
+    })
+  }
 
 }
 

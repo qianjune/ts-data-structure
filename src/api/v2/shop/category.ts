@@ -40,6 +40,19 @@ class CategoryRouter extends BaseRouter {
     const { parameter } = ctx.state
     await categoryService.getList(parameter)
   }
+  @post('/del')
+  @summary('删除分类')
+  @middleware(SessionCookieHandler.loginCheck)
+  @parameter(
+    Joi.object({
+      id: Joi.number().required()
+    }),
+    'body'
+  )
+  async delCategory(ctx: Context): Promise<void> {
+    const { body } = ctx.request
+    await categoryService.del(body.id)
+  }
 }
 
 const categoryRouter = new CategoryRouter

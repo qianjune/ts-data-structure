@@ -11,7 +11,7 @@ class BrandService implements CommonService {
   edit<T>(data: T): void {
     throw new Error("Method not implemented.");
   }
-  del(id: number): void {
+  del(id: number): Promise<void> {
     throw new Error("Method not implemented.");
   }
   getInfo(id: number): void {

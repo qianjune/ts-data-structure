@@ -7,7 +7,10 @@ const ResponseMsg = (placeholder: string) => (
     "CREATE_FAIL_BY_NAME_OCCUPIED": `创建${placeholder}失败，${placeholder}名已被占用`,
     "CREATE_FAIL": `创建${placeholder}失败，请稍后再试`,
     "CREATE_SUCCESS": `创建${placeholder}成功`,
-    "FETCH_LIST_SUCCESS": `${placeholder}列表请求成功`
+    "FETCH_LIST_SUCCESS": `${placeholder}列表请求成功`,
+    "ITEM_NOT_FOUND": `该${placeholder}不存在`,
+    "DELETE_SUCCESS":`删除${placeholder}成功`,
+    "DELETE_FAIL":`删除${placeholder}失败，请稍后再试`
   }
 )
 interface ResponseInterface { success: boolean; msg?: string; data?: any }
