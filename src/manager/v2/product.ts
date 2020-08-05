@@ -6,6 +6,8 @@ import { CommonManager, ListFilterInterface } from "../interface/commonManager";
 import { Product } from "@src/db/models";
 import { ManagerResponse } from "../response";
 import sequelize from "@root/core/db";
+
+
 class ProductManager implements CommonManager {
   async create(data: {
     name: string;
