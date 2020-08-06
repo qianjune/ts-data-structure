@@ -20,16 +20,18 @@ const methodBuilder = (method = 'get') => (path = '/') => (target, key, descript
   }
   target.apis[key].method = method
   target.apis[key].path = path
-  registerMiddleware(target,key)
+  registerMiddleware(target, key)
 }
 
 
 const get = methodBuilder('get')
 const post = methodBuilder('post')
 const put = methodBuilder('put')
+const del = methodBuilder('delete')
 
 export {
   get,
   post,
-  put
+  put,
+  del
 }

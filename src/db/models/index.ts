@@ -13,6 +13,8 @@ import Product from './v2/product'
 import ShoppingCart from './v2/shoppingCart'
 import ProductBrand from './v2/product/brand'
 import ProductCategory from './v2/product/category'
+import AttributeKey from './v2/product/attribute_key'
+import AttributeValue from './v2/product/attribute_value'
 // import ShopProductRelation from './v2/shopProductRelation'
 
 Address.belongsTo(Member, {
@@ -56,6 +58,10 @@ ProductBrand.belongsTo(ShopModel, {
   foreignKey: 'shopId'
 })
 
+AttributeKey.hasMany(AttributeValue, {
+  as: 'values',
+  foreignKey: 'keyId'
+})
 
 export {
   Address,
@@ -64,6 +70,7 @@ export {
   Product,
   ShoppingCart,
   ProductBrand,
-  ProductCategory
-
+  ProductCategory,
+  AttributeKey,
+  AttributeValue
 }

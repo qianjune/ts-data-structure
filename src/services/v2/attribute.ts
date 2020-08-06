@@ -11,14 +11,16 @@ class AttributeService implements CommonService {
   edit<T>(data: T): void {
     throw new Error("Method not implemented.");
   }
-  del(id: number): Promise<void> {
-    throw new Error("Method not implemented.");
+  async del(id: number): Promise<void> {
+    const result = await attributeManager.del(id)
+    ResponseHandler.send(result)
   }
   getInfo(id: number): void {
     throw new Error("Method not implemented.");
   }
-  getList?(data: any): Promise<void> {
-    throw new Error("Method not implemented.");
+  async getList?(data: any): Promise<void> {
+    const result = await attributeManager.getList(data)
+    ResponseHandler.send(result)
   }
 
 }
