@@ -11,5 +11,5 @@ export const TYPES = {
   TEXT: Sequelize.TEXT,
   INTEGER: Sequelize.INTEGER,
   BOOLEAN: Sequelize.BOOLEAN,
-  FLOAT: Sequelize.FLOAT
+  FLOAT: Sequelize.FLOAT,
 }

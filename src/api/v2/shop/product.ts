@@ -16,13 +16,20 @@ class ProductRouter extends BaseRouter {
   @parameter(
     Joi.object({
       name: Joi.string().required(),
-      shopId: Joi.number().required()
+      shopId: Joi.number(),
+      mainImage: Joi.string(),
+      skuGroup: Joi.array().items(Joi.any()).required()
     })
     , 'body'
   )
   async createProduct(ctx: Context): Promise<void> {
     const { body } = ctx.request
-    await productService.create(body)
+    console.log(body)
+    const cloneData = { ...body }
+    if (!cloneData.shopId) {
+      cloneData.shopId = 1
+    }
+    await productService.create(cloneData)
   }
 
   @get('/list')
@@ -32,7 +39,7 @@ class ProductRouter extends BaseRouter {
     pageNo: Joi.number().required(),
     shopId: Joi.number()
   }), 'query')
-  async getList(ctx: Context): Promise<void>{
+  async getList(ctx: Context): Promise<void> {
     await productService.getList(ctx.state.parameter)
   }
 }

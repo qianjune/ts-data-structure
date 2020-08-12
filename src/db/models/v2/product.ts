@@ -18,12 +18,16 @@ Product.init(
       type: TYPES.STRING,
       allowNull: false
     },
+    mainImage: {
+      type: TYPES.STRING,
+      allowNull: false,
+      comment: '产品主图'
+    },
     //一般分两种情况：
     //1、只是显示，不做复杂的查询，集中存放在一个文本字段内，用逗号分隔就行，JSON感觉有点大材小用。
     //2、需要做统计分析，如SF上的问题TAG，需要做很多分类统计，比较合理的方案是新建一张问题和TAG的对应表。
     images: { // mysql array的处理方式 
       type: TYPES.STRING,
-      allowNull: false,
       get() {
         return this.getDataValue('images').split(';')
       },
@@ -39,6 +43,11 @@ Product.init(
       type: TYPES.FLOAT,
       defaultValue: 9999999999
     },
+    skuGroup: {
+      type: TYPES.TEXT,
+      comment: 'sku 价格',
+      allowNull: false
+    },
     offer: {
       // 优惠
       type: TYPES.FLOAT,
@@ -46,7 +55,8 @@ Product.init(
     },
     shopId: {
       type: TYPES.INTEGER,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 1, // 之后删除
     },
     belong: {
       type: TYPES.STRING
@@ -61,6 +71,9 @@ Product.init(
     tableName: 'product'
   }
 )
-Product.sync({ alter: true })
+Product.sync({
+  alter: true,
+  force: true
+})
 
 export default Product

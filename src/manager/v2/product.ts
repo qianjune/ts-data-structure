@@ -4,33 +4,38 @@
 
 import { CommonManager, ListFilterInterface } from "../interface/commonManager";
 import { Product } from "@src/db/models";
-import { ManagerResponse } from "../response";
+import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg } from "../response";
 import sequelize from "@root/core/db";
 
-
+const placeholder = '商品'
+const responseMsg = ResponseMsg(placeholder)
 class ProductManager implements CommonManager {
   async create(data: {
     name: string;
     shopId: number;
+    skuGroup: any[] | string
   }): Promise<ManagerResponse> {
     const productInfo = await Product.findOne({
       where: {
-        name: data.name
+        name: data.name,
+        shopId: data.shopId
       }
     })
     if (productInfo) {
-      return new ManagerResponse({ success: false, msg: '创建商品失败，商品名已被占用' })
+      return new ManagerResponse({ success: false, msg: responseMsg.CREATE_FAIL_BY_NAME_OCCUPIED })
     }
     return await sequelize.transaction(async (t: any) => {
-      const result = await Product.create(data, { transaction: t })
+      const cloneData = { ...data }
+      cloneData.skuGroup = JSON.stringify(cloneData.skuGroup)
+      const result = await Product.create(cloneData, { transaction: t })
       // const bindRelationWithShop = await ShopProductRelation.create({
       //   shopId: data.shopId,
       //   productId: result.getDataValue('id')
       // }, { transaction: t })
       if (result) {
-        return new ManagerResponse({ success: true, msg: '创建商品成功', data: result })
+        return new ManagerResponse({ success: true, msg: responseMsg.CREATE_SUCCESS, data: result })
       } else {
-        return new ManagerResponse({ success: true, msg: '创建商品失败，请稍后再试', data: result })
+        return new ManagerResponse({ success: true, msg: responseMsg.CREATE_FAIL, data: result })
       }
     })
   }
@@ -58,8 +63,20 @@ class ProductManager implements CommonManager {
       ],
       where
     })
-    const productList = result.rows.map(row => row.toJSON())
-    return new ManagerResponse({ success: true, data: productList, msg: '商品列表请求成功' })
+    const { rows, count } = result
+    const productList = rows.map(row => {
+      const cloneRow = { ...row.toJSON() } as { skuGroup: string }
+      console.log(cloneRow)
+      if (cloneRow.skuGroup) {
+        cloneRow.skuGroup = JSON.parse(cloneRow.skuGroup)
+      }
+      return cloneRow
+    })
+    return new ManagerResponseSuccess({
+      data: new ListDataModel({
+        data: productList, total: count, pageNo, pageSize
+      }), msg: responseMsg.FETCH_LIST_SUCCESS
+    })
   }
 
 }
