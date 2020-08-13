@@ -42,6 +42,17 @@ class ProductRouter extends BaseRouter {
   async getList(ctx: Context): Promise<void> {
     await productService.getList(ctx.state.parameter)
   }
+  @get('/app/list')
+  @summary('产品列表')
+  @parameter(Joi.object({
+    pageSize: Joi.number().required(),
+    pageNo: Joi.number().required(),
+    shopId: Joi.number()
+  }), 'query')
+  async getListForApp(ctx: Context): Promise<void> {
+    await productService.getListForApp(ctx.state.parameter)
+
+  }
 }
 
 const productRouter = new ProductRouter()
