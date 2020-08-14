@@ -17,7 +17,7 @@ class ShopService implements CommonService {
   del(id: number): Promise<void> {
     throw new Error("Method not implemented.")
   }
-  getInfo(id: number): void {
+  getInfo(id: number): Promise<void> {
     throw new Error("Method not implemented.")
   }
   async getList(data: ListParamsInterface): Promise<void> {

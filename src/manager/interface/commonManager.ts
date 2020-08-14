@@ -14,7 +14,7 @@ export interface CommonManager {
   create(data: any): Promise<ManagerResponse>;
   edit(data: any): Promise<ManagerResponse>;
   del(id: number): Promise<ManagerResponse>;
-  getInfo(id: number): void;
+  getInfo(id: number): Promise<ManagerResponse>;
   getList?(data: ListFilterInterface): Promise<ManagerResponse>;
 }
 

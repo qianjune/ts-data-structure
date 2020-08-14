@@ -43,7 +43,7 @@ class ProductRouter extends BaseRouter {
     await productService.getList(ctx.state.parameter)
   }
   @get('/app/list')
-  @summary('产品列表')
+  @summary('app产品列表')
   @parameter(Joi.object({
     pageSize: Joi.number().required(),
     pageNo: Joi.number().required(),
@@ -51,7 +51,16 @@ class ProductRouter extends BaseRouter {
   }), 'query')
   async getListForApp(ctx: Context): Promise<void> {
     await productService.getListForApp(ctx.state.parameter)
+  }
 
+  @get('/app/detail/:id')
+  @summary('app商品详情')
+  @parameter(Joi.object({
+    id:Joi.string().required()
+  }),'params')
+  async getInfoById(ctx:Context){
+    const {id} = ctx.state.parameter
+    await productService.getInfo(id)
   }
 }
 

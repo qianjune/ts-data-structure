@@ -37,7 +37,7 @@ class BrandManager implements CommonManager {
   del(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  getInfo(id: number): void {
+  getInfo(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
   async getList?(data: ListFilterInterface): Promise<ManagerResponse> {

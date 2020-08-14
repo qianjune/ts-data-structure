@@ -11,7 +11,8 @@ const ResponseMsg = (placeholder: string) => (
     "ITEM_NOT_FOUND": `该${placeholder}不存在`,
     "DELETE_SUCCESS": `删除${placeholder}成功`,
     "DELETE_FAIL": `删除${placeholder}失败，请稍后再试`,
-    "DELETE_FAIL_BY_HAVE_LINKED_CHILD":`有关联子节点，删除${placeholder}失败,`
+    "DELETE_FAIL_BY_HAVE_LINKED_CHILD":`有关联子节点，删除${placeholder}失败`,
+    "GET_DETAIL_SUCCESS":`获取${placeholder}详情成功,`
   }
 )
 interface ResponseInterface { success: boolean; msg?: string; data?: any }

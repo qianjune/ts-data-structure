@@ -4,7 +4,7 @@
 
 import { CommonManager, ListFilterInterface } from "../interface/commonManager";
 import { Product } from "@src/db/models";
-import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg } from "../response";
+import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg, ManagerResponseFailure } from "../response";
 import sequelize from "@root/core/db";
 
 const placeholder = '商品'
@@ -45,8 +45,18 @@ class ProductManager implements CommonManager {
   del(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  getInfo(id: number): void {
-    throw new Error("Method not implemented.");
+  async getInfo(id: number): Promise<ManagerResponse> {
+    const productInfo = await Product.findOne({
+      where: {
+        id
+      }
+    })
+    if (!productInfo) {
+      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
+    }
+    const cloneProduct: any = productInfo.toJSON()
+    cloneProduct.skuGroup = JSON.parse(cloneProduct.skuGroup)
+    return new ManagerResponseSuccess({ data: cloneProduct, msg: responseMsg.GET_DETAIL_SUCCESS })
   }
   async getList(data: ListFilterInterface & { shopId: number }): Promise<ManagerResponse> {
     const { pageSize = 10, pageNo = 1, shopId } = data

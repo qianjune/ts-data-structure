@@ -73,7 +73,7 @@ class AttributeManager implements CommonManager {
       }
     })
   }
-  getInfo(id: number): void {
+  getInfo(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
   async getList?(data: ListFilterInterface): Promise<import("../response").ManagerResponse> {

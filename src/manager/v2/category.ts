@@ -81,7 +81,7 @@ class CategoryManager implements CommonManager {
       }
     })
   }
-  getInfo(id: number): void {
+  getInfo(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
   async getList?(data: CategoryListParamsInterface): Promise<ManagerResponse> {

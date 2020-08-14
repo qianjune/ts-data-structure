@@ -1,11 +1,32 @@
 import { CommonService } from "../interface/common";
 import ProductManager from "@src/manager/v2/product";
 import { ResponseHandler } from "@src/utils/responseHandler";
-import { omit } from "lodash";
+import { omit, cloneDeep } from "lodash";
 
 const productManager = new ProductManager
 
 class ProductService implements CommonService {
+
+  private skuGroupOriginDataToCodeHandler = (crd: any) => {
+    if (crd.skuGroup) {
+      crd.skuGroup = crd.skuGroup.filter((sg: any) => sg.enabled === 1).map((sg: any, j: number) => {
+        const attributeGroup = omit(sg, ['enabled', 'salePrice'])
+        const attributeKeys = Object.keys(attributeGroup)
+        const attributeLen = attributeKeys.length
+        let attributeCode = ''
+        if (attributeLen > 0) {
+          attributeKeys.forEach((key, keyIndex) => {
+            attributeCode += `${key}|${attributeGroup[key]}`
+            if (keyIndex < attributeLen - 1)
+              attributeCode += '-'
+          })
+        }
+        sg.code = attributeCode
+        sg = omit(sg, [...attributeKeys, 'enabled'])
+        return sg
+      })
+    }
+  }
   async create(data: any): Promise<void> {
     const result = await productManager.create(data)
     ResponseHandler.send(result)
@@ -16,8 +37,12 @@ class ProductService implements CommonService {
   del(id: number): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  getInfo(id: number): void {
-    throw new Error("Method not implemented.");
+  async getInfo(id: number): Promise<void> {
+    const result = await productManager.getInfo(id)
+    const cloneResult = {...result}
+    this.skuGroupOriginDataToCodeHandler(cloneResult.data)
+    console.log(cloneResult)
+    ResponseHandler.send(cloneResult)
   }
   async getList(data: any): Promise<void> {
     const result = await productManager.getList(data)
@@ -30,25 +55,7 @@ class ProductService implements CommonService {
     if (realData) {
       const cloneRealData = [...realData]
       cloneRealData.forEach((crd: any, index: number) => {
-        if (crd.skuGroup) {
-          crd.skuGroup = crd.skuGroup.filter((sg: any) => sg.enabled === 1).map((sg: any, j: number) => {
-            const attributeGroup = omit(sg, ['enabled', 'salePrice'])
-            const attributeKeys = Object.keys(attributeGroup)
-            const attributeLen = attributeKeys.length
-            let attributeCode = ''
-            if (attributeLen > 0) {
-              attributeKeys.forEach((key, keyIndex) => {
-                attributeCode += `${key}|${attributeGroup[key]}`
-                if (keyIndex < attributeLen - 1)
-                  attributeCode += '-'
-              })
-            }
-            sg.code = attributeCode
-            sg = omit(sg, [...attributeKeys, 'enabled'])
-            return sg
-          })
-        }
-
+        this.skuGroupOriginDataToCodeHandler(crd)
       })
       // cloneResult.data.data = cloneRealData
     }

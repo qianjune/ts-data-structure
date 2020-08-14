@@ -54,6 +54,7 @@ const parameter = (name: string | ObjectSchema, joiSchema: any, location?: 'body
     if (location === 'params') {
       parameter = ctx[location]
     }
+    console.log('params:',parameter)
     if (location === 'body' || location === 'query') {
       parameter = ctx.request[location]
     }
