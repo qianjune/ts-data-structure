@@ -10,7 +10,8 @@
   "scripts": {
     "ts": "nodemon",
     "test": "cross-env NODE_ENV=test jest --config ./jest.config.js --detectOpenHandles --runInBand --forceExit --colors",
-    "update": "ncu"
+    "update": "ncu",
+    "create-service": "ts-node ./scripts/buildNewService/index.ts"
   },
   "_moduleAliases": {
     "@src": "src",
@@ -33,6 +34,7 @@
     "apollo-server-koa": "^2.15.1",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
+    "commander": "^6.0.0",
     "form-data": "^3.0.0",
     "graphql": "^14.5.4",
     "http-status": "^1.4.2",

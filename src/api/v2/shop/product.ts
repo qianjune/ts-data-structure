@@ -62,6 +62,8 @@ class ProductRouter extends BaseRouter {
     const {id} = ctx.state.parameter
     await productService.getInfo(id)
   }
+
+  // 商品简化信息
 }
 
 const productRouter = new ProductRouter()
