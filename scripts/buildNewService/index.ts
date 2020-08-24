@@ -1,5 +1,6 @@
-import { join,dirname } from 'path'
+import { join, dirname } from 'path'
 import fs from 'fs'
+import { buildFileContent, writeServiceFile } from './lib';
 const serviceName = process.argv[2]
 
 console.log('准备开始创建新service...')
@@ -8,12 +9,12 @@ if (!serviceName) {
 
   process.exit()
 }
-const basePath = join(__dirname, '../','../','src')
-
-const dbPath = join(basePath, 'db', 'models', 'v2')
-const apiPath = join(basePath, 'api', 'v2')
-const servicePath = join(basePath, 'services', 'v2')
-const managerPath = join(basePath, 'manager', 'v2')
+const basePath = join(__dirname, '../', '../')
+const srcPath = join(basePath, 'src')
+const dbPath = join(srcPath, 'db', 'models', 'v2')
+const apiPath = join(srcPath, 'api', 'v2')
+const servicePath = join(srcPath, 'services', 'v2')
+const managerPath = join(srcPath, 'manager', 'v2')
 const pathGroup = [
   {
     key: 'db',
@@ -29,6 +30,7 @@ const pathGroup = [
     path: managerPath
   }
 ]
+const tempPath = join(basePath, 'scripts/buildNewService', 'template')
 pathGroup.forEach(item => {
   const logName = `${serviceName} ${item.key}文件是否存在`
   const checkFilePath = join(item.path, serviceName + '.ts')
@@ -38,6 +40,8 @@ pathGroup.forEach(item => {
     console.log(logName, isFileExist)
   } else {
     console.log(logName, isFileExist)
+    const fileContent = buildFileContent(join(tempPath, item.key + '.ts'), serviceName)
+    writeServiceFile(join(item.path, serviceName + '.ts'), fileContent)
   }
 })
 const isFileExist = fs.existsSync(dbPath)
