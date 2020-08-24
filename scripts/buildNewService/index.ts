@@ -1,4 +1,4 @@
-import { join, dirname } from 'path'
+import { join } from 'path'
 import fs from 'fs'
 import { buildFileContent, writeServiceFile } from './lib';
 const serviceName = process.argv[2]
@@ -15,6 +15,7 @@ const dbPath = join(srcPath, 'db', 'models', 'v2')
 const apiPath = join(srcPath, 'api', 'v2')
 const servicePath = join(srcPath, 'services', 'v2')
 const managerPath = join(srcPath, 'manager', 'v2')
+// -db -api -service -manager 根据参数生成文件
 const pathGroup = [
   {
     key: 'db',
@@ -38,8 +39,10 @@ pathGroup.forEach(item => {
   const isFileExist = fs.existsSync(checkFilePath)
   if (isFileExist) {
     console.log(logName, isFileExist)
+    // 是否要覆盖
   } else {
     console.log(logName, isFileExist)
+
     const fileContent = buildFileContent(join(tempPath, item.key + '.ts'), serviceName)
     writeServiceFile(join(item.path, serviceName + '.ts'), fileContent)
   }
