@@ -18,7 +18,8 @@ class ProductRouter extends BaseRouter {
       name: Joi.string().required(),
       shopId: Joi.number(),
       mainImage: Joi.string(),
-      skuGroup: Joi.array().items(Joi.any()).required()
+      skuGroup: Joi.array().items(Joi.any()).required(),
+      desc:Joi.string()
     })
     , 'body'
   )

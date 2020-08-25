@@ -6,8 +6,13 @@ const buildFileContent = (filePath: string, replaceName: string): string => {
   return resultStr
 }
 const writeServiceFile = (filePath: string, fileContent: string): void => {
-  const result = fs.writeFileSync(filePath, fileContent)
-  console.log(result)
+  try {
+    fs.writeFileSync(filePath, fileContent)
+    console.log(filePath + '创建成功')
+  } catch (error) {
+    console.warn(error);
+
+  }
 }
 export {
   buildFileContent,

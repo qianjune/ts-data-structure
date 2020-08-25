@@ -15,6 +15,7 @@ import ProductBrand from './v2/product/brand'
 import ProductCategory from './v2/product/category'
 import AttributeKey from './v2/product/attribute_key'
 import AttributeValue from './v2/product/attribute_value'
+import CommentModel from './v2/product/comment'
 // import ShopProductRelation from './v2/shopProductRelation'
 
 Address.belongsTo(Member, {
@@ -62,7 +63,10 @@ AttributeKey.hasMany(AttributeValue, {
   as: 'values',
   foreignKey: 'keyId'
 })
-
+User.hasMany(CommentModel, {
+  foreignKey: 'userId'
+})
+// CommentModel
 export {
   Address,
   IdCard,
@@ -72,5 +76,6 @@ export {
   ProductBrand,
   ProductCategory,
   AttributeKey,
-  AttributeValue
+  AttributeValue,
+  CommentModel
 }

@@ -6,6 +6,7 @@ import { User } from "@src/db/models";
 // import JwtHandler from "@src/utils/jwt_handler";
 import SessionCookieHandler from "@src/utils/session_cookie";
 import { CommonManagerInterface } from './interface/interface'
+import { ManagerResponseSuccess, ManagerResponseFailure, ManagerResponse } from "./response";
 
 interface UserBody {
   mobile?: number | string;
@@ -22,14 +23,22 @@ type UserServiceInterface = CommonManagerInterface<UserBody, UserPutBody>
 
 class UserManager implements UserServiceInterface {
 
-  async getValidateData(data: {}): Promise<User | undefined> {
+  async getValidateData(data: { [propKey: string]: any }, mode?: string): Promise<any> {
     const user = await User.findOne({
       where: data
     })
-    return user
+    if (mode === 'self') {
+      return user
+    }
+    if (user) {
+      return new ManagerResponseSuccess({ data: user, msg: '用户存在' })
+    } else {
+      return new ManagerResponseFailure({ msg: '用户不存在' })
+    }
+
   }
-  async creat(data: UserBody): Promise<any> {
-    let user = await this.getValidateData({ mobile: data.mobile })
+  async create(data: UserBody): Promise<any> {
+    let user = await this.getValidateData({ mobile: data.mobile }, 'self')
     if (user) {
       // 该手机已注册
       console.log('用户已存在')
@@ -47,13 +56,13 @@ class UserManager implements UserServiceInterface {
 
   }
   async update(data: UserPutBody): Promise<void> {
-    const user = await this.getValidateData({ id: data.id })
+    const user = await this.getValidateData({ id: data.id }, 'self')
     if (user) {
 
     }
   }
   async destroy(id: string): Promise<void> {
-    const user = await this.getValidateData({ id })
+    const user = await this.getValidateData({ id }, 'self')
     if (user) {
       const result = await User.update({ status: 'destroy' }, { where: { id } })
       if (result[0] > 0) {

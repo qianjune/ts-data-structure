@@ -73,7 +73,7 @@ Product.init(
 )
 Product.sync({
   alter: true,
-  force: true
+  // force: true
 })
 
 export default Product
