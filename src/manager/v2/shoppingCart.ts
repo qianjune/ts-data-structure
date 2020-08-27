@@ -1,11 +1,11 @@
 /**
- * @description XXXXXX orm
+ * @description shoppingCart orm
  */
 
 import { CommonManager, ListFilterInterface } from "@src/manager/interface/commonManager";
 import sequelize from "@root/core/db";
 
- class XXXXXXManager implements CommonManager{
+ class shoppingCartManager implements CommonManager{
    create(data: any): Promise<import("../../../src/manager/response").ManagerResponse> {
      throw new Error("Method not implemented.");
    }
@@ -24,4 +24,4 @@ import sequelize from "@root/core/db";
    
  }
 
- export default XXXXXXManager
+ export default shoppingCartManager

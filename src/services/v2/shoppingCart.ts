@@ -1,9 +1,9 @@
 /**
- * @description XXXXXX service
+ * @description shoppingCart service
  */
 import { CommonService } from "@src/services/interface/common";
 
-class XXXXXXService implements CommonService{
+class shoppingCartService implements CommonService{
   create(data: any): Promise<void> {
     throw new Error("Method not implemented.");
   }
@@ -22,4 +22,4 @@ class XXXXXXService implements CommonService{
 
 }
 
-export default XXXXXXService
+export default shoppingCartService
