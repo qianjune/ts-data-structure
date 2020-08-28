@@ -4,6 +4,7 @@
 
 const ResponseMsg = (placeholder: string) => (
   {
+    "COMMON_SUCCESS_INFO": '请求成功',
     "CREATE_FAIL_BY_NAME_OCCUPIED": `创建${placeholder}失败，${placeholder}名已被占用`,
     "CREATE_FAIL": `创建${placeholder}失败，请稍后再试`,
     "CREATE_SUCCESS": `创建${placeholder}成功`,
@@ -11,8 +12,10 @@ const ResponseMsg = (placeholder: string) => (
     "ITEM_NOT_FOUND": `该${placeholder}不存在`,
     "DELETE_SUCCESS": `删除${placeholder}成功`,
     "DELETE_FAIL": `删除${placeholder}失败，请稍后再试`,
-    "DELETE_FAIL_BY_HAVE_LINKED_CHILD":`有关联子节点，删除${placeholder}失败`,
-    "GET_DETAIL_SUCCESS":`获取${placeholder}详情成功,`
+    "DELETE_FAIL_BY_HAVE_LINKED_CHILD": `有关联子节点，删除${placeholder}失败`,
+    "GET_DETAIL_SUCCESS": `获取${placeholder}详情成功`,
+    "ADD_SUCCESS": `加入${placeholder}成功`,
+    "ADD_FAIL": `加入${placeholder}失败`,
   }
 )
 interface ResponseInterface { success: boolean; msg?: string; data?: any }

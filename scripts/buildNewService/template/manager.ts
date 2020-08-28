@@ -3,8 +3,12 @@
  */
 
 import { CommonManager, ListFilterInterface } from "@src/manager/interface/commonManager";
+import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg, ManagerResponseFailure } from "@src/manager/response";
+
 import sequelize from "@root/core/db";
 
+const placeholder = 'XXXXXX'
+const responseMsg = ResponseMsg(placeholder)
  class XXXXXXManager implements CommonManager{
    create(data: any): Promise<import("../../../src/manager/response").ManagerResponse> {
      throw new Error("Method not implemented.");

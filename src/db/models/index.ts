@@ -10,7 +10,7 @@ import Level from './level'
 import ShopModel from './v2/shop'
 import ShopUserRelation from './v2/shopUserRelation'
 import Product from './v2/product'
-import ShoppingCart from './v2/shoppingCart'
+import ShoppingCartModel from './v2/shoppingCart'
 import ProductBrand from './v2/product/brand'
 import ProductCategory from './v2/product/category'
 import AttributeKey from './v2/product/attribute_key'
@@ -48,10 +48,10 @@ User.hasMany(ShopUserRelation, {
 Product.belongsTo(ShopModel, {
   foreignKey: 'shopId'
 })
-Product.hasMany(ShoppingCart, {
+Product.hasMany(ShoppingCartModel, {
   foreignKey: 'productId'
 })
-User.hasMany(ShoppingCart, {
+User.hasMany(ShoppingCartModel, {
   foreignKey: "uid"
 })
 ProductBrand.belongsTo(ShopModel, {
@@ -72,7 +72,7 @@ export {
   IdCard,
   Member, User, Points, Right, RightPackage, RightRelation, ShopModel,
   Product,
-  ShoppingCart,
+  ShoppingCartModel,
   ProductBrand,
   ProductCategory,
   AttributeKey,

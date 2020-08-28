@@ -4,7 +4,7 @@
 
 import { CommonManager, ListFilterInterface } from "../interface/commonManager";
 import { Product } from "@src/db/models";
-import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg, ManagerResponseFailure } from "../response";
+import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg, ManagerResponseFailure } from "@src/manager/response";
 import sequelize from "@root/core/db";
 
 const placeholder = '商品'
