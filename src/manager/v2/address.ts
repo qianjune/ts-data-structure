@@ -11,6 +11,29 @@ import town from 'province-city-china/dist/town.json'
 import level from 'province-city-china/dist/level.json'
 
 import sequelize from "@root/core/db";
+const ZhiXiaShi = [
+  {
+    "code": "110100",
+    "name": "北京市",
+    "province": "11",
+    "city": "01",
+  }, {
+    "code": "120100",
+    "name": "天津市",
+    "province": "12",
+    "city": "01",
+  }, {
+    "code": "310100",
+    "name": "上海市",
+    "province": "31",
+    "city": "01",
+  }, {
+    "code": "500100",
+    "name": "重庆市",
+    "province": "50",
+    "city": "01",
+  },
+]
 export enum FetchAddressType {
   ALL,
   PROVINCE,
@@ -64,31 +87,47 @@ class AddressManager implements CommonManager {
     return new ManagerResponseSuccess({ msg: responseMsg.ADDRESS_ALL_LIST_SUCCESS, data: result })
   }
   _getCityList(id?: number): ManagerResponse {
-    let result = city
+    let result = [...city, ...ZhiXiaShi]
     if (id) {
-      result = result.filter(item => item.province === id.toString())
+      result = result.filter(item => item.code.includes(id.toString()))
     }
+    result = result.map(item => ({
+      ...item,
+      id: item.province + item.city
+    }))
     return new ManagerResponseSuccess({ msg: responseMsg.CITY_LIST_SUCCESS, data: result })
   }
   _getAreaList(id?: number): ManagerResponse {
     let result = area
     if (id) {
-      result = result.filter(item => item.city === id.toString())
+      result = result.filter(item => item.code.includes(id.toString()))
     }
+    result = result.map(item => ({
+      ...item,
+      id: item.province + item.city + item.area
+    }))
     return new ManagerResponseSuccess({ msg: responseMsg.AREA_LIST_SUCCESS, data: result })
   }
   _getProvinceList(id?: number): ManagerResponse {
-    const result = province
+    let result = province
     // if (id) {
     //   result = result.filter(item => item.province === id.toString())
     // }
+    result = result.map(item => ({
+      ...item,
+      id: item.province
+    }))
     return new ManagerResponseSuccess({ msg: responseMsg.PROVINCE_LIST_SUCCESS, data: result })
   }
   _getTownList(id?: number): ManagerResponse {
     let result = town
     if (id) {
-      result = result.filter(item => item.area === id.toString())
+      result = result.filter(item => item.code.includes(id.toString()))
     }
+    result = result.map(item => ({
+      ...item,
+      id: item.province + item.city + item.area + item.town
+    }))
     return new ManagerResponseSuccess({ msg: responseMsg.TOWN_LIST_SUCCESS, data: result })
   }
 

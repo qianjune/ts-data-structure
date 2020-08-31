@@ -49,7 +49,7 @@ class CodeRouter extends BaseRouter {
   }), 'body')
   async validateCodeForOnClickLoginByMobile(ctx: Context): Promise<void> {
     const { user, code } = ctx.request.body
-  
+
     await CodeService.validateCodeByMobile(user, CODE_ACTION_TYPE.REGISTER_AND_LOGIN, code)
   }
   // end

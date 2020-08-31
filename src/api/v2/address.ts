@@ -57,31 +57,36 @@ class AddressApi extends BaseRouter {
   }
 
   @get('/province/list')
-  @summary('获取中华人民共和国省份列表')
+  @summary('获取中华人民共和国-省份列表')
   async getProvinceList(ctx: Context): Promise<void> {
-    addressService.getCommonAddressList({})
+
+    addressService.getCommonAddressList({ type: FetchAddressType.PROVINCE })
   }
 
   @get('/city/list')
-  @summary('获取中华人民共和国市列表')
+  @summary('获取中华人民共和国-市列表')
   @parameter(joi.object({
     provinceId: joi.number()
   }), 'query')
   async getCityList(ctx: Context): Promise<void> {
-    addressService.getCommonAddressList({})
+    const { provinceId } = ctx.state.parameter
+
+    addressService.getCommonAddressList({ id: provinceId, type: FetchAddressType.CITY })
   }
 
   @get('/area/list')
-  @summary('获取中华人民共和国区列表')
+  @summary('获取中华人民共和国-区列表')
   @parameter(joi.object({
     cityId: joi.number()
   }), 'query')
   async getAreaList(ctx: Context): Promise<void> {
-    addressService.getCommonAddressList({})
+    const { cityId } = ctx.state.parameter
+
+    addressService.getCommonAddressList({ id: cityId, type: FetchAddressType.AREA })
   }
 
   @get('/town/list')
-  @summary('获取中华人民共和国街道列表')
+  @summary('获取中华人民共和国-街道列表')
   @parameter(joi.object({
     areaId: joi.number()
   }), 'query')
