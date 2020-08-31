@@ -1,0 +1,94 @@
+/**
+ * @description AddressApi api
+ */
+
+import joi from '@hapi/joi'
+import BaseRouter, { post, parameter, get, summary, del, prefix, tag } from '@src/lib/router-decorator';
+import { Context } from 'koa';
+import AddressService from '@src/services/v2/address';
+import { FetchAddressType } from '@src/manager/v2/address';
+const addressService = new AddressService()
+@prefix('/api/address')
+@tag('AddressApi相关服务')
+class AddressApi extends BaseRouter {
+  @post('/create')
+  @summary('AddressApi创建')
+  @parameter(joi.object({}), 'body')
+  async create(ctx: Context): Promise<void> {
+    // create api
+  }
+  @get('/detail/:id')
+  @summary('AddressApi详情')
+  @parameter(joi.object({
+    id: joi.string().required()
+  }), 'params')
+  async getInfo(ctx: Context): Promise<void> {
+    // get info
+  }
+  @get('/list')
+  @summary('AddressApi详情')
+  @parameter(joi.object({
+    pageSize: joi.number().required(),
+    pageNo: joi.number().required()
+  }), 'query')
+  async getList(ctx: Context): Promise<void> {
+    // get list
+  }
+  @del('/:id')
+  @summary('删除AddressApi')
+  @parameter(joi.object({
+    id: joi.string().required()
+  }), 'params')
+  async del(ctx: Context): Promise<void> {
+    // del item
+  }
+
+  @post('/edit')
+  @summary('AddressApi编辑')
+  @parameter(joi.object({}), 'body')
+  async edit(ctx: Context): Promise<void> {
+    // edit item
+  }
+
+  @get('/cn/list')
+  @summary('获取中华人民共和国行政区划代码')
+  async getChineseAddressList(ctx: Context): Promise<void> {
+    addressService.getCommonAddressList({})
+  }
+
+  @get('/province/list')
+  @summary('获取中华人民共和国省份列表')
+  async getProvinceList(ctx: Context): Promise<void> {
+    addressService.getCommonAddressList({})
+  }
+
+  @get('/city/list')
+  @summary('获取中华人民共和国市列表')
+  @parameter(joi.object({
+    provinceId: joi.number()
+  }), 'query')
+  async getCityList(ctx: Context): Promise<void> {
+    addressService.getCommonAddressList({})
+  }
+
+  @get('/area/list')
+  @summary('获取中华人民共和国区列表')
+  @parameter(joi.object({
+    cityId: joi.number()
+  }), 'query')
+  async getAreaList(ctx: Context): Promise<void> {
+    addressService.getCommonAddressList({})
+  }
+
+  @get('/town/list')
+  @summary('获取中华人民共和国街道列表')
+  @parameter(joi.object({
+    areaId: joi.number()
+  }), 'query')
+  async getTownList(ctx: Context): Promise<void> {
+    const { areaId } = ctx.state.parameter
+    addressService.getCommonAddressList({ id: areaId, type: FetchAddressType.TOWN })
+  }
+}
+
+export default new AddressApi().init()

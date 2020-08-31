@@ -1,9 +1,13 @@
 /**
- * @description XXXXXX service
+ * @description Address service
  */
 import { CommonService } from "@src/services/interface/common";
+import { ResponseHandler } from "@src/utils/responseHandler";
+import AddressManager, { FetchAddressType } from "@src/manager/v2/address";
+const addressManager = new AddressManager()
 
-class XXXXXX implements CommonService{
+
+class AddressService implements CommonService {
   create(data: any): Promise<void> {
     throw new Error("Method not implemented.");
   }
@@ -19,7 +23,10 @@ class XXXXXX implements CommonService{
   getList?(data: any): Promise<void> {
     throw new Error("Method not implemented.");
   }
-
+  getCommonAddressList(data: any): void {
+    const result = addressManager.getCommonAddressList(data)
+    ResponseHandler.send(result)
+  }
 }
 
-export default XXXXXX
+export default AddressService

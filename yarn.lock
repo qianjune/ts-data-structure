@@ -5751,6 +5751,11 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.4"
 
+province-city-china@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.npm.taobao.org/province-city-china/download/province-city-china-6.0.3.tgz#b7db87ccaee846aa7e400021f769144111e22d5c"
+  integrity sha1-t9uHzK7oRqp+QAAh92kUQRHiLVw=
+
 proxy-agent@^3.1.0:
   version "3.1.1"
   resolved "https://registry.npm.taobao.org/proxy-agent/download/proxy-agent-3.1.1.tgz#7e04e06bf36afa624a1540be247b47c970bd3014"

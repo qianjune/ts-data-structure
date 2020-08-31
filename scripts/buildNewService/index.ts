@@ -1,6 +1,7 @@
 import { join } from 'path'
 import fs from 'fs'
-import { buildFileContent, writeServiceFile } from './lib';
+import { buildFileContent, writeServiceFile, FILE_TYPE } from './lib';
+
 console.log('process.argv', process.argv)
 const args = process.argv.slice(2, process.argv.length)
 const fileType = ['--api', '--db', '--service', '--manager']
@@ -43,16 +44,16 @@ const managerPath = join(srcPath, 'manager', 'v2')
 // --db --api --service --manager 根据参数生成文件
 const pathGroup = [
   {
-    key: 'db',
+    key: FILE_TYPE.DB,
     path: dbPath
   }, {
-    key: 'api',
+    key: FILE_TYPE.API,
     path: apiPath
   }, {
-    key: 'service',
+    key: FILE_TYPE.SERVICE,
     path: servicePath
   }, {
-    key: 'manager',
+    key: FILE_TYPE.MANAGER,
     path: managerPath
   }
 ]
@@ -69,7 +70,7 @@ pathGroup.forEach(item => {
     } else {
       console.log(logName, isFileExist)
 
-      const fileContent = buildFileContent(join(tempPath, item.key + '.ts'), serviceName)
+      const fileContent = buildFileContent(join(tempPath, item.key + '.ts'), serviceName, item.key)
       writeServiceFile(join(item.path, serviceName + '.ts'), fileContent)
     }
   }

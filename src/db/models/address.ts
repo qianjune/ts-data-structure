@@ -37,6 +37,16 @@ Address.init({
     type: STRING,
     allowNull: false,
     comment: "地址"
+  },
+  postCode: {
+    type: TYPES.STRING,
+    allowNull: false,
+    comment: '邮编'
+  },
+  tel: {
+    type: TYPES.STRING,
+    allowNull: false,
+    comment: '联系电话'
   }
 }, {
   sequelize,

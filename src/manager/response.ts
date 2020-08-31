@@ -16,6 +16,14 @@ const ResponseMsg = (placeholder: string) => (
     "GET_DETAIL_SUCCESS": `获取${placeholder}详情成功`,
     "ADD_SUCCESS": `加入${placeholder}成功`,
     "ADD_FAIL": `加入${placeholder}失败`,
+    // address begin
+    "CITY_LIST_SUCCESS": `${placeholder}-市-列表请求成功`,
+    "AREA_LIST_SUCCESS": `${placeholder}-区-列表请求成功`,
+    "TOWN_LIST_SUCCESS": `${placeholder}-街道-列表请求成功`,
+    "PROVINCE_LIST_SUCCESS": `${placeholder}-省-列表请求成功`,
+    "ADDRESS_ALL_LIST_SUCCESS": `${placeholder}-省/地/县/乡-列表请求成功`,
+    // address end
+
   }
 )
 interface ResponseInterface { success: boolean; msg?: string; data?: any }

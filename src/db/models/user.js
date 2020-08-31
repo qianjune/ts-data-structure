@@ -12,11 +12,13 @@ User.init(
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
-      autoIncrement: true
+      autoIncrement: true,
+      comment:'用户id'
     },
     mobile: {
       type: Sequelize.BIGINT(11),
       unique: true,
+      comment:'用户手机号'
     },
     password: {
       type: Sequelize.STRING,
@@ -24,15 +26,18 @@ User.init(
         const salt = bcrypt.genSaltSync(10)
         const psw = bcrypt.hashSync(val, salt)
         this.setDataValue('password', psw)
-      }
+      },
+      comment:'用户密码'
     },
     email: {
       type: Sequelize.STRING,
-      unique: true
+      unique: true,
+      comment:'用户邮箱'
     },
     status: {
       type: Sequelize.STRING,
-      unique: true
+      unique: true,
+      comment:'用户状态'
     }
     // openid: {
     //   type: Sequelize.STRING(64),
@@ -45,5 +50,5 @@ User.init(
   }
 )
 
-// await User.sync({ alter: true });
+User.sync({ alter: true });
 export default User

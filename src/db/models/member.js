@@ -8,6 +8,12 @@ class Member extends Model {
 }
 
 Member.init({
+  id: {
+    autoIncrement: true,
+    type: TYPES.INTEGER,
+    primaryKey: true,
+    comment: '会员id'
+  },
   userId: {
     allowNull: false,
     type: INTEGER,
@@ -62,9 +68,10 @@ Member.init({
   },
   // address:{
   // }
-  // idCard:{
-
-  // }
+  idCard: {
+    type: TYPES.INTEGER,
+    comment: '生份证'
+  }
 
 }, {
   sequelize,

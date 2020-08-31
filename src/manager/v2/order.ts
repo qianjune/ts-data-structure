@@ -1,5 +1,5 @@
 /**
- * @description XXXXXX orm
+ * @description OrderManager orm
  */
 
 import { CommonManager, ListFilterInterface } from "@src/manager/interface/commonManager";
@@ -7,9 +7,9 @@ import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg, Ma
 
 import sequelize from "@root/core/db";
 
-const placeholder = 'XXXXXX'
+const placeholder = 'OrderManager'
 const responseMsg = ResponseMsg(placeholder)
- class XXXXXX implements CommonManager{
+ class OrderManagerManager implements CommonManager{
    create(data: any): Promise<import("../../../src/manager/response").ManagerResponse> {
      throw new Error("Method not implemented.");
    }
@@ -28,4 +28,4 @@ const responseMsg = ResponseMsg(placeholder)
    
  }
 
- export default XXXXXX
+ export default OrderManagerManager
