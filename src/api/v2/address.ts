@@ -6,13 +6,13 @@ import joi from '@hapi/joi'
 import BaseRouter, { post, parameter, get, summary, del, prefix, tag } from '@src/lib/router-decorator';
 import { Context } from 'koa';
 import AddressService from '@src/services/v2/address';
-import { FetchAddressType } from '@src/manager/v2/address';
+import { FetchAddressType } from '@src/manager/v2/address/interface';
 const addressService = new AddressService()
 @prefix('/api/address')
 @tag('AddressApi相关服务')
 class AddressApi extends BaseRouter {
   @post('/create')
-  @summary('AddressApi创建')
+  @summary('收件地址创建')
   @parameter(joi.object({}), 'body')
   async create(ctx: Context): Promise<void> {
     // create api

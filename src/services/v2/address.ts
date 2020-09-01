@@ -3,7 +3,7 @@
  */
 import { CommonService } from "@src/services/interface/common";
 import { ResponseHandler } from "@src/utils/responseHandler";
-import AddressManager, { FetchAddressType } from "@src/manager/v2/address";
+import AddressManager from "@src/manager/v2/address";
 const addressManager = new AddressManager()
 
 

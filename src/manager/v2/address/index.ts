@@ -1,5 +1,5 @@
 /**
- * @description AddressManager orm
+ * @description Address-Manager orm
  */
 
 import { CommonManager, ListFilterInterface } from "@src/manager/interface/commonManager";
@@ -11,52 +11,37 @@ import town from 'province-city-china/dist/town.json'
 import level from 'province-city-china/dist/level.json'
 
 import sequelize from "@root/core/db";
-const ZhiXiaShi = [
-  {
-    "code": "110100",
-    "name": "北京市",
-    "province": "11",
-    "city": "01",
-  }, {
-    "code": "120100",
-    "name": "天津市",
-    "province": "12",
-    "city": "01",
-  }, {
-    "code": "310100",
-    "name": "上海市",
-    "province": "31",
-    "city": "01",
-  }, {
-    "code": "500100",
-    "name": "重庆市",
-    "province": "50",
-    "city": "01",
-  },
-]
-export enum FetchAddressType {
-  ALL,
-  PROVINCE,
-  CITY,
-  AREA,
-  TOWN
-}
+import { FetchAddressType, ZhiXiaShi, AddressItem } from "./interface";
+import { Address } from "@src/db/models";
+
 const placeholder = '地址'
 const responseMsg = ResponseMsg(placeholder)
 class AddressManager implements CommonManager {
-  create(data: any): Promise<import("../../../src/manager/response").ManagerResponse> {
+  async create(data: AddressItem): Promise<ManagerResponse> {
+    const result = await Address.create(data)
+    if (result) {
+      return new ManagerResponseSuccess({ data: result, msg: responseMsg.CREATE_SUCCESS })
+    } else {
+      return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL })
+    }
+  }
+  edit(data: any): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  edit(data: any): Promise<import("../../../src/manager/response").ManagerResponse> {
+  async del(id: number): Promise<ManagerResponse> {
+    const address = await Address.findOne({
+      where: {
+        id
+      }
+    })
+    if (!address) {
+      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
+    }
+  }
+  getInfo(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  del(id: number): Promise<import("../../../src/manager/response").ManagerResponse> {
-    throw new Error("Method not implemented.");
-  }
-  getInfo(id: number): Promise<import("../../../src/manager/response").ManagerResponse> {
-    throw new Error("Method not implemented.");
-  }
-  getList?(data: ListFilterInterface): Promise<import("../../../src/manager/response").ManagerResponse> {
+  getList?(data: ListFilterInterface): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
   getCommonAddressList(data: { id: number, type: FetchAddressType }): ManagerResponse {
@@ -89,7 +74,7 @@ class AddressManager implements CommonManager {
   _getCityList(id?: number): ManagerResponse {
     let result = [...city, ...ZhiXiaShi]
     if (id) {
-      result = result.filter(item => item.code.includes(id.toString()))
+      result = result.filter(item => item.code.startsWith(id.toString()))
     }
     result = result.map(item => ({
       ...item,
@@ -100,7 +85,7 @@ class AddressManager implements CommonManager {
   _getAreaList(id?: number): ManagerResponse {
     let result = area
     if (id) {
-      result = result.filter(item => item.code.includes(id.toString()))
+      result = result.filter(item => item.code.startsWith(id.toString()))
     }
     result = result.map(item => ({
       ...item,
@@ -122,7 +107,7 @@ class AddressManager implements CommonManager {
   _getTownList(id?: number): ManagerResponse {
     let result = town
     if (id) {
-      result = result.filter(item => item.code.includes(id.toString()))
+      result = result.filter(item => item.code.startsWith(id.toString()))
     }
     result = result.map(item => ({
       ...item,

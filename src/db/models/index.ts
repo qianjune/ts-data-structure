@@ -1,4 +1,4 @@
-import Address from './address'
+import Address from './v2/address'
 import IdCard from './idCard'
 import Member from './member'
 import Points from './points'
