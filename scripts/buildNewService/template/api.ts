@@ -24,7 +24,7 @@ class XXXXXX extends BaseRouter {
     // get info
   }
   @get('/list')
-  @summary('XXXXXX详情')
+  @summary('XXXXXX列表')
   @parameter(joi.object({
     pageSize: joi.number().required(),
     pageNo: joi.number().required()

@@ -18,10 +18,12 @@ import AttributeValue from './v2/product/attribute_value'
 import CommentModel from './v2/product/comment'
 // import ShopProductRelation from './v2/shopProductRelation'
 
-Address.belongsTo(Member, {
+// Address.belongsTo(User, {
+//   foreignKey: 'memberId'
+// })
+User.hasMany(Address, {
   foreignKey: 'memberId'
 })
-
 IdCard.belongsTo(Member, {
   foreignKey: 'memberId'
 })

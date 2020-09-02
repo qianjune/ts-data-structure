@@ -18,3 +18,14 @@ export interface CommonManager {
   getList?(data: ListFilterInterface): Promise<ManagerResponse>;
 }
 
+export const buildCommonListParams = (
+  { pageNo = 1, pageSize = 10 }: { pageNo: number, pageSize: number }): any => {
+  return {
+    limit: pageSize,
+    offset: pageSize * (pageNo - 1),
+    order: [
+      ['id', 'desc']
+    ],
+  }
+}
+

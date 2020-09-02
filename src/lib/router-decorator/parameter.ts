@@ -10,6 +10,10 @@ import { Context } from 'koa'
 //   target.apis[key].parameter[location] = convert(joiSchema)
 // }
 
+// enum ParamsType={
+
+// }
+
 /**
  * 设置参数及验证的注解
  * @param {String} name 参数名

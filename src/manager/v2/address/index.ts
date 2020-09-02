@@ -2,7 +2,7 @@
  * @description Address-Manager orm
  */
 
-import { CommonManager, ListFilterInterface } from "@src/manager/interface/commonManager";
+import { CommonManager, ListFilterInterface, buildCommonListParams } from "@src/manager/interface/commonManager";
 import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg, ManagerResponseFailure } from "@src/manager/response";
 import province from 'province-city-china/dist/province.json'
 import city from 'province-city-china/dist/city.json'
@@ -12,7 +12,7 @@ import level from 'province-city-china/dist/level.json'
 
 import sequelize from "@root/core/db";
 import { FetchAddressType, ZhiXiaShi, AddressItem } from "./interface";
-import { Address } from "@src/db/models";
+import { Address, Product } from "@src/db/models";
 
 const placeholder = '地址'
 const responseMsg = ResponseMsg(placeholder)
@@ -37,12 +37,33 @@ class AddressManager implements CommonManager {
     if (!address) {
       return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
     }
+    const result = address.destroy()
+    console.log(result)
+    if (result) {
+      return new ManagerResponseSuccess({ msg: responseMsg.DELETE_SUCCESS, data: result })
+    } else {
+      return new ManagerResponseFailure({ msg: responseMsg.DELETE_FAIL })
+    }
   }
   getInfo(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  getList?(data: ListFilterInterface): Promise<ManagerResponse> {
-    throw new Error("Method not implemented.");
+  async getList?(data: ListFilterInterface & { userId: number }): Promise<ManagerResponse> {
+    const { pageNo = 1, pageSize = 10, userId } = data
+    return await sequelize.transaction(async (t: any) => {
+      const result = await Address.findAndCountAll({
+        ...buildCommonListParams({ pageNo, pageSize })
+      })
+      const { count, rows } = result
+      const addressList = rows.map(row => {
+        return row.toJSON()
+      })
+      return new ManagerResponseSuccess({
+        msg: responseMsg.FETCH_LIST_SUCCESS, data: new ListDataModel({
+          data: addressList, total: count, pageNo, pageSize
+        })
+      })
+    })
   }
   getCommonAddressList(data: { id: number, type: FetchAddressType }): ManagerResponse {
     const { id, type } = data

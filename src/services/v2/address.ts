@@ -8,20 +8,22 @@ const addressManager = new AddressManager()
 
 
 class AddressService implements CommonService {
-  create(data: any): Promise<void> {
-    throw new Error("Method not implemented.");
+  async create(data: any): Promise<void> {
+    const result = await addressManager.create(data)
+    ResponseHandler.send(result)
   }
   edit<T>(data: T): void {
     throw new Error("Method not implemented.");
   }
-  del(id: number): Promise<void> {
-    throw new Error("Method not implemented.");
+  async del(id: number): Promise<void> {
+    ResponseHandler.send(await addressManager.del(id))
   }
   getInfo(id: number): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  getList?(data: any): Promise<void> {
-    throw new Error("Method not implemented.");
+  async getList?(data: any): Promise<void> {
+    const result = await addressManager.getList(data)
+    ResponseHandler.send(result)
   }
   getCommonAddressList(data: any): void {
     const result = addressManager.getCommonAddressList(data)

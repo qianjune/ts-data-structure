@@ -18,28 +18,28 @@ Address.init({
     comment: "会员id",
     allowNull: false
   },
-  country: {
+  countryId: {
     type: STRING,
     allowNull: false,
     comment: "国家",
-    defaultValue:'CN'
+    defaultValue: 'CN'
   },
-  city: {
+  cityId: {
     type: STRING,
     allowNull: false,
     comment: "省"
   },
-  province: {
+  provinceId: {
     type: STRING,
     allowNull: false,
     comment: "市"
   },
-  area: {
+  areaId: {
     type: STRING,
     allowNull: false,
     comment: "区"
   },
-  town: {
+  townId: {
     type: STRING,
     allowNull: false,
     comment: "街道"
@@ -51,8 +51,8 @@ Address.init({
   },
   postCode: {
     type: TYPES.STRING,
-    allowNull: false,
-    comment: '邮编'
+    comment: '邮编',
+    defaultValue: '000000'
   },
   tel: {
     type: TYPES.STRING,

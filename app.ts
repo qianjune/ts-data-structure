@@ -13,7 +13,7 @@ import SessionCookieHandler from '@src/utils/session_cookie'
 import _, { omitBy, isNil, LoDashStatic } from 'lodash'
 
 _.mixin({
-  omitNil (data) {
+  omitNil(data) {
     return omitBy(data, isNil)
   }
 })
@@ -24,7 +24,12 @@ declare global {
       errs: GlobalErrorInterface;
       swagger: any;
       status: HttpStatus;
-      state: { [keyName: string]: any };
+      state: {
+        userInfo?: {
+          id: number
+        }
+        [keyName: string]: any
+      };
       util: {
         lodash: LoDashStatic & {
           omitNil: (data: Record<string, any>) => Record<string, any>
@@ -43,53 +48,53 @@ if (!global.util) {
     }
   }
 }
-  const typeDefs = gql`
+const typeDefs = gql`
   type Query {
     hello: String
   }
 `;
 
-  // Provide resolver functions for your schema fields
-  const resolvers = {
-    Query: {
-      hello: () => 'Hello world!',
-    },
-  };
+// Provide resolver functions for your schema fields
+const resolvers = {
+  Query: {
+    hello: () => 'Hello world!',
+  },
+};
 
-  const server = new ApolloServer({ typeDefs, resolvers });
-  const app = new Koa()
+const server = new ApolloServer({ typeDefs, resolvers });
+const app = new Koa()
 
-  app.use(cors({
-    origin (ctx: Context) { //设置允许来自指定域名请求
-      return 'http://localhost:9000'; //只允许http://localhost:8080这个域名的请求
-    },
-    maxAge: 5, //指定本次预检请求的有效期，单位为秒。
-    credentials: true, //是否允许发送Cookie
-    allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], //设置所允许的HTTP请求方法
-    allowHeaders: ['Content-Type', 'Authorization', 'Accept'], //设置服务器支持的所有头信息字段
-    exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'] //设置获取其他自定义字段
-  }))
-  SessionCookieHandler.init(app)
-  app.use(serve(path.join(__dirname, 'public/')))
-  app.use(catchError)
-  app.use(parser({
-    enableTypes: ['json', 'form', 'text']
-  }))
+app.use(cors({
+  origin(ctx: Context) { //设置允许来自指定域名请求
+    return 'http://localhost:9000'; //只允许http://localhost:8080这个域名的请求
+  },
+  maxAge: 5, //指定本次预检请求的有效期，单位为秒。
+  credentials: true, //是否允许发送Cookie
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], //设置所允许的HTTP请求方法
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept'], //设置服务器支持的所有头信息字段
+  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'] //设置获取其他自定义字段
+}))
+SessionCookieHandler.init(app)
+app.use(serve(path.join(__dirname, 'public/')))
+app.use(catchError)
+app.use(parser({
+  enableTypes: ['json', 'form', 'text']
+}))
 
-  InitManager.initCore(app)
+InitManager.initCore(app)
 
-  app.use(
-    koaSwagger({
-      routePrefix: '/v2/swagger',
-      swaggerOptions: {
-        url: 'http://localhost:3111/v2/swagger-schema'
-      }
-    })
-  )
-  server.applyMiddleware({ app: app as any })
-  export {
-    server
-  }
+app.use(
+  koaSwagger({
+    routePrefix: '/v2/swagger',
+    swaggerOptions: {
+      url: 'http://localhost:3111/v2/swagger-schema'
+    }
+  })
+)
+server.applyMiddleware({ app: app as any })
+export {
+  server
+}
 
-  export default app
+export default app
 

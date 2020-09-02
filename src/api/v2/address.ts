@@ -3,19 +3,32 @@
  */
 
 import joi from '@hapi/joi'
-import BaseRouter, { post, parameter, get, summary, del, prefix, tag } from '@src/lib/router-decorator';
+import BaseRouter, { post, parameter, get, summary, del, prefix, tag, middleware } from '@src/lib/router-decorator';
 import { Context } from 'koa';
 import AddressService from '@src/services/v2/address';
 import { FetchAddressType } from '@src/manager/v2/address/interface';
+import SessionCookieHandler from '@src/utils/session_cookie';
 const addressService = new AddressService()
 @prefix('/api/address')
 @tag('AddressApi相关服务')
 class AddressApi extends BaseRouter {
   @post('/create')
+  @middleware(SessionCookieHandler.loginCheck)
   @summary('收件地址创建')
-  @parameter(joi.object({}), 'body')
+  @parameter(joi.object({
+    countryId: joi.string(),
+    provinceId: joi.string().required(),
+    cityId: joi.string().required(),
+    areaId: joi.string().required(),
+    townId: joi.string(),
+    address: joi.string().required(),
+    tel: joi.string().required(),
+    receiver: joi.string().required()
+  }), 'body')
   async create(ctx: Context): Promise<void> {
-    // create api
+    const { body } = ctx.request
+
+    await addressService.create({ ...body, memberId: global.state.userInfo.id })
   }
   @get('/detail/:id')
   @summary('AddressApi详情')
@@ -26,13 +39,15 @@ class AddressApi extends BaseRouter {
     // get info
   }
   @get('/list')
-  @summary('AddressApi详情')
+  @summary('Address列表')
+  @middleware(SessionCookieHandler.loginCheck)
   @parameter(joi.object({
     pageSize: joi.number().required(),
     pageNo: joi.number().required()
   }), 'query')
   async getList(ctx: Context): Promise<void> {
-    // get list
+    const { parameter } = ctx.state
+    await addressService.getList(parameter)
   }
   @del('/:id')
   @summary('删除AddressApi')
@@ -40,7 +55,7 @@ class AddressApi extends BaseRouter {
     id: joi.string().required()
   }), 'params')
   async del(ctx: Context): Promise<void> {
-    // del item
+    await addressService.del(ctx.state.parameter.id)
   }
 
   @post('/edit')
