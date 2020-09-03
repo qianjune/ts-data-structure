@@ -11,6 +11,20 @@ import { Context } from "koa";
 @prefix('/api/common')
 @tag('验证码服务')
 class CodeRouter extends BaseRouter {
+
+  @post('/mobile/send/code')
+  @summary('发送手机验证码-带图片验证码')
+  @parameter(Joi.object({
+    action: Joi.string().required(),
+    user: Joi.string().length(11).required(),
+    captcha: Joi.string().length(4).required()
+  }), 'body')
+  async sendCodeToMobileForResetPassword(ctx: Context): Promise<void> {
+    const { user, captcha, action } = ctx.request.body
+    await CodeService.sendCodeByMobile(user, action, (captcha as string).toLowerCase())
+  }
+
+
   @post('/mobile/send/code')
   @summary('发送手机验证码')
   @parameter(Joi.object({

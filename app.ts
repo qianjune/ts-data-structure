@@ -28,6 +28,7 @@ declare global {
         userInfo?: {
           id: number
         }
+        mock: boolean
         [keyName: string]: any
       };
       util: {
@@ -39,7 +40,9 @@ declare global {
   }
 }
 if (!global.state) {
-  global.state = {}
+  global.state = {
+    mock: true
+  }
 }
 if (!global.util) {
   global.util = {

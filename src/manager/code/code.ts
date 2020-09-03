@@ -12,6 +12,7 @@ interface SendCodeProps {
   path: CODE_ACTION_PATH;
   type: CODE_ACTION_TYPE;
   platform: CODE_PLATFORM;
+  mock?: boolean
 }
 interface ValidateCodeProps extends SendCodeProps {
   code: string;
@@ -41,12 +42,12 @@ class CodeManager {
     return `${path}_${platform}_${type}`
   }
   async sendCode(data: SendCodeProps): Promise<ManagerResponse> {
-    const { user, path, type, platform } = data
+    const { user, path, type, platform, mock = false } = data
     const manager = this._selectManage(path)
     if (!manager) {
       return
     }
-    const result = await manager.sendCode(user, this._typeStringBuilder(path, type, platform))
+    const result = await manager.sendCode(user, this._typeStringBuilder(path, type, platform), mock)
     return result
   }
   async validateCode(data: ValidateCodeProps): Promise<ManagerResponse> {

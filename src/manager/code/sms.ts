@@ -8,7 +8,6 @@ import { ValidateCodeModel } from '@root/cache/validateCode'
 import { CodeBuilder } from '@root/cache/codeBuilder';
 import { CODE_ACTION_TYPE } from '@src/enum';
 import { ManagerResponse } from '../response';
-import tryCatch from 'ramda/es/tryCatch';
 
 
 export interface CodeManagerInterface {
@@ -25,8 +24,8 @@ class Sms implements CodeManagerInterface {
  * @param {number} mobile 手机号
  * @param {string} message 短信信息
  */
-  async sendCode(user: string, type: string): Promise<ManagerResponse> {
-    const smsCode = CodeBuilder.buildValidateCode()
+  async sendCode(user: string, type: string, mock?: boolean): Promise<ManagerResponse> {
+    let smsCode = CodeBuilder.buildValidateCode()
     const content = this._buildSmsContent(user, smsCode)
 
     const option = {
@@ -45,8 +44,13 @@ class Sms implements CodeManagerInterface {
     //   },
     //   'Content-Type': 'application/x-www-form-urlencoded',
     // })
+    let res = { data: { error: 0 } }
+    if (mock) {
+      smsCode = '123456'
+    } else {
+      res = await axios(option as any)
+    }
 
-    const res = await axios(option as any)
     console.log('短信发送结果', res.data)
     if (res.data.error === 0) {
       ValidateCodeModel.saveCode({ user, key: type, code: smsCode })
@@ -59,7 +63,7 @@ class Sms implements CodeManagerInterface {
     return new ManagerResponse({ success: false, msg })
   }
   async validateCode(user: string, type: string, code: string): Promise<ManagerResponse> {
-    const result = await ValidateCodeModel.validateCode({ user: user, key: type, code })
+    const result = await ValidateCodeModel.validateCode({ user, key: type, code })
     return new ManagerResponse({ success: result, msg: result ? '验证成功' : '验证失败' })
 
   }

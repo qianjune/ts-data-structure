@@ -2,16 +2,41 @@
  * @description user api 层
  */
 
-import BaseRouter, { prefix, tag, post, summary, parameter } from "@src/lib/router-decorator";
+import BaseRouter, { prefix, tag, post, summary, parameter, middleware } from "@src/lib/router-decorator";
 import Joi from "@hapi/joi";
 import UserService from "@src/services/user";
 import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "@src/enum";
 import CodeManager from "@src/manager/code/code";
 import { Context } from "koa";
+import SessionCookieHandler from "@src/utils/session_cookie";
+import { CodeModel } from "@src/models_discard/code";
 const codeManager = new CodeManager()
 @prefix('/api/user')
 @tag('用户服务')
 class UserRouter extends BaseRouter {
+
+  @post('/reset/password')
+  @summary('重置用户密码')
+  @parameter(Joi.object({
+    user: Joi.string().length(11).required(),
+    code: Joi.string().length(6).required(),
+    password: Joi.string().required()
+  }), 'body')
+  @middleware(SessionCookieHandler.loginCheck)
+  async resetPassword(ctx: Context): Promise<any> {
+    const { user, code, password } = ctx.request.body
+    const { id } = global.state.userInfo
+    console.log(user, code)
+    const data = {
+      id,
+      password,
+      code,
+      user,
+      type: CODE_ACTION_TYPE.RESET_PASSWORD
+    }
+    await UserService.edit(data)
+  }
+
   @post('/login/by/code')
   @summary('用户登录通过验证码')
   @parameter(Joi.object({
@@ -57,6 +82,14 @@ class UserRouter extends BaseRouter {
       }
     }
   }
+
+  // @parameter(Joi.object({
+
+  // }),'body')
+  // async modifyPasswordByOld(){
+  //   return 
+  // }
+
 }
 
 const userRouter = new UserRouter()

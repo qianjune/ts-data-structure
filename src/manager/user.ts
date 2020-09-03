@@ -4,9 +4,8 @@
 
 import { User } from "@src/db/models";
 // import JwtHandler from "@src/utils/jwt_handler";
-import SessionCookieHandler from "@src/utils/session_cookie";
 import { CommonManagerInterface } from './interface/interface'
-import { ManagerResponseSuccess, ManagerResponseFailure, ManagerResponse } from "./response";
+import { ManagerResponseSuccess, ManagerResponseFailure, ManagerResponse, ResponseMsg } from "./response";
 
 interface UserBody {
   mobile?: number | string;
@@ -21,6 +20,8 @@ interface UserPutBody {
 }
 type UserServiceInterface = CommonManagerInterface<UserBody, UserPutBody>
 
+const placeholder = '用户'
+const responseMsg = ResponseMsg(placeholder)
 class UserManager implements UserServiceInterface {
 
   async getValidateData(data: { [propKey: string]: any }, mode?: string): Promise<any> {
@@ -55,9 +56,22 @@ class UserManager implements UserServiceInterface {
     }
 
   }
-  async update(data: UserPutBody): Promise<void> {
-    const user = await this.getValidateData({ id: data.id }, 'self')
-    if (user) {
+  async update(data: UserPutBody): Promise<ManagerResponse> {
+    const user = await User.findOne({
+      where: {
+        id: data.id
+      }
+    })
+    if (!user) {
+      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
+    }
+    user.setDataValue('password', data.password)
+    const result = await user.save()
+    if (result) {
+      return new ManagerResponseSuccess({ msg: '更新成功', data: {} })
+
+    } else {
+      return new ManagerResponseFailure({ msg: '更新失败' })
 
     }
   }

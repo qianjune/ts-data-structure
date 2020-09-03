@@ -7,7 +7,9 @@ import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "@src/enum";
 import { ResponseHandler } from "@src/utils/responseHandler";
 import JwtHandler from "@src/utils/jwt_handler";
 import UserService from "./user";
-import { ManagerResponse } from "@src/manager/response";
+import { ManagerResponse, ManagerResponseFailure } from "@src/manager/response";
+import { ValidateCodeModel } from "@root/cache/validateCode";
+import CommonService from "./common";
 const codeManager = new CodeManager()
 class CodeService {
   /**
@@ -15,12 +17,15 @@ class CodeService {
    * @param user 
    * @param type 
    */
-  static async sendCodeByMobile(user: string, type = CODE_ACTION_TYPE.COMMON): Promise<void> {
+  static async sendCodeByMobile(user: string, type = CODE_ACTION_TYPE.COMMON, captcha?: string): Promise<void> {
+    // 验证图片验证码是否输入正确
+    await CommonService.captchaValidate(user, type, captcha)
     const result = await codeManager.sendCode({
       user,
       type,
       path: CODE_ACTION_PATH.MOBILE,
-      platform: CODE_PLATFORM.MINI
+      platform: CODE_PLATFORM.MINI,
+      mock: global.state.mock
     })
     console.log('result..', result)
 

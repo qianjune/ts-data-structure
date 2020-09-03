@@ -1,5 +1,7 @@
 import { UserManager } from "@src/manager/user"
 import JwtHandler from "@src/utils/jwt_handler"
+import { ResponseHandler } from "@src/utils/responseHandler"
+import CodeService from "./code"
 
 /**
  * @description 用户 service
@@ -12,7 +14,17 @@ class UserService {
     console.log('最后得到的用户', result)
     // if(!result) throw global.errs.
   }
-
+  static async edit(data: any): Promise<void> {
+    const {
+      code,
+      user,
+      type,
+      ...otherData
+    } = data
+    CodeService.validateCodeByMobile(user, type, code)
+    const result = await userManager.update(otherData)
+    ResponseHandler.send(result)
+  }
   static async registerAndLoginForApp(user: string, model: 'jwt' | 'session' = 'jwt'): Promise<any> {
     // 首先验证验证码，查找是否有该用户
     const realUser = await userManager.getValidateData({ mobile: user }, 'self')
