@@ -12,7 +12,7 @@ class AddressService implements CommonService {
     const result = await addressManager.create(data)
     ResponseHandler.send(result)
   }
-  edit<T>(data: T): void {
+  edit(data: any): Promise<void> {
     throw new Error("Method not implemented.");
   }
   async del(id: number): Promise<void> {

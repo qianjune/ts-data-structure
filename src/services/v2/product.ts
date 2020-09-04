@@ -6,6 +6,9 @@ import { omit, cloneDeep } from "lodash";
 const productManager = new ProductManager
 
 class ProductService implements CommonService {
+  edit(data: any): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
 
   private skuGroupOriginDataToCodeHandler = (crd: any) => {
     if (crd.skuGroup) {
@@ -31,9 +34,7 @@ class ProductService implements CommonService {
     const result = await productManager.create(data)
     ResponseHandler.send(result)
   }
-  edit<T>(data: T): void {
-    throw new Error("Method not implemented.");
-  }
+  
   del(id: number): Promise<void> {
     throw new Error("Method not implemented.");
   }

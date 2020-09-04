@@ -7,13 +7,14 @@ import CategoryManager, { CategoryItemInterface, CategoryListParamsInterface } f
 import { ResponseHandler } from "@src/utils/responseHandler";
 const categoryManager = new CategoryManager()
 class CategoryService implements CommonService {
+  edit(data: any): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
   async create(data: CategoryItemInterface): Promise<void> {
     const result = await categoryManager.create(data)
     ResponseHandler.send(result)
   }
-  edit<T>(data: T): void {
-    throw new Error("Method not implemented.");
-  }
+ 
   async del(id: number): Promise<void> {
     const result = await categoryManager.del(id)
     ResponseHandler.send(result)

@@ -2,14 +2,14 @@
  * @description user api 层
  */
 
-import BaseRouter, { prefix, tag, post, summary, parameter, middleware } from "@src/lib/router-decorator";
+import BaseRouter, { prefix, tag, post, summary, parameter, middleware, get } from "@src/lib/router-decorator";
 import Joi from "@hapi/joi";
 import UserService from "@src/services/user";
 import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "@src/enum";
 import CodeManager from "@src/manager/code/code";
 import { Context } from "koa";
 import SessionCookieHandler from "@src/utils/session_cookie";
-import { CodeModel } from "@src/models_discard/code";
+const userService = new UserService()
 const codeManager = new CodeManager()
 @prefix('/api/user')
 @tag('用户服务')
@@ -34,7 +34,20 @@ class UserRouter extends BaseRouter {
       user,
       type: CODE_ACTION_TYPE.RESET_PASSWORD
     }
-    await UserService.edit(data)
+    await userService.edit(data)
+  }
+
+
+  @get('/list')
+  @summary('获取用户列表')
+  @parameter(Joi.object({
+    pageSize: Joi.number().required(),
+    pageNo: Joi.number().required()
+  }), 'query')
+  @middleware(SessionCookieHandler.loginCheck)
+  async getUserList(ctx: Context): Promise<any> {
+
+    await userService.getList(ctx.state.parameter)
   }
 
   @post('/login/by/code')

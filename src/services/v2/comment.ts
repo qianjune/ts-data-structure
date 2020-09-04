@@ -6,13 +6,14 @@ import CommentManager from "@src/manager/v2/comment";
 import { ResponseHandler } from "@src/utils/responseHandler";
 const commentManager = new CommentManager()
 class CommentService implements CommonService {
+  edit(data: any): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
   async create(data: any): Promise<void> {
     const result = await commentManager.create(data)
     ResponseHandler.send(result)
   }
-  edit<T>(data: T): void {
-    throw new Error("Method not implemented.");
-  }
+ 
   del(id: number): Promise<void> {
     throw new Error("Method not implemented.");
   }

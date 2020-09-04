@@ -5,7 +5,10 @@
 import { User } from "@src/db/models";
 // import JwtHandler from "@src/utils/jwt_handler";
 import { CommonManagerInterface } from './interface/interface'
-import { ManagerResponseSuccess, ManagerResponseFailure, ManagerResponse, ResponseMsg } from "./response";
+import { ManagerResponseSuccess, ManagerResponseFailure, ManagerResponse, ResponseMsg, ListDataModel } from "./response";
+import { CommonManager, ListFilterInterface, buildCommonListParams } from "./interface/commonManager";
+import sequelize from "@root/core/db";
+import EncryptBox from "@src/utils/encrypt_box";
 
 interface UserBody {
   mobile?: number | string;
@@ -22,8 +25,7 @@ type UserServiceInterface = CommonManagerInterface<UserBody, UserPutBody>
 
 const placeholder = '用户'
 const responseMsg = ResponseMsg(placeholder)
-class UserManager implements UserServiceInterface {
-
+class UserManager implements CommonManager {
   async getValidateData(data: { [propKey: string]: any }, mode?: string): Promise<any> {
     const user = await User.findOne({
       where: data
@@ -56,7 +58,7 @@ class UserManager implements UserServiceInterface {
     }
 
   }
-  async update(data: UserPutBody): Promise<ManagerResponse> {
+  async edit(data: UserPutBody): Promise<ManagerResponse> {
     const user = await User.findOne({
       where: {
         id: data.id
@@ -65,8 +67,12 @@ class UserManager implements UserServiceInterface {
     if (!user) {
       return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
     }
-    user.setDataValue('password', data.password)
-    const result = await user.save()
+    // user.setDataValue('password', data.password)
+    if (data.password) {
+      data.password = EncryptBox.buildEncryptCode(data.password)
+    }
+
+    const result = await user.update({ ...data })
     if (result) {
       return new ManagerResponseSuccess({ msg: '更新成功', data: {} })
 
@@ -75,7 +81,7 @@ class UserManager implements UserServiceInterface {
 
     }
   }
-  async destroy(id: string): Promise<void> {
+  async del(id: number): Promise<ManagerResponse> {
     const user = await this.getValidateData({ id }, 'self')
     if (user) {
       const result = await User.update({ status: 'destroy' }, { where: { id } })
@@ -87,12 +93,31 @@ class UserManager implements UserServiceInterface {
     } else {
       // 没有该用户
     }
+    return new ManagerResponseFailure({ msg: '销毁账户失败' })
   }
-  // async loginJwt(uid: string) {
-  //   // 生成session 或者 jwt
-  //   const jwt = JwtHandler.encrypt({ id: uid })
-  //   return jwt
-  // }
+  getInfo(id: number): Promise<ManagerResponse> {
+    throw new Error("Method not implemented.");
+  }
+  // 之后需要运营人员权限
+  async getList?(data: ListFilterInterface): Promise<ManagerResponse> {
+    const { pageSize, pageNo } = data
+    return await sequelize.transaction(async (t: any) => {
+      const result = await User.findAndCountAll({
+        ...buildCommonListParams({ pageNo, pageSize }),
+        attributes: ['id', 'mobile', 'email','status']
+      })
+      const { count, rows } = result
+      const userList = rows.map(row => {
+        return row.toJSON()
+      })
+      return new ManagerResponseSuccess({
+        msg: responseMsg.FETCH_LIST_SUCCESS,
+        data: new ListDataModel({
+          data: userList, total: count, pageNo, pageSize
+        })
+      })
+    })
+  }
 }
 
 export {

@@ -6,13 +6,14 @@ import ShoppingCartManager from "@src/manager/v2/shoppingCart";
 import { ResponseHandler } from "@src/utils/responseHandler";
 const shoppingCartManager = new ShoppingCartManager()
 class shoppingCartService implements CommonService {
+  edit(data: any): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
   async create(data: any): Promise<void> {
     const result = await shoppingCartManager.create(data)
     ResponseHandler.send(result)
   }
-  edit<T>(data: T): void {
-    throw new Error("Method not implemented.");
-  }
+ 
   del(id: number): Promise<void> {
     throw new Error("Method not implemented.");
   }

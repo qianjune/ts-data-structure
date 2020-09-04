@@ -2,19 +2,34 @@ import { UserManager } from "@src/manager/user"
 import JwtHandler from "@src/utils/jwt_handler"
 import { ResponseHandler } from "@src/utils/responseHandler"
 import CodeService from "./code"
+import { CommonService } from "./interface/common"
 
 /**
  * @description 用户 service
  */
 const userManager = new UserManager()
-class UserService {
+class UserService implements CommonService {
+  create(data: any): Promise<void> {
+    throw new Error("Method not implemented.")
+  }
+
+  del(id: number): Promise<void> {
+    throw new Error("Method not implemented.")
+  }
+  getInfo(id: number): Promise<void> {
+    throw new Error("Method not implemented.")
+  }
+  async getList?(data: any): Promise<void> {
+    const result = await userManager.getList(data)
+    ResponseHandler.send(result)
+  }
   static async login(user: string, code: string): Promise<void> {
     console.log(user, code)
     const result = await userManager.create({ mobile: user })
     console.log('最后得到的用户', result)
     // if(!result) throw global.errs.
   }
-  static async edit(data: any): Promise<void> {
+  async edit(data: any): Promise<void> {
     const {
       code,
       user,
@@ -22,7 +37,7 @@ class UserService {
       ...otherData
     } = data
     CodeService.validateCodeByMobile(user, type, code)
-    const result = await userManager.update(otherData)
+    const result = await userManager.edit(otherData)
     ResponseHandler.send(result)
   }
   static async registerAndLoginForApp(user: string, model: 'jwt' | 'session' = 'jwt'): Promise<any> {
