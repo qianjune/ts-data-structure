@@ -7,6 +7,22 @@ import { TYPES } from '@src/db/types'
 
 class OrderDb extends Model { }
 
+class GoodsItem {
+  productId: number
+  productName: string
+  selectedSku: string
+  amount: number
+  constructor({ productId, productName, selectedSku, amount }: {
+    productId: number, productName: string, selectedSku: string, amount: number
+  }) {
+    this.productId = productId
+    this.productName = productName
+    this.selectedSku = selectedSku
+    this.amount = amount
+  }
+  
+}
+
 OrderDb.init({
   id: {
     type: TYPES.INTEGER,
@@ -22,7 +38,12 @@ OrderDb.init({
   addressId: {
     type: TYPES.INTEGER,
     allowNull: false,
-    comment: '收获地址id'
+    comment: '收获地址id（包含收件人及手机号）'
+  },
+  goods: {
+    type: TYPES.STRING,
+    allowNull: false,
+    comment: '将购买的商品'
   }
 }, {
   sequelize,
