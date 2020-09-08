@@ -5,7 +5,7 @@
 import { CommonManager, ListFilterInterface, buildCommonListParams } from "@src/manager/interface/commonManager";
 import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg, ManagerResponseFailure } from "@src/manager/response";
 import province from 'province-city-china/dist/province.json'
-import city from 'province-city-china/dist/city.json'
+import originCity from 'province-city-china/dist/city.json'
 import area from 'province-city-china/dist/area.json'
 import town from 'province-city-china/dist/town.json'
 import level from 'province-city-china/dist/level.json'
@@ -13,6 +13,7 @@ import level from 'province-city-china/dist/level.json'
 import sequelize from "@root/core/db";
 import { FetchAddressType, ZhiXiaShi, AddressItem } from "./interface";
 import { Address, Product } from "@src/db/models";
+const city = [...originCity, ...ZhiXiaShi]
 
 const placeholder = '地址'
 const responseMsg = ResponseMsg(placeholder)
@@ -48,6 +49,28 @@ class AddressManager implements CommonManager {
   getInfo(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
+  _buildAddressName(row: {
+    cityId: string,
+    provinceId: string,
+    areaId: string,
+    townId: string
+  }): any {
+    const { cityId, provinceId, areaId, townId } = row
+    const nameObj: { [propName: string]: string } = {}
+    if (provinceId) {
+      nameObj.provinceName = province.find(d => d.code.startsWith(provinceId)).name
+    }
+    if (cityId) {
+      nameObj.cityName = city.find(d => d.code.startsWith(cityId)).name
+    }
+    if (areaId) {
+      nameObj.areaName = area.find(d => d.code.startsWith(areaId)).name
+    }
+    if (townId) {
+      nameObj.townName = town.find(d => d.code.startsWith(townId)).name
+    }
+    return { ...row, ...nameObj }
+  }
   async getList?(data: ListFilterInterface & { userId: number }): Promise<ManagerResponse> {
     const { pageNo = 1, pageSize = 10, userId } = data
     return await sequelize.transaction(async (t: any) => {
@@ -56,8 +79,11 @@ class AddressManager implements CommonManager {
       })
       const { count, rows } = result
       const addressList = rows.map(row => {
-        return row.toJSON()
+        let cloneRow = row.toJSON()
+        cloneRow = this._buildAddressName(cloneRow as any)
+        return cloneRow
       })
+
       return new ManagerResponseSuccess({
         msg: responseMsg.FETCH_LIST_SUCCESS, data: new ListDataModel({
           data: addressList, total: count, pageNo, pageSize
@@ -93,7 +119,7 @@ class AddressManager implements CommonManager {
     return new ManagerResponseSuccess({ msg: responseMsg.ADDRESS_ALL_LIST_SUCCESS, data: result })
   }
   _getCityList(id?: number): ManagerResponse {
-    let result = [...city, ...ZhiXiaShi]
+    let result = [...city]
     if (id) {
       result = result.filter(item => item.code.startsWith(id.toString()))
     }
