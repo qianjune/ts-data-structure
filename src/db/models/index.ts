@@ -48,6 +48,7 @@ User.hasMany(ShopUserRelation, {
   foreignKey: 'uid'
 })
 Product.belongsTo(ShopModel, {
+  as: 'shopDetail',
   foreignKey: 'shopId'
 })
 Product.hasMany(ShoppingCartModel, {

@@ -3,13 +3,24 @@
  */
 
 import { CommonManager, ListFilterInterface } from "../interface/commonManager";
-import { Product } from "@src/db/models";
+import { Product, ShopModel } from "@src/db/models";
 import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg, ManagerResponseFailure } from "@src/manager/response";
 import sequelize from "@root/core/db";
 
 const placeholder = '商品'
 const responseMsg = ResponseMsg(placeholder)
+
+interface goodsInfo{
+  skuGroup: string, shopDetail: { name: string }, [propsName: string]: any 
+}
+
 class ProductManager implements CommonManager {
+  _shopInfoHandler(row:goodsInfo):goodsInfo {
+    const cloneRow = { ...row }
+    cloneRow.shopName = cloneRow.shopDetail.name
+    delete cloneRow.shopDetail
+    return cloneRow
+  }
   async create(data: {
     name: string;
     shopId: number;
@@ -49,12 +60,20 @@ class ProductManager implements CommonManager {
     const productInfo = await Product.findOne({
       where: {
         id
-      }
+      },
+      include: [
+        {
+          model: ShopModel,
+          as: 'shopDetail',
+          attributes: ['name']
+        }
+      ],
     })
     if (!productInfo) {
       return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
     }
-    const cloneProduct: any = productInfo.toJSON()
+    let cloneProduct: any = productInfo.toJSON()
+    cloneProduct=this._shopInfoHandler(cloneProduct)
     cloneProduct.skuGroup = JSON.parse(cloneProduct.skuGroup)
     return new ManagerResponseSuccess({ data: cloneProduct, msg: responseMsg.GET_DETAIL_SUCCESS })
   }
@@ -71,12 +90,21 @@ class ProductManager implements CommonManager {
       order: [
         ['id', 'desc']
       ],
+      include: [
+        {
+          model: ShopModel,
+          as: 'shopDetail',
+          attributes: ['name']
+        }
+      ],
       where
     })
     const { rows, count } = result
     const productList = rows.map(row => {
-      const cloneRow = { ...row.toJSON() } as { skuGroup: string }
+      let cloneRow = { ...row.toJSON() } as goodsInfo
       console.log(cloneRow)
+      cloneRow=this._shopInfoHandler(cloneRow)
+      
       if (cloneRow.skuGroup) {
         cloneRow.skuGroup = JSON.parse(cloneRow.skuGroup)
       }

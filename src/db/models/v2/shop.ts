@@ -17,9 +17,15 @@ ShopModel.init({
     type: TYPES.STRING,
     comment: '店铺名称',
     allowNull: false
+  },
+  logo: {
+    type: TYPES.STRING,
+    comment: '店铺logo',
+    defaultValue: ''
   }
 }, {
   sequelize,
   tableName: 'shop'
 })
+ShopModel.sync({ alter: true })
 export default ShopModel

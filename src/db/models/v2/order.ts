@@ -20,8 +20,28 @@ class GoodsItem {
     this.selectedSku = selectedSku
     this.amount = amount
   }
-  
+
 }
+
+interface WantToBuyGoodsGroupInterface {
+  data: {
+    shopInfo: {
+      id: number
+      name: string
+      logo: string
+    },
+    goodsGroup: {
+      id: number
+      name: string
+      sku: string
+      price: string
+      amount: number
+      mainImage: string
+    }[]
+  }[]
+}
+
+
 
 OrderDb.init({
   id: {
