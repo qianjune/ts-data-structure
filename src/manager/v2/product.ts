@@ -10,12 +10,12 @@ import sequelize from "@root/core/db";
 const placeholder = '商品'
 const responseMsg = ResponseMsg(placeholder)
 
-interface goodsInfo{
-  skuGroup: string, shopDetail: { name: string }, [propsName: string]: any 
+interface goodsInfo {
+  skuGroup: string, shopDetail: { name: string }, [propsName: string]: any
 }
 
 class ProductManager implements CommonManager {
-  _shopInfoHandler(row:goodsInfo):goodsInfo {
+  _shopInfoHandler(row: goodsInfo): goodsInfo {
     const cloneRow = { ...row }
     cloneRow.shopName = cloneRow.shopDetail.name
     delete cloneRow.shopDetail
@@ -73,16 +73,16 @@ class ProductManager implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
     }
     let cloneProduct: any = productInfo.toJSON()
-    cloneProduct=this._shopInfoHandler(cloneProduct)
+    cloneProduct = this._shopInfoHandler(cloneProduct)
     cloneProduct.skuGroup = JSON.parse(cloneProduct.skuGroup)
     return new ManagerResponseSuccess({ data: cloneProduct, msg: responseMsg.GET_DETAIL_SUCCESS })
   }
   async getList(data: ListFilterInterface & { shopId: number }): Promise<ManagerResponse> {
-    const { pageSize = 10, pageNo = 1, shopId } = data
+    const { pageSize = 10, pageNo = 1, shopId, belong } = data
     console.log('pageSize', pageSize)
     console.log('pageNo', pageNo)
     console.log('shopId', shopId)
-    const where = global.util.lodash.omitNil({ shopId })
+    const where = global.util.lodash.omitNil({ shopId, belong })
     console.log('where', where)
     const result = await Product.findAndCountAll({
       limit: pageSize,
@@ -103,8 +103,8 @@ class ProductManager implements CommonManager {
     const productList = rows.map(row => {
       let cloneRow = { ...row.toJSON() } as goodsInfo
       console.log(cloneRow)
-      cloneRow=this._shopInfoHandler(cloneRow)
-      
+      cloneRow = this._shopInfoHandler(cloneRow)
+
       if (cloneRow.skuGroup) {
         cloneRow.skuGroup = JSON.parse(cloneRow.skuGroup)
       }

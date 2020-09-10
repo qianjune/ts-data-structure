@@ -19,7 +19,8 @@ class ProductRouter extends BaseRouter {
       shopId: Joi.number(),
       mainImage: Joi.string(),
       skuGroup: Joi.array().items(Joi.any()).required(),
-      desc:Joi.string()
+      desc:Joi.string(),
+      belong:Joi.number().required()
     })
     , 'body'
   )
@@ -52,6 +53,18 @@ class ProductRouter extends BaseRouter {
   }), 'query')
   async getListForApp(ctx: Context): Promise<void> {
     await productService.getListForApp(ctx.state.parameter)
+  }
+
+
+  @get('/:categoryId/list')
+  @summary('分类产品列表')
+  @parameter(Joi.object({
+    categoryId:Joi.number().required()
+  }),'params')
+  async getCategoryGoodsList(ctx:Context){
+    const {categoryId} = ctx.state.parameter
+    console.log(categoryId);
+    
   }
 
   @get('/app/detail/:id')

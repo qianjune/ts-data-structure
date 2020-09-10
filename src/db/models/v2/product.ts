@@ -59,7 +59,9 @@ Product.init(
       defaultValue: 1, // 之后删除
     },
     belong: {
-      type: TYPES.STRING
+      type: TYPES.STRING,
+      allowNull: true,
+      comment: '所属的分类'
     },
     status: {
       type: TYPES.STRING,
