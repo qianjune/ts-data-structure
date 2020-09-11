@@ -27,7 +27,7 @@ class CategoryRouter extends BaseRouter {
   }
   @get('/list')
   @summary('分类列表')
-  @middleware(SessionCookieHandler.loginCheck)
+  // @middleware(SessionCookieHandler.loginCheck)
   @parameter(
     Joi.object({
       pageSize: Joi.number().required(),
