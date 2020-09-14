@@ -10,19 +10,19 @@ import sequelize from "@root/core/db";
 const placeholder = 'XXXXXX'
 const responseMsg = ResponseMsg(placeholder)
 class XXXXXX implements CommonManager {
-  create(data: any): Promise<import("../../../src/manager/response").ManagerResponse> {
+  create(data: any): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  edit(data: any): Promise<import("../../../src/manager/response").ManagerResponse> {
+  edit(data: any): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  del(id: number): Promise<import("../../../src/manager/response").ManagerResponse> {
+  del(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  getInfo(id: number): Promise<import("../../../src/manager/response").ManagerResponse> {
+  getInfo(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  getList?(data: ListFilterInterface): Promise<import("../../../src/manager/response").ManagerResponse> {
+  getList?(data: ListFilterInterface): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
 

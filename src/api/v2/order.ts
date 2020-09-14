@@ -3,18 +3,57 @@
  */
 
 import joi from '@hapi/joi'
-import BaseRouter, { post, parameter, get, summary, del, prefix, tag } from '@src/lib/router-decorator';
+import BaseRouter, { post, parameter, get, summary, del, prefix, tag, middleware } from '@src/lib/router-decorator';
 import { Context } from 'koa';
 import OrderApiService from '@src/services/v2/order'
-
-@prefix('/api/OrderApi')
+import { AddressItem } from './address';
+import SessionCookieHandler from '@src/utils/session_cookie';
+import OrderService from '@src/services/v2/order';
+const orderService = new OrderService()
+@prefix('/api/order')
 @tag('OrderApi相关服务')
 class OrderApi extends BaseRouter {
   @post('/create')
   @summary('OrderApi创建')
-  @parameter(joi.object({}), 'body')
+  @middleware(SessionCookieHandler.loginCheck)
+  @parameter(joi.object({
+    amount: joi.number().required(),
+    totalPrice: joi.number().required(),
+    shippingAddress: joi.object({
+      id: joi.number().required(),
+      provinceName: joi.string().required(),
+      cityName: joi.string().required(),
+      areaName: joi.string().required(),
+      townName: joi.string().required(),
+      address: joi.string().required(),
+      tel: joi.number().required(),
+      receiver: joi.string().required(),
+    }),
+    goods: joi.array().items(joi.object({
+      shopInfo: joi.object({
+        id: joi.number().required(),
+        name: joi.string().required(),
+        logo: joi.string().allow('', null)
+      }),
+      goodsGroup: joi.array().items(joi.object({
+        id: joi.number().required(),
+        amount: joi.number().required(),
+        name: joi.string().required(),
+        sku: joi.string().required(),
+        price: joi.number().required(),
+        mainImage: joi.string().required(),
+      }))
+    }))
+  }), 'body')
   async create(ctx: Context): Promise<void> {
     // create api
+    console.log(ctx.state.parameter);
+    const { id } = global.state.userInfo
+    await orderService.create({
+      ...ctx.state.parameter,
+      address: ctx.state.parameter.shippingAddress,
+      userId: id
+    })
   }
   @get('/detail/:id')
   @summary('OrderApi详情')

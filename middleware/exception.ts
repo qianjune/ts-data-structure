@@ -11,6 +11,7 @@ const catchError = async (ctx: Context, next: any): Promise<void> => {
 
     const isDev = global.config.environment === 'dev'
     console.log(error)
+    console.log('到这1')
     if (isDev && !isHttpException && !isHttpExceptionForMini) {
 
       // console.log(error)
@@ -34,6 +35,7 @@ const catchError = async (ctx: Context, next: any): Promise<void> => {
     }
     // 小程序
     if (isHttpExceptionForMini) {
+      console.log('到这2')
       const result: { [keyname: string]: any } = {
         success: error.success,
       }

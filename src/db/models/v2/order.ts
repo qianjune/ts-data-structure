@@ -4,6 +4,7 @@
 import { Model } from 'sequelize'
 import sequelize from '@root/core/db'
 import { TYPES } from '@src/db/types'
+import { mysqlJsonHandler } from '@src/lib/common'
 
 class OrderDb extends Model { }
 
@@ -55,19 +56,37 @@ OrderDb.init({
     allowNull: false,
     comment: '用户id'
   },
-  addressId: {
-    type: TYPES.INTEGER,
+  address: {
+    type: TYPES.STRING,
     allowNull: false,
-    comment: '收获地址id（包含收件人及手机号）'
+    comment: '收获地址id（包含收件人及手机号）',
+    ...mysqlJsonHandler('address')
   },
   goods: {
     type: TYPES.STRING,
     allowNull: false,
-    comment: '将购买的商品'
+    comment: '将购买的商品',
+    ...mysqlJsonHandler('goods')
+  },
+  amount: {
+    type: TYPES.FLOAT,
+    allowNull: false,
+    comment: '购物总数'
+  },
+  totalPrice: {
+    type: TYPES.FLOAT,
+    allowNull: false,
+    comment: '购买总价'
+  },
+  status: {
+    type: TYPES.INTEGER,
+    allowNull: false,
+    comment: '支付状态',
+    defaultValue: 0
   }
 }, {
   sequelize,
-  tableName: 'OrderDb'
+  tableName: 'order'
 })
 
 OrderDb.sync({

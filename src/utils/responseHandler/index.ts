@@ -8,6 +8,8 @@ class ResponseHandler {
         throw new global.errs.SuccessForMini(result.msg, result.data, session)
 
       } else {
+        console.log('result')
+        console.log(result)
         throw new global.errs.SuccessForMini(result.msg, result.data)
       }
     }

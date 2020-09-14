@@ -8,6 +8,18 @@ import { Context } from 'koa';
 import AddressService from '@src/services/v2/address';
 import { FetchAddressType } from '@src/manager/v2/address/interface';
 import SessionCookieHandler from '@src/utils/session_cookie';
+
+export const AddressItem = joi.object({
+  countryId: joi.string(),
+  provinceId: joi.string().required(),
+  cityId: joi.string().required(),
+  areaId: joi.string().required(),
+  townId: joi.string(),
+  address: joi.string().required(),
+  tel: joi.string().required(),
+  receiver: joi.string().required()
+})
+
 const addressService = new AddressService()
 @prefix('/api/address')
 @tag('AddressApi相关服务')
@@ -15,16 +27,7 @@ class AddressApi extends BaseRouter {
   @post('/create')
   @middleware(SessionCookieHandler.loginCheck)
   @summary('收件地址创建')
-  @parameter(joi.object({
-    countryId: joi.string(),
-    provinceId: joi.string().required(),
-    cityId: joi.string().required(),
-    areaId: joi.string().required(),
-    townId: joi.string(),
-    address: joi.string().required(),
-    tel: joi.string().required(),
-    receiver: joi.string().required()
-  }), 'body')
+  @parameter(AddressItem, 'body')
   async create(ctx: Context): Promise<void> {
     const { body } = ctx.request
 
