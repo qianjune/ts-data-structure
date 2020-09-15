@@ -6,7 +6,15 @@ import sequelize from '@root/core/db'
 import { TYPES } from '@src/db/types'
 import { mysqlJsonHandler } from '@src/lib/common'
 
-class OrderDb extends Model { }
+export enum OrderStatus {
+  PENDING_PAYMENT = 0,
+  TO_BE_DELIVERED = 1,
+  TO_BE_RECEIVED = 2,
+  COMMENT = 3
+}
+class OrderDb extends Model {
+
+}
 
 class GoodsItem {
   productId: number
@@ -82,7 +90,7 @@ OrderDb.init({
     type: TYPES.INTEGER,
     allowNull: false,
     comment: '支付状态',
-    defaultValue: 0
+    defaultValue: OrderStatus.PENDING_PAYMENT
   }
 }, {
   sequelize,

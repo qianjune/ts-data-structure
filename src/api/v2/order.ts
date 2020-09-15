@@ -65,12 +65,14 @@ class OrderApi extends BaseRouter {
   }
   @get('/list')
   @summary('OrderApi详情')
+  @middleware(SessionCookieHandler.loginCheck)
   @parameter(joi.object({
     pageSize: joi.number().required(),
-    pageNo: joi.number().required()
+    pageNo: joi.number().required(),
+    status: joi.number().allow(null)
   }), 'query')
   async getList(ctx: Context): Promise<void> {
-    // get list
+    await orderService.getList(ctx.state.parameter)
   }
   @del('/:id')
   @summary('删除OrderApi')

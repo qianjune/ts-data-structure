@@ -2,11 +2,11 @@
  * @description OrderManager orm
  */
 
-import { CommonManager, ListFilterInterface } from "@src/manager/interface/commonManager";
+import { CommonManager, ListFilterInterface, buildCommonListParams } from "@src/manager/interface/commonManager";
 import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg, ManagerResponseFailure } from "@src/manager/response";
 
 import sequelize from "@root/core/db";
-import OrderDb from "@src/db/models/v2/order";
+import OrderDb, { OrderStatus } from "@src/db/models/v2/order";
 interface OrderInterface {
   shippingAddress: {
 
@@ -41,8 +41,28 @@ class OrderManager implements CommonManager {
   getInfo(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  getList?(data: ListFilterInterface): Promise<ManagerResponse> {
-    throw new Error("Method not implemented.");
+  async getList?(data: ListFilterInterface & { status: OrderStatus }): Promise<ManagerResponse> {
+    const { pageNo, pageSize, status } = data
+    const where: any = global.util.lodash.omitNil({
+      status
+    })
+    console.log('where', where)
+
+    const list = await OrderDb.findAndCountAll({
+      ...buildCommonListParams({ pageNo, pageSize }),
+      where
+    })
+    const { count, rows } = list
+    const result = rows.map(row => {
+      const r = row.toJSON() as any
+      r.address = JSON.parse(r.address)
+      r.goods = JSON.parse(r.goods)
+      return r
+    })
+    return new ManagerResponseSuccess({
+      data: new ListDataModel({ data: result, total: count, pageNo, pageSize }),
+      msg: responseMsg.FETCH_LIST_SUCCESS
+    })
   }
 
 }

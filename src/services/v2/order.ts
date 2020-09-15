@@ -21,8 +21,9 @@ class OrderService implements CommonService {
   getInfo(id: number): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  getList?(data: any): Promise<void> {
-    throw new Error("Method not implemented.");
+  async getList?(data: any): Promise<void> {
+    const result = await orderManager.getList(data)
+    ResponseHandler.send(result)
   }
 
 }
