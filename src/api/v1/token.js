@@ -36,7 +36,7 @@ router.post('/fresh', new Auth().m, async (ctx) => {
   const result = await Auth.verifyToken(v.get('body.token'), global.config.refresh.secretKey)
   console.log(result)
   if (result) {
-    const newToken = await genNewToken(result.uid, result.scope)
+    const newToken = await genNewToken(result.userId, result.scope)
     ctx.body = newToken
   } else {
     throw new global.errs.AuthFailed('freshToken未通过')

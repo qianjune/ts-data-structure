@@ -19,7 +19,7 @@ class FavoritesApi extends BaseRouter {
     likeId: joi.number().required(),
   }), 'body')
   async create(ctx: Context): Promise<void> {
-    await favoritesService.create({ ...ctx.state.parameter, uid: global.state.userInfo.id })
+    await favoritesService.create({ ...ctx.state.parameter, userId: global.state.userInfo.id })
   }
   @get('/detail/:id')
   @summary('FavoritesApi详情')
@@ -37,7 +37,7 @@ class FavoritesApi extends BaseRouter {
     type:joi.string().required()
   }), 'query')
   async getList(ctx: Context): Promise<void> {
-    await favoritesService.getList(ctx.state.parameter)
+    await favoritesService.getList({ ...ctx.state.parameter, userId: global.state.userInfo.id })
   }
   @del('/:id')
   @summary('删除FavoritesApi')

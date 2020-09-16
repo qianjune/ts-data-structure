@@ -72,7 +72,8 @@ class OrderApi extends BaseRouter {
     status: joi.number().allow(null)
   }), 'query')
   async getList(ctx: Context): Promise<void> {
-    await orderService.getList(ctx.state.parameter)
+    const { id } = global.state.userInfo
+    await orderService.getList({ ...ctx.state.parameter, userId: id })
   }
   @del('/:id')
   @summary('删除OrderApi')

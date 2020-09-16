@@ -39,12 +39,12 @@ const findMembers = function (instance, {
   return _find(instance)
 }
 
-const generateToken = (secretKey, expiresIn) => (uid, scope) => {
-  console.log('uid', uid)
+const generateToken = (secretKey, expiresIn) => (userId, scope) => {
+  console.log('userId', userId)
   console.log('scope', scope);
 
   const token = jwt.sign({
-    uid,
+    userId,
     scope
   }, secretKey, {
       expiresIn
@@ -61,11 +61,11 @@ module.exports = {
 
 
 
-// const generateToken = function (uid, scope) {
+// const generateToken = function (userId, scope) {
 //     const secretKey = global.config.security.secretKey
 //     const expiresIn = global.config.security.expiresIn
 //     const token = jwt.sign({
-//         uid,
+//         userId,
 //         scope
 //     }, secretKey, {
 //         expiresIn: expiresIn

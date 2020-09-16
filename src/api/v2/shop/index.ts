@@ -27,8 +27,17 @@ class ShopRouter extends BaseRouter {
     pageSize: Joi.number().required(),
     pageNo: Joi.number().required(),
   }), 'query')
-  async getList(ctx:Context){
+  async getList(ctx: Context) {
     await shopService.getList(ctx.state.parameter)
+  }
+  @get('/detail/:id')
+  @summary('app商品详情')
+  @parameter(Joi.object({
+    id: Joi.string().required()
+  }), 'params')
+  async getInfoById(ctx: Context) {
+    const { id } = ctx.state.parameter
+    await shopService.getInfo(id)
   }
 }
 

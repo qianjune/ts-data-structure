@@ -27,7 +27,7 @@ class Auth {
           throw new global.errs.Forbbiden(errMsg)
         }
         ctx.auth = {
-          uid: decoded.uid,
+          userId: decoded.userId,
           scope: decoded.scope
         }
       } else {

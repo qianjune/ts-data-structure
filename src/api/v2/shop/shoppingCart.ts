@@ -26,7 +26,7 @@ class ShoppingCart extends BaseRouter {
     const { parameter } = ctx.state
     console.log(parameter)
     console.log(global.state.userInfo)
-    await shoppingCartService.create({ ...parameter, uid: global.state.userInfo.id })
+    await shoppingCartService.create({ ...parameter, userId: global.state.userInfo.id })
   }
 }
 const shoppingCart = new ShoppingCart()

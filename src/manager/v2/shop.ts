@@ -3,7 +3,7 @@
  */
 import { ShopModel } from '@src/db/models'
 import { CommonManager, ListFilterInterface } from "../interface/commonManager";
-import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg } from '../response';
+import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg, ManagerResponseFailure } from '../response';
 import ShopUserRelation from '@src/db/models/v2/shopUserRelation';
 import sequelize from '@root/core/db';
 const placeholder = '店铺'
@@ -24,7 +24,7 @@ class ShopManager implements CommonManager {
       const result = await ShopModel.create(data, { transaction: t })
       console.log('result', result)
       const bindRelation = await ShopUserRelation.create({
-        uid: global.state.userInfo.id,
+        userId: global.state.userInfo.id,
         shopId: result.getDataValue('id' as any)
       }, { transaction: t })
       if (bindRelation) {
@@ -40,8 +40,16 @@ class ShopManager implements CommonManager {
   del(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  getInfo(id: number): Promise<ManagerResponse> {
-    throw new Error("Method not implemented.");
+  async getInfo(id: number): Promise<ManagerResponse> {
+    const shopInfo = await ShopModel.findOne({
+      where: {
+        id
+      }
+    })
+    if (!shopInfo) {
+      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
+    }
+    return new ManagerResponseSuccess({ msg: responseMsg.GET_DETAIL_SUCCESS, data: shopInfo })
   }
   async getList?(data: ListFilterInterface): Promise<ManagerResponse> {
     const { pageSize = 10, pageNo = 1 } = data

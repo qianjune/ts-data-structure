@@ -24,8 +24,10 @@ const ResponseMsg = (placeholder: string) => (
     "ADDRESS_ALL_LIST_SUCCESS": `${placeholder}-省/地/县/乡-列表请求成功`,
     // address end
     // USER begin
-    "RESET_USER_PASSWORD_SUCCESS":`${placeholder}重置账户密码成功`
+    "RESET_USER_PASSWORD_SUCCESS": `${placeholder}重置账户密码成功`,
     // USER end
+    // FAVORITES begin
+    "HAVE_COLLECTED": `已收藏`
   }
 )
 interface ResponseInterface { success: boolean; msg?: string; data?: any }

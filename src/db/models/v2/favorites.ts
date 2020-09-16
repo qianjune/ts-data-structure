@@ -27,7 +27,7 @@ FavoritesDb.init({
     comment: "收藏的id",
     allowNull: false
   },
-  uid: {
+  userId: {
     type: TYPES.INTEGER,
     comment: "用户id",
     allowNull: false

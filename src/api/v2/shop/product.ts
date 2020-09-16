@@ -57,7 +57,7 @@ class ProductRouter extends BaseRouter {
 
 
   @get('/recommend/:categoryId/list')
-  @summary('分类产品列表')
+  @summary('推荐分类产品列表')
   @parameter(Joi.object({
     categoryId: Joi.number().required()
   }), 'params')

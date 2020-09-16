@@ -2,13 +2,19 @@ import { CommonManager, ListFilterInterface } from "../interface/commonManager";
 import { ProductCategory } from "@src/db/models";
 import { ManagerResponseSuccess, ManagerResponseFailure, ResponseMsg, ManagerResponse, ListDataModel } from "../response";
 import sequelize from "@root/core/db";
-
+/**
+ * @description 
+ * 1. 没有shopId的是公共分类
+ * 2. 公共分类的顶层为parentId = 0
+ * 3. 分类为逐级增加，店铺分类不继承公共分类的level，重新计算
+ * 4. 公共分类运营商统一创建，计划至少3到4层
+ */
 export interface CategoryItemInterface {
   name: string,
   parentId?: number
 }
 export interface CategoryListParamsInterface extends ListFilterInterface {
-  arentId?: number
+  parentId?: number
 }
 const placeholder = '分类'
 const responseMsg = ResponseMsg(placeholder)

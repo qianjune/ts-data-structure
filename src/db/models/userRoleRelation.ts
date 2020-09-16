@@ -15,7 +15,7 @@ UserRoleRelation.init({
         autoIncrement: true,
         primaryKey: true
     },
-    uid: {
+    userId: {
         type: INTEGER,
         unique: true
     },

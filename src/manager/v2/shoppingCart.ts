@@ -8,7 +8,7 @@ import { ShoppingCartModel } from "@src/db/models";
 import { ResponseMsg, ManagerResponseSuccess, ManagerResponseFailure } from "../response";
 interface shoppingCartItem {
   id?: number
-  uid: number
+  userId: number
   productId: number
   sku: string
   num: number
@@ -22,10 +22,10 @@ class shoppingCartManager implements CommonManager {
    * @param data 
    */
   async create(data: shoppingCartItem): Promise<import("../../../src/manager/response").ManagerResponse> {
-    const { uid, productId, sku, num } = data
+    const { userId, productId, sku, num } = data
     const shoppingCartItem = await ShoppingCartModel.findOne({
       where: {
-        uid,
+        userId,
         productId,
         sku
       }
@@ -36,7 +36,7 @@ class shoppingCartManager implements CommonManager {
       result = await shoppingCartItem.save()
     } else {
       result = await ShoppingCartModel.create({
-        uid, productId, sku, num
+        userId, productId, sku, num
       })
     }
     if (result) {
@@ -54,7 +54,7 @@ class shoppingCartManager implements CommonManager {
   getInfo(id: number): Promise<import("../../../src/manager/response").ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  getList?(data: ListFilterInterface & { uid: number }): Promise<import("../../../src/manager/response").ManagerResponse> {
+  getList?(data: ListFilterInterface & { userId: number }): Promise<import("../../../src/manager/response").ManagerResponse> {
     throw new Error("Method not implemented.");
   }
 

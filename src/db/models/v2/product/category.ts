@@ -6,6 +6,11 @@ import { Model } from "sequelize";
 import { TYPES } from "@src/db/types";
 import sequelize from "@root/core/db";
 
+export enum CategoryStatus {
+  DISABLE = 0,
+  ABLE = 1,
+  
+}
 class ProductCategory extends Model { }
 
 ProductCategory.init({
@@ -36,13 +41,13 @@ ProductCategory.init({
   status: {
     type: TYPES.INTEGER,
     comment: '启用状态',
-    defaultValue: 0
+    defaultValue: CategoryStatus.DISABLE
   }
 }, {
   sequelize,
   tableName: "productCategory"
 })
 
-ProductCategory.sync({alter:true})
+ProductCategory.sync({ alter: true })
 
 export default ProductCategory

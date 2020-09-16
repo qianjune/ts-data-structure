@@ -26,7 +26,7 @@ router.post('/create', new Auth().m, async (ctx) => {
   const v = await new BlogValidator().validate(ctx)
   const type = v.get('body.type')
   const blog = {
-    author: ctx.auth.uid,
+    author: ctx.auth.userId,
     title: v.get('body.title'),
     likeNum: 0,
     content: formatContent(v.get('body.content'), type),

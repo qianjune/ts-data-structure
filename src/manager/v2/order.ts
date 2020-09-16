@@ -41,10 +41,10 @@ class OrderManager implements CommonManager {
   getInfo(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  async getList?(data: ListFilterInterface & { status: OrderStatus }): Promise<ManagerResponse> {
-    const { pageNo, pageSize, status } = data
+  async getList?(data: ListFilterInterface & { status: OrderStatus, userId: number }): Promise<ManagerResponse> {
+    const { pageNo, pageSize, status, userId } = data
     const where: any = global.util.lodash.omitNil({
-      status
+      status, userId
     })
     console.log('where', where)
 

@@ -20,7 +20,7 @@ ShoppingCart.init(
       primaryKey: true,
       comment: '购物车id'
     },
-    uid: {
+    userId: {
       type: TYPES.INTEGER,
       allowNull: false,
       comment: '用户id'
