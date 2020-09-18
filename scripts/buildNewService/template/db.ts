@@ -5,15 +5,22 @@ import { Model } from 'sequelize'
 import sequelize from '@root/core/db'
 import { TYPES } from '@src/db/types'
 
-class XXXXXX extends Model{}
+class XXXXXX extends Model { }
 
-XXXXXX.init({},{
+XXXXXX.init({
+  id: {
+    type: TYPES.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    comment:'主键id'
+  }
+}, {
   sequelize,
-  tableName:'XXXXXX'
+  tableName: 'XXXXXX'
 })
 
 XXXXXX.sync({
-  alter:true
+  alter: true
 })
 
 export default XXXXXX

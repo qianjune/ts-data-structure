@@ -1,4 +1,4 @@
-import { CommonManager, ListFilterInterface } from "../interface/commonManager";
+import { CommonManager, ListFilterInterface, buildCommonListParams } from "../interface/commonManager";
 import { ProductCategory } from "@src/db/models";
 import { ManagerResponseSuccess, ManagerResponseFailure, ResponseMsg, ManagerResponse, ListDataModel } from "../response";
 import sequelize from "@root/core/db";
@@ -11,10 +11,14 @@ import sequelize from "@root/core/db";
  */
 export interface CategoryItemInterface {
   name: string,
-  parentId?: number
+  parentId?: number,
+  shopId?: number,
+  level?: number
 }
 export interface CategoryListParamsInterface extends ListFilterInterface {
   parentId?: number
+  shopId?: number
+  level?: number
 }
 const placeholder = '分类'
 const responseMsg = ResponseMsg(placeholder)
@@ -27,15 +31,31 @@ class CategoryManager implements CommonManager {
         parentId
       }
     })
+    const parentCategory = await ProductCategory.findOne({
+      where: {
+        id: parentId
+      }
+    })
+
     if (category) {
       return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL_BY_NAME_OCCUPIED })
     }
     return await sequelize.transaction(async (t: any) => {
       console.log('data...', data)
-      // 分类第一级
+      // 如果分类没有传parentId，默认为跟分类后的第一级
       if (global.util.lodash.isNil(data.parentId)) {
         data.parentId = 0
+        data.level = 1
+      } else {
+        const parentResult = parentCategory.toJSON() as any
+        // 判断父级是否为通用分类，自身为店铺分类
+        if (!parentResult.shopId && data.shopId) {
+          data.level = 0
+        } else {
+          data.level = parentResult.level + 1
+        }
       }
+
       const result = await ProductCategory.create(data, { transaction: t })
       console.log(result)
       if (result) {
@@ -75,7 +95,7 @@ class CategoryManager implements CommonManager {
     }
     return await sequelize.transaction(async (t: any) => {
       const result = await ProductCategory.destroy({
-        where:{
+        where: {
           id
         }
       })
@@ -91,17 +111,12 @@ class CategoryManager implements CommonManager {
     throw new Error("Method not implemented.");
   }
   async getList?(data: CategoryListParamsInterface): Promise<ManagerResponse> {
-    const { pageSize = 10, pageNo = 1, parentId = 0 } = data
+    const { pageSize = 10, pageNo = 1, parentId = 0, shopId, level } = data
+    const where = global.util.lodash.omitNil({ parentId, shopId, level })
     return await sequelize.transaction(async (t: any) => {
       const result = await ProductCategory.findAndCountAll({
-        limit: pageSize,
-        offset: pageSize * (pageNo - 1),
-        where: {
-          parentId
-        },
-        order: [
-          ['id', 'desc']
-        ],
+        ...buildCommonListParams({ pageNo, pageSize }),
+        where
       })
       const { count, rows } = result
       const categoryList = rows.map(row => {

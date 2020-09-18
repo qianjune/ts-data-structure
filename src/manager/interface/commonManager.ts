@@ -19,13 +19,16 @@ export interface CommonManager {
 }
 
 export const buildCommonListParams = (
-  { pageNo = 1, pageSize = 10 }: { pageNo: number, pageSize: number }): any => {
+  data: { pageNo?: number, pageSize?: number, order?: string[][] }): any => {
+  const {
+ pageNo = 1, pageSize = 10, order = [
+    ['id', 'desc']
+  ] 
+} = data
   return {
     limit: pageSize,
     offset: pageSize * (pageNo - 1),
-    order: [
-      ['id', 'desc']
-    ],
+    order,
   }
 }
 

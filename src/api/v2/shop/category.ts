@@ -17,7 +17,7 @@ class CategoryRouter extends BaseRouter {
   @parameter(
     Joi.object({
       name: Joi.string().required(),
-      parentId: Joi.number()
+      parentId: Joi.number(),
     }),
     'body'
   )
@@ -32,7 +32,9 @@ class CategoryRouter extends BaseRouter {
     Joi.object({
       pageSize: Joi.number().required(),
       pageNo: Joi.number().required(),
-      parentId: Joi.number()
+      parentId: Joi.number(),
+      shopId: Joi.number().allow(null),
+      level: Joi.number().allow(null)
     }),
     'query'
   )
@@ -53,6 +55,40 @@ class CategoryRouter extends BaseRouter {
     const { body } = ctx.request
     await categoryService.del(body.id)
   }
+  @post('/create/shop')
+  @summary('店铺分类创建')
+  @middleware(SessionCookieHandler.loginCheck)
+  @parameter(
+    Joi.object({
+      name: Joi.string().required(),
+      parentId: Joi.number().required(),
+      shopId: Joi.number().required()
+    }),
+    'body'
+  )
+  async createShopCategory(ctx: Context): Promise<void> {
+    const { body } = ctx.request
+    await categoryService.create(body)
+  }
+
+  @get('/list/shop')
+  @summary('店铺分类列表')
+  // @middleware(SessionCookieHandler.loginCheck)
+  @parameter(
+    Joi.object({
+      pageSize: Joi.number().required(),
+      pageNo: Joi.number().required(),
+      parentId: Joi.number(),
+      shopId: Joi.number().required(),
+      level: Joi.number().allow(null)
+    }),
+    'query'
+  )
+  async getListInShop(ctx: Context) {
+    const { parameter } = ctx.state
+    await categoryService.getList(parameter)
+  }
+
 }
 
 const categoryRouter = new CategoryRouter

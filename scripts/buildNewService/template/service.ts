@@ -2,22 +2,28 @@
  * @description XXXXXX service
  */
 import { CommonService } from "@src/services/interface/common";
+import { ResponseHandler } from "@src/utils/responseHandler";
 
 class XXXXXX implements CommonService{
-  create(data: any): Promise<void> {
-    throw new Error("Method not implemented.");
+  async create(data: any): Promise<void> {
+    const result = await 
+    ResponseHandler.send(result)
   }
-  edit<T>(data: T): void {
-    throw new Error("Method not implemented.");
+  async edit<T>(data: T): Promise<void> {
+    const result = await 
+    ResponseHandler.send(result)
   }
-  del(id: number): Promise<void> {
-    throw new Error("Method not implemented.");
+  async del(id: number): Promise<void> {
+    const result = await 
+    ResponseHandler.send(result)
   }
-  getInfo(id: number): Promise<void> {
-    throw new Error("Method not implemented.");
+  async getInfo(id: number): Promise<void> {
+    const result = await 
+    ResponseHandler.send(result)
   }
-  getList?(data: any): Promise<void> {
-    throw new Error("Method not implemented.");
+  async getList?(data: any): Promise<void> {
+    const result = await 
+    ResponseHandler.send(result)
   }
 
 }
