@@ -7,7 +7,10 @@ import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg, Ma
 
 import sequelize from "@root/core/db";
 import IndexThemeDb from "@src/db/models/v2/index/indexTheme";
-
+import { Product } from "@src/db/models";
+import asyncForEach from "@src/utils/async_forEach";
+import ProductManager from "../product";
+const productManager = new ProductManager()
 const placeholder = '首页主题'
 const responseMsg = ResponseMsg(placeholder)
 class IndexThemeManager implements CommonManager {
@@ -41,14 +44,37 @@ class IndexThemeManager implements CommonManager {
   }
   async getList?(data: ListFilterInterface): Promise<ManagerResponse> {
     const { pageNo, pageSize } = data
+
     const list = await IndexThemeDb.findAndCountAll({
       ...buildCommonListParams({ pageNo, pageSize })
     })
     const { rows, count } = list
-    return new ManagerResponseSuccess({
-      data: new ListDataModel({ data: rows, total: count, pageNo, pageSize }),
-      msg: responseMsg.FETCH_LIST_SUCCESS
+    return await sequelize.transaction(async (t: any) => {
+      const cloneRows = []
+
+      for (const row of rows) {
+        const item = row.toJSON() as any
+        const goodsIds = item.goods.split(',')
+
+        const goods: any[] = []
+        for (const goodsId of goodsIds) {
+          const goodsDetail = await productManager.getInfo(goodsId)
+          if (goodsDetail.data) {
+            goods.push(goodsDetail.data)
+
+          }
+        }
+
+        item.goods = goods
+        cloneRows.push(item)
+      }
+
+      return new ManagerResponseSuccess({
+        data: new ListDataModel({ data: cloneRows, total: count, pageNo, pageSize }),
+        msg: responseMsg.FETCH_LIST_SUCCESS
+      })
     })
+
   }
 
 }
