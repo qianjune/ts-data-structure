@@ -78,7 +78,7 @@ class FailForMini extends HttpExceptionForMini {
     super()
     this.success = false
     this.msg = msg
-    this.code = 401
+    this.code = global.state[400]
     this.data = null
   }
 }

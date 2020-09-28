@@ -43,6 +43,8 @@ class UserService implements CommonService {
   static async registerAndLoginForApp(user: string, model: 'jwt' | 'session' = 'jwt'): Promise<any> {
     // 首先验证验证码，查找是否有该用户
     const realUser = await userManager.getValidateData({ mobile: user }, 'self')
+    console.log('------realUser-----')
+    console.log(realUser)
     let result;
     // 如果没有就创建新用户
     if (!realUser) {

@@ -1,7 +1,7 @@
 
 import bcrypt from 'bcryptjs'
 import { v1 as uuidv1 } from 'uuid'
-import { MemberController } from './member'
+import { MemberController } from '../manager/v2/member'
 import SmsForMini from '../manager/code/sms'
 import User from '../db/models/user'
 import { set } from '@root/cache/_redis'

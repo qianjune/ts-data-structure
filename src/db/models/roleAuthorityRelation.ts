@@ -17,11 +17,9 @@ RoleAuthorityRelation.init({
     },
     rid: {
         type: INTEGER,
-        unique: true
     },
     aid: {
         type: INTEGER,
-        unique: true
     }
 }, {
     sequelize,

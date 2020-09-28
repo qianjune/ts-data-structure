@@ -1,3 +1,5 @@
+import moment from 'moment'
+import Sequelize from 'sequelize'
 import { Model } from 'sequelize'
 import sequelize from '../../../core/db'
 import { TYPES } from '../types'
@@ -21,7 +23,8 @@ Member.init({
   },
   nickName: {
     type: STRING,
-    comment: '昵称'
+    comment: '昵称',
+    allowNull: false
   },
   sex: {
     type: DECIMAL,
@@ -45,29 +48,20 @@ Member.init({
     defaultValue: 0,
     type: INTEGER
   },
-  tel: {
-    type: STRING,
-    comment: '手机号'
-  },
+
   realName: {
     type: STRING,
     comment: '姓名'
   },
   birthday: {
-    type: STRING,
-    comment: '生日'
+    type: TYPES.INTEGER,
+    comment: '生日',
+    defaultValue: Sequelize.NOW
   },
   residence: {
     type: STRING,
     comment: "常居地"
   },
-  // 邮箱 和手机应该属于User
-  email: {
-    type: STRING,
-    comment: "邮箱地址"
-  },
-  // address:{
-  // }
   idCard: {
     type: TYPES.INTEGER,
     comment: '生份证'
@@ -77,5 +71,7 @@ Member.init({
   sequelize,
   tableName: 'member'
 })
-
+Member.sync({
+  alter: true
+})
 export default Member

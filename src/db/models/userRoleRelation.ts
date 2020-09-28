@@ -17,11 +17,9 @@ UserRoleRelation.init({
     },
     userId: {
         type: INTEGER,
-        unique: true
     },
     rid: {
         type: INTEGER,
-        unique: true
     }
 }, {
     sequelize,

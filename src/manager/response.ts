@@ -9,6 +9,7 @@ const ResponseMsg = (placeholder: string) => (
     "CREATE_FAIL": `创建${placeholder}失败，请稍后再试`,
     "CREATE_SUCCESS": `创建${placeholder}成功`,
     "FETCH_LIST_SUCCESS": `${placeholder}列表请求成功`,
+    "FETCH_LIST_FAIL": `${placeholder}列表请求失败`,
     "ITEM_NOT_FOUND": `该${placeholder}不存在`,
     "DELETE_SUCCESS": `删除${placeholder}成功`,
     "DELETE_FAIL": `删除${placeholder}失败，请稍后再试`,
@@ -16,6 +17,8 @@ const ResponseMsg = (placeholder: string) => (
     "GET_DETAIL_SUCCESS": `获取${placeholder}详情成功`,
     "ADD_SUCCESS": `加入${placeholder}成功`,
     "ADD_FAIL": `加入${placeholder}失败`,
+    "EDIT_SUCCESS":`${placeholder}编辑成功`,
+    "EDIT_FAIL":`${placeholder}编辑失败`,
     // address begin
     "CITY_LIST_SUCCESS": `${placeholder}-市-列表请求成功`,
     "AREA_LIST_SUCCESS": `${placeholder}-区-列表请求成功`,
@@ -27,7 +30,10 @@ const ResponseMsg = (placeholder: string) => (
     "RESET_USER_PASSWORD_SUCCESS": `${placeholder}重置账户密码成功`,
     // USER end
     // FAVORITES begin
-    "HAVE_COLLECTED": `已收藏`
+    "HAVE_COLLECTED": `已收藏`,
+    // MEMBER begin
+    "CREATE_FAIL_BY_EXISTED": `${placeholder}已存在`
+    // MEMBER end
   }
 )
 interface ResponseInterface { success: boolean; msg?: string; data?: any }

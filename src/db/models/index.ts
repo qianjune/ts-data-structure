@@ -1,7 +1,7 @@
 import Address from './v2/address'
-import IdCard from './idCard'
+// import IdCard from './idCard'
 import Member from './member'
-import Points from './points'
+// import Points from './points'
 import User from './user'
 import Right from './right'
 import RightPackage from './rightPackage'
@@ -24,15 +24,17 @@ import CommentModel from './v2/product/comment'
 User.hasMany(Address, {
   foreignKey: 'memberId'
 })
-IdCard.belongsTo(Member, {
-  foreignKey: 'memberId'
+// IdCard.belongsTo(Member, {
+//   foreignKey: 'memberId'
+// })
+
+Member.belongsTo(User, {
+  foreignKey: 'userId'
 })
 
-User.hasOne(Member)
-
-Points.belongsTo(Member, {
-  foreignKey: 'memberId'
-})
+// Points.belongsTo(Member, {
+//   foreignKey: 'memberId'
+// })
 
 Right.hasMany(RightRelation, {
   foreignKey: 'rightId'
@@ -54,7 +56,7 @@ Product.belongsTo(ShopModel, {
 Product.hasMany(ShoppingCartModel, {
   foreignKey: 'productId'
 })
-User.hasMany(ShoppingCartModel, {
+ShoppingCartModel.belongsTo(User, {
   foreignKey: "userId"
 })
 ProductBrand.belongsTo(ShopModel, {
@@ -72,8 +74,10 @@ User.hasMany(CommentModel, {
 // CommentModel
 export {
   Address,
-  IdCard,
-  Member, User, Points, Right, RightPackage, RightRelation, ShopModel,
+  // IdCard,
+  Member, User,
+  // Points,
+  Right, RightPackage, RightRelation, ShopModel,
   Product,
   ShoppingCartModel,
   ProductBrand,

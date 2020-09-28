@@ -37,7 +37,6 @@ User.init(
     },
     status: {
       type: TYPES.STRING,
-      unique: true,
       comment: '用户状态',
       defaultValue: 'active'
     }

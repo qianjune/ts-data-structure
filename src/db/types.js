@@ -12,5 +12,7 @@ export const TYPES = {
   INTEGER: Sequelize.INTEGER,
   BOOLEAN: Sequelize.BOOLEAN,
   FLOAT: Sequelize.FLOAT,
-  BIGINT: Sequelize.BIGINT
+  BIGINT: Sequelize.BIGINT,
+  DATEONLY: Sequelize.DATEONLY,
+  DATE: Sequelize.DATE
 }

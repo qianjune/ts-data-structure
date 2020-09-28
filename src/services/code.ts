@@ -65,6 +65,8 @@ class CodeService {
       code,
       platform: CODE_PLATFORM.MINI
     })
+    console.log('-------result---------')
+    console.log(result)
     const {
       userInfo,
       session = ''

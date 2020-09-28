@@ -27,9 +27,11 @@ const placeholder = '用户'
 const responseMsg = ResponseMsg(placeholder)
 class UserManager implements CommonManager {
   async getValidateData(data: { [propKey: string]: any }, mode?: string): Promise<any> {
+    console.log('--------user-------',data)
     const user = await User.findOne({
       where: data
     })
+    console.log('--------user-------',user)
     if (mode === 'self') {
       return user
     }

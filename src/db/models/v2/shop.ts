@@ -24,6 +24,12 @@ ShopModel.init({
     defaultValue: ''
   }
 }, {
+  // indexes: [
+  //   {
+  //     unique: true,
+  //     fields: ['logo']
+  //   }
+  // ],
   sequelize,
   tableName: 'shop'
 })
