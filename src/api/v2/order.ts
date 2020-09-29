@@ -90,6 +90,13 @@ class OrderApi extends BaseRouter {
   async edit(ctx: Context): Promise<void> {
     // edit item
   }
+
+  @get('/amount')
+  @summary('获取订单数量')
+  @middleware(SessionCookieHandler.loginCheck)
+  async getOrderAmount(ctx: Context) {
+    await orderService.getAmount(global.state.userInfo.id)
+  }
 }
 
 export default new OrderApi().init()

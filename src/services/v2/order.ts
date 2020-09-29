@@ -26,6 +26,10 @@ class OrderService implements CommonService {
     ResponseHandler.send(result)
   }
 
+  async getAmount(userId: number): Promise<void> {
+    ResponseHandler.send(await orderManager.getAmount(userId))
+  }
+
 }
 
 export default OrderService

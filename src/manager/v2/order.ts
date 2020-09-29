@@ -65,6 +65,50 @@ class OrderManager implements CommonManager {
     })
   }
 
+  async getAmount(userId: number): Promise<ManagerResponse> {
+    const listParams = buildCommonListParams({ pageNo: 1, pageSize: 50 })
+    // 搜四次列表太慢，应该在每次单个订单有状态有变化的时候就进行记录
+    return await sequelize.transaction(async (t: any) => {
+      const pendingPaymentList = await OrderDb.findAndCountAll({
+        ...listParams,
+        where: {
+          userId,
+          status: OrderStatus.PENDING_PAYMENT
+        }
+      })
+      const deliveredList = await OrderDb.findAndCountAll({
+        ...listParams,
+        where: {
+          userId,
+          status: OrderStatus.TO_BE_DELIVERED
+        }
+      })
+      const receivedList = await OrderDb.findAndCountAll({
+        ...listParams,
+        where: {
+          userId,
+          status: OrderStatus.TO_BE_RECEIVED
+        }
+      })
+      const commentList = await OrderDb.findAndCountAll({
+        ...listParams,
+        where: {
+          userId,
+          status: OrderStatus.COMMENT
+        }
+      })
+      return new ManagerResponseSuccess({
+        data: {
+          pendingPayment: pendingPaymentList.count,
+          delivered: deliveredList.count,
+          received: receivedList.count,
+          comment: commentList.count
+        }, 
+        msg: '订单数量'
+      })
+    })
+  }
+
 }
 
 export default OrderManager

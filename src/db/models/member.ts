@@ -54,7 +54,7 @@ Member.init({
     comment: '姓名'
   },
   birthday: {
-    type: TYPES.INTEGER,
+    type: TYPES.DATE,
     comment: '生日',
     defaultValue: Sequelize.NOW
   },

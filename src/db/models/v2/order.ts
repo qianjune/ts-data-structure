@@ -7,10 +7,10 @@ import { TYPES } from '@src/db/types'
 import { mysqlJsonHandler } from '@src/lib/common'
 
 export enum OrderStatus {
-  PENDING_PAYMENT = 0,
-  TO_BE_DELIVERED = 1,
-  TO_BE_RECEIVED = 2,
-  COMMENT = 3
+  PENDING_PAYMENT = 0, // 待支付
+  TO_BE_DELIVERED = 1, // 已发货
+  TO_BE_RECEIVED = 2,  // 已收获
+  COMMENT = 3          // 待评价
 }
 class OrderDb extends Model {
 

@@ -39,6 +39,7 @@ class MemberRouter extends BaseRouter {
     sex: joi.number(),
     tel: joi.string().length(11),
     birthday: joi.string(),
+    id:joi.number().required()
   }), 'body')
   async editMemberInfo(ctx: Context): Promise<void> {
     const body = ctx.request.body
