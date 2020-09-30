@@ -28,7 +28,7 @@ class OrderApi extends BaseRouter {
       address: joi.string().required(),
       tel: joi.number().required(),
       receiver: joi.string().required(),
-    }),
+    }).unknown(true),
     goods: joi.array().items(joi.object({
       shopInfo: joi.object({
         id: joi.number().required(),

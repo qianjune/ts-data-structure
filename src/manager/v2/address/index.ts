@@ -75,11 +75,12 @@ class AddressManager implements CommonManager {
     const { pageNo = 1, pageSize = 10, userId } = data
     return await sequelize.transaction(async (t: any) => {
       const result = await Address.findAndCountAll({
-        ...buildCommonListParams({ pageNo, pageSize })
+        ...buildCommonListParams({ pageNo, pageSize }),
+
       })
       const { count, rows } = result
       const addressList = rows.map(row => {
-        let cloneRow = row.toJSON()
+        let cloneRow = row.toJSON() as any
         cloneRow = this._buildAddressName(cloneRow as any)
         return cloneRow
       })
