@@ -24,7 +24,8 @@
     "./middleware",
     "./models",
     "./tsconfig.json",
-    "./app.ts"
+    "./app.ts",
+    "./experiment"
   ],
   "ext": "ts js",
   "inspect": true
