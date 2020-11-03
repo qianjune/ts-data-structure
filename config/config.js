@@ -1,5 +1,6 @@
 export default {
   environment: 'dev',
+  port:3111,
   database: {
     dbName: 'jblog',
     host: '121.43.158.38',

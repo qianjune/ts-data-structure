@@ -1,3 +1,6 @@
+/**
+ * @description rxjs 学习
+ */
 import { AsyncSubject, BehaviorSubject, Observable, ReplaySubject, Subject, Scheduler } from 'rxjs'
 
 // const observable = Observable.of('Jerry')
