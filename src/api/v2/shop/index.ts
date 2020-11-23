@@ -22,7 +22,7 @@ class ShopRouter extends BaseRouter {
     await shopService.create(body)
   }
   @get('/list')
-  @summary('产品列表')
+  @summary('店铺列表')
   @parameter(Joi.object({
     pageSize: Joi.number().required(),
     pageNo: Joi.number().required(),
@@ -31,7 +31,7 @@ class ShopRouter extends BaseRouter {
     await shopService.getList(ctx.state.parameter)
   }
   @get('/detail/:id')
-  @summary('app商品详情')
+  @summary('店铺详情')
   @parameter(Joi.object({
     id: Joi.string().required()
   }), 'params')
