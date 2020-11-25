@@ -5,12 +5,15 @@ import catchError from './middleware/exception'
 import cors from 'koa2-cors'
 import serve from 'koa-static'
 import path from 'path'
-import { ApolloServer, gql } from 'apollo-server-koa'
+// import { ApolloServer, gql } from 'apollo-server-koa'
+
 import koaSwagger from 'koa2-swagger-ui'
 import { GlobalErrorInterface } from './core/http-exception'
 import status, { HttpStatus } from 'http-status'
 import SessionCookieHandler from '@src/utils/session_cookie'
 import _, { omitBy, isNil, LoDashStatic } from 'lodash'
+import server from './src/graphql/index'
+import mockMain from './src/graphql/middleware/auth'
 
 _.mixin({
   omitNil(data) {
@@ -51,11 +54,11 @@ if (!global.util) {
     }
   }
 }
-const typeDefs = gql`
-  type Query {
-    hello: String
-  }
-`;
+// const typeDefs = gql`
+//   type Query {
+//     hello: String
+//   }
+// `;
 
 // Provide resolver functions for your schema fields
 const resolvers = {
@@ -64,7 +67,7 @@ const resolvers = {
   },
 };
 
-const server = new ApolloServer({ typeDefs, resolvers });
+// const server = new ApolloServer({ typeDefs, resolvers });
 const app = new Koa()
 
 app.use(cors({
@@ -84,16 +87,17 @@ app.use(parser({
   enableTypes: ['json', 'form', 'text']
 }))
 
-InitManager.initCore(app)
+// InitManager.initCore(app)
 
-app.use(
-  koaSwagger({
-    routePrefix: '/v2/swagger',
-    swaggerOptions: {
-      url: 'http://localhost:3111/v2/swagger-schema'
-    }
-  })
-)
+// app.use(
+//   koaSwagger({
+//     routePrefix: '/v2/swagger',
+//     swaggerOptions: {
+//       url: 'http://localhost:3111/v2/swagger-schema'
+//     }
+//   })
+// )
+app.use(mockMain)
 server.applyMiddleware({ app: app as any })
 export {
   server

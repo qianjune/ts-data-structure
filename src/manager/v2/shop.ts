@@ -24,7 +24,7 @@ class ShopManager implements CommonManager {
       const result = await ShopModel.create(data, { transaction: t })
       console.log('result', result)
       const bindRelation = await ShopUserRelation.create({
-        userId: global.state.userInfo.id,
+        uid: global.state.userInfo?.id||'00000000',
         shopId: result.getDataValue('id' as any)
       }, { transaction: t })
       if (bindRelation) {

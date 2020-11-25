@@ -1,11 +1,14 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { ApolloServer, Config, gql } from 'apollo-server-koa'
 import fs from 'fs'
 import { GraphQLScalarType } from 'graphql'
 import { resolve } from 'path'
 import allCustomScalars from './scalars/index'
+import allCustomDirective from './directives/index'
 const defaultPath = resolve(__dirname, './components')
-const typeDefFileName = 'schema.js'
-const resolverFileName = 'resolver.js'
+const typeDefFileName = 'schema.'
+const resolverFileName = 'resolver.'
+
 /**
  * Query 用于定义读操作
  * Mutation 用于定义写操作
@@ -45,16 +48,16 @@ const generateTypeDefsAndResolvers = () => {
 
       if (isDir) {
         _generateAllComponentRecursive(resolverPath)
-      } else if (isFile && item === typeDefFileName) {
+      } else if (isFile && item.includes(typeDefFileName) ) {
         const { schema } = require(resolverPath)
         typeDefs.push(schema)
 
-      } else if (isFile && item === resolverFileName) {
+      } else if (isFile && item.includes(resolverFileName) ) {
         const resolversPerFile = require(resolverPath)
         Object
-          .keys(resolversPerFile).forEach(k => {
-            if (!resolvers[k]) resolvers[k] = {}
-            resolvers[k] = { ...resolvers[k], ...resolversPerFile[k] }
+          .keys(resolversPerFile).forEach(key => {
+            if (!resolvers[key]) resolvers[key] = {} as GraphQLScalarType
+            resolvers[key] = { ...resolvers[key], ...resolversPerFile[key] }
           })
       }
     })
@@ -77,7 +80,7 @@ const apolloServerOptions: Config = {
     }
   },
   context: ({ ctx }) => ({ ctx }),
-  schemaDirectives: {} // 鉴权指令放这里
+  schemaDirectives: { ...allCustomDirective } // 鉴权指令等自定义指令放这里
 }
 
 const server = new ApolloServer({ ...apolloServerOptions })

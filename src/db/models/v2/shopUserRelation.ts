@@ -16,7 +16,7 @@ ShopUserRelation.init({
         autoIncrement: true,
         primaryKey: true
     },
-    userId: {
+    uid: {
         type: TYPES.INTEGER,
         allowNull: false
     },
