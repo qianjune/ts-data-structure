@@ -5,8 +5,6 @@ import catchError from './middleware/exception'
 import cors from 'koa2-cors'
 import serve from 'koa-static'
 import path from 'path'
-// import { ApolloServer, gql } from 'apollo-server-koa'
-
 import koaSwagger from 'koa2-swagger-ui'
 import { GlobalErrorInterface } from './core/http-exception'
 import status, { HttpStatus } from 'http-status'
@@ -54,26 +52,14 @@ if (!global.util) {
     }
   }
 }
-// const typeDefs = gql`
-//   type Query {
-//     hello: String
-//   }
-// `;
 
-// Provide resolver functions for your schema fields
-const resolvers = {
-  Query: {
-    hello: () => 'Hello world!',
-  },
-};
-
-// const server = new ApolloServer({ typeDefs, resolvers });
 const app = new Koa()
 
 app.use(cors({
-  origin(ctx: Context) { //设置允许来自指定域名请求
-    return 'http://localhost:9000'; //只允许http://localhost:8080这个域名的请求
-  },
+  // origin: (ctx: Context) => { //设置允许来自指定域名请求
+  //   return 'http://localhost:9000'; //只允许http://localhost:8080这个域名的请求
+  // },
+  origin: 'http://localhost:9000',
   maxAge: 5, //指定本次预检请求的有效期，单位为秒。
   credentials: true, //是否允许发送Cookie
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], //设置所允许的HTTP请求方法
@@ -98,7 +84,7 @@ app.use(parser({
 //   })
 // )
 app.use(mockMain)
-server.applyMiddleware({ app: app as any })
+// server.applyMiddleware({ app: app as any })
 export {
   server
 }

@@ -5,6 +5,9 @@ import { GraphQLScalarType } from 'graphql'
 import { resolve } from 'path'
 import allCustomScalars from './scalars/index'
 import allCustomDirective from './directives/index'
+import { ShopResolver } from './components/shop/resolver'
+import { RecipeResolver } from './components/recipe'
+import { buildSchema } from 'type-graphql'
 const defaultPath = resolve(__dirname, './components')
 const typeDefFileName = 'schema.'
 const resolverFileName = 'resolver.'
@@ -31,6 +34,22 @@ const linkSchema = gql`
   type Subscription {
     _: Boolean
   }
+
+  type Response{
+    success:Boolean
+    msg:String,
+    data:String!
+  }
+
+  interface ListBody{
+    empty:Boolean
+    total:Int
+  }
+  interface ListResponse{
+    success:Boolean
+    msg:String,
+    data:ListBody
+  }
 `
 
 const generateTypeDefsAndResolvers = () => {
@@ -48,11 +67,11 @@ const generateTypeDefsAndResolvers = () => {
 
       if (isDir) {
         _generateAllComponentRecursive(resolverPath)
-      } else if (isFile && item.includes(typeDefFileName) ) {
+      } else if (isFile && item.includes(typeDefFileName)) {
         const { schema } = require(resolverPath)
         typeDefs.push(schema)
 
-      } else if (isFile && item.includes(resolverFileName) ) {
+      } else if (isFile && item.includes(resolverFileName)) {
         const resolversPerFile = require(resolverPath)
         Object
           .keys(resolversPerFile).forEach(key => {
@@ -65,24 +84,31 @@ const generateTypeDefsAndResolvers = () => {
   _generateAllComponentRecursive()
   return { typeDefs, resolvers }
 }
+const bootstrap = async () => {
+  const schema = await buildSchema({
+    resolvers: [ShopResolver]
+  })
+  const isProd = process.env.NODE_ENV === 'production'
+  const apolloServerOptions: Config = {
+    // ...generateTypeDefsAndResolvers(),
+    schema,
+    mocks: false,
+    playground: !isProd,
+    introspection: !isProd,
+    formatError: (error) => {
+      return {
+        code: error.extensions.code,
+        message: error.message
+      }
+    },
+    context: ({ ctx }) => ({ ctx }),
+    schemaDirectives: { ...allCustomDirective } // 鉴权指令等自定义指令放这里
+  }
 
-
-const isProd = process.env.NODE_ENV === 'production'
-const apolloServerOptions: Config = {
-  ...generateTypeDefsAndResolvers(),
-  mocks: false,
-  playground: !isProd,
-  introspection: !isProd,
-  formatError: (error) => {
-    return {
-      code: error.extensions.code,
-      message: error.message
-    }
-  },
-  context: ({ ctx }) => ({ ctx }),
-  schemaDirectives: { ...allCustomDirective } // 鉴权指令等自定义指令放这里
+  const server = new ApolloServer({ ...apolloServerOptions })
+  return server
 }
 
-const server = new ApolloServer({ ...apolloServerOptions })
 
-export default server
+
+export default bootstrap

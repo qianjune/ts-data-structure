@@ -2,7 +2,10 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "target": "ES2018",
-    "lib": ["ES2018"],
+    "lib": [
+      "ES2018",
+      "ESNext.AsyncIterable"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -20,10 +23,11 @@
       "@src/*": [
         "src/*"
       ],
-      "@root/*":[
+      "@root/*": [
         "*"
       ]
-    }
+    },
+    "emitDecoratorMetadata": true,
   },
   "exclude": [
     "node_modules",
