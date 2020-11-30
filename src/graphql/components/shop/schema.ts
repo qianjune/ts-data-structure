@@ -1,30 +1,4 @@
-import { gql } from 'apollo-server-koa'
 import { Field, ID, Int, ObjectType } from 'type-graphql'
-
-const schema = gql`
-  type Shop{
-    id:ID
-    name:String
-    logo:String
-  }
-  type ShopListBody implements ListBody{
-    data:[Shop]
-    empty:Boolean
-    total:Int
-  }
-  type ShopListResponse implements ListResponse{
-    data:ShopListBody
-    success:Boolean
-    msg:String,
-  }
-  extend type Query{
-    shopList(pageSize:Int,pageNo:Int):ShopListResponse
-    shopDetail(id:Int):Response
-  }
-  extend type Mutation{
-    createShop(name:String):Response
-  }
-`
 @ObjectType()
 class Shop {
   @Field(type => ID)
@@ -58,15 +32,7 @@ class ShopListResponse {
   @Field(type => ShopListBody)
   data: ShopListBody
 }
-@ObjectType()
-class Response {
-  @Field()
-  success: boolean
 
-  @Field()
-  msg: string
-}
 export {
-  Shop, ShopListBody, ShopListResponse, Response
+  Shop, ShopListBody, ShopListResponse
 }
-module.exports = { schema }

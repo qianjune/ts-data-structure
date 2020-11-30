@@ -77,7 +77,7 @@ class ProductManager implements CommonManager {
     cloneProduct.skuGroup = JSON.parse(cloneProduct.skuGroup)
     return new ManagerResponseSuccess({ data: cloneProduct, msg: responseMsg.GET_DETAIL_SUCCESS })
   }
-  async getList(data: ListFilterInterface & { shopId: number }): Promise<ManagerResponse> {
+  async getList(data: ListFilterInterface & { shopId?: number }): Promise<ManagerResponse> {
     const { pageSize = 10, pageNo = 1, shopId, belong } = data
     console.log('pageSize', pageSize)
     console.log('pageNo', pageNo)

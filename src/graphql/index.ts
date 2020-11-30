@@ -6,7 +6,8 @@ import { resolve } from 'path'
 import allCustomScalars from './scalars/index'
 import allCustomDirective from './directives/index'
 import { ShopResolver } from './components/shop/resolver'
-import { RecipeResolver } from './components/recipe'
+import { GoodsResolver } from './components/goods/resolver'
+import { CategoryResolver } from './components/category/resolver'
 import { buildSchema } from 'type-graphql'
 const defaultPath = resolve(__dirname, './components')
 const typeDefFileName = 'schema.'
@@ -33,22 +34,6 @@ const linkSchema = gql`
 
   type Subscription {
     _: Boolean
-  }
-
-  type Response{
-    success:Boolean
-    msg:String,
-    data:String!
-  }
-
-  interface ListBody{
-    empty:Boolean
-    total:Int
-  }
-  interface ListResponse{
-    success:Boolean
-    msg:String,
-    data:ListBody
   }
 `
 
@@ -86,7 +71,7 @@ const generateTypeDefsAndResolvers = () => {
 }
 const bootstrap = async () => {
   const schema = await buildSchema({
-    resolvers: [ShopResolver]
+    resolvers: [ShopResolver, GoodsResolver, CategoryResolver]
   })
   const isProd = process.env.NODE_ENV === 'production'
   const apolloServerOptions: Config = {

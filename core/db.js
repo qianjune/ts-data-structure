@@ -6,7 +6,7 @@ const sequelize = new Sequelize(dbName, user, password, {
   dialect: 'mysql',
   host,
   port,
-  logging: true,
+  logging: false, // sql语句是否打印到控制台
   timezone: '+08:00',//时区
   define: {
     // timestamps:false // create and update time

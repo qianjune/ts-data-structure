@@ -10,7 +10,7 @@ class ProductService implements CommonService {
     throw new Error("Method not implemented.");
   }
 
-  private skuGroupOriginDataToCodeHandler = (crd: any) => {
+  public skuGroupOriginDataToCodeHandler = (crd: any) => {
     if (crd.skuGroup) {
       crd.skuGroup = crd.skuGroup.filter((sg: any) => sg.enabled === 1).map((sg: any, j: number) => {
         const attributeGroup = omit(sg, ['enabled', 'salePrice'])
