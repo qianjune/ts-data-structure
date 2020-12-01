@@ -18,6 +18,13 @@ _.mixin({
     return omitBy(data, isNil)
   }
 })
+// 暂时解决报错，照理说@types/body-parser里应该会生效
+declare module "koa" {
+  interface Request {
+      body?: any;
+      rawBody: string;
+  }
+}
 declare global {
   namespace NodeJS {
     interface Global {
@@ -73,16 +80,16 @@ app.use(parser({
   enableTypes: ['json', 'form', 'text']
 }))
 
-// InitManager.initCore(app)
+InitManager.initCore(app)
 
-// app.use(
-//   koaSwagger({
-//     routePrefix: '/v2/swagger',
-//     swaggerOptions: {
-//       url: 'http://localhost:3111/v2/swagger-schema'
-//     }
-//   })
-// )
+app.use(
+  koaSwagger({
+    routePrefix: '/v2/swagger',
+    swaggerOptions: {
+      url: 'http://localhost:3111/v2/swagger-schema'
+    }
+  })
+)
 app.use(mockMain)
 // server.applyMiddleware({ app: app as any })
 export {
