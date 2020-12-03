@@ -63,7 +63,7 @@ class AddressManager implements CommonManager {
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore: ramda
-      R.curry((data, code) => R.prop('name', R.find(R.propEq('code', code))(data))),
+      R.curry((data, code) => R.prop('name', R.find(R.startsWith('code', code))(data))),
       [R.identity, R.identity]
     )
 
