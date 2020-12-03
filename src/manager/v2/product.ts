@@ -79,11 +79,7 @@ class ProductManager implements CommonManager {
   }
   async getList(data: ListFilterInterface & { shopId?: number }): Promise<ManagerResponse> {
     const { pageSize = 10, pageNo = 1, shopId, belong } = data
-    console.log('pageSize', pageSize)
-    console.log('pageNo', pageNo)
-    console.log('shopId', shopId)
     const where = global.util.lodash.omitNil({ shopId, belong })
-    console.log('where', where)
     const result = await Product.findAndCountAll({
       limit: pageSize,
       offset: pageSize * (pageNo - 1),

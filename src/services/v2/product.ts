@@ -12,35 +12,37 @@ class ProductService implements CommonService {
 
   public skuGroupOriginDataToCodeHandler = (crd: any) => {
     if (crd.skuGroup) {
-      crd.skuGroup = crd.skuGroup.filter((sg: any) => sg.enabled === 1).map((sg: any, j: number) => {
-        const attributeGroup = omit(sg, ['enabled', 'salePrice'])
-        const attributeKeys = Object.keys(attributeGroup)
-        const attributeLen = attributeKeys.length
-        let attributeCode = ''
-        if (attributeLen > 0) {
-          attributeKeys.forEach((key, keyIndex) => {
-            attributeCode += `${key}|${attributeGroup[key]}`
-            if (keyIndex < attributeLen - 1)
-              attributeCode += '-'
-          })
-        }
-        sg.code = attributeCode
-        sg = omit(sg, [...attributeKeys, 'enabled'])
-        return sg
-      })
+      crd.skuGroup = crd.skuGroup
+        .filter((sg: any) => sg.enabled === 1)
+        .map((sg: any, j: number) => {
+          const attributeGroup = omit(sg, ['enabled', 'salePrice'])
+          const attributeKeys = Object.keys(attributeGroup)
+          const attributeLen = attributeKeys.length
+          let attributeCode = ''
+          if (attributeLen > 0) {
+            attributeKeys.forEach((key, keyIndex) => {
+              attributeCode += `${key}|${attributeGroup[key]}`
+              if (keyIndex < attributeLen - 1)
+                attributeCode += '-'
+            })
+          }
+          sg.code = attributeCode
+          sg = omit(sg, [...attributeKeys, 'enabled'])
+          return sg
+        })
     }
   }
   async create(data: any): Promise<void> {
     const result = await productManager.create(data)
     ResponseHandler.send(result)
   }
-  
+
   del(id: number): Promise<void> {
     throw new Error("Method not implemented.");
   }
   async getInfo(id: number): Promise<void> {
     const result = await productManager.getInfo(id)
-    const cloneResult = {...result}
+    const cloneResult = { ...result }
     this.skuGroupOriginDataToCodeHandler(cloneResult.data)
     console.log(cloneResult)
     ResponseHandler.send(cloneResult)

@@ -9,7 +9,7 @@ import originCity from 'province-city-china/dist/city.json'
 import area from 'province-city-china/dist/area.json'
 import town from 'province-city-china/dist/town.json'
 import level from 'province-city-china/dist/level.json'
-
+import R from 'ramda'
 import sequelize from "@root/core/db";
 import { FetchAddressType, ZhiXiaShi, AddressItem } from "./interface";
 import { Address, Product } from "@src/db/models";
@@ -57,17 +57,29 @@ class AddressManager implements CommonManager {
   }): any {
     const { cityId, provinceId, areaId, townId } = row
     const nameObj: { [propName: string]: string } = {}
+
+    // ramda try
+    const getNameByMatchId = R.useWith(
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore: ramda
+      R.curry((data, code) => R.prop('name', R.find(R.propEq('code', code))(data))),
+      [R.identity, R.identity]
+    )
+
+
+
     if (provinceId) {
-      nameObj.provinceName = province.find(d => d.code.startsWith(provinceId)).name
+      nameObj.provinceName = getNameByMatchId(province, provinceId)
     }
     if (cityId) {
-      nameObj.cityName = city.find(d => d.code.startsWith(cityId)).name
+      nameObj.cityName = getNameByMatchId(city, cityId)
     }
     if (areaId) {
-      nameObj.areaName = area.find(d => d.code.startsWith(areaId)).name
+      nameObj.areaName = getNameByMatchId(area, areaId)
     }
     if (townId) {
-      nameObj.townName = town.find(d => d.code.startsWith(townId)).name
+      nameObj.townName = getNameByMatchId(town, townId)
     }
     return { ...row, ...nameObj }
   }
