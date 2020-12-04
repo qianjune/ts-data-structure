@@ -23,7 +23,7 @@ export class InitManager {
   static initLoadRouters(): void {
     const whenLoadModule = (obj: any): void => {
       if (obj.default instanceof Router) {
-        ConsoleBox.info('路由加载中，请耐心等待。。。')
+        ConsoleBox.info(`路由{${(obj.default as any)?.otherProps?.tag ?? ''}}加载中，请耐心等待。。。`)
         InitManager.app.use(obj.default.routes())
       }
     }

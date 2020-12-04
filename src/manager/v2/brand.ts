@@ -1,4 +1,4 @@
-import { CommonManager, ListFilterInterface } from "../interface/commonManager";
+import { buildCommonListParams, CommonManager, ListFilterInterface } from "../interface/commonManager";
 import { ManagerResponse, ResponseMsg, ManagerResponseSuccess, ListDataModel } from "../response";
 import sequelize from "@root/core/db";
 import { ShopModel, ProductBrand } from "@src/db/models";
@@ -42,13 +42,11 @@ class BrandManager implements CommonManager {
   }
   async getList?(data: ListFilterInterface): Promise<ManagerResponse> {
     const { pageSize = 10, pageNo = 1 } = data
+
     return await sequelize.transaction(async (t: any) => {
+      const listParams = buildCommonListParams({ pageNo, pageSize })
       const result = await ProductBrand.findAndCountAll({
-        limit: pageSize,
-        offset: pageSize * (pageNo - 1),
-        order: [
-          ['id', 'desc']
-        ],
+        ...listParams,
         include: [
           {
             model: ShopModel,

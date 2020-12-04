@@ -58,9 +58,10 @@ class AddressManager implements CommonManager {
     const { cityId, provinceId, areaId, townId } = row
     const nameObj: { [propName: string]: string } = {}
 
-    // ramda try
+    /**
+     * @description ramda 通用匹配code，获取相应的地区名字
+     */
     const getNameByMatchId = R.useWith(
-
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore: ramda
       R.curry((data, code) => R.prop('name', R.find(R.startsWith('code', code))(data))),
@@ -83,6 +84,10 @@ class AddressManager implements CommonManager {
     }
     return { ...row, ...nameObj }
   }
+  /**
+   * 获取地区列表
+   * @param data 
+   */
   async getList?(data: ListFilterInterface & { userId: number }): Promise<ManagerResponse> {
     const { pageNo = 1, pageSize = 10, userId } = data
     return await sequelize.transaction(async (t: any) => {

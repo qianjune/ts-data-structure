@@ -95,7 +95,12 @@ class BaseRouter {
       const api = this.apis[key]
       this.router[api.method](api.path, ...(api.middleware || []))
 
+
     })
+    // 路由加载时显示的路由名字
+    if (this.tag) {
+      this.router.otherProps = { tag: this.tag }
+    }
     return this.router
   }
 }

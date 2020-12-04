@@ -1,3 +1,6 @@
+/**
+ * 直辖市数据处理
+ */
 export const ZhiXiaShi = [
   {
     "code": "110100",
