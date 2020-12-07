@@ -24,7 +24,7 @@ class ShopManager implements CommonManager {
       const result = await ShopModel.create(data, { transaction: t })
       console.log('result', result)
       const bindRelation = await ShopUserRelation.create({
-        uid: global.state.userInfo?.id||'00000000',
+        uid: global.state.userInfo?.id || '00000000',
         shopId: result.getDataValue('id' as any)
       }, { transaction: t })
       if (bindRelation) {
@@ -61,7 +61,7 @@ class ShopManager implements CommonManager {
       ]
     })
     const { count, rows } = result
-    const brandList = rows.map(row => row.toJSON())
+    const brandList = rows.map((row: any) => row.toJSON())
 
     return new ManagerResponseSuccess({
       data: new ListDataModel({ data: brandList, total: count, pageNo, pageSize }),

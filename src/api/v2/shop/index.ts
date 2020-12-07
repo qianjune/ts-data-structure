@@ -39,6 +39,11 @@ class ShopRouter extends BaseRouter {
     const { id } = ctx.state.parameter
     await shopService.getInfo(id)
   }
+
+  // @
+  // async getShopRecommendGoodsList(ctx: Context) {
+
+  // }
 }
 
 const shopRouter = new ShopRouter()
