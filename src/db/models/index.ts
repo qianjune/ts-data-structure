@@ -8,6 +8,7 @@ import RightPackage from './rightPackage'
 import RightRelation from './rightsRelation'
 import Level from './level'
 import ShopModel from './v2/shop/shop'
+import IndexConfigDb from './v2/indexConfig'
 import ShopUserRelation from './v2/shopUserRelation'
 import Product from './v2/product'
 import ShoppingCartModel from './v2/shoppingCart'
@@ -84,5 +85,6 @@ export {
   ProductCategory,
   AttributeKey,
   AttributeValue,
-  CommentModel
+  CommentModel,
+  IndexConfigDb
 }

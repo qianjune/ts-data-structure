@@ -15,10 +15,11 @@ const ResponseMsg = (placeholder: string) => (
     "DELETE_FAIL": `删除${placeholder}失败，请稍后再试`,
     "DELETE_FAIL_BY_HAVE_LINKED_CHILD": `有关联子节点，删除${placeholder}失败`,
     "GET_DETAIL_SUCCESS": `获取${placeholder}详情成功`,
+    "GET_DETAIL_FAIL": `获取${placeholder}详情失败`,
     "ADD_SUCCESS": `加入${placeholder}成功`,
     "ADD_FAIL": `加入${placeholder}失败`,
-    "EDIT_SUCCESS":`${placeholder}编辑成功`,
-    "EDIT_FAIL":`${placeholder}编辑失败`,
+    "EDIT_SUCCESS": `${placeholder}编辑成功`,
+    "EDIT_FAIL": `${placeholder}编辑失败`,
     // address begin
     "CITY_LIST_SUCCESS": `${placeholder}-市-列表请求成功`,
     "AREA_LIST_SUCCESS": `${placeholder}-区-列表请求成功`,

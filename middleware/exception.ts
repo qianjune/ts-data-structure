@@ -4,6 +4,7 @@ const { HttpException, HttpExceptionForMini } = globalErrors
 
 const catchError = async (ctx: Context, next: any): Promise<void> => {
   try {
+    console.log('到这0')
     await next()
   } catch (error) {
     const isHttpException = error instanceof HttpException
