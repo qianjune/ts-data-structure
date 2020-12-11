@@ -29,19 +29,38 @@ class IndexConfigManager implements CommonManager {
     throw new Error("Method not implemented.");
   }
   async getInfo(id: number): Promise<ManagerResponse> {
-    const result = await IndexConfigDb.findOne({
+    let result: any = await IndexConfigDb.findOne({
       where: {
         id
       }
     })
+
     if (result) {
-      return new ManagerResponseSuccess({ msg: responseMsg.GET_DETAIL_SUCCESS, data: { a: 1 } })
+      result = result.toJSON()
+      return new ManagerResponseSuccess({ msg: responseMsg.GET_DETAIL_SUCCESS, data: { ...result, data: JSON.parse(result.data) } })
     } else {
       return new ManagerResponseFailure({ msg: responseMsg.GET_DETAIL_FAIL })
     }
   }
-  getList?(data: ListFilterInterface): Promise<ManagerResponse> {
-    throw new Error("Method not implemented.");
+  async getList?(data: ListFilterInterface): Promise<ManagerResponse> {
+    const { pageSize = 10, pageNo = 1 } = data
+    return await sequelize.transaction(async (t: any) => {
+      const listParams = buildCommonListParams({ pageNo, pageSize })
+      const result = await IndexConfigDb.findAndCountAll({
+        ...listParams,
+      })
+      const { count, rows } = result
+      const brandList = rows.map(row => {
+        let data: any = row.toJSON()
+        data = { ...data, data: JSON.parse(data.data) }
+        return data
+      })
+
+      return new ManagerResponseSuccess({
+        data: new ListDataModel({ data: brandList, total: count, pageNo, pageSize }),
+        msg: responseMsg.FETCH_LIST_SUCCESS
+      })
+    })
   }
 
 }

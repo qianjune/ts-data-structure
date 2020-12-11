@@ -42,7 +42,8 @@ class IndexConfigApi extends BaseRouter {
     pageNo: joi.number().required()
   }), 'query')
   async getList(ctx: Context): Promise<void> {
-    // get list
+    const { parameter } = ctx.state
+    await indexConfigService.getList(parameter)
   }
   @del('/:id')
   @summary('删除IndexConfigApi')

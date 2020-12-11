@@ -24,7 +24,7 @@ IndexConfigDb.init({
     allowNull: false
   },
   data: {
-    type: TYPES.STRING,
+    type: TYPES.TEXT,
     comment: "配置数据",
     allowNull: false
   }
