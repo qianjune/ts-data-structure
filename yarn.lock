@@ -1145,6 +1145,13 @@
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.0.0.tgz#dc85454b953178cc6043df5208b9e949b54a3bc4"
   integrity sha512-/rM+sWiuOZ5dvuVzV37sUuklsbg+JPOP8d+nNFlo2ZtfpzPiPvh1/gc8liWOLBqe+sR+ZM7guPaIcTt6UZTo7Q==
 
+"@types/qiniu@^7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@types/qiniu/-/qiniu-7.0.1.tgz#5394fea99ea366be7daaa5a9198aab2dea97aba0"
+  integrity sha512-3n2X3Dl89rDPGu/zROIN+Dqu9yUWN5cBbDiWwE/gRbE1X+7BhoGM2/eyM4GMstdLa8w3Ns9yW1fGDPYALuWwMA==
+  dependencies:
+    qiniu "*"
+
 "@types/qs@*":
   version "6.9.5"
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.9.5.tgz#434711bdd49eb5ee69d90c1d67c354a9a8ecb18b"
@@ -5882,7 +5889,7 @@ pupa@^2.0.1:
   dependencies:
     escape-goat "^2.0.0"
 
-qiniu@^7.3.2:
+qiniu@*, qiniu@^7.3.2:
   version "7.3.2"
   resolved "https://registry.yarnpkg.com/qiniu/-/qiniu-7.3.2.tgz#2655ffc65396272b4b1aaa8588aa7b1cc167d3cb"
   integrity sha512-rn9I+/DaQKWh7/+9uVdR/kIVRT0yS7tne5LDQQQ2MtGFN5MgIjyoznztxVRuzs4ZWXdy7Qw/bYHYQcW5jB2xJA==

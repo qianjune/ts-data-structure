@@ -19,6 +19,15 @@ class QiniuRouter extends BaseRouter {
       scope: 'jblog-mall-pic',
     };
     const putPolicy = new qiniu.rs.PutPolicy(options);
+    const listPrefixReq = new qiniu.rs.BucketManager(mac);
+    listPrefixReq.listPrefix(options.scope, {}, function (err: any, ret: any) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        console.log(ret);
+      }
+    })
     const uploadToken = putPolicy.uploadToken(mac);
     return ResponseHandler.send(
       new ManagerResponseSuccess({
