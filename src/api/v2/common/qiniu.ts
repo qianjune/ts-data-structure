@@ -2,9 +2,10 @@ import BaseRouter, { prefix, tag, get, summary, middleware } from "@src/lib/rout
 import { ResponseHandler } from "@src/utils/responseHandler";
 import { ManagerResponseSuccess } from "@src/manager/response";
 import SessionCookieHandler from "@src/utils/session_cookie";
-const qiniu = require('qiniu')
-const AK = '2ZCvhBFksrVxcxv8KbOAsMJEZho5IE1pJv8DBnaU';
-const SK = '2fr7-22iOPl1FU47wVyMkdD64xCb2ZNq2uRdh-7N';
+
+import QiniuService from '@src/services/v2/qiniu'
+const qiniuService = new QiniuService()
+
 @prefix('/api/qiniu')
 @tag('qiniu service')
 class QiniuRouter extends BaseRouter {
@@ -12,28 +13,14 @@ class QiniuRouter extends BaseRouter {
   @summary('获取qinniu上传token')
   @middleware(SessionCookieHandler.loginCheck)
   getUploadToken() {
-    const accessKey = AK;
-    const secretKey = SK;
-    const mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
-    const options = {
-      scope: 'jblog-mall-pic',
-    };
-    const putPolicy = new qiniu.rs.PutPolicy(options);
-    const listPrefixReq = new qiniu.rs.BucketManager(mac);
-    listPrefixReq.listPrefix(options.scope, {}, function (err: any, ret: any) {
-      if (err) {
-        console.log(err);
-      }
-      else {
-        console.log(ret);
-      }
-    })
-    const uploadToken = putPolicy.uploadToken(mac);
-    return ResponseHandler.send(
-      new ManagerResponseSuccess({
-        msg: 'qiniu upload token',
-        data: { uploadToken }
-      }))
+    qiniuService.uploadToken()
+  }
+
+  @get('/pic/list')
+  @summary('获取文件列表')
+  @middleware(SessionCookieHandler.loginCheck)
+  async getPicList() {
+    await qiniuService.getList()
   }
 }
 const qiniuRouter = new QiniuRouter()
