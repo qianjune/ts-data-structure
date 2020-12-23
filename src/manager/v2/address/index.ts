@@ -49,12 +49,14 @@ class AddressManager implements CommonManager {
   getInfo(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  _buildAddressName(row: {
-    cityId: string,
-    provinceId: string,
-    areaId: string,
-    townId: string
-  }): any {
+  _buildAddressName(
+    row: {
+      cityId: string,
+      provinceId: string,
+      areaId: string,
+      townId: string
+    }
+  ): any {
     const { cityId, provinceId, areaId, townId } = row
     const nameObj: { [propName: string]: string } = {}
 
@@ -64,13 +66,15 @@ class AddressManager implements CommonManager {
     const getNameByMatchId = R.useWith(
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore: ramda
-      R.curry((data, code) => R.prop('name', R.find(R.startsWith('code', code))(data))),
+      R.curry((data, code) => R.prop('name', R.find(d => R.startsWith(code, R.prop('code', d)))(data))),
       [R.identity, R.identity]
     )
 
 
 
     if (provinceId) {
+      console.log(provinceId, 'provinceId...')
+
       nameObj.provinceName = getNameByMatchId(province, provinceId)
     }
     if (cityId) {
