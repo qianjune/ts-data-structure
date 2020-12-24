@@ -2,7 +2,7 @@
  * @description 产品 orm
  */
 
-import { CommonManager, ListFilterInterface } from "../interface/commonManager";
+import { buildCommonListParams, CommonManager, ListFilterInterface } from "../interface/commonManager";
 import { Product, ShopModel } from "@src/db/models";
 import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg, ManagerResponseFailure } from "@src/manager/response";
 import sequelize from "@root/core/db";
@@ -80,12 +80,9 @@ class ProductManager implements CommonManager {
   async getList(data: ListFilterInterface & { shopId?: number }): Promise<ManagerResponse> {
     const { pageSize = 10, pageNo = 1, shopId, belong } = data
     const where = global.util.lodash.omitNil({ shopId, belong })
+    const listParams = buildCommonListParams({ pageNo, pageSize })
     const result = await Product.findAndCountAll({
-      limit: pageSize,
-      offset: pageSize * (pageNo - 1),
-      order: [
-        ['id', 'desc']
-      ],
+      ...listParams,
       include: [
         {
           model: ShopModel,

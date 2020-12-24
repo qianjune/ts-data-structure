@@ -30,6 +30,11 @@ ShoppingCart.init(
       allowNull: false,
       comment: '商品id'
     },
+    shopId: {
+      type: TYPES.INTEGER,
+      allowNull: false,
+      comment: '店铺Id'
+    },
     sku: {
       type: TYPES.STRING,
       allowNull: false,
