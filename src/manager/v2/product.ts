@@ -6,6 +6,7 @@ import { buildCommonListParams, CommonManager, ListFilterInterface } from "../in
 import { Product, ShopModel } from "@src/db/models";
 import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg, ManagerResponseFailure } from "@src/manager/response";
 import sequelize from "@root/core/db";
+import { omit, cloneDeep } from "lodash";
 
 const placeholder = '商品'
 const responseMsg = ResponseMsg(placeholder)
@@ -15,6 +16,30 @@ interface goodsInfo {
 }
 
 class ProductManager implements CommonManager {
+
+  public skuGroupOriginDataToCodeHandler = (crd: any) => {
+    if (crd.skuGroup) {
+      crd.skuGroup = crd.skuGroup
+        .filter((sg: any) => sg.enabled === 1)
+        .map((sg: any, j: number) => {
+          const attributeGroup = omit(sg, ['enabled', 'salePrice'])
+          const attributeKeys = Object.keys(attributeGroup)
+          const attributeLen = attributeKeys.length
+          let attributeCode = ''
+          if (attributeLen > 0) {
+            attributeKeys.forEach((key, keyIndex) => {
+              attributeCode += `${key}|${attributeGroup[key]}`
+              if (keyIndex < attributeLen - 1)
+                attributeCode += '-'
+            })
+          }
+          sg.code = attributeCode
+          sg = omit(sg, [...attributeKeys, 'enabled'])
+          return sg
+        })
+    }
+  }
+
   _shopInfoHandler(row: goodsInfo): goodsInfo {
     const cloneRow = { ...row }
     cloneRow.shopName = cloneRow.shopDetail.name
@@ -75,6 +100,7 @@ class ProductManager implements CommonManager {
     let cloneProduct: any = productInfo.toJSON()
     cloneProduct = this._shopInfoHandler(cloneProduct)
     cloneProduct.skuGroup = JSON.parse(cloneProduct.skuGroup)
+    this.skuGroupOriginDataToCodeHandler(cloneProduct)
     return new ManagerResponseSuccess({ data: cloneProduct, msg: responseMsg.GET_DETAIL_SUCCESS })
   }
   async getList(data: ListFilterInterface & { shopId?: number }): Promise<ManagerResponse> {
@@ -95,12 +121,12 @@ class ProductManager implements CommonManager {
     const { rows, count } = result
     const productList = rows.map(row => {
       let cloneRow = { ...row.toJSON() } as goodsInfo
-      console.log(cloneRow)
       cloneRow = this._shopInfoHandler(cloneRow)
 
       if (cloneRow.skuGroup) {
         cloneRow.skuGroup = JSON.parse(cloneRow.skuGroup)
       }
+      this.skuGroupOriginDataToCodeHandler(cloneRow)
       return cloneRow
     })
     return new ManagerResponseSuccess({

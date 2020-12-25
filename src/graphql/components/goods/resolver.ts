@@ -8,8 +8,7 @@ import {
 } from "type-graphql";
 import ProductManager from "@src/manager/v2/product";
 const productManager = new ProductManager
-import ProductService from "@src/services/v2/product";
-const productService = new ProductService()
+
 import { Response, ListBody, ListCommonParams } from '@src/graphql/components/lib/type'
 
 @ObjectType()
@@ -72,7 +71,7 @@ class GoodsResolver {
   async getGoodsDetail(@Arg("id") id: number): Promise<any> {
     const result = await productManager.getInfo(id)
     const cloneResult = { ...result }
-    productService.skuGroupOriginDataToCodeHandler(cloneResult.data)
+    productManager.skuGroupOriginDataToCodeHandler(cloneResult.data)
     console.log(cloneResult)
     return cloneResult
   }
@@ -88,7 +87,7 @@ class GoodsResolver {
     if (realData) {
       const cloneRealData = [...realData]
       cloneRealData.forEach((crd: any, index: number) => {
-        productService.skuGroupOriginDataToCodeHandler(crd)
+        productManager.skuGroupOriginDataToCodeHandler(crd)
       })
       // cloneResult.data.data = cloneRealData
     }
