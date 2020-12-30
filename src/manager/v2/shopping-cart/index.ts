@@ -6,8 +6,11 @@ import { buildCommonListParams, CommonManager, ListFilterInterface } from "@src/
 import sequelize from "@root/core/db";
 import { Product, ShopModel, ShoppingCart } from "@src/db/models";
 import R from 'ramda'
-import { ResponseMsg, ManagerResponseSuccess, ManagerResponseFailure } from "../response";
-import ProductManager from "./product";
+import { ResponseMsg, ManagerResponseSuccess, ManagerResponseFailure } from "@src/manager/response";
+
+import ProductManager from "@src/manager/v2/product";
+import ShoppingCartListItem from "./shopping-cart-list-item";
+import { ManagerResponse } from "@src/manager/response";
 const productManager = new ProductManager()
 interface shoppingCartItem {
   id?: number
@@ -25,7 +28,7 @@ class shoppingCartManager implements CommonManager {
    * 包含新增数量和新增商品
    * @param data 
    */
-  async create(data: shoppingCartItem): Promise<import("../../../src/manager/response").ManagerResponse> {
+  async create(data: shoppingCartItem): Promise<ManagerResponse> {
     const { userId, productId, sku, num, shopId } = data
     const shoppingCartItem = await ShoppingCart.findOne({
       where: {
@@ -50,16 +53,16 @@ class shoppingCartManager implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.ADD_FAIL })
     }
   }
-  edit(data: any): Promise<import("../../../src/manager/response").ManagerResponse> {
+  edit(data: any): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  del(id: number): Promise<import("../../../src/manager/response").ManagerResponse> {
+  del(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  getInfo(id: number): Promise<import("../../../src/manager/response").ManagerResponse> {
+  getInfo(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  async getList(data: ListFilterInterface & { userId: number }): Promise<import("../../../src/manager/response").ManagerResponse> {
+  async getList(data: ListFilterInterface & { userId: number }): Promise<ManagerResponse> {
     const { pageSize = 10, pageNo = 1 } = data
     // const where = global.util.lodash.omitNil({})
     const listParams = buildCommonListParams({ pageNo, pageSize })
@@ -80,6 +83,7 @@ class shoppingCartManager implements CommonManager {
       rows.map(async row => {
         const d: any = row.toJSON()
         const productInfo = await productManager.getInfo(d.productId)
+        // 获取当前物品选定的sku的价格
         const salePrice = productInfo.data.skuGroup.find((sku: { code: string }) => sku.code === d.sku)?.salePrice ?? null
         d.salePrice = salePrice
         d.productName = productInfo.data.name
@@ -89,7 +93,7 @@ class shoppingCartManager implements CommonManager {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore: ramda
-    const groupByList = R.groupBy(R.prop('shopId'))(list)
+    const groupByList = R.groupBy(R.prop('shopId'))(list) // 通过shopId给数据分组
     const shopIdGroup = Object.keys(groupByList)
     const finalData = shopIdGroup.map((shopId: string) => {
       const info = groupByList[shopId]
@@ -119,31 +123,6 @@ class shoppingCartManager implements CommonManager {
 
 }
 
-interface ShopInfo {
-  id: number
-  name: string
-  logo: string
-}
-interface product {
-  id: number
-  name: string
-  sku: string
-  num: number
-  salePrice: number
-}
-interface ShoppingCartListItemInterface {
-  shopInfo: ShopInfo,
-  products: product[]
-}
 
-class ShoppingCartListItem {
-  shopInfo: ShopInfo
-  products: product[]
-  constructor(d: ShoppingCartListItemInterface) {
-    const { shopInfo, products } = d
-    this.shopInfo = shopInfo
-    this.products = products
-  }
-}
 
 export default shoppingCartManager
