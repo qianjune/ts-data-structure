@@ -6,7 +6,7 @@ import { buildCommonListParams, CommonManager, ListFilterInterface } from "@src/
 import sequelize from "@root/core/db";
 import { Product, ShopModel, ShoppingCart } from "@src/db/models";
 import R from 'ramda'
-import { ResponseMsg, ManagerResponseSuccess, ManagerResponseFailure } from "@src/manager/response";
+import { ResponseMsg, ManagerResponseSuccess, ManagerResponseFailure, ListDataModel } from "@src/manager/response";
 
 import ProductManager from "@src/manager/v2/product";
 import ShoppingCartListItem from "./shopping-cart-list-item";
@@ -107,7 +107,7 @@ class shoppingCartManager implements CommonManager {
           id: p.productId,
           name: p.productName,
           sku: p.sku,
-          num: p.num,
+          amount: p.num,
           salePrice: p.salePrice
         })
       })
@@ -118,7 +118,14 @@ class shoppingCartManager implements CommonManager {
       })
       return Object.assign({}, listItem)
     })
-    return new ManagerResponseSuccess({ msg: 'ok', data: finalData })
+    return new ManagerResponseSuccess({
+      msg: 'ok', data: new ListDataModel({
+        data: finalData,
+        total: count,
+        pageNo,
+        pageSize
+      })
+    })
   }
 
 }

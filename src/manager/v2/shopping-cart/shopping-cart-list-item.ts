@@ -12,7 +12,7 @@ export interface product {
   id: number
   name: string
   sku: string
-  num: number
+  amount: number
   salePrice: number
 }
 export interface ShoppingCartListItemInterface {
