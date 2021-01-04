@@ -14,9 +14,18 @@ const upperCaseFirstWord = (str: string) => {
   cloneStr = cloneStr.join('')
   return cloneStr
 }
+const lowerCaseFirstWord = (str: string) => {
+  let cloneStr: any = str
+  cloneStr = cloneStr.split('')
+  cloneStr[0] = (cloneStr[0] as string).toLowerCase()
+  cloneStr = cloneStr.join('')
+  return cloneStr
+}
 const buildFileContent = (filePath: string, replaceName: string, type: FILE_TYPE): string => {
   const buf = fs.readFileSync(filePath)
-  const resultStr = buf.toString().replace(/XXXXXX/gi, upperCaseFirstWord(replaceName) + upperCaseFirstWord(type))
+  let resultStr = buf.toString().replace(/XXXXXX/gi, upperCaseFirstWord(replaceName))
+  resultStr = buf.toString().replace(/xXXXXX/gi, lowerCaseFirstWord(replaceName))
+
   return resultStr
 }
 const writeServiceFile = (filePath: string, fileContent: string): void => {

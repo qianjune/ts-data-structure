@@ -6,7 +6,8 @@ import { CommonManager, ListFilterInterface, buildCommonListParams } from "@src/
 import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg, ManagerResponseFailure } from "@src/manager/response";
 
 import sequelize from "@root/core/db";
-import FavoritesDb, { FavoritesItemType } from "@src/db/models/v2/favorites";
+import { FavoritesDb } from "@src/db/models";
+import { FavoritesItemType } from '@src/db/models/v2/user/favorites'
 interface FavoritesItem {
   type: FavoritesItemType
   likeId: number

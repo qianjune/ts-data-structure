@@ -17,6 +17,8 @@ import ProductCategory from './v2/product/category'
 import AttributeKey from './v2/product/attribute_key'
 import AttributeValue from './v2/product/attribute_value'
 import CommentModel from './v2/product/comment'
+import FavoritesDb from './v2/user/favorites'
+
 // import ShopProductRelation from './v2/shopProductRelation'
 
 // Address.belongsTo(User, {
@@ -95,5 +97,6 @@ export {
   AttributeKey,
   AttributeValue,
   CommentModel,
-  IndexConfigDb
+  IndexConfigDb,
+  FavoritesDb
 }
