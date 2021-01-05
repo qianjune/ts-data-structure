@@ -1,62 +1,68 @@
 /**
- * @description FavoritesApi api
+ * @description BrowseRecords api
  */
 
 import joi from '@hapi/joi'
 import BaseRouter, { post, parameter, get, summary, del, prefix, tag, middleware } from '@src/lib/router-decorator';
 import { Context } from 'koa';
-import FavoritesService from '@src/services/v2/favorites';
+import BrowseRecordsService from '@src/services/v2/browseRecords'
 import SessionCookieHandler from '@src/utils/session_cookie';
-const favoritesService = new FavoritesService()
-@prefix('/api/favorite')
-@tag('FavoritesApi相关服务')
-class FavoritesApi extends BaseRouter {
+const browseRecordsService = new BrowseRecordsService()
+@prefix('/api/browseRecords')
+@tag('BrowseRecords相关服务')
+class BrowseRecordsApi extends BaseRouter {
   @post('/create')
-  @summary('FavoritesApi创建')
+  @summary('BrowseRecords创建')
   @middleware(SessionCookieHandler.loginCheck)
   @parameter(joi.object({
-    type: joi.string().required(),
-    likeId: joi.number().required(),
+    shopId: joi.string(),
+    productId: joi.string()
   }), 'body')
   async create(ctx: Context): Promise<void> {
-    await favoritesService.create({ ...ctx.state.parameter, uid: global.state.userInfo.id })
+    // create item
+    const { body } = ctx.request
+    await browseRecordsService.create({ ...body, uid: global.state.userInfo.id })
   }
   @get('/detail/:id')
-  @summary('FavoritesApi详情')
+  @summary('BrowseRecords详情')
   @parameter(joi.object({
     id: joi.string().required()
   }), 'params')
   async getInfo(ctx: Context): Promise<void> {
     // get info
+    const { id } = ctx.state.parameter
+    await browseRecordsService.getInfo(id)
   }
   @get('/list')
-  @summary('FavoritesApi列表')
-  @middleware(SessionCookieHandler.loginCheck)
+  @summary('BrowseRecords列表')
   @parameter(joi.object({
     pageSize: joi.number().required(),
-    pageNo: joi.number().required(),
-    type: joi.string().required()
+    pageNo: joi.number().required()
   }), 'query')
   async getList(ctx: Context): Promise<void> {
-    await favoritesService.getList({ ...ctx.state.parameter, uid: global.state.userInfo.id })
+    // get list
+    const { parameter } = ctx.state
+    await browseRecordsService.getList(parameter)
   }
   @del('/:id')
-  @summary('删除FavoritesApi')
+  @summary('删除BrowseRecords')
   @parameter(joi.object({
     id: joi.string().required()
   }), 'params')
   async del(ctx: Context): Promise<void> {
     // del item
     const { id } = ctx.state.parameter
-    await favoritesService.del(id)
+    await browseRecordsService.del(id)
   }
 
   @post('/edit')
-  @summary('FavoritesApi编辑')
+  @summary('BrowseRecords编辑')
   @parameter(joi.object({}), 'body')
   async edit(ctx: Context): Promise<void> {
     // edit item
+    const { body } = ctx.request
+    await browseRecordsService.edit(body)
   }
 }
 
-export default new FavoritesApi().init()
+export default new BrowseRecordsApi().init()

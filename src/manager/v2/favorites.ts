@@ -11,16 +11,25 @@ import { FavoritesItemType } from '@src/db/models/v2/user/favorites'
 interface FavoritesItem {
   type: FavoritesItemType
   likeId: number
-  userId: number
+  uid: number
 }
 const placeholder = '收藏'
 const responseMsg = ResponseMsg(placeholder)
 class FavoritesManager implements CommonManager {
+  async _getInfo(id: number, config?: { msg?: string }): Promise<any> {
+    const item = await FavoritesDb.findOne({
+      where: { id }
+    })
+    if (!item) {
+      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
+    }
+    return item
+  }
   async create(data: FavoritesItem): Promise<ManagerResponse> {
-    const { type, likeId, userId } = data
+    const { type, likeId, uid } = data
     const item = await FavoritesDb.findOne({
       where: {
-        type, likeId, userId
+        type, likeId, uid
       }
     })
     if (item) {
@@ -36,8 +45,21 @@ class FavoritesManager implements CommonManager {
   edit(data: any): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  del(id: number): Promise<ManagerResponse> {
-    throw new Error("Method not implemented.");
+  async del(id: number): Promise<ManagerResponse> {
+    const item = await this._getInfo(id)
+    console.log('-------')
+    console.log(item)
+    const d = item.toJSON()
+    const result = await FavoritesDb.update({ ...d, diabled: 1 }, {
+      where: {
+        id
+      }
+    })
+    if (result[0] > 0) {
+      return new ManagerResponseSuccess({ data: null, msg: responseMsg.EDIT_SUCCESS })
+    } else {
+      return new ManagerResponseFailure({ msg: responseMsg.EDIT_FAIL })
+    }
   }
   getInfo(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
@@ -46,9 +68,9 @@ class FavoritesManager implements CommonManager {
     userId: number
     type: FavoritesItemType
   }): Promise<ManagerResponse> {
-    const { pageNo, pageSize, userId, type } = data
+    const { pageNo, pageSize, uid, type } = data
     const where = global.util.lodash.omitNil({
-      userId, type
+      uid, type
     })
     const list = await FavoritesDb.findAndCountAll({
       ...buildCommonListParams({ pageNo, pageSize }),

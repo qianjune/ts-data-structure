@@ -6,7 +6,11 @@ import sequelize from '@root/core/db'
 import { TYPES } from '@src/db/types'
 export enum FavoritesItemType {
   SHOP = 'shop',
-  GOODS = 'goods'
+  PRODUCT = 'product'
+}
+enum FavoritesStatus {
+  DISABLE = 1,
+  ABLE = 0
 }
 class FavoritesDb extends Model { }
 
@@ -27,9 +31,15 @@ FavoritesDb.init({
     comment: "收藏的id",
     allowNull: false
   },
-  userId: {
+  uid: {
     type: TYPES.INTEGER,
     comment: "用户id",
+    allowNull: false
+  },
+  disabled: {
+    type: TYPES.INTEGER,
+    comment: '是否启用（创建时为able,之后删除浏览记录就修改这个属性，不会真的删除，方便日后推荐',
+    defaultValue: FavoritesStatus.ABLE,
     allowNull: false
   }
 }, {

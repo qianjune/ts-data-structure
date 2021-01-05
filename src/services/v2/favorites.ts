@@ -12,14 +12,15 @@ class FavoritesService implements CommonService {
   async edit<T>(data: T): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  del(id: number): Promise<void> {
-    throw new Error("Method not implemented.");
+  async del(id: number): Promise<void> {
+    ResponseHandler.send(await favoritesManager.del(id))
   }
   getInfo(id: number): Promise<void> {
     throw new Error("Method not implemented.");
   }
   async getList?(data: any): Promise<void> {
-    ResponseHandler.send(await favoritesManager.getList(data))
+    const result = await favoritesManager.getList(data)
+    ResponseHandler.send(result)
   }
 
 }

@@ -7,7 +7,7 @@ import BaseRouter, { post, parameter, get, summary, del, prefix, tag } from '@sr
 import { Context } from 'koa';
 import XXXXXXService from '@src/services/v2/xXXXXX'
 const xXXXXXService = new XXXXXXService()
-@prefix('/api/XXXXXX')
+@prefix('/api/xXXXXX')
 @tag('XXXXXX相关服务')
 class XXXXXXApi extends BaseRouter {
   @post('/create')
