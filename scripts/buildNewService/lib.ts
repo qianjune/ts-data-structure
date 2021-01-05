@@ -23,8 +23,8 @@ const lowerCaseFirstWord = (str: string) => {
 }
 const buildFileContent = (filePath: string, replaceName: string, type: FILE_TYPE): string => {
   const buf = fs.readFileSync(filePath)
-  let resultStr = buf.toString().replace(/XXXXXX/gi, upperCaseFirstWord(replaceName))
-  resultStr = buf.toString().replace(/xXXXXX/gi, lowerCaseFirstWord(replaceName))
+  let resultStr = buf.toString().replace(/XXXXXX/g, upperCaseFirstWord(replaceName))
+  resultStr = resultStr.toString().replace(/xXXXXX/g, lowerCaseFirstWord(replaceName))
 
   return resultStr
 }
