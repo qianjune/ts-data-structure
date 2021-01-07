@@ -1,3 +1,6 @@
+/**
+ * @description 权限 管理
+ */
 import jwt from 'jsonwebtoken'
 
 class Auth {

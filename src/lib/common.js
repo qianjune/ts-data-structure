@@ -1,15 +1,10 @@
+/**
+ * @description 
+ * mysql 字符串数组转换
+ * JSON 数据转换
+ */
 
-const success = (msg, errCode) => {
-  throw new global.errs.Success(msg, errCode)
-}
 
-const paginationParamsTransform = ({ page, pageSize }) => {
-  const offset = pageSize * (page - 1)
-  return {
-    offset,
-    limit: pageSize
-  }
-}
 
 const mysqlArrayStringHandler = (key) => {
   return {
@@ -31,4 +26,4 @@ const mysqlJsonHandler = (key) => {
     }
   }
 }
-module.exports = { success, paginationParamsTransform, mysqlArrayStringHandler, mysqlJsonHandler }
+module.exports = { mysqlArrayStringHandler, mysqlJsonHandler }
