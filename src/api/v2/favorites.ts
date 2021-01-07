@@ -17,6 +17,7 @@ class FavoritesApi extends BaseRouter {
   @parameter(joi.object({
     type: joi.string().required(),
     likeId: joi.number().required(),
+    id: joi.number()
   }), 'body')
   async create(ctx: Context): Promise<void> {
     await favoritesService.create({ ...ctx.state.parameter, uid: global.state.userInfo.id })

@@ -12,6 +12,7 @@ interface FavoritesItem {
   type: FavoritesItemType
   likeId: number
   uid: number
+  id?: number
 }
 const placeholder = '收藏'
 const responseMsg = ResponseMsg(placeholder)
@@ -32,10 +33,17 @@ class FavoritesManager implements CommonManager {
         type, likeId, uid
       }
     })
+    let result = null
     if (item) {
-      return new ManagerResponseFailure({ msg: responseMsg.HAVE_COLLECTED })
+      if (item.getDataValue('disabled') === 1) {
+        item.setDataValue('disabled', 0);
+        console.log(item)
+        result = await item.save()
+      }
+    } else {
+      result = await FavoritesDb.create(data)
     }
-    const result = await FavoritesDb.create(data)
+
     if (result) {
       return new ManagerResponseSuccess({ msg: responseMsg.CREATE_SUCCESS, data: result })
     } else {
@@ -48,9 +56,10 @@ class FavoritesManager implements CommonManager {
   async del(id: number): Promise<ManagerResponse> {
     const item = await this._getInfo(id)
     console.log('-------')
-    console.log(item)
+
     const d = item.toJSON()
-    const result = await FavoritesDb.update({ ...d, diabled: 1 }, {
+    console.log(d)
+    const result = await FavoritesDb.update({ ...d, disabled: 1 }, {
       where: {
         id
       }
@@ -74,7 +83,7 @@ class FavoritesManager implements CommonManager {
     })
     const list = await FavoritesDb.findAndCountAll({
       ...buildCommonListParams({ pageNo, pageSize }),
-      where
+      where: { ...where, disabled: 0 }
     })
     const { rows, count } = list
     return new ManagerResponseSuccess({
