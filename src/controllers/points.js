@@ -1,6 +1,6 @@
 import { ErrorModel, SuccessModel } from "@root/models/ResModel"
 import ErrorInfo from "@root/models/ErrorInfo"
-import { PointsService } from "@src/services/points"
+import { PointsService } from "@src/services/member/points"
 import { MemberController } from "../manager/v2/member"
 import { PointsEnum } from "@src/enum"
 

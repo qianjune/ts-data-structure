@@ -9,7 +9,7 @@ import BrowseRecordsService from '@src/services/v2/browseRecords'
 import SessionCookieHandler from '@src/utils/session_cookie';
 const browseRecordsService = new BrowseRecordsService()
 @prefix('/api/browseRecords')
-@tag('BrowseRecords相关服务')
+@tag('浏览记录-相关服务')
 class BrowseRecordsApi extends BaseRouter {
   @post('/create')
   @summary('BrowseRecords创建')

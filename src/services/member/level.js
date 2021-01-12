@@ -1,4 +1,4 @@
-import Level from "../db/models/level"
+import Level from "../../db/models/v2/member/level"
 
 class LevelService {
   static async create(data) {

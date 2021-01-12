@@ -1,3 +1,6 @@
+/**
+ * old - 订单校验
+ */
 import { LinValidator, Rule } from '../../core/lin-validator-v2'
 import Joi from '@hapi/joi'
 
@@ -26,7 +29,7 @@ export class OrderPayValidator extends LinValidator {
   constructor() {
     super()
     this.id = [
-      new Rule('isNumeric','id不合法')
+      new Rule('isNumeric', 'id不合法')
     ]
     this.sum = [
       new Rule('isNumeric', '总价不合法')

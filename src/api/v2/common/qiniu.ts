@@ -7,7 +7,7 @@ import QiniuService from '@src/services/v2/qiniu'
 const qiniuService = new QiniuService()
 
 @prefix('/api/qiniu')
-@tag('qiniu service')
+@tag('七牛-存储-服务')
 class QiniuRouter extends BaseRouter {
   @get('/token')
   @summary('获取qinniu上传token')

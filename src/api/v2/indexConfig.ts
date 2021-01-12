@@ -8,7 +8,7 @@ import { Context } from 'koa';
 import IndexConfigService from '@src/services/v2/indexConfig';
 const indexConfigService = new IndexConfigService()
 @prefix('/api/index/config')
-@tag('IndexConfigApi相关服务')
+@tag('首页-配置-服务')
 class IndexConfigApi extends BaseRouter {
   @post('/create')
   @summary('IndexConfigApi创建')

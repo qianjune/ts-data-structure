@@ -1,3 +1,6 @@
+/**
+ * old - 产品校验
+ */
 import { LinValidator, Rule } from '../../core/lin-validator-v2'
 
 class ProductValidator extends LinValidator {

@@ -8,7 +8,7 @@ import Joi from "@hapi/joi";
 import ProductService from "@src/services/v2/product";
 const productService = new ProductService()
 @prefix('/api/product')
-@tag('产品相关服务')
+@tag('产品-相关服务')
 class ProductRouter extends BaseRouter {
   @post('/create')
   @summary('产品创建')

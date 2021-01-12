@@ -12,7 +12,7 @@ import { Context } from 'koa'
 
 
 @prefix('/api/user/web')
-@tag('用户服务')
+@tag('用户-短信-服务')
 class SmsRouter extends BaseRouter {
   @post('/email/test')
   async emailTest(ctx: Context): Promise<void> {

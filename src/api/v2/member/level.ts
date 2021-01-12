@@ -5,11 +5,12 @@
 
 import joi from '@hapi/joi'
 import Auth from '@root/middleware/auth'
-import BaseRouter, { get, post, middleware, parameter, prefix, put } from '@src/lib/router-decorator'
+import BaseRouter, { get, post, middleware, parameter, prefix, put, tag } from '@src/lib/router-decorator'
 import { LevelController } from '@src/controllers/level'
 import { Context } from 'koa'
 
 @prefix('/v2/level')
+@tag('等级-相关服务')
 class LevelRouter extends BaseRouter {
 
   /**

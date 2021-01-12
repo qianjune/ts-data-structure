@@ -34,11 +34,14 @@ class FavoritesManager implements CommonManager {
       }
     })
     let result = null
+    console.log(item, '....')
     if (item) {
       if (item.getDataValue('disabled') === 1) {
         item.setDataValue('disabled', 0);
         console.log(item)
         result = await item.save()
+      } else {
+        result = item
       }
     } else {
       result = await FavoritesDb.create(data)
