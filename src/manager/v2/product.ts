@@ -2,7 +2,7 @@
  * @description 产品 orm
  */
 
-import { buildCommonListParams, CommonManager, ListFilterInterface } from "../interface/commonManager";
+import { buildCommonListParams, CommonManager, ListFilterInterface } from "@src/manager/interface/commonManager";
 import { Product, ShopModel } from "@src/db/models";
 import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg, ManagerResponseFailure } from "@src/manager/response";
 import sequelize from "@root/core/db";

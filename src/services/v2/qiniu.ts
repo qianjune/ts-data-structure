@@ -1,4 +1,4 @@
-import { CommonService } from "../interface/common";
+import { CommonService } from "@src/services/interface/common";
 import { ResponseHandler } from "@src/utils/responseHandler";
 import { ListParamsInterface } from "@src/manager/interface";
 import { ManagerResponseSuccess } from "@src/manager/response";

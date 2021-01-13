@@ -1,4 +1,4 @@
-import { Points } from "../../db/models";
+import { Points } from "@src/db/models";
 
 
 class PointsService {

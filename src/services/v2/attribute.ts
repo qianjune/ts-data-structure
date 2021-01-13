@@ -1,4 +1,4 @@
-import { CommonService } from "../interface/common";
+import { CommonService } from "@src/services/interface/common";
 import AttributeManager, { AttributeItemInterface } from "@src/manager/v2/attribute";
 import { ResponseHandler } from "@src/utils/responseHandler";
 

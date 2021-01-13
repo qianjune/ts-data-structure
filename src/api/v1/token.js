@@ -1,8 +1,8 @@
 import Router from 'koa-router'
-import { TokenValidator, TokenVerifyValidator } from '../../validators/validator'
+import { TokenValidator, TokenVerifyValidator } from '@src/validators/validator'
 import { LoginType } from '@src/lib/enum'
-import User from '../../db/models/user'
-import { generateToken } from '../../../core/util'
+import User from '@src/db/models/user'
+import { generateToken } from '@root/core/util'
 import Auth from '@root/middleware/auth'
 
 const router = new Router({

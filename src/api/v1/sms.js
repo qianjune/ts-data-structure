@@ -3,8 +3,8 @@
  * @author June_end
  */
 import Router from 'koa-router'
-import Sms from '../../manager/code/sms'
-import { SendSmsValidator, ValidateSmsValidator } from '../../validators/validator'
+import Sms from '@src/manager/code/sms'
+import { SendSmsValidator, ValidateSmsValidator } from '@src/validators/validator'
 import { success } from '@src/lib/common'
 const smsModel = new Sms()
 
@@ -15,8 +15,8 @@ router.post('/validate', async (ctx) => {
   const v = await new ValidateSmsValidator().validate(ctx)
   const mobile = v.get('body.mobile')
   const smsCode = v.get('body.smsCode')
-  console.log(mobile,smsCode)
-  const res = await smsModel.validateSmsCode({mobile,smsCode})
+  console.log(mobile, smsCode)
+  const res = await smsModel.validateSmsCode({ mobile, smsCode })
   const { error } = res
   console.log(res)
   if (error === 0) {

@@ -6,7 +6,7 @@ import { CommonManager, ListFilterInterface } from "@src/manager/interface/commo
 import sequelize from "@root/core/db";
 import { CommentModel } from "@src/db/models";
 import ProductManager from "./product";
-import { ResponseMsg, ManagerResponseFailure, ManagerResponseSuccess, ListDataModel, ManagerResponse } from "../response";
+import { ResponseMsg, ManagerResponseFailure, ManagerResponseSuccess, ListDataModel, ManagerResponse } from "@src/manager/response";
 import { UserManager } from "../user";
 
 const placeholder = '评论'
@@ -22,7 +22,7 @@ interface CommentData {
   children?: CommentData[]
 }
 class CommentManager implements CommonManager {
-  async create(data: CommentData): Promise<import("../../../src/manager/response").ManagerResponse> {
+  async create(data: CommentData): Promise<import("@src/manager/response").ManagerResponse> {
     const cloneData = { ...data }
     const parentId = data.parentId
     if (!parentId || parentId === -1) {
@@ -55,13 +55,13 @@ class CommentManager implements CommonManager {
       }
     })
   }
-  edit(data: any): Promise<import("../../../src/manager/response").ManagerResponse> {
+  edit(data: any): Promise<import("@src/manager/response").ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  del(id: number): Promise<import("../../../src/manager/response").ManagerResponse> {
+  del(id: number): Promise<import("@src/manager/response").ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  getInfo(id: number): Promise<import("../../../src/manager/response").ManagerResponse> {
+  getInfo(id: number): Promise<import("@src/manager/response").ManagerResponse> {
     throw new Error("Method not implemented.");
   }
   async _findChildren(parentId: number): Promise<CommentData[]> {
@@ -92,7 +92,7 @@ class CommentManager implements CommonManager {
     }
     return rows
   }
-  async getList?(data: ListFilterInterface & { underWhich: number }): Promise<import("../../../src/manager/response").ManagerResponse> {
+  async getList?(data: ListFilterInterface & { underWhich: number }): Promise<import("@src/manager/response").ManagerResponse> {
     const { pageNo, pageSize, underWhich } = data
     const list = await CommentModel.findAndCountAll({
       limit: pageSize,

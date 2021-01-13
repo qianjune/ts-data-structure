@@ -1,4 +1,4 @@
-import { CommonService } from "../interface/common";
+import { CommonService } from "@src/services/interface/common";
 import ProductManager from "@src/manager/v2/product";
 import { ResponseHandler } from "@src/utils/responseHandler";
 import { omit, cloneDeep } from "lodash";

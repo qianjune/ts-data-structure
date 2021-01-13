@@ -1,7 +1,7 @@
 import { Model } from 'sequelize'
-import sequelize from '../../../core/db'
+import sequelize from '@root/core/db'
 import bcrypt from 'bcryptjs'
-import { TYPES } from '../types'
+import { TYPES } from '@src/db/types'
 
 
 class User extends Model {

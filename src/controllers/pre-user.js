@@ -1,8 +1,8 @@
 
 import bcrypt from 'bcryptjs'
 import { v1 as uuidv1 } from 'uuid'
-import { MemberController } from '../manager/v2/member'
-import SmsForMini from '../manager/code/sms'
+import { MemberController } from '@src/manager/v2/member'
+import SmsForMini from '@src/manager/code/sms'
 import User from '../db/models/user'
 import { set } from '@root/cache/_redis'
 const smsForMiniModel = new SmsForMini()
@@ -62,8 +62,8 @@ class UserController {
     } else {
       // 密码验证
       if (password) {
-        console.log(password,user.getDataValue('password'))
-        if (bcrypt.compareSync(password,user.getDataValue('password'))) {
+        console.log(password, user.getDataValue('password'))
+        if (bcrypt.compareSync(password, user.getDataValue('password'))) {
           const token = uuidv1()
           set(`${mobile}_token`, token, 60 * 60)
           throw new global.errs.SuccessForMini({
@@ -113,7 +113,7 @@ class UserController {
       // 验证 verifyToken
       // const redis_verifyToken = await get(`${mobile}_verifyToken`)
       // redis_verifyToken === verifyToken
-      if (smsForMiniModel.validateSms(mobile,'verifyToken',verifyToken)) {
+      if (smsForMiniModel.validateSms(mobile, 'verifyToken', verifyToken)) {
         user.password = password
         await user.save()
         throw new global.errs.SuccessForMini()

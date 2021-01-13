@@ -1,5 +1,5 @@
-import { buildCommonListParams, CommonManager, ListFilterInterface } from "../interface/commonManager";
-import { ManagerResponse, ResponseMsg, ManagerResponseSuccess, ListDataModel } from "../response";
+import { buildCommonListParams, CommonManager, ListFilterInterface } from "@src/manager/interface/commonManager";
+import { ManagerResponse, ResponseMsg, ManagerResponseSuccess, ListDataModel } from "@src/manager/response";
 import sequelize from "@root/core/db";
 import { ShopModel, ProductBrand } from "@src/db/models";
 

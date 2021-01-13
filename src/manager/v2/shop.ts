@@ -2,8 +2,8 @@
  * @description 店铺 orm
  */
 import { ShopModel } from '@src/db/models'
-import { CommonManager, ListFilterInterface } from "../interface/commonManager";
-import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg, ManagerResponseFailure } from '../response';
+import { CommonManager, ListFilterInterface } from "@src/manager/interface/commonManager";
+import { ManagerResponse, ManagerResponseSuccess, ListDataModel, ResponseMsg, ManagerResponseFailure } from '@src/manager/response';
 import ShopUserRelation from '@src/db/models/v2/shopUserRelation';
 import sequelize from '@root/core/db';
 const placeholder = '店铺'

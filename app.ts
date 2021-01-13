@@ -1,17 +1,17 @@
 import Koa, { Context } from 'koa'
 import parser from 'koa-bodyparser'
-import { InitManager } from './core/init'
-import catchError from './middleware/exception'
+import { InitManager } from '@root/core/init'
+import catchError from '@root/middleware/exception'
 import cors from 'koa2-cors'
 import serve from 'koa-static'
 import path from 'path'
 import koaSwagger from 'koa2-swagger-ui'
-import { GlobalErrorInterface } from './core/http-exception'
+import { GlobalErrorInterface } from '@root/core/http-exception'
 import status, { HttpStatus } from 'http-status'
 import SessionCookieHandler from '@src/utils/session_cookie'
 import _, { omitBy, isNil, LoDashStatic } from 'lodash'
-import server from './src/graphql/index'
-import mockMain from './src/graphql/middleware/auth'
+import server from '@src/graphql/index'
+import mockMain from '@src/graphql/middleware/auth'
 
 _.mixin({
   omitNil(data) {
@@ -21,8 +21,8 @@ _.mixin({
 // 暂时解决报错，照理说@types/body-parser里应该会生效
 declare module "koa" {
   interface Request {
-      body?: any;
-      rawBody: string;
+    body?: any;
+    rawBody: string;
   }
 }
 declare global {

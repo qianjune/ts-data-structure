@@ -2,7 +2,7 @@
  * @description category service
  */
 
-import { CommonService } from "../interface/common";
+import { CommonService } from "@src/services/interface/common";
 import CategoryManager, { CategoryItemInterface, CategoryListParamsInterface } from "@src/manager/v2/category";
 import { ResponseHandler } from "@src/utils/responseHandler";
 const categoryManager = new CategoryManager()
@@ -14,7 +14,7 @@ class CategoryService implements CommonService {
     const result = await categoryManager.create(data)
     ResponseHandler.send(result)
   }
- 
+
   async del(id: number): Promise<void> {
     const result = await categoryManager.del(id)
     ResponseHandler.send(result)

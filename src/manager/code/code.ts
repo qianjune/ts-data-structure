@@ -5,7 +5,7 @@
 import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "@src/enum";
 import { EmailModel } from "./email";
 import Sms, { CodeManagerInterface } from "./sms";
-import { ManagerResponse } from "../response";
+import { ManagerResponse } from "@src/manager/response";
 
 interface SendCodeProps {
   user: string;

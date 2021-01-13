@@ -1,4 +1,4 @@
-import sequelize from '../../core/db'
+import sequelize from '@root/core/db'
 
 sequelize.authenticate().then(() => {
   console.log('ok')

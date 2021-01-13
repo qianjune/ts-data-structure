@@ -1,6 +1,6 @@
-import { LinValidator, Rule } from '../../core/lin-validator-v2'
+import { LinValidator, Rule } from '@root/core/lin-validator-v2'
 import User from '../db/models/user'
-import Sms from '../manager/code/sms'
+import Sms from '@src/manager/code/sms'
 import { LoginType, BlogType } from '../lib/enum'
 
 const telRule = [
@@ -163,8 +163,8 @@ class LoginWithIdentifyAndPassword extends LinValidator {
     ]
   }
 }
-class EditPasswordValidator extends LinValidator{
-  constructor(){
+class EditPasswordValidator extends LinValidator {
+  constructor() {
     super()
     this.mobile = telRule
     this.smsCode = smsCodeRule

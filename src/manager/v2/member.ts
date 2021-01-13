@@ -1,7 +1,7 @@
 import { ErrorModel, SuccessModel } from "@root/models/ResModel"
 import ErrorInfo from "@root/models/ErrorInfo"
-import { buildCommonListParams, CommonManager, ListFilterInterface } from "../interface/commonManager"
-import { ListDataModel, ManagerResponse, ManagerResponseFailure, ManagerResponseSuccess, ResponseMsg } from "../response"
+import { buildCommonListParams, CommonManager, ListFilterInterface } from "@src/manager/interface/commonManager"
+import { ListDataModel, ManagerResponse, ManagerResponseFailure, ManagerResponseSuccess, ResponseMsg } from "@src/manager/response"
 import MemberService from "@src/services/v2/member"
 import { Member } from "@src/db/models"
 import { v1 } from 'uuid'

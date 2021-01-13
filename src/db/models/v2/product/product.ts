@@ -1,3 +1,6 @@
+/**
+ * @description 商品 - sku
+ */
 import { Model } from 'sequelize'
 import sequelize from '@root/core/db'
 import { TYPES } from '@src/db/types'
@@ -54,6 +57,10 @@ Product.init(
       defaultValue: 1
     },
     shopId: {
+      /**
+       * 创建时的信息要包含sku和价格
+       * 上架时需要再多包含库存信息
+       */
       type: TYPES.INTEGER,
       allowNull: false,
       defaultValue: 1, // 之后删除
@@ -65,8 +72,17 @@ Product.init(
     },
     status: {
       type: TYPES.STRING,
+      comment: "sku的销售状态",
       defaultValue: Product.OFFLINE
-    }
+    },
+    code: {
+      type: TYPES.STRING,
+      comment: "spu识别码（不一定会用）",
+    },
+    // brandId: {
+    //   type: TYPES.INTEGER,
+    //   comment: '品牌id'
+    // },
   },
   {
     sequelize,

@@ -1,6 +1,6 @@
 import { Model } from 'sequelize'
-import sequelize from '../../../core/db'
-import { TYPES } from '../types'
+import sequelize from '@root/core/db'
+import { TYPES } from '@src/db/types'
 const { STRING, INTEGER, DECIMAL } = TYPES
 
 class IdCard extends Model {

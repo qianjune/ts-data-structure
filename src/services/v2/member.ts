@@ -2,7 +2,7 @@ import { Member, User } from "@src/db/models"
 import { v1 as uuidv1 } from 'uuid'
 import { ResponseHandler } from "@src/utils/responseHandler"
 import { ManagerResponseFailure, ManagerResponseSuccess } from "@src/manager/response"
-import { CommonService } from "../interface/common"
+import { CommonService } from "@src/services/interface/common"
 import MemberManager from "@src/manager/v2/member"
 const memberManager = new MemberManager()
 /**

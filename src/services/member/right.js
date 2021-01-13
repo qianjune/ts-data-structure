@@ -2,7 +2,7 @@
  * @description 权益 service
  * @author June
  */
-import { Right, RightPackage, RightRelation } from '../../db/models'
+import { Right, RightPackage, RightRelation } from '@src/db/models'
 import { LevelService } from './level'
 
 class RightService {

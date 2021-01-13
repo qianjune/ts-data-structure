@@ -3,7 +3,7 @@
  */
 
 import { CODE_ACTION_TYPE } from "@src/enum";
-import Sms from "../../manager/code/sms";
+import Sms from "@src/manager/code/sms";
 
 interface MobileBody {
   mobile: string;

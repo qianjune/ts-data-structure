@@ -7,7 +7,7 @@ import axios from 'axios'
 import { ValidateCodeModel } from '@root/cache/validateCode'
 import { CodeBuilder } from '@root/cache/codeBuilder';
 import { CODE_ACTION_TYPE } from '@src/enum';
-import { ManagerResponse } from '../response';
+import { ManagerResponse } from '@src/manager/response';
 
 
 export interface CodeManagerInterface {

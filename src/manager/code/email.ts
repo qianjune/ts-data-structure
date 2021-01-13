@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer'
 import { ValidateCodeModel } from '@root/cache/validateCode'
 import { CodeBuilder } from '@root/cache/codeBuilder'
 import { CodeManagerInterface } from './sms'
-import { ManagerResponse } from '../response'
+import { ManagerResponse } from '@src/manager/response'
 
 class EmailModel implements CodeManagerInterface {
   async sendCode(user: string, type: string): Promise<ManagerResponse> {
@@ -28,14 +28,14 @@ class EmailModel implements CodeManagerInterface {
     })
     // if (info.response.starWith('250')) {
     console.log('进入这里')
-    ValidateCodeModel.saveCode({ user: user, key: type, code })
+    ValidateCodeModel.saveCode({ user, key: type, code })
     // }
     console.log(info.messageId)
 
     return new ManagerResponse({ success: true, msg: '邮箱验证码发送成功' })
   }
   async validateCode(user: string, type: string, code: string): Promise<ManagerResponse> {
-    const result = await ValidateCodeModel.validateCode({ user: user, key: type, code })
+    const result = await ValidateCodeModel.validateCode({ user, key: type, code })
     return new ManagerResponse({ success: result, msg: result ? '验证成功' : '验证失败' })
   }
 }

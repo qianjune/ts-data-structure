@@ -1,4 +1,4 @@
-import { CommonService } from "../interface/common";
+import { CommonService } from "@src/services/interface/common";
 import BrandManager, { BrandItemInterface } from "@src/manager/v2/brand";
 import { ResponseHandler } from "@src/utils/responseHandler";
 import { ListParamsInterface } from "@src/manager/interface";

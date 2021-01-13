@@ -1,5 +1,5 @@
-import { CommonManager, ListFilterInterface } from "../interface/commonManager";
-import { ManagerResponse, ResponseMsg, ManagerResponseFailure, ManagerResponseSuccess, ListDataModel } from "../response";
+import { CommonManager, ListFilterInterface } from "@src/manager/interface/commonManager";
+import { ManagerResponse, ResponseMsg, ManagerResponseFailure, ManagerResponseSuccess, ListDataModel } from "@src/manager/response";
 import sequelize from "@root/core/db";
 import { AttributeKey, AttributeValue } from "@src/db/models";
 
@@ -10,7 +10,7 @@ export interface AttributeItemInterface {
 const placeholder = '属性名'
 const responseMsg = ResponseMsg(placeholder)
 class AttributeManager implements CommonManager {
-  async create(data: AttributeItemInterface): Promise<import("../response").ManagerResponse> {
+  async create(data: AttributeItemInterface): Promise<import("@src/manager/response").ManagerResponse> {
     const { key, values } = data
     console.log(data)
     const attributeKey = await AttributeKey.findOne({
@@ -40,10 +40,10 @@ class AttributeManager implements CommonManager {
       }
     })
   }
-  edit(data: any): Promise<import("../response").ManagerResponse> {
+  edit(data: any): Promise<import("@src/manager/response").ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  async del(id: number): Promise<import("../response").ManagerResponse> {
+  async del(id: number): Promise<import("@src/manager/response").ManagerResponse> {
     const attributeKey = await AttributeKey.findOne({
       where: {
         id
@@ -76,7 +76,7 @@ class AttributeManager implements CommonManager {
   getInfo(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  async getList?(data: ListFilterInterface): Promise<import("../response").ManagerResponse> {
+  async getList?(data: ListFilterInterface): Promise<import("@src/manager/response").ManagerResponse> {
     const { pageSize = 10, pageNo = 1 } = data
     return await sequelize.transaction(async (t: any) => {
       const result = await AttributeKey.findAndCountAll({

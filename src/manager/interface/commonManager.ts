@@ -2,7 +2,7 @@
  * @description 普通 Manager interface
  */
 
-import { ManagerResponse } from "../response";
+import { ManagerResponse } from "@src/manager/response";
 
 
 export interface ListFilterInterface {
@@ -21,10 +21,10 @@ export interface CommonManager {
 export const buildCommonListParams = (
   data: { pageNo?: number, pageSize?: number, order?: string[][] }): any => {
   const {
- pageNo = 1, pageSize = 10, order = [
-    ['id', 'desc']
-  ] 
-} = data
+    pageNo = 1, pageSize = 10, order = [
+      ['id', 'desc']
+    ]
+  } = data
   return {
     limit: pageSize,
     offset: pageSize * (pageNo - 1),

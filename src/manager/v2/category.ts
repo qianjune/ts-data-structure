@@ -1,6 +1,6 @@
-import { CommonManager, ListFilterInterface, buildCommonListParams } from "../interface/commonManager";
+import { CommonManager, ListFilterInterface, buildCommonListParams } from "@src/manager/interface/commonManager";
 import { ProductCategory } from "@src/db/models";
-import { ManagerResponseSuccess, ManagerResponseFailure, ResponseMsg, ManagerResponse, ListDataModel } from "../response";
+import { ManagerResponseSuccess, ManagerResponseFailure, ResponseMsg, ManagerResponse, ListDataModel } from "@src/manager/response";
 import sequelize from "@root/core/db";
 /**
  * @description 
@@ -23,7 +23,7 @@ export interface CategoryListParamsInterface extends ListFilterInterface {
 const placeholder = '分类'
 const responseMsg = ResponseMsg(placeholder)
 class CategoryManager implements CommonManager {
-  async create(data: CategoryItemInterface): Promise<import("../response").ManagerResponse> {
+  async create(data: CategoryItemInterface): Promise<import("@src/manager/response").ManagerResponse> {
     const { name, parentId = 0 } = data
     const category = await ProductCategory.findOne({
       where: {
