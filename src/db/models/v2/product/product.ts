@@ -1,13 +1,13 @@
 /**
  * @description 商品 - sku
  */
-import { Model } from 'sequelize'
-import sequelize from '@root/core/db'
-import { TYPES } from '@src/db/types'
+import { Model } from "sequelize";
+import sequelize from "@root/core/db";
+import { TYPES } from "@src/db/types";
 
 class Product extends Model {
-  static ONLINE = 1
-  static OFFLINE = 0
+  static ONLINE = 1;
+  static OFFLINE = 0;
 }
 
 Product.init(
@@ -19,42 +19,43 @@ Product.init(
     },
     name: {
       type: TYPES.STRING,
-      allowNull: false
+      allowNull: false,
     },
     mainImage: {
       type: TYPES.STRING,
       allowNull: false,
-      comment: '产品主图'
+      comment: "产品主图",
     },
     //一般分两种情况：
     //1、只是显示，不做复杂的查询，集中存放在一个文本字段内，用逗号分隔就行，JSON感觉有点大材小用。
     //2、需要做统计分析，如SF上的问题TAG，需要做很多分类统计，比较合理的方案是新建一张问题和TAG的对应表。
-    images: { // mysql array的处理方式 
+    images: {
+      // mysql array的处理方式
       type: TYPES.STRING,
       get() {
-        return this.getDataValue('images').split(';')
+        return this.getDataValue("images").split(";");
       },
       set(val: []) {
-        this.setDataValue('images', val.join(';'))
+        this.setDataValue("images", val.join(";"));
       },
-      defaultValue: ''
+      defaultValue: "",
     },
     desc: {
-      type: TYPES.STRING
+      type: TYPES.STRING,
     },
     price: {
       type: TYPES.FLOAT,
-      defaultValue: 9999999999
+      defaultValue: 9999999999,
     },
     skuGroup: {
       type: TYPES.TEXT,
-      comment: 'sku 价格',
-      allowNull: false
+      comment: "sku 价格",
+      allowNull: false,
     },
     offer: {
       // 优惠
       type: TYPES.FLOAT,
-      defaultValue: 1
+      defaultValue: 1,
     },
     shopId: {
       /**
@@ -68,12 +69,12 @@ Product.init(
     belong: {
       type: TYPES.STRING,
       allowNull: true,
-      comment: '所属的分类'
+      comment: "所属的分类",
     },
     status: {
       type: TYPES.STRING,
       comment: "sku的销售状态",
-      defaultValue: Product.OFFLINE
+      defaultValue: Product.OFFLINE,
     },
     code: {
       type: TYPES.STRING,
@@ -86,12 +87,12 @@ Product.init(
   },
   {
     sequelize,
-    tableName: 'product'
+    tableName: "product",
   }
-)
+);
 Product.sync({
   alter: true,
   // force: true
-})
+});
 
-export default Product
+export default Product;

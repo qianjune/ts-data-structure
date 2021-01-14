@@ -1,23 +1,24 @@
-import Address from '@src/db/models/v2/address'
+import Address from "@src/db/models/v2/address";
 // import IdCard from './idCard'
-import Member from './member'
 // import Points from './points'
-import User from './user'
-import Right from '@src/db/models/v2/member/right'
-import RightPackage from '@src/db/models/v2/member/rightPackage'
-import RightRelation from '@src/db/models/v2/member/rightsRelation'
-import Level from '@src/db/models/v2/member/level'
-import ShopModel from '@src/db/models/v2/shop/shop'
-import IndexConfigDb from '@src/db/models/v2/indexConfig'
-import ShopUserRelation from '@src/db/models/v2/shopUserRelation'
-import Product from '@src/db/models/v2/product/product'
-import ShoppingCart from '@src/db/models/v2/shoppingCart'
-import ProductBrand from '@src/db/models/v2/product/brand'
-import ProductCategory from '@src/db/models/v2/product/category'
-import AttributeKey from '@src/db/models/v2/product/attribute_key'
-import AttributeValue from '@src/db/models/v2/product/attribute_value'
-import CommentModel from '@src/db/models/v2/product/comment'
-import FavoritesDb from '@src/db/models/v2/user/favorites'
+import Right from "@src/db/models/v2/member/right";
+import RightPackage from "@src/db/models/v2/member/rightPackage";
+import RightRelation from "@src/db/models/v2/member/rightsRelation";
+import Level from "@src/db/models/v2/member/level";
+import ShopModel from "@src/db/models/v2/shop/shop";
+import IndexConfigDb from "@src/db/models/v2/indexConfig";
+import ShopUserRelation from "@src/db/models/v2/shopUserRelation";
+import Product from "@src/db/models/v2/product/product";
+import ShoppingCart from "@src/db/models/v2/shoppingCart";
+import ProductBrand from "@src/db/models/v2/product/brand";
+import ProductCategory from "@src/db/models/v2/product/category";
+import AttributeKey from "@src/db/models/v2/product/attribute_key";
+import AttributeValue from "@src/db/models/v2/product/attribute_value";
+import CommentModel from "@src/db/models/v2/product/comment";
+import FavoritesDb from "@src/db/models/v2/user/favorites";
+import User from "./user";
+import Member from "./member";
+import SpuCategoryRelation from "./v2/product/spu_category_relation";
 
 // import ShopProductRelation from '@src/db/models/v2/shopProductRelation'
 
@@ -25,71 +26,87 @@ import FavoritesDb from '@src/db/models/v2/user/favorites'
 //   foreignKey: 'memberId'
 // })
 User.hasMany(Address, {
-  foreignKey: 'memberId'
-})
+  foreignKey: "memberId",
+});
 // IdCard.belongsTo(Member, {
 //   foreignKey: 'memberId'
 // })
 
 Member.belongsTo(User, {
-  foreignKey: 'userId'
-})
+  foreignKey: "userId",
+});
 
 // Points.belongsTo(Member, {
 //   foreignKey: 'memberId'
 // })
 
 Right.hasMany(RightRelation, {
-  foreignKey: 'rightId'
-})
+  foreignKey: "rightId",
+});
 
 RightPackage.belongsTo(Level, {
-  foreignKey: 'levelId'
-})
+  foreignKey: "levelId",
+});
 ShopModel.hasMany(ShopUserRelation, {
-  foreignKey: 'shopId'
-})
+  foreignKey: "shopId",
+});
 User.hasMany(ShopUserRelation, {
-  foreignKey: 'userId'
-})
+  foreignKey: "userId",
+});
 Product.belongsTo(ShopModel, {
-  as: 'shopDetail',
-  foreignKey: 'shopId'
-})
+  as: "shopDetail",
+  foreignKey: "shopId",
+});
 // Product.hasMany(ShoppingCartModel, {
 //   foreignKey: 'productId'
 // })
 // ShoppingCart 代表购物车关系表
 ShoppingCart.belongsTo(User, {
-  foreignKey: "userId"
-})
+  foreignKey: "userId",
+});
 ShoppingCart.belongsTo(ShopModel, {
-  as: 'shop',
-  foreignKey: 'shopId'
-})
+  as: "shop",
+  foreignKey: "shopId",
+});
 ShoppingCart.belongsTo(Product, {
-  as: 'product',
-  foreignKey: 'productId'
-})
+  as: "product",
+  foreignKey: "productId",
+});
 ProductBrand.belongsTo(ShopModel, {
-  as: 'shopDetail',
-  foreignKey: 'shopId'
-})
+  as: "shopDetail",
+  foreignKey: "shopId",
+});
 
 AttributeKey.hasMany(AttributeValue, {
-  as: 'values',
-  foreignKey: 'keyId'
-})
+  as: "values",
+  foreignKey: "keyId",
+});
 User.hasMany(CommentModel, {
-  foreignKey: 'userId'
-})
+  foreignKey: "userId",
+});
 // CommentModel
+
+// spu - relation - category 关系表 begin
+Product.belongsToMany(ProductCategory, {
+  through: SpuCategoryRelation,
+  foreignKey: "spuId",
+});
+ProductCategory.belongsToMany(Product, {
+  through: SpuCategoryRelation,
+  foreignKey: "categoryId",
+});
+// spu - relation - category 关系表 end
+
 export {
   Address,
   // IdCard,
-  Member, User,
+  Member,
+  User,
   // Points,
-  Right, RightPackage, RightRelation, ShopModel,
+  Right,
+  RightPackage,
+  RightRelation,
+  ShopModel,
   Product,
   ShoppingCart,
   ProductBrand,
@@ -98,5 +115,6 @@ export {
   AttributeValue,
   CommentModel,
   IndexConfigDb,
-  FavoritesDb
-}
+  FavoritesDb,
+  SpuCategoryRelation,
+};

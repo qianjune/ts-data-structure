@@ -3,12 +3,12 @@
  */
 
 import { ManagerResponse } from "@src/manager/response";
-
+import { RequestConfigInterface } from "@src/manager/interface/interface";
 
 export interface ListFilterInterface {
-  pageSize: number,
-  pageNo: number,
-  [keyName: string]: any
+  pageSize: number;
+  pageNo: number;
+  [keyName: string]: any;
 }
 export interface CommonManager {
   create(data: any): Promise<ManagerResponse>;
@@ -19,16 +19,20 @@ export interface CommonManager {
 }
 
 export const buildCommonListParams = (
-  data: { pageNo?: number, pageSize?: number, order?: string[][] }): any => {
-  const {
-    pageNo = 1, pageSize = 10, order = [
-      ['id', 'desc']
-    ]
-  } = data
+  data: {
+    pageNo?: number;
+    pageSize?: number;
+    order?: string[][];
+  },
+  config?: RequestConfigInterface
+): any => {
+  const { pageNo = 1, pageSize = 10, order = [["id", "desc"]] } = data;
+  const exclude = config?.omit || [];
+  const includes = config?.includes || [];
   return {
     limit: pageSize,
     offset: pageSize * (pageNo - 1),
     order,
-  }
-}
-
+    attributes: { exclude, includes },
+  };
+};
