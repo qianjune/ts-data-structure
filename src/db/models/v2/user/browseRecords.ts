@@ -4,50 +4,54 @@
  * shopId和productId之后可以换掉
  */
 
-import { Model } from 'sequelize'
-import sequelize from '@root/core/db'
-import { TYPES } from '@src/db/types'
+import { Model } from "sequelize";
+import sequelize from "@root/core/db";
+import { TYPES } from "@src/db/types";
 enum BrowseRecordStatus {
   DISABLE = 1,
-  ABLE = 0
+  ABLE = 0,
 }
 class BrowseRecords extends Model {
-
+  // custom property here
 }
 
-BrowseRecords.init({
-  id: {
-    type: TYPES.INTEGER,
-    comment: 'id',
-    primaryKey: true,
-    autoIncrement: true
+BrowseRecords.init(
+  {
+    id: {
+      type: TYPES.INTEGER,
+      comment: "id",
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    uid: {
+      type: TYPES.INTEGER,
+      comment: "用户id",
+      allowNull: false,
+    },
+    shopId: {
+      type: TYPES.INTEGER,
+      comment: "店铺id",
+    },
+    productId: {
+      type: TYPES.INTEGER,
+      comment: "商品id",
+    },
+    disabled: {
+      type: TYPES.INTEGER,
+      comment:
+        "是否启用（创建时为able,之后删除浏览记录就修改这个属性，不会真的删除，方便日后推荐",
+      defaultValue: BrowseRecordStatus.ABLE,
+      allowNull: false,
+    },
   },
-  uid: {
-    type: TYPES.INTEGER,
-    comment: "用户id",
-    allowNull: false
-  },
-  shopId: {
-    type: TYPES.INTEGER,
-    comment: '店铺id',
-  },
-  productId: {
-    type: TYPES.INTEGER,
-    comment: '商品id',
-  },
-  disabled: {
-    type: TYPES.INTEGER,
-    comment: '是否启用（创建时为able,之后删除浏览记录就修改这个属性，不会真的删除，方便日后推荐',
-    defaultValue: BrowseRecordStatus.ABLE,
-    allowNull: false
+  {
+    sequelize,
+    tableName: "BrowseRecord",
   }
-}, {
-  sequelize,
-  tableName: 'BrowseRecord'
-})
+);
 
 BrowseRecords.sync({
-  alter: true
-})
+  alter: true,
+});
 
 export default BrowseRecords;

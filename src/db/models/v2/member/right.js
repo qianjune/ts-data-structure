@@ -1,43 +1,46 @@
 /**
  * @description 权益表
  */
-import { Model } from 'sequelize'
-import sequelize from '@root/core/db'
-import { TYPES } from '@src/db/types'
-const { STRING, INTEGER, DECIMAL } = TYPES
+import { Model } from "sequelize";
+import sequelize from "@root/core/db";
+import { TYPES } from "@src/db/types";
+const { STRING, INTEGER, DECIMAL } = TYPES;
 
 class Right extends Model {
-
+  // custom property here
 }
 
 // 权益类型，权益说明
 
-Right.init({
-  name: {
-    type: STRING,
-    comment: '名字'
+Right.init(
+  {
+    name: {
+      type: STRING,
+      comment: "名字",
+    },
+    num: {
+      type: INTEGER,
+      comment: "数量",
+    },
+    pattern: {
+      type: STRING,
+      comment: "权益类型",
+    },
+    expired: {
+      type: INTEGER,
+      comment: "过期时间",
+    },
+    status: {
+      type: STRING,
+      comment: "",
+    }, // 状态这个需要考量一下
   },
-  num: {
-    type: INTEGER,
-    comment: '数量'
-  },
-  pattern: {
-    type: STRING,
-    comment: '权益类型'
-  },
-  expired: {
-    type: INTEGER,
-    comment: '过期时间'
-  },
-  status: {
-    type: STRING,
-    comment: ''
-  } // 状态这个需要考量一下
-}, {
-  sequelize,
-  tableName: 'rights'
-})
+  {
+    sequelize,
+    tableName: "rights",
+  }
+);
 
 Right.sync({ alter: true });
 
-export default Right
+export default Right;

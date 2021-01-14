@@ -7,26 +7,31 @@ import sequelize from "@root/core/db";
 import { tag } from "@src/lib/router-decorator";
 import { TYPES } from "@src/db/types";
 
-class ShopUserRelation extends Model { }
+class ShopUserRelation extends Model {
+  // custom property here
+}
 
-ShopUserRelation.init({
+ShopUserRelation.init(
+  {
     id: {
-        type: TYPES.INTEGER,
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true
+      type: TYPES.INTEGER,
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
     },
     uid: {
-        type: TYPES.INTEGER,
-        allowNull: false
+      type: TYPES.INTEGER,
+      allowNull: false,
     },
     shopId: {
-        type: TYPES.INTEGER,
-        allowNull: false
-    }
-}, {
+      type: TYPES.INTEGER,
+      allowNull: false,
+    },
+  },
+  {
     sequelize,
-    tableName: 'shopUserRelation'
-})
+    tableName: "shopUserRelation",
+  }
+);
 
-export default ShopUserRelation
+export default ShopUserRelation;

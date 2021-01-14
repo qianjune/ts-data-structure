@@ -1,8 +1,10 @@
 import { Model } from "sequelize";
-import sequelize from '@root/core/db'
+import sequelize from "@root/core/db";
 import { TYPES } from "@src/db/types";
 
-class ShopProductRelation extends Model { }
+class ShopProductRelation extends Model {
+  // custom property here
+}
 
 ShopProductRelation.init(
   {
@@ -10,23 +12,23 @@ ShopProductRelation.init(
       type: TYPES.INTEGER,
       autoIncrement: true,
       primaryKey: true,
-      comment: '店铺商品关系id'
+      comment: "店铺商品关系id",
     },
     shopId: {
       type: TYPES.INTEGER,
       allowNull: false,
-      comment: '店铺id'
+      comment: "店铺id",
     },
     productId: {
       type: TYPES.INTEGER,
       allowNull: false,
-      comment: '商品id'
-    }
+      comment: "商品id",
+    },
   },
   {
     sequelize,
-    tableName: 'shopProductRelation'
+    tableName: "shopProductRelation",
   }
-)
+);
 
-export default ShopProductRelation
+export default ShopProductRelation;

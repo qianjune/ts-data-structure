@@ -2,28 +2,33 @@
  * @description 角色-权限 关系表
  */
 
-import { Model } from 'sequelize'
-import sequelize from '@root/core/db'
-import { TYPES } from '@src/db/types'
-const { INTEGER } = TYPES
+import { Model } from "sequelize";
+import sequelize from "@root/core/db";
+import { TYPES } from "@src/db/types";
+const { INTEGER } = TYPES;
 
-class RoleAuthorityRelation extends Model { }
+class RoleAuthorityRelation extends Model {
+  // custom property here
+}
 
-RoleAuthorityRelation.init({
-  id: {
-    type: INTEGER,
-    autoIncrement: true,
-    primaryKey: true
+RoleAuthorityRelation.init(
+  {
+    id: {
+      type: INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    rid: {
+      type: INTEGER,
+    },
+    aid: {
+      type: INTEGER,
+    },
   },
-  rid: {
-    type: INTEGER,
-  },
-  aid: {
-    type: INTEGER,
+  {
+    sequelize,
+    tableName: "roleAuthorityRelation",
   }
-}, {
-  sequelize,
-  tableName: 'roleAuthorityRelation'
-})
+);
 
-export default RoleAuthorityRelation
+export default RoleAuthorityRelation;
