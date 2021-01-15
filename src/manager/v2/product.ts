@@ -2,7 +2,7 @@
  * @description 产品 orm
  */
 
-import { Product, ShopModel } from "@src/db/models";
+import { Product, ProductCategory, ShopModel } from "@src/db/models";
 import {
   ManagerResponse,
   ManagerResponseSuccess,
@@ -12,6 +12,7 @@ import {
 } from "@src/manager/response";
 import sequelize from "@root/core/db";
 import { omit, cloneDeep } from "lodash";
+import attribute from "@src/api/v2/shop/attribute";
 import {
   buildCommonListParams,
   CommonManager,
@@ -132,38 +133,61 @@ class ProductManager implements CommonManager {
     data: ListFilterInterface & { shopId?: number },
     config?: RequestConfigInterface
   ): Promise<ManagerResponse> {
-    const { pageSize = 10, pageNo = 1, shopId, belong } = data;
+    const { pageSize = 10, pageNo = 1, shopId, belong, categoryId } = data;
     const where = global.util.lodash.omitNil({ shopId, belong });
     const listParams = buildCommonListParams({ pageNo, pageSize }, config);
-    const result = await Product.findAndCountAll({
-      ...listParams,
+    // const result = await Product.findAndCountAll({
+    //   ...listParams,
+    //   include: [
+    //     // {
+    //     //   model: ShopModel,
+    //     //   as: "shopDetail",
+    //     //   attributes: ["name"],
+    //     // },
+    //     {
+    //       model: ProductCategory,
+    //       through: {
+    //         where: { categoryId },
+    //       },
+    //       attributes: ["name", "id"],
+    //     },
+    //   ],
+    //   where,
+    // });
+
+    const result1 = await ProductCategory.findOne({
+      where: {
+        id: categoryId,
+      },
       include: [
         {
-          model: ShopModel,
-          as: "shopDetail",
-          attributes: ["name"],
+          model: Product,
+          through: {
+            where: { categoryId },
+          },
+          attributes: ["id", "name", "mainImage"],
         },
       ],
-      where,
     });
-    const { rows, count } = result;
-    const productList = rows.map((row) => {
-      let cloneRow = { ...row.toJSON() } as goodsInfo;
-      cloneRow = this._shopInfoHandler(cloneRow);
+    // const { rows, count } = result;
+    // const productList = rows.map((row) => {
+    //   const cloneRow = { ...row.toJSON() } as goodsInfo;
+    //   // cloneRow = this._shopInfoHandler(cloneRow);
 
-      if (cloneRow.skuGroup) {
-        cloneRow.skuGroup = JSON.parse(cloneRow.skuGroup);
-      }
-      this.skuGroupOriginDataToCodeHandler(cloneRow);
-      return cloneRow;
-    });
+    //   if (cloneRow.skuGroup) {
+    //     cloneRow.skuGroup = JSON.parse(cloneRow.skuGroup);
+    //   }
+    //   this.skuGroupOriginDataToCodeHandler(cloneRow);
+    //   return cloneRow;
+    // });
     return new ManagerResponseSuccess({
-      data: new ListDataModel({
-        data: productList,
-        total: count,
-        pageNo,
-        pageSize,
-      }),
+      // data: new ListDataModel({
+      //   data: productList,
+      //   total: count,
+      //   pageNo,
+      //   pageSize,
+      // }),
+      data: result1,
       msg: responseMsg.FETCH_LIST_SUCCESS,
     });
   }

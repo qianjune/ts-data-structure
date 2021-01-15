@@ -1,5 +1,5 @@
 /**
- * @description XXXXXX api
+ * @description SpuCategoryRelation api
  */
 
 import joi from "@hapi/joi";
@@ -11,23 +11,34 @@ import BaseRouter, {
   del,
   prefix,
   tag,
+  middleware,
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
-import XXXXXXService from "@src/services/v2/xXXXXX";
-const xXXXXXService = new XXXXXXService();
-@prefix("/api/xXXXXX")
-@tag("XXXXXX相关服务")
-class XXXXXXApi extends BaseRouter {
+import SpuCategoryRelationService from "@src/services/v2/spuCategoryRelation";
+import SessionCookieHandler from "@src/utils/session_cookie";
+
+const spuCategoryRelationService = new SpuCategoryRelationService();
+
+@prefix("/api/spuCategoryRelation")
+@tag("SpuCategoryRelation相关服务")
+class SpuCategoryRelationApi extends BaseRouter {
   @post("/create")
-  @summary("XXXXXX创建")
-  @parameter(joi.object({}), "body")
+  @summary("SpuCategoryRelation创建")
+  @middleware(SessionCookieHandler.loginCheck)
+  @parameter(
+    joi.object({
+      spuId: joi.number().required(),
+      categoryId: joi.number().required(),
+    }),
+    "body"
+  )
   async create(ctx: Context): Promise<void> {
     // create item
     const { body } = ctx.request;
-    await xXXXXXService.create(body);
+    await spuCategoryRelationService.create(body);
   }
   @get("/detail/:id")
-  @summary("XXXXXX详情")
+  @summary("SpuCategoryRelation详情")
   @parameter(
     joi.object({
       id: joi.string().required(),
@@ -37,24 +48,25 @@ class XXXXXXApi extends BaseRouter {
   async getInfo(ctx: Context): Promise<void> {
     // get info
     const { id } = ctx.state.parameter;
-    await xXXXXXService.getInfo(id);
+    await spuCategoryRelationService.getInfo(id);
   }
   @get("/list")
-  @summary("XXXXXX列表")
+  @summary("SpuCategoryRelation列表")
   @parameter(
     joi.object({
       pageSize: joi.number().required(),
       pageNo: joi.number().required(),
+      categoryId: joi.number().required(),
     }),
     "query"
   )
   async getList(ctx: Context): Promise<void> {
     // get list
     const { parameter } = ctx.state;
-    await xXXXXXService.getList(parameter);
+    await spuCategoryRelationService.getList(parameter);
   }
   @del("/:id")
-  @summary("删除XXXXXX")
+  @summary("删除SpuCategoryRelation")
   @parameter(
     joi.object({
       id: joi.string().required(),
@@ -64,17 +76,17 @@ class XXXXXXApi extends BaseRouter {
   async del(ctx: Context): Promise<void> {
     // del item
     const { id } = ctx.state.parameter;
-    await xXXXXXService.del(id);
+    await spuCategoryRelationService.del(id);
   }
 
   @post("/edit")
-  @summary("XXXXXX编辑")
+  @summary("SpuCategoryRelation编辑")
   @parameter(joi.object({}), "body")
   async edit(ctx: Context): Promise<void> {
     // edit item
     const { body } = ctx.request;
-    await xXXXXXService.edit(body);
+    await spuCategoryRelationService.edit(body);
   }
 }
 
-export default new XXXXXXApi().init();
+export default new SpuCategoryRelationApi().init();

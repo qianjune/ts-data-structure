@@ -27,12 +27,19 @@ export const buildCommonListParams = (
   config?: RequestConfigInterface
 ): any => {
   const { pageNo = 1, pageSize = 10, order = [["id", "desc"]] } = data;
-  const exclude = config?.omit || [];
-  const includes = config?.includes || [];
+  const exclude = config?.omit;
+  const include = config?.include;
+  let attributes: any = { exclude: [] };
+  if (exclude) {
+    attributes = { exclude: [] };
+  }
+  if (include) {
+    attributes = include;
+  }
   return {
     limit: pageSize,
     offset: pageSize * (pageNo - 1),
     order,
-    attributes: { exclude, includes },
+    attributes,
   };
 };

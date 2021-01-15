@@ -7,5 +7,5 @@ export interface CommonManagerInterface<T, U> {
 
 export interface RequestConfigInterface {
   omit?: string[];
-  includes?: string[];
+  include?: string[];
 }

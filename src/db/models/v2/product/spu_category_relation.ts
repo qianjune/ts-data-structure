@@ -5,6 +5,7 @@
 import { Model } from "sequelize";
 import sequelize from "@root/core/db";
 import { TYPES } from "@src/db/types";
+import { Product, ProductCategory } from "../..";
 
 class SpuCategoryRelation extends Model {
   // custom property here
@@ -18,15 +19,23 @@ SpuCategoryRelation.init(
       autoIncrement: true,
       comment: "主键id",
     },
-    SpuId: {
+    spuId: {
       type: TYPES.INTEGER,
       allowNull: false,
       comment: "产品id",
+      references: {
+        model: Product,
+        key: "id",
+      },
     },
     categoryId: {
       type: TYPES.INTEGER,
       allowNull: false,
       comment: "分类id",
+      references: {
+        model: ProductCategory,
+        key: "id",
+      },
     },
   },
   {

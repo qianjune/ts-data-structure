@@ -112,7 +112,7 @@ class ProductRouter extends BaseRouter {
   )
   async getListByShopIdAndCategoryId(ctx: Context): Promise<void> {
     await productService.getListForApp(ctx.state.parameter, {
-      includes: ["id", "name", "mainImage"],
+      include: ["id", "name", "mainImage"],
     });
   }
 }
