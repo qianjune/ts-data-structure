@@ -25,82 +25,105 @@ import SpuCategoryRelation from "./v2/product/spu_category_relation";
 // Address.belongsTo(User, {
 //   foreignKey: 'memberId'
 // })
-User.hasMany(Address, {
-  foreignKey: "memberId",
-});
-// IdCard.belongsTo(Member, {
-//   foreignKey: 'memberId'
-// })
+// User.hasMany(Address, {
+//   foreignKey: "memberId",
+// });
+// // IdCard.belongsTo(Member, {
+// //   foreignKey: 'memberId'
+// // })
 
-Member.belongsTo(User, {
-  foreignKey: "userId",
-});
+// User.hasOne(Member, {
+//   foreignKey: "userId",
+// });
+// // Member.belongsTo(User, {
+// //   foreignKey: "userId",
+// // });
 
-// Points.belongsTo(Member, {
-//   foreignKey: 'memberId'
-// })
+// // Points.belongsTo(Member, {
+// //   foreignKey: 'memberId'
+// // })
 
-Right.hasMany(RightRelation, {
-  foreignKey: "rightId",
-});
+// // Right.hasMany(RightRelation, {
+// //   foreignKey: "rightId",
+// // });
 
-RightPackage.belongsTo(Level, {
-  foreignKey: "levelId",
-});
-ShopModel.hasMany(ShopUserRelation, {
-  foreignKey: "shopId",
-});
-User.hasMany(ShopUserRelation, {
-  foreignKey: "userId",
-});
-Product.belongsTo(ShopModel, {
-  as: "shopDetail",
-  foreignKey: "shopId",
-});
-// Product.hasMany(ShoppingCartModel, {
-//   foreignKey: 'productId'
-// })
-// ShoppingCart 代表购物车关系表
-ShoppingCart.belongsTo(User, {
-  foreignKey: "userId",
-});
-ShoppingCart.belongsTo(ShopModel, {
-  as: "shop",
-  foreignKey: "shopId",
-});
-ShoppingCart.belongsTo(Product, {
-  as: "product",
-  foreignKey: "productId",
-});
-ProductBrand.belongsTo(ShopModel, {
-  as: "shopDetail",
-  foreignKey: "shopId",
-});
+// // RightPackage.belongsTo(Level, {
+// //   foreignKey: "levelId",
+// // });
 
-AttributeKey.hasMany(AttributeValue, {
-  as: "values",
-  foreignKey: "keyId",
-});
-User.hasMany(CommentModel, {
-  foreignKey: "userId",
-});
-// CommentModel
+// // 店铺 - 用户 - 关系表 begin
+// ShopModel.belongsToMany(User, {
+//   through: ShopUserRelation,
+//   foreignKey: "shopId",
+//   otherKey: "uid",
+// });
+// User.belongsToMany(ShopModel, {
+//   through: ShopUserRelation,
+//   foreignKey: "uid",
+//   otherKey: "shopId",
+// });
+// ShopUserRelation.belongsTo(ShopModel, { foreignKey: "shopId" });
+// ShopUserRelation.belongsTo(User, { foreignKey: "uid" });
+// ShopModel.hasMany(ShopUserRelation, {
+//   foreignKey: "shopId",
+// });
+// User.hasMany(ShopUserRelation, {
+//   foreignKey: "uid",
+// });
+// // 店铺 - 用户 - 关系表 end
 
-// spu - relation - category 关系表 begin
-Product.belongsToMany(ProductCategory, {
-  through: SpuCategoryRelation,
-  foreignKey: "spuId",
-  otherKey: "categoryId",
-});
-ProductCategory.belongsToMany(Product, {
-  through: SpuCategoryRelation,
-  foreignKey: "categoryId",
-  otherKey: "spuId",
-});
-SpuCategoryRelation.belongsTo(Product, { foreignKey: "spuId" });
-SpuCategoryRelation.belongsTo(ProductCategory, { foreignKey: "categoryId" });
-Product.hasMany(SpuCategoryRelation, { foreignKey: "spuId" });
-ProductCategory.hasMany(SpuCategoryRelation, { foreignKey: "categoryId" });
+// Product.belongsTo(ShopModel, {
+//   as: "shopDetail",
+//   foreignKey: "shopId",
+// });
+// // Product.hasMany(ShoppingCartModel, {
+// //   foreignKey: 'productId'
+// // })
+// // ShoppingCart-User 关系 一对多 begin
+// ShoppingCart.belongsTo(User, {
+//   foreignKey: "userId",
+// });
+// User.hasMany(ShoppingCart, {
+//   foreignKey: "userId",
+// });
+// // ShoppingCart-User 关系 一对多 end
+// ShoppingCart.belongsTo(ShopModel, {
+//   as: "shop",
+//   foreignKey: "shopId",
+// });
+// ShoppingCart.belongsTo(Product, {
+//   as: "product",
+//   foreignKey: "productId",
+// });
+// ProductBrand.belongsTo(ShopModel, {
+//   as: "shopDetail",
+//   foreignKey: "shopId",
+// });
+
+// AttributeKey.hasMany(AttributeValue, {
+//   as: "values",
+//   foreignKey: "keyId",
+// });
+// User.hasMany(CommentModel, {
+//   foreignKey: "userId",
+// });
+// // CommentModel
+
+// // spu - relation - category 关系表 begin 多对多
+// Product.belongsToMany(ProductCategory, {
+//   through: SpuCategoryRelation,
+//   foreignKey: "spuId",
+//   otherKey: "categoryId",
+// });
+// ProductCategory.belongsToMany(Product, {
+//   through: SpuCategoryRelation,
+//   foreignKey: "categoryId",
+//   otherKey: "spuId",
+// });
+// SpuCategoryRelation.belongsTo(Product, { foreignKey: "spuId" });
+// SpuCategoryRelation.belongsTo(ProductCategory, { foreignKey: "categoryId" });
+// Product.hasMany(SpuCategoryRelation, { foreignKey: "spuId" });
+// ProductCategory.hasMany(SpuCategoryRelation, { foreignKey: "categoryId" });
 // spu - relation - category 关系表 end
 
 export {

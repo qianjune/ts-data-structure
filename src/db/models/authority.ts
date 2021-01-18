@@ -19,16 +19,20 @@ Authority.init(
     },
     name: {
       type: STRING,
-      unique: true,
     },
     key: {
       type: STRING,
-      unique: true,
     },
   },
   {
     sequelize,
     tableName: "authority",
+    indexes: [
+      {
+        unique: true,
+        fields: ["name", "key"],
+      },
+    ],
   }
 );
 

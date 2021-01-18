@@ -17,7 +17,6 @@ User.init(
     },
     mobile: {
       type: TYPES.BIGINT(11 as any),
-      unique: true,
       comment: "用户手机号",
     },
     password: {
@@ -31,7 +30,6 @@ User.init(
     },
     email: {
       type: TYPES.STRING,
-      unique: true,
       comment: "用户邮箱",
     },
     status: {
@@ -47,6 +45,12 @@ User.init(
   {
     sequelize,
     tableName: "user",
+    indexes: [
+      {
+        unique: true,
+        fields: ["email", "mobile"],
+      },
+    ],
   }
 );
 

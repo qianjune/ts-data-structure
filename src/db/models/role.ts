@@ -18,16 +18,20 @@ Role.init(
     },
     name: {
       type: STRING,
-      unique: true,
     },
     key: {
       type: STRING,
-      unique: true,
     },
   },
   {
     sequelize,
     tableName: "role",
+    indexes: [
+      {
+        unique: true,
+        fields: ["name", "key"],
+      },
+    ],
   }
 );
 

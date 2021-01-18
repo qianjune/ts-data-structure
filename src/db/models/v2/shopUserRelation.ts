@@ -6,6 +6,7 @@ import { Model } from "sequelize";
 import sequelize from "@root/core/db";
 import { tag } from "@src/lib/router-decorator";
 import { TYPES } from "@src/db/types";
+import { ShopModel, User } from "..";
 
 class ShopUserRelation extends Model {
   // custom property here
@@ -22,10 +23,18 @@ ShopUserRelation.init(
     uid: {
       type: TYPES.INTEGER,
       allowNull: false,
+      references: {
+        model: User,
+        key: "id",
+      },
     },
     shopId: {
       type: TYPES.INTEGER,
       allowNull: false,
+      references: {
+        model: ShopModel,
+        key: "id",
+      },
     },
   },
   {
