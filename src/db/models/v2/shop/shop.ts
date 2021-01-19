@@ -38,5 +38,7 @@ ShopModel.init(
     tableName: "shop",
   }
 );
-ShopModel.sync({ alter: true });
+ShopModel.sync({
+  // alter: true
+});
 export default ShopModel;

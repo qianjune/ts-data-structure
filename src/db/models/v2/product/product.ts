@@ -91,7 +91,7 @@ Product.init(
   }
 );
 Product.sync({
-  alter: true,
+  // alter: true,
   // force: true
 });
 

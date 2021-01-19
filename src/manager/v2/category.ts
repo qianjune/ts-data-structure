@@ -1,5 +1,4 @@
 import { ProductCategory } from "@src/db/models";
-import sequelize from "@root/core/db";
 import {
   CommonManager,
   ListFilterInterface,
@@ -55,33 +54,31 @@ class CategoryManager implements CommonManager {
         msg: responseMsg.CREATE_FAIL_BY_NAME_OCCUPIED,
       });
     }
-    return await sequelize.transaction(async (t: any) => {
-      console.log("data...", data);
-      // 如果分类没有传parentId，默认为跟分类后的第一级
-      if (global.util.lodash.isNil(data.parentId)) {
-        data.parentId = 0;
-        // data.level = 1;
-      } else {
-        // const parentResult = parentCategory.toJSON() as any;
-        // 判断父级是否为通用分类，自身为店铺分类
-        // if (!parentResult.shopId && data.shopId) {
-        //   data.level = 0;
-        // } else {
-        //   data.level = parentResult.level + 1;
-        // }
-      }
+    console.log("data...", data);
+    // 如果分类没有传parentId，默认为跟分类后的第一级
+    if (global.util.lodash.isNil(data.parentId)) {
+      data.parentId = 0;
+      // data.level = 1;
+    } else {
+      // const parentResult = parentCategory.toJSON() as any;
+      // 判断父级是否为通用分类，自身为店铺分类
+      // if (!parentResult.shopId && data.shopId) {
+      //   data.level = 0;
+      // } else {
+      //   data.level = parentResult.level + 1;
+      // }
+    }
 
-      const result = await ProductCategory.create(data, { transaction: t });
-      console.log(result);
-      if (result) {
-        return new ManagerResponseSuccess({
-          msg: responseMsg.CREATE_SUCCESS,
-          data: result,
-        });
-      } else {
-        return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
-      }
-    });
+    const result = await ProductCategory.create(data);
+    console.log(result);
+    if (result) {
+      return new ManagerResponseSuccess({
+        msg: responseMsg.CREATE_SUCCESS,
+        data: result,
+      });
+    } else {
+      return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
+    }
   }
   async edit(data: { id: number }): Promise<ManagerResponse> {
     const { id } = data;
@@ -113,22 +110,20 @@ class CategoryManager implements CommonManager {
         msg: responseMsg.DELETE_FAIL_BY_HAVE_LINKED_CHILD,
       });
     }
-    return await sequelize.transaction(async (t: any) => {
-      const result = await ProductCategory.destroy({
-        where: {
-          id,
-        },
-      });
-      console.log(result, "result");
-      if (result) {
-        return new ManagerResponseSuccess({
-          msg: responseMsg.DELETE_SUCCESS,
-          data: true,
-        });
-      } else {
-        return new ManagerResponseFailure({ msg: responseMsg.DELETE_FAIL });
-      }
+    const result = await ProductCategory.destroy({
+      where: {
+        id,
+      },
     });
+    console.log(result, "result");
+    if (result) {
+      return new ManagerResponseSuccess({
+        msg: responseMsg.DELETE_SUCCESS,
+        data: true,
+      });
+    } else {
+      return new ManagerResponseFailure({ msg: responseMsg.DELETE_FAIL });
+    }
   }
   getInfo(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
@@ -151,28 +146,26 @@ class CategoryManager implements CommonManager {
       level,
       status,
     });
-    return await sequelize.transaction(async (t: any) => {
-      const result = await ProductCategory.findAndCountAll({
-        ...buildCommonListParams({ pageNo, pageSize }, config),
-        where,
-      });
-      const { count, rows } = result;
-      const categoryList = rows.map((row) => {
-        const data: any = row.toJSON();
-        // data.shopName = data.shopModel.name
-        // delete data.shopModel
-        return data;
-      });
+    const result = await ProductCategory.findAndCountAll({
+      ...buildCommonListParams({ pageNo, pageSize }, config),
+      where,
+    });
+    const { count, rows } = result;
+    const categoryList = rows.map((row) => {
+      const data: any = row.toJSON();
+      // data.shopName = data.shopModel.name
+      // delete data.shopModel
+      return data;
+    });
 
-      return new ManagerResponseSuccess({
-        data: new ListDataModel({
-          data: categoryList,
-          total: count,
-          pageNo,
-          pageSize,
-        }),
-        msg: responseMsg.FETCH_LIST_SUCCESS,
-      });
+    return new ManagerResponseSuccess({
+      data: new ListDataModel({
+        data: categoryList,
+        total: count,
+        pageNo,
+        pageSize,
+      }),
+      msg: responseMsg.FETCH_LIST_SUCCESS,
     });
   }
 }

@@ -1,13 +1,18 @@
 import Sequelize, { Model, ExclusionConstraintError } from "sequelize";
 import { unset, clone, omit } from "lodash";
 import config from "@root/config/config";
+import PQueue from "p-queue";
 const { dbName, port, user, password, host } = config.database;
+
 const sequelize = new Sequelize(dbName, user, password, {
   dialect: "mysql",
   host,
   port,
   logging: false, // sql语句是否打印到控制台
   timezone: "+08:00", //时区
+  retry: {
+    match: [Sequelize.ConnectionError],
+  },
   define: {
     // timestamps:false // create and update time
     paranoid: true, // delete time
@@ -21,6 +26,14 @@ const sequelize = new Sequelize(dbName, user, password, {
     },
   },
 });
+// sequelize.queue = new PQueue({
+//   concurrency: sequelize.connectionManager.pool.maxSize - 1,
+// });
+// export const inTransaction = (fn) =>
+//   sequelize.queue.add(async () => {
+//     const t = await sequelize.transaction({ autocommit: true });
+//     return await fn(t);
+//   });
 sequelize.sync({
   // force:true//删除原表并新增
 });

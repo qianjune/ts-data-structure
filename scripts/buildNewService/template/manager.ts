@@ -15,7 +15,7 @@ import {
   ManagerResponseFailure,
 } from "@src/manager/response";
 import XXXXXXDb from "@src/db/models/v2/xXXXXX";
-import sequelize from "@root/core/db";
+import sequelize, { inTransaction } from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 
 const placeholder = "XXXXXX";
@@ -70,7 +70,7 @@ class XXXXXX implements CommonManager {
   }
   async del(id: number): Promise<ManagerResponse> {
     const item = await await this._getInfo(id);
-    return await sequelize.transaction(async (t: any) => {
+    return await inTransaction(async (t: any) => {
       const result = await XXXXXXDb.destroy({
         where: {
           id,
@@ -98,7 +98,7 @@ class XXXXXX implements CommonManager {
     config?: RequestConfigInterface
   ): Promise<ManagerResponse> {
     const { pageSize = 10, pageNo = 1 } = data;
-    return await sequelize.transaction(async (t: any) => {
+    return await inTransaction(async (t: any) => {
       const listParams = buildCommonListParams({ pageNo, pageSize }, config);
       const result = await XXXXXXDb.findAndCountAll({
         ...listParams,

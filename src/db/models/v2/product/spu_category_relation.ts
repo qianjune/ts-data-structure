@@ -45,7 +45,7 @@ SpuCategoryRelation.init(
 );
 
 SpuCategoryRelation.sync({
-  alter: true,
+  // alter: true,
 });
 
 export default SpuCategoryRelation;

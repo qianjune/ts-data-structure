@@ -10,7 +10,6 @@ import {
   ManagerResponseFailure,
 } from "@src/manager/response";
 import ShopUserRelation from "@src/db/models/v2/shopUserRelation";
-import sequelize from "@root/core/db";
 import { CommonManager, ListFilterInterface } from "../interface/commonManager";
 const placeholder = "店铺";
 const responseMsg = ResponseMsg(placeholder);
@@ -29,30 +28,25 @@ class ShopManager implements CommonManager {
         msg: responseMsg.CREATE_FAIL_BY_NAME_OCCUPIED,
       });
     }
-    return await sequelize.transaction(async (t: any) => {
-      const result = await ShopModel.create(data, { transaction: t });
-      console.log("result", result);
-      const bindRelation = await ShopUserRelation.create(
-        {
-          uid: global.state.userInfo?.id || "00000000",
-          shopId: result.getDataValue("id" as any),
-        },
-        { transaction: t }
-      );
-      if (bindRelation) {
-        return new ManagerResponse({
-          success: true,
-          msg: responseMsg.CREATE_SUCCESS,
-          data: result,
-        });
-      } else {
-        return new ManagerResponse({
-          success: true,
-          msg: responseMsg.CREATE_FAIL,
-          data: result,
-        });
-      }
+    const result = await ShopModel.create(data);
+    console.log("result", result);
+    const bindRelation = await ShopUserRelation.create({
+      uid: global.state.userInfo?.id || "00000000",
+      shopId: result.getDataValue("id" as any),
     });
+    if (bindRelation) {
+      return new ManagerResponse({
+        success: true,
+        msg: responseMsg.CREATE_SUCCESS,
+        data: result,
+      });
+    } else {
+      return new ManagerResponse({
+        success: true,
+        msg: responseMsg.CREATE_FAIL,
+        data: result,
+      });
+    }
   }
   edit<T>(data: T): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");

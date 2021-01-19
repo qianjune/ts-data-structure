@@ -15,7 +15,6 @@ import {
   ManagerResponseFailure,
 } from "@src/manager/response";
 import { SpuCategoryRelation as SpuCategoryRelationDb } from "@src/db/models";
-import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 
 const placeholder = "SpuCategoryRelation";
@@ -70,21 +69,19 @@ class SpuCategoryRelation implements CommonManager {
   }
   async del(id: number): Promise<ManagerResponse> {
     const item = await await this._getInfo(id);
-    return await sequelize.transaction(async (t: any) => {
-      const result = await SpuCategoryRelationDb.destroy({
-        where: {
-          id,
-        },
-      });
-      if (result) {
-        return new ManagerResponseSuccess({
-          msg: responseMsg.DELETE_SUCCESS,
-          data: true,
-        });
-      } else {
-        return new ManagerResponseFailure({ msg: responseMsg.DELETE_FAIL });
-      }
+    const result = await SpuCategoryRelationDb.destroy({
+      where: {
+        id,
+      },
     });
+    if (result) {
+      return new ManagerResponseSuccess({
+        msg: responseMsg.DELETE_SUCCESS,
+        data: true,
+      });
+    } else {
+      return new ManagerResponseFailure({ msg: responseMsg.DELETE_FAIL });
+    }
   }
   async getInfo(id: number): Promise<ManagerResponse> {
     const item = await this._getInfo(id);
@@ -98,26 +95,24 @@ class SpuCategoryRelation implements CommonManager {
     config?: RequestConfigInterface
   ): Promise<ManagerResponse> {
     const { pageSize = 10, pageNo = 1 } = data;
-    return await sequelize.transaction(async (t: any) => {
-      const listParams = buildCommonListParams({ pageNo, pageSize }, config);
-      const result = await SpuCategoryRelationDb.findAndCountAll({
-        ...listParams,
-      });
-      const { count, rows } = result;
-      const SpuCategoryRelationList = rows.map((row: any) => {
-        const data: any = row.toJSON();
-        return data;
-      });
+    const listParams = buildCommonListParams({ pageNo, pageSize }, config);
+    const result = await SpuCategoryRelationDb.findAndCountAll({
+      ...listParams,
+    });
+    const { count, rows } = result;
+    const SpuCategoryRelationList = rows.map((row: any) => {
+      const data: any = row.toJSON();
+      return data;
+    });
 
-      return new ManagerResponseSuccess({
-        data: new ListDataModel({
-          data: SpuCategoryRelationList,
-          total: count,
-          pageNo,
-          pageSize,
-        }),
-        msg: responseMsg.FETCH_LIST_SUCCESS,
-      });
+    return new ManagerResponseSuccess({
+      data: new ListDataModel({
+        data: SpuCategoryRelationList,
+        total: count,
+        pageNo,
+        pageSize,
+      }),
+      msg: responseMsg.FETCH_LIST_SUCCESS,
     });
   }
 }

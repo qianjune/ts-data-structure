@@ -10,7 +10,6 @@ import {
   ResponseMsg,
   ManagerResponseFailure,
 } from "@src/manager/response";
-import sequelize from "@root/core/db";
 import { omit, cloneDeep } from "lodash";
 import attribute from "@src/api/v2/shop/attribute";
 import {
@@ -75,28 +74,26 @@ class ProductManager implements CommonManager {
         msg: responseMsg.CREATE_FAIL_BY_NAME_OCCUPIED,
       });
     }
-    return await sequelize.transaction(async (t: any) => {
-      const cloneData = { ...data };
-      cloneData.skuGroup = JSON.stringify(cloneData.skuGroup);
-      const result = await Product.create(cloneData, { transaction: t });
-      // const bindRelationWithShop = await ShopProductRelation.create({
-      //   shopId: data.shopId,
-      //   productId: result.getDataValue('id')
-      // }, { transaction: t })
-      if (result) {
-        return new ManagerResponse({
-          success: true,
-          msg: responseMsg.CREATE_SUCCESS,
-          data: result,
-        });
-      } else {
-        return new ManagerResponse({
-          success: true,
-          msg: responseMsg.CREATE_FAIL,
-          data: result,
-        });
-      }
-    });
+    const cloneData = { ...data };
+    cloneData.skuGroup = JSON.stringify(cloneData.skuGroup);
+    const result = await Product.create(cloneData);
+    // const bindRelationWithShop = await ShopProductRelation.create({
+    //   shopId: data.shopId,
+    //   productId: result.getDataValue('id')
+    // }, { transaction: t })
+    if (result) {
+      return new ManagerResponse({
+        success: true,
+        msg: responseMsg.CREATE_SUCCESS,
+        data: result,
+      });
+    } else {
+      return new ManagerResponse({
+        success: true,
+        msg: responseMsg.CREATE_FAIL,
+        data: result,
+      });
+    }
   }
   edit<T>(data: T): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");

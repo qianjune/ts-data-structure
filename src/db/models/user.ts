@@ -54,5 +54,11 @@ User.init(
   }
 );
 
-User.sync({ alter: true });
+User.sync({
+  alter: true,
+}).catch((error) => {
+  console.log("User alter error");
+  console.log(`msg: ${error.message}`);
+  console.log(`sql: ${error.sql}`);
+});
 export default User;
