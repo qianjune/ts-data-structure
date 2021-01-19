@@ -31,7 +31,7 @@ export const buildCommonListParams = (
   const include = config?.include;
   let attributes: any = { exclude: [] };
   if (exclude) {
-    attributes = { exclude: [] };
+    attributes = { exclude };
   }
   if (include) {
     attributes = include;

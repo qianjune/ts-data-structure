@@ -110,20 +110,20 @@ import SpuCategoryRelation from "./v2/product/spu_category_relation";
 // // CommentModel
 
 // // spu - relation - category 关系表 begin 多对多
-// Product.belongsToMany(ProductCategory, {
-//   through: SpuCategoryRelation,
-//   foreignKey: "spuId",
-//   otherKey: "categoryId",
-// });
-// ProductCategory.belongsToMany(Product, {
-//   through: SpuCategoryRelation,
-//   foreignKey: "categoryId",
-//   otherKey: "spuId",
-// });
-// SpuCategoryRelation.belongsTo(Product, { foreignKey: "spuId" });
-// SpuCategoryRelation.belongsTo(ProductCategory, { foreignKey: "categoryId" });
-// Product.hasMany(SpuCategoryRelation, { foreignKey: "spuId" });
-// ProductCategory.hasMany(SpuCategoryRelation, { foreignKey: "categoryId" });
+Product.belongsToMany(ProductCategory, {
+  through: SpuCategoryRelation,
+  foreignKey: "spuId",
+  otherKey: "categoryId",
+});
+ProductCategory.belongsToMany(Product, {
+  through: SpuCategoryRelation,
+  foreignKey: "categoryId",
+  otherKey: "spuId",
+});
+SpuCategoryRelation.belongsTo(Product, { foreignKey: "spuId" });
+SpuCategoryRelation.belongsTo(ProductCategory, { foreignKey: "categoryId" });
+Product.hasMany(SpuCategoryRelation, { foreignKey: "spuId" });
+ProductCategory.hasMany(SpuCategoryRelation, { foreignKey: "categoryId" });
 // spu - relation - category 关系表 end
 
 export {

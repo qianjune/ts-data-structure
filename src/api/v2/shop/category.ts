@@ -17,7 +17,7 @@ import SessionCookieHandler from "@src/utils/session_cookie";
 import Joi from "@hapi/joi";
 const categoryService = new CategoryService();
 @prefix("/api/category")
-@tag("分类相关服务")
+@tag("分类-相关服务")
 class CategoryRouter extends BaseRouter {
   @post("/create")
   @summary("分类-创建")
@@ -82,21 +82,20 @@ class CategoryRouter extends BaseRouter {
   }
 
   // 店铺列表自己需要验证店铺token，返回会显示全部分类
-  @get("/list/shop")
-  @summary("店铺-产品分类-列表")
+  @get("/customer/list/platform")
+  @summary("店铺-产品分类-列表-平台层面(0为根结点)")
   // @middleware(SessionCookieHandler.loginCheck)
   @parameter(
     Joi.object({
       pageSize: Joi.number().required(),
       pageNo: Joi.number().required(),
       parentId: Joi.number(),
-      shopId: Joi.number().required(),
     }),
     "query"
   )
   async getListInShop(ctx: Context) {
     const { parameter } = ctx.state;
-    await categoryService.getList(parameter);
+    await categoryService.getList(parameter, { omit: ["status"] });
   }
 
   // 店铺列表-对外-返回状态status:1,返回分类的列表

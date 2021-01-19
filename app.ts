@@ -84,18 +84,6 @@ app.use(
   })
 );
 
-// 为了捕捉 sequelize error
-app.use(async (ctx, next) => {
-  try {
-    await next();
-  } catch (error) {
-    console.log("捕获到错误");
-    if (error?.sql) {
-      console.log(`捕获到sequelize错误: ${error.sql}`);
-    }
-    ctx.body = error;
-  }
-});
 InitManager.initCore(app);
 
 app.use(
