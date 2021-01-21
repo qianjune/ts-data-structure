@@ -16,7 +16,7 @@ import {
 } from "@src/manager/response";
 
 import sequelize from "@root/core/db";
-import { FavoritesDb } from "@src/db/models";
+import { FavoritesDb, ShopModel, User } from "@src/db/models";
 import { FavoritesItemType } from "@src/db/models/v2/user/favorites";
 interface FavoritesItem {
   type: FavoritesItemType;
@@ -99,7 +99,7 @@ class FavoritesManager implements CommonManager {
   }
   async getList?(
     data: ListFilterInterface & {
-      userId: number;
+      uid: number;
       type: FavoritesItemType;
     }
   ): Promise<ManagerResponse> {
@@ -113,8 +113,36 @@ class FavoritesManager implements CommonManager {
       where: { ...where, disabled: 0 },
     });
     const { rows, count } = list;
+
     return new ManagerResponseSuccess({
       data: new ListDataModel({ data: rows, total: count, pageNo, pageSize }),
+      msg: responseMsg.FETCH_LIST_SUCCESS,
+    });
+  }
+
+  async getShopListByUser(data: {
+    uid: number;
+    type: FavoritesItemType;
+  }): Promise<ManagerResponse> {
+    const { uid, type } = data;
+
+    const list = await User.findOne({
+      where: { id: uid },
+      include: [
+        {
+          model: ShopModel,
+          through: {
+            where: {
+              uid,
+            },
+            attributes: [],
+          },
+        },
+      ],
+    });
+
+    return new ManagerResponseSuccess({
+      data: list.getDataValue("ShopModels"),
       msg: responseMsg.FETCH_LIST_SUCCESS,
     });
   }

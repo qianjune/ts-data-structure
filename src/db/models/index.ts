@@ -2,9 +2,6 @@ import Address from "@src/db/models/v2/address";
 // import IdCard from './idCard'
 // import Points from './points'
 import Right from "@src/db/models/v2/member/right";
-import RightPackage from "@src/db/models/v2/member/rightPackage";
-import RightRelation from "@src/db/models/v2/member/rightsRelation";
-import Level from "@src/db/models/v2/member/level";
 import ShopModel from "@src/db/models/v2/shop/shop";
 import IndexConfigDb from "@src/db/models/v2/indexConfig";
 import ShopUserRelation from "@src/db/models/v2/shopUserRelation";
@@ -16,8 +13,14 @@ import AttributeKey from "@src/db/models/v2/product/attribute_key";
 import AttributeValue from "@src/db/models/v2/product/attribute_value";
 import CommentModel from "@src/db/models/v2/product/comment";
 import FavoritesDb from "@src/db/models/v2/user/favorites";
+import {
+  RightPackage,
+  RightRelation,
+  LevelDb,
+  LevelGroupDb,
+  Member,
+} from "@src/db/models/v2/member";
 import User from "./user";
-import Member from "./member";
 import SpuCategoryRelation from "./v2/product/spu_category_relation";
 
 // import ShopProductRelation from '@src/db/models/v2/shopProductRelation'
@@ -32,12 +35,12 @@ import SpuCategoryRelation from "./v2/product/spu_category_relation";
 // //   foreignKey: 'memberId'
 // // })
 
-// User.hasOne(Member, {
-//   foreignKey: "userId",
-// });
-// // Member.belongsTo(User, {
-// //   foreignKey: "userId",
-// // });
+User.hasOne(Member, {
+  foreignKey: "userId",
+});
+Member.belongsTo(User, {
+  foreignKey: "userId",
+});
 
 // // Points.belongsTo(Member, {
 // //   foreignKey: 'memberId'
@@ -109,7 +112,24 @@ import SpuCategoryRelation from "./v2/product/spu_category_relation";
 // });
 // // CommentModel
 
-// // spu - relation - category 关系表 begin 多对多
+// user - relation - shop 关系表 begin 多对多
+User.belongsToMany(ShopModel, {
+  through: FavoritesDb,
+  foreignKey: "uid",
+  otherKey: "likeId",
+});
+ShopModel.belongsToMany(User, {
+  through: FavoritesDb,
+  foreignKey: "likeId",
+  otherKey: "uid",
+});
+FavoritesDb.belongsTo(User, { foreignKey: "uid" });
+FavoritesDb.belongsTo(ShopModel, { foreignKey: "likeId" });
+User.hasMany(FavoritesDb, { foreignKey: "uid" });
+ShopModel.hasMany(FavoritesDb, { foreignKey: "likeId" });
+// user - relation - shop 关系表 end
+
+// spu - relation - category 关系表 begin 多对多
 Product.belongsToMany(ProductCategory, {
   through: SpuCategoryRelation,
   foreignKey: "spuId",
@@ -146,4 +166,6 @@ export {
   IndexConfigDb,
   FavoritesDb,
   SpuCategoryRelation,
+  LevelDb,
+  LevelGroupDb,
 };

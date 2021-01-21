@@ -5,6 +5,7 @@ import { Model } from "sequelize";
 import sequelize from "@root/core/db";
 import { TYPES } from "@src/db/types";
 import { mysqlJsonHandler } from "@src/lib/common";
+import { sequelizeErrHandler } from "@src/utils/error_handler";
 
 export enum OrderStatus {
   PENDING_PAYMENT = 0, // 待支付
@@ -107,6 +108,6 @@ OrderDb.init(
 
 OrderDb.sync({
   alter: true,
-});
+}).catch(sequelizeErrHandler);
 
 export default OrderDb;

@@ -5,6 +5,7 @@
 import { Model } from "sequelize";
 import { TYPES } from "@src/db/types";
 import sequelize from "@root/core/db";
+import { sequelizeErrHandler } from "@src/utils/error_handler";
 class ShopModel extends Model {
   // custom property here
 }
@@ -28,17 +29,11 @@ ShopModel.init(
     },
   },
   {
-    // indexes: [
-    //   {
-    //     unique: true,
-    //     fields: ['logo']
-    //   }
-    // ],
     sequelize,
     tableName: "shop",
   }
 );
 ShopModel.sync({
-  // alter: true
-});
+  alter: true,
+}).catch(sequelizeErrHandler);
 export default ShopModel;

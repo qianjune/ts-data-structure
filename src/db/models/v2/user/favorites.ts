@@ -4,6 +4,8 @@
 import { Model } from "sequelize";
 import sequelize from "@root/core/db";
 import { TYPES } from "@src/db/types";
+import { sequelizeErrHandler } from "@src/utils/error_handler";
+import { ShopModel, User } from "../..";
 export enum FavoritesItemType {
   SHOP = "shop",
   PRODUCT = "product",
@@ -33,11 +35,19 @@ FavoritesDb.init(
       type: TYPES.INTEGER,
       comment: "收藏的id",
       allowNull: false,
+      references: {
+        model: ShopModel,
+        key: "id",
+      },
     },
     uid: {
       type: TYPES.INTEGER,
       comment: "用户id",
       allowNull: false,
+      references: {
+        model: User,
+        key: "id",
+      },
     },
     disabled: {
       type: TYPES.INTEGER,
@@ -55,6 +65,6 @@ FavoritesDb.init(
 
 FavoritesDb.sync({
   alter: true,
-});
+}).catch(sequelizeErrHandler);
 
 export default FavoritesDb;

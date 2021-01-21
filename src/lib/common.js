@@ -1,29 +1,29 @@
 /**
- * @description 
+ * @description
  * mysql 字符串数组转换
  * JSON 数据转换
  */
 
-
-
 const mysqlArrayStringHandler = (key) => {
   return {
     get() {
-      return this.getDataValue(key).split(';')
+      return this.getDataValue(key).split(";");
     },
     set(val) {
-      this.setDataValue(key, val.join(';'))
+      this.setDataValue(key, val.join(";"));
     },
-  }
-}
+  };
+};
 const mysqlJsonHandler = (key) => {
   return {
     get() {
-      return JSON.parse(this.getDataValue(key))
+      return JSON.parse(this.getDataValue(key));
     },
     set(val) {
-      this.setDataValue(key, JSON.stringify(val))
-    }
-  }
-}
-module.exports = { mysqlArrayStringHandler, mysqlJsonHandler }
+      const handledData = JSON.stringify(val);
+      console.log(handledData);
+      this.setDataValue(key, handledData);
+    },
+  };
+};
+module.exports = { mysqlArrayStringHandler, mysqlJsonHandler };

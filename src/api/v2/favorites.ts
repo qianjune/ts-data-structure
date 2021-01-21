@@ -65,6 +65,22 @@ class FavoritesApi extends BaseRouter {
       uid: global.state.userInfo.id,
     });
   }
+
+  @get("/list/shop")
+  @summary("收藏-店铺-列表")
+  @middleware(SessionCookieHandler.loginCheck)
+  @parameter(
+    joi.object({
+      type: joi.string(),
+    }),
+    "query"
+  )
+  async getShopListByUser(ctx: Context): Promise<void> {
+    await favoritesService.getShopListByUser({
+      ...ctx.state.parameter,
+      uid: global.state.userInfo.id,
+    });
+  }
   @del("/:id")
   @summary("删除FavoritesApi")
   @parameter(

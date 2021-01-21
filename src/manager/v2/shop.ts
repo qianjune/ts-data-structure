@@ -1,7 +1,7 @@
 /**
  * @description 店铺 orm
  */
-import { ShopModel } from "@src/db/models";
+import { ShopModel, User } from "@src/db/models";
 import {
   ManagerResponse,
   ManagerResponseSuccess,
@@ -56,9 +56,19 @@ class ShopManager implements CommonManager {
   }
   async getInfo(id: number): Promise<ManagerResponse> {
     const shopInfo = await ShopModel.findOne({
-      where: {
-        id,
-      },
+      where: { id },
+      include: [
+        {
+          model: User,
+          through: {
+            where: {
+              likeId: id,
+            },
+            attributes: [],
+          },
+          attributes: ["mobile"],
+        },
+      ],
     });
     if (!shopInfo) {
       return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });

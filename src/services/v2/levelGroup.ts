@@ -1,18 +1,18 @@
 /**
- * @description XXXXXX service
+ * @description LevelGroup service
  */
 import { CommonService } from "@src/services/interface/common";
 import { ResponseHandler } from "@src/utils/responseHandler";
-import XXXXXXManager from "@src/manager/v2/xXXXXX";
+import LevelGroupManager from "@src/manager/v2/levelGroup";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
-const xXXXXXManager = new XXXXXXManager();
-class XXXXXXService implements CommonService {
+const levelGroupManager = new LevelGroupManager();
+class LevelGroupService implements CommonService {
   /**
    * 创建
    * @param data
    */
   async create(data: any): Promise<void> {
-    const result = await xXXXXXManager.create(data);
+    const result = await levelGroupManager.create(data);
     ResponseHandler.send(result);
   }
 
@@ -21,7 +21,7 @@ class XXXXXXService implements CommonService {
    * @param data
    */
   async edit<T>(data: T): Promise<void> {
-    const result = await xXXXXXManager.edit(data);
+    const result = await levelGroupManager.edit(data);
     ResponseHandler.send(result);
   }
 
@@ -30,7 +30,7 @@ class XXXXXXService implements CommonService {
    * @param id
    */
   async del(id: number): Promise<void> {
-    const result = await xXXXXXManager.del(id);
+    const result = await levelGroupManager.del(id);
     ResponseHandler.send(result);
   }
 
@@ -39,7 +39,7 @@ class XXXXXXService implements CommonService {
    * @param id
    */
   async getInfo(id: number): Promise<void> {
-    const result = await xXXXXXManager.getInfo(id);
+    const result = await levelGroupManager.getInfo(id);
     ResponseHandler.send(result);
   }
 
@@ -49,9 +49,9 @@ class XXXXXXService implements CommonService {
    * @param config
    */
   async getList?(data: any, config?: RequestConfigInterface): Promise<void> {
-    const result = await xXXXXXManager.getList(data);
+    const result = await levelGroupManager.getList(data);
     ResponseHandler.send(result);
   }
 }
 
-export default XXXXXXService;
+export default LevelGroupService;

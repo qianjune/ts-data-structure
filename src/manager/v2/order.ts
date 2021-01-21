@@ -16,18 +16,28 @@ import {
 } from "@src/manager/response";
 import OrderDb, { OrderStatus } from "@src/db/models/v2/order";
 interface OrderInterface {
-  shippingAddress: {};
-  goods: {}[];
+  shippingAddress: { [keyName: string]: any };
+  goods: { [keyName: string]: any }[];
 }
 const placeholder = "订单";
 const responseMsg = ResponseMsg(placeholder);
 class OrderManager implements CommonManager {
+  _dataFormatHandler(d: any): any {
+    const r = d.toJSON() as any;
+    r.address = JSON.parse(r.address);
+    r.goods = JSON.parse(r.goods);
+    return r;
+  }
   async create(data: OrderInterface): Promise<ManagerResponse> {
     let order: any = await OrderDb.create(data);
     console.log(order.toJSON());
     order = order.toJSON();
     order.goods = JSON.parse(order.goods);
     order.shippingAddress = JSON.parse(order.address);
+    /**
+     * todo list
+     * 添加一个加密生成的订单编码 包含 用户id + 订单时间 + 用户ip
+     */
     delete order.address;
     if (order) {
       return new ManagerResponseSuccess({
@@ -44,8 +54,17 @@ class OrderManager implements CommonManager {
   del(id: number): Promise<ManagerResponse> {
     throw new Error("Method not implemented.");
   }
-  getInfo(id: number): Promise<ManagerResponse> {
-    throw new Error("Method not implemented.");
+  async getInfo(id: number): Promise<ManagerResponse> {
+    const result = await OrderDb.findOne({
+      where: { id },
+    });
+    if (!result) {
+      return new ManagerResponseFailure({ msg: responseMsg.GET_DETAIL_FAIL });
+    }
+    return new ManagerResponseSuccess({
+      msg: responseMsg.GET_DETAIL_SUCCESS,
+      data: this._dataFormatHandler(result),
+    });
   }
   async getList?(
     data: ListFilterInterface & { status: OrderStatus; userId: number }
@@ -63,10 +82,7 @@ class OrderManager implements CommonManager {
     });
     const { count, rows } = list;
     const result = rows.map((row) => {
-      const r = row.toJSON() as any;
-      r.address = JSON.parse(r.address);
-      r.goods = JSON.parse(r.goods);
-      return r;
+      return this._dataFormatHandler(row);
     });
     return new ManagerResponseSuccess({
       data: new ListDataModel({ data: result, total: count, pageNo, pageSize }),
@@ -74,6 +90,10 @@ class OrderManager implements CommonManager {
     });
   }
 
+  /**
+   * 获取用户每种订单的数量
+   * @param userId
+   */
   async getAmount(userId: number): Promise<ManagerResponse> {
     const listParams = buildCommonListParams({ pageNo: 1, pageSize: 50 });
     // 搜四次列表太慢，应该在每次单个订单有状态有变化的时候就进行记录

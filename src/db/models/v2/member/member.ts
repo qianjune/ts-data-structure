@@ -1,4 +1,3 @@
-import moment from "moment";
 import Sequelize from "sequelize";
 import { Model } from "sequelize";
 import sequelize from "@root/core/db";

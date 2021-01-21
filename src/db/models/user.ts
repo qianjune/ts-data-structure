@@ -2,6 +2,7 @@ import { Model } from "sequelize";
 import sequelize from "@root/core/db";
 import bcrypt from "bcryptjs";
 import { TYPES } from "@src/db/types";
+import { sequelizeErrHandler } from "@src/utils/error_handler";
 
 class User extends Model {
   // custom property here
@@ -56,9 +57,5 @@ User.init(
 
 User.sync({
   alter: true,
-}).catch((error) => {
-  console.log("User alter error");
-  console.log(`msg: ${error.message}`);
-  console.log(`sql: ${error.sql}`);
-});
+}).catch(sequelizeErrHandler);
 export default User;

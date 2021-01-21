@@ -73,6 +73,7 @@ class OrderApi extends BaseRouter {
       userId: id,
     });
   }
+
   @get("/detail/:id")
   @summary("OrderApi详情")
   @parameter(
@@ -83,7 +84,10 @@ class OrderApi extends BaseRouter {
   )
   async getInfo(ctx: Context): Promise<void> {
     // get info
+    const { id } = ctx.state.parameter;
+    await orderService.getInfo(id);
   }
+
   @get("/list")
   @summary("OrderApi详情")
   @middleware(SessionCookieHandler.loginCheck)

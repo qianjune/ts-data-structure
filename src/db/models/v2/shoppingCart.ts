@@ -1,6 +1,7 @@
 import { Model } from "sequelize";
 import { TYPES } from "@src/db/types";
 import sequelize from "@root/core/db";
+import { sequelizeErrHandler } from "@src/utils/error_handler";
 
 class ShoppingCart extends Model {
   static ACTION_TYPE = {
@@ -49,5 +50,5 @@ ShoppingCart.init(
     tableName: "shoppingCart",
   }
 );
-ShoppingCart.sync({ alter: true });
+ShoppingCart.sync({ alter: true }).catch(sequelizeErrHandler);
 export default ShoppingCart;

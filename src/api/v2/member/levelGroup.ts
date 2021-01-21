@@ -1,5 +1,5 @@
 /**
- * @description Level api
+ * @description LevelGroup api
  */
 
 import joi from "@hapi/joi";
@@ -14,25 +14,30 @@ import BaseRouter, {
   middleware,
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
-import LevelService from "@src/services/v2/level";
+import LevelGroupService from "@src/services/v2/levelGroup";
 import SessionCookieHandler from "@src/utils/session_cookie";
 import { levelBody } from "./joi_module";
-const levelService = new LevelService();
-@prefix("/api/level")
-@tag("Level相关服务")
-class LevelApi extends BaseRouter {
+const levelGroupService = new LevelGroupService();
+@prefix("/api/levelGroup")
+@tag("LevelGroup相关服务")
+class LevelGroupApi extends BaseRouter {
   @post("/create")
-  @summary("Level创建")
+  @summary("LevelGroup创建")
   @middleware(SessionCookieHandler.loginCheck)
-  @parameter(levelBody, "body")
+  @parameter(
+    joi.object({
+      name: joi.string().required(),
+      levelGroup: joi.array().items(levelBody).required(),
+    }),
+    "body"
+  )
   async create(ctx: Context): Promise<void> {
     // create item
     const { body } = ctx.request;
-    await levelService.create(body);
+    await levelGroupService.create(body);
   }
   @get("/detail/:id")
-  @summary("Level详情")
-  @middleware(SessionCookieHandler.loginCheck)
+  @summary("LevelGroup详情")
   @parameter(
     joi.object({
       id: joi.string().required(),
@@ -42,11 +47,10 @@ class LevelApi extends BaseRouter {
   async getInfo(ctx: Context): Promise<void> {
     // get info
     const { id } = ctx.state.parameter;
-    await levelService.getInfo(id);
+    await levelGroupService.getInfo(id);
   }
   @get("/list")
-  @summary("Level列表")
-  @middleware(SessionCookieHandler.loginCheck)
+  @summary("LevelGroup列表")
   @parameter(
     joi.object({
       pageSize: joi.number().required(),
@@ -57,10 +61,10 @@ class LevelApi extends BaseRouter {
   async getList(ctx: Context): Promise<void> {
     // get list
     const { parameter } = ctx.state;
-    await levelService.getList(parameter);
+    await levelGroupService.getList(parameter);
   }
   @del("/:id")
-  @summary("删除Level")
+  @summary("删除LevelGroup")
   @parameter(
     joi.object({
       id: joi.string().required(),
@@ -70,17 +74,17 @@ class LevelApi extends BaseRouter {
   async del(ctx: Context): Promise<void> {
     // del item
     const { id } = ctx.state.parameter;
-    await levelService.del(id);
+    await levelGroupService.del(id);
   }
 
   @post("/edit")
-  @summary("Level编辑")
+  @summary("LevelGroup编辑")
   @parameter(joi.object({}), "body")
   async edit(ctx: Context): Promise<void> {
     // edit item
     const { body } = ctx.request;
-    await levelService.edit(body);
+    await levelGroupService.edit(body);
   }
 }
 
-export default new LevelApi().init();
+export default new LevelGroupApi().init();

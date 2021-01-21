@@ -1,5 +1,5 @@
 /**
- * @description XXXXXX orm
+ * @description Level orm
  */
 
 import {
@@ -14,20 +14,20 @@ import {
   ResponseMsg,
   ManagerResponseFailure,
 } from "@src/manager/response";
-import XXXXXXDb from "@src/db/models/v2/xXXXXX";
+import { LevelDb } from "@src/db/models";
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 
-const placeholder = "XXXXXX";
+const placeholder = "Level";
 const responseMsg = ResponseMsg(placeholder);
-class XXXXXX implements CommonManager {
+class Level implements CommonManager {
   /**
    * 获取详情（私有）
    * @param id
    * @param config
    */
   async _getInfo(id: number, config?: { msg?: string }): Promise<any> {
-    const item = await XXXXXXDb.findOne({
+    const item = await LevelDb.findOne({
       where: { id },
     });
     if (!item) {
@@ -41,16 +41,16 @@ class XXXXXX implements CommonManager {
    * @param data
    */
   async create(data: any): Promise<ManagerResponse> {
-    const {} = data;
-    const item = await XXXXXXDb.findOne({
-      where: {},
+    const { name } = data;
+    const item = await LevelDb.findOne({
+      where: { name },
     });
     if (item) {
       return new ManagerResponseFailure({
         msg: responseMsg.CREATE_FAIL_BY_EXISTED,
       });
     }
-    const result = await XXXXXXDb.create(data);
+    const result = await LevelDb.create(data);
     if (result) {
       return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_SUCCESS,
@@ -69,7 +69,7 @@ class XXXXXX implements CommonManager {
     const { id } = data;
     const item = await this._getInfo(id);
     const updateData = global.util.lodash.omitNil({});
-    const result = await XXXXXXDb.update(updateData, {
+    const result = await LevelDb.update(updateData, {
       where: {
         id,
       },
@@ -91,7 +91,7 @@ class XXXXXX implements CommonManager {
   async del(id: number): Promise<ManagerResponse> {
     const item = await await this._getInfo(id);
     return await sequelize.transaction(async (t: any) => {
-      const result = await XXXXXXDb.destroy({
+      const result = await LevelDb.destroy({
         where: {
           id,
         },
@@ -131,18 +131,18 @@ class XXXXXX implements CommonManager {
     const { pageSize = 10, pageNo = 1 } = data;
     return await sequelize.transaction(async (t: any) => {
       const listParams = buildCommonListParams({ pageNo, pageSize }, config);
-      const result = await XXXXXXDb.findAndCountAll({
+      const result = await LevelDb.findAndCountAll({
         ...listParams,
       });
       const { count, rows } = result;
-      const XXXXXXList = rows.map((row: any) => {
+      const LevelList = rows.map((row: any) => {
         const data: any = row.toJSON();
         return data;
       });
 
       return new ManagerResponseSuccess({
         data: new ListDataModel({
-          data: XXXXXXList,
+          data: LevelList,
           total: count,
           pageNo,
           pageSize,
@@ -153,4 +153,4 @@ class XXXXXX implements CommonManager {
   }
 }
 
-export default XXXXXX;
+export default Level;
