@@ -1,7 +1,6 @@
 import Address from "@src/db/models/v2/address";
 // import IdCard from './idCard'
 // import Points from './points'
-import Right from "@src/db/models/v2/member/right";
 import ShopModel from "@src/db/models/v2/shop/shop";
 import IndexConfigDb from "@src/db/models/v2/indexConfig";
 import ShopUserRelation from "@src/db/models/v2/shopUserRelation";
@@ -14,11 +13,12 @@ import AttributeValue from "@src/db/models/v2/product/attribute_value";
 import CommentModel from "@src/db/models/v2/product/comment";
 import FavoritesDb from "@src/db/models/v2/user/favorites";
 import {
-  RightPackage,
-  RightRelation,
+  RightPackageDb,
+  RightsRelationDb,
   LevelDb,
   LevelGroupDb,
   Member,
+  RightDb,
 } from "@src/db/models/v2/member";
 import User from "./user";
 import SpuCategoryRelation from "./v2/product/spu_category_relation";
@@ -46,11 +46,11 @@ Member.belongsTo(User, {
 // //   foreignKey: 'memberId'
 // // })
 
-// // Right.hasMany(RightRelation, {
+// // Right.hasMany(RightsRelationDb, {
 // //   foreignKey: "rightId",
 // // });
 
-// // RightPackage.belongsTo(Level, {
+// // RightPackageDb.belongsTo(Level, {
 // //   foreignKey: "levelId",
 // // });
 
@@ -146,15 +146,32 @@ Product.hasMany(SpuCategoryRelation, { foreignKey: "spuId" });
 ProductCategory.hasMany(SpuCategoryRelation, { foreignKey: "categoryId" });
 // spu - relation - category 关系表 end
 
+// right - relation - package 关系表 begin 多对多
+RightDb.belongsToMany(RightPackageDb, {
+  through: RightsRelationDb,
+  foreignKey: "rightId",
+  otherKey: "packageId",
+});
+RightPackageDb.belongsToMany(RightDb, {
+  through: RightsRelationDb,
+  foreignKey: "packageId",
+  otherKey: "rightId",
+});
+RightsRelationDb.belongsTo(RightDb, { foreignKey: "rightId" });
+RightsRelationDb.belongsTo(RightPackageDb, { foreignKey: "packageId" });
+RightDb.hasMany(RightsRelationDb, { foreignKey: "rightId" });
+RightPackageDb.hasMany(RightsRelationDb, { foreignKey: "packageId" });
+// right - relation - package 关系表 end
+
 export {
   Address,
   // IdCard,
   Member,
   User,
   // Points,
-  Right,
-  RightPackage,
-  RightRelation,
+  RightDb,
+  RightPackageDb,
+  RightsRelationDb,
   ShopModel,
   Product,
   ShoppingCart,

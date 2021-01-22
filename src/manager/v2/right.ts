@@ -1,5 +1,5 @@
 /**
- * @description LevelGroup orm
+ * @description Right orm
  */
 
 import {
@@ -14,20 +14,20 @@ import {
   ResponseMsg,
   ManagerResponseFailure,
 } from "@src/manager/response";
-import { LevelGroupDb } from "@src/db/models";
+import { RightDb } from "@src/db/models";
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 
-const placeholder = "LevelGroup";
+const placeholder = "Right";
 const responseMsg = ResponseMsg(placeholder);
-class LevelGroup implements CommonManager {
+class Right implements CommonManager {
   /**
    * 获取详情（私有）
    * @param id
    * @param config
    */
   async _getInfo(id: number, config?: { msg?: string }): Promise<any> {
-    const item = await LevelGroupDb.findOne({
+    const item = await RightDb.findOne({
       where: { id },
     });
     if (!item) {
@@ -42,7 +42,7 @@ class LevelGroup implements CommonManager {
    */
   async create(data: any): Promise<ManagerResponse> {
     const { name } = data;
-    const item = await LevelGroupDb.findOne({
+    const item = await RightDb.findOne({
       where: { name },
     });
     if (item) {
@@ -50,10 +50,8 @@ class LevelGroup implements CommonManager {
         msg: responseMsg.CREATE_FAIL_BY_EXISTED,
       });
     }
-    let result: any = await LevelGroupDb.create(data);
+    const result = await RightDb.create(data);
     if (result) {
-      result = result.toJSON();
-      result.levelGroup = JSON.parse(result.levelGroup);
       return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_SUCCESS,
         data: result,
@@ -71,7 +69,7 @@ class LevelGroup implements CommonManager {
     const { id } = data;
     const item = await this._getInfo(id);
     const updateData = global.util.lodash.omitNil({});
-    const result = await LevelGroupDb.update(updateData, {
+    const result = await RightDb.update(updateData, {
       where: {
         id,
       },
@@ -93,7 +91,7 @@ class LevelGroup implements CommonManager {
   async del(id: number): Promise<ManagerResponse> {
     const item = await await this._getInfo(id);
     return await sequelize.transaction(async (t: any) => {
-      const result = await LevelGroupDb.destroy({
+      const result = await RightDb.destroy({
         where: {
           id,
         },
@@ -133,18 +131,18 @@ class LevelGroup implements CommonManager {
     const { pageSize = 10, pageNo = 1 } = data;
     return await sequelize.transaction(async (t: any) => {
       const listParams = buildCommonListParams({ pageNo, pageSize }, config);
-      const result = await LevelGroupDb.findAndCountAll({
+      const result = await RightDb.findAndCountAll({
         ...listParams,
       });
       const { count, rows } = result;
-      const LevelGroupList = rows.map((row: any) => {
+      const RightList = rows.map((row: any) => {
         const data: any = row.toJSON();
         return data;
       });
 
       return new ManagerResponseSuccess({
         data: new ListDataModel({
-          data: LevelGroupList,
+          data: RightList,
           total: count,
           pageNo,
           pageSize,
@@ -155,4 +153,4 @@ class LevelGroup implements CommonManager {
   }
 }
 
-export default LevelGroup;
+export default Right;

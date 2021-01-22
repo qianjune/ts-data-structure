@@ -17,6 +17,7 @@ const mysqlArrayStringHandler = (key) => {
 const mysqlJsonHandler = (key) => {
   return {
     get() {
+      console.log("get触发");
       return JSON.parse(this.getDataValue(key));
     },
     set(val) {
