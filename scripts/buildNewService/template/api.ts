@@ -15,9 +15,14 @@ import BaseRouter, {
 import { Context } from "koa";
 import XXXXXXService from "@src/services/v2/xXXXXX";
 const xXXXXXService = new XXXXXXService();
+
 @prefix("/api/xXXXXX")
 @tag("XXXXXX相关服务")
 class XXXXXXApi extends BaseRouter {
+  /**
+   * 创建
+   * @param ctx 】
+   */
   @post("/create")
   @summary("XXXXXX创建")
   @parameter(joi.object({}), "body")
@@ -26,6 +31,11 @@ class XXXXXXApi extends BaseRouter {
     const { body } = ctx.request;
     await xXXXXXService.create(body);
   }
+
+  /**
+   * 获取详情
+   * @param ctx
+   */
   @get("/detail/:id")
   @summary("XXXXXX详情")
   @parameter(
@@ -39,6 +49,11 @@ class XXXXXXApi extends BaseRouter {
     const { id } = ctx.state.parameter;
     await xXXXXXService.getInfo(id);
   }
+
+  /**
+   * 获取列表
+   * @param ctx
+   */
   @get("/list")
   @summary("XXXXXX列表")
   @parameter(
@@ -53,6 +68,11 @@ class XXXXXXApi extends BaseRouter {
     const { parameter } = ctx.state;
     await xXXXXXService.getList(parameter);
   }
+
+  /**
+   * 删除
+   * @param ctx
+   */
   @del("/:id")
   @summary("删除XXXXXX")
   @parameter(
@@ -67,6 +87,10 @@ class XXXXXXApi extends BaseRouter {
     await xXXXXXService.del(id);
   }
 
+  /**
+   * 编辑
+   * @param ctx 、
+   */
   @post("/edit")
   @summary("XXXXXX编辑")
   @parameter(joi.object({}), "body")
