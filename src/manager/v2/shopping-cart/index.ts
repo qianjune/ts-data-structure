@@ -37,7 +37,7 @@ class shoppingCartManager implements CommonManager {
    * 包含新增数量和新增商品
    * @param data
    */
-  async create(data: shoppingCartItem): Promise<ManagerResponse> {
+  async create(data: shoppingCartItem): Promise<ManagerResponse<any>> {
     const { userId, productId, sku, num, shopId } = data;
     const shoppingCartItem = await ShoppingCart.findOne({
       where: {
@@ -72,18 +72,18 @@ class shoppingCartManager implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.ADD_FAIL });
     }
   }
-  edit(data: any): Promise<ManagerResponse> {
+  edit(data: any): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  del(id: number): Promise<ManagerResponse> {
+  del(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  getInfo(id: number): Promise<ManagerResponse> {
+  getInfo(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
   async getList(
     data: ListFilterInterface & { userId: number }
-  ): Promise<ManagerResponse> {
+  ): Promise<ManagerResponse<any>> {
     const { pageSize = 10, pageNo = 1 } = data;
     // const where = global.util.lodash.omitNil({})
     const listParams = buildCommonListParams({ pageNo, pageSize });

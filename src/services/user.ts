@@ -1,9 +1,10 @@
 import { UserManager } from "@src/manager/user";
 import JwtHandler from "@src/utils/jwt_handler";
 import { ResponseHandler } from "@src/utils/responseHandler";
+import { MemberManager } from "@src/manager/v2/member";
 import CodeService from "./code";
 import { CommonService } from "./interface/common";
-
+const memberManager = new MemberManager();
 /**
  * @description 用户 service
  */
@@ -35,6 +36,12 @@ class UserService implements CommonService {
     const result = await userManager.edit(otherData);
     ResponseHandler.send(result);
   }
+
+  /**
+   * 手机号注册或直接登录
+   * @param user
+   * @param model
+   */
   static async registerAndLoginForApp(
     user: string,
     model: "jwt" | "session" = "jwt"
@@ -56,6 +63,11 @@ class UserService implements CommonService {
     } else {
       result = realUser.toJSON();
     }
+    if (result?.id) {
+      const memberInfo = await memberManager.getInfo(result?.id);
+      result.memberInfo = memberInfo.data;
+    }
+
     // 调用登录，返回session或者jwt
     if (model === "jwt") {
       console.log(realUser);

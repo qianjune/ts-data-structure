@@ -28,7 +28,7 @@ class OrderManager implements CommonManager {
     r.goods = JSON.parse(r.goods);
     return r;
   }
-  async create(data: OrderInterface): Promise<ManagerResponse> {
+  async create(data: OrderInterface): Promise<ManagerResponse<any>> {
     let order: any = await OrderDb.create(data);
     console.log(order.toJSON());
     order = order.toJSON();
@@ -48,13 +48,13 @@ class OrderManager implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
     }
   }
-  edit(data: any): Promise<ManagerResponse> {
+  edit(data: any): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  del(id: number): Promise<ManagerResponse> {
+  del(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  async getInfo(id: number): Promise<ManagerResponse> {
+  async getInfo(id: number): Promise<ManagerResponse<any>> {
     const result = await OrderDb.findOne({
       where: { id },
     });
@@ -68,7 +68,7 @@ class OrderManager implements CommonManager {
   }
   async getList?(
     data: ListFilterInterface & { status: OrderStatus; userId: number }
-  ): Promise<ManagerResponse> {
+  ): Promise<ManagerResponse<any>> {
     const { pageNo, pageSize, status, userId } = data;
     const where: any = global.util.lodash.omitNil({
       status,
@@ -94,7 +94,7 @@ class OrderManager implements CommonManager {
    * 获取用户每种订单的数量
    * @param userId
    */
-  async getAmount(userId: number): Promise<ManagerResponse> {
+  async getAmount(userId: number): Promise<ManagerResponse<any>> {
     const listParams = buildCommonListParams({ pageNo: 1, pageSize: 50 });
     // 搜四次列表太慢，应该在每次单个订单有状态有变化的时候就进行记录
     const pendingPaymentList = await OrderDb.findAndCountAll({

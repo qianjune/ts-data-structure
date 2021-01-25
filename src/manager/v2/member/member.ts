@@ -14,7 +14,7 @@ import {
   buildCommonListParams,
   CommonManager,
   ListFilterInterface,
-} from "../interface/commonManager";
+} from "@src/manager/interface/commonManager";
 /**
  * @description 会员 controller
  * @author June
@@ -23,7 +23,13 @@ import {
 const placeholder = "会员";
 const responseMsg = ResponseMsg(placeholder);
 class MemberManager implements CommonManager {
-  async create(data: any): Promise<ManagerResponse> {
+  async create(
+    data: any,
+    config?: {
+      transaction?: any;
+      [keyName: string]: any;
+    }
+  ): Promise<ManagerResponse<any>> {
     const { userId } = data;
     const member = await Member.findOne({
       where: {
@@ -37,7 +43,9 @@ class MemberManager implements CommonManager {
     }
     const memberCardCode = v1();
     data.memberCardCode = memberCardCode;
-    const result = await Member.create(data);
+    const result = await Member.create(data, {
+      transaction: config.transaction,
+    });
     if (result) {
       return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_SUCCESS,
@@ -47,34 +55,31 @@ class MemberManager implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
     }
   }
-  async edit(data: any): Promise<ManagerResponse> {
-    const { num, type, id, userId, nickName, sex, tel, birthday } = data;
+
+  /**
+   * 更新会员信息
+   * @param data
+   */
+  async edit(data: any): Promise<ManagerResponse<any>> {
+    const { growthValue, id, userId, nickName, sex, tel, birthday } = data;
     console.log("开始更新成长值");
     const updateData = global.util.lodash.omitNil({
       nickName,
       sex,
       tel,
       birthday,
+      growthValue,
+    });
+    const where = global.util.lodash.omitNil({
+      userId,
+      id,
     });
     const member = await Member.findOne({
-      where: {
-        userId,
-      },
+      where,
     });
     if (!member) {
       return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
     }
-    // let growthValue = member.getDataValue('growthValue')
-    // switch (type) {
-    //   case 'increase':
-    //     growthValue += num
-    //     break
-    //   case 'decrease':
-    //     growthValue -= num
-    //     break
-    //   default:
-    //     break
-    // }
     const result = await Member.update(updateData, {
       where: {
         id,
@@ -90,10 +95,15 @@ class MemberManager implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.EDIT_FAIL });
     }
   }
-  del(id: number): Promise<ManagerResponse> {
+
+  /**
+   * 会员删除（改变disable，做假删除）
+   * @param id
+   */
+  del(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  async getInfo(id: number): Promise<ManagerResponse> {
+  async getInfo(id: number): Promise<ManagerResponse<any>> {
     const info = await Member.findOne({
       where: {
         userId: id,
@@ -108,7 +118,7 @@ class MemberManager implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
     }
   }
-  async getList?(data: ListFilterInterface): Promise<ManagerResponse> {
+  async getList?(data: ListFilterInterface): Promise<ManagerResponse<any>> {
     const { pageNo, pageSize } = data;
     const res = await Member.findAndCountAll({
       ...buildCommonListParams({ pageNo, pageSize }),

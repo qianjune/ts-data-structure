@@ -1,5 +1,5 @@
 /**
- * @description XXXXXX orm
+ * @description Points orm
  */
 
 import {
@@ -13,22 +13,23 @@ import {
   ListDataModel,
   ResponseMsg,
   ManagerResponseFailure,
-  ListDataInterface,
 } from "@src/manager/response";
-import XXXXXXDb from "@src/db/models/v2/xXXXXX";
+import { PointsDb } from "@src/db/models";
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
-
-const placeholder = "XXXXXX";
+import { PointsType } from "@src/db/models/v2/member/points";
+import MemberPointsRelation from "./memberPointsRelation";
+const memberPointsRelationManager = new MemberPointsRelation();
+const placeholder = "Points";
 const responseMsg = ResponseMsg(placeholder);
-class XXXXXX implements CommonManager {
+class Points implements CommonManager {
   /**
    * 获取详情（私有）
    * @param id
    * @param config
    */
   async _getInfo(id: number, config?: { msg?: string }): Promise<any> {
-    const item = await XXXXXXDb.findOne({
+    const item = await PointsDb.findOne({
       where: { id },
     });
     if (!item) {
@@ -42,24 +43,55 @@ class XXXXXX implements CommonManager {
    * @param data
    */
   async create(data: any): Promise<ManagerResponse<any>> {
-    const {} = data;
-    const item = await XXXXXXDb.findOne({
-      where: {},
-    });
-    if (item) {
-      return new ManagerResponseFailure({
-        msg: responseMsg.CREATE_FAIL_BY_EXISTED,
-      });
-    }
-    const result = await XXXXXXDb.create(data);
-    if (result) {
-      return new ManagerResponseSuccess({
-        msg: responseMsg.CREATE_SUCCESS,
-        data: result,
-      });
-    } else {
+    return await sequelize.transaction(async (t: any) => {
+      const { memberId, ...otherData } = data;
+      // 保存这次积分行为
+      const result: any = await PointsDb.create(otherData, { transaction: t });
+      if (result?.id) {
+        // 查询上一次的积分总分
+        const relationList = await memberPointsRelationManager.getList({
+          pageNo: 1,
+          pageSize: 1,
+        });
+        let currentSum = 0;
+        if (relationList.success && relationList.data.total > 0) {
+          console.log(relationList.data.data[0]);
+          const preRelation = relationList.data.data[0];
+          const preCurrentSum = preRelation.currentSum;
+          const { type, num } = otherData;
+          let currentSumHandledFlag = false;
+          if (type === PointsType.INCREASE) {
+            currentSum = preCurrentSum + num;
+            // 查更新会员的积分和成长值
+            // 然后去匹配等级 （通过等级要求分数的那一次积分）
+            // 将匹配到的等级里的消耗型 在 MemberRightsRelation 里建立记录
+            // 将匹配到的等级里的状态型 也添加？还是每次去检查？
+            currentSumHandledFlag = true;
+          } else if (type === PointsType.INCREASE && preCurrentSum > num) {
+            currentSum = preCurrentSum - num;
+            currentSumHandledFlag = true;
+          }
+          if (currentSumHandledFlag) {
+            // 创建会员和积分的关系
+            const memberPointsRelation = await memberPointsRelationManager.create(
+              {
+                memberId,
+                pointId: result?.id,
+                currentSum,
+              },
+              { transaction: t }
+            );
+            if (memberPointsRelation.success) {
+              return new ManagerResponseSuccess({
+                msg: responseMsg.CREATE_SUCCESS,
+                data: result,
+              });
+            }
+          }
+        }
+      }
       return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
-    }
+    });
   }
 
   /**
@@ -70,7 +102,7 @@ class XXXXXX implements CommonManager {
     const { id } = data;
     const item = await this._getInfo(id);
     const updateData = global.util.lodash.omitNil({});
-    const result = await XXXXXXDb.update(updateData, {
+    const result = await PointsDb.update(updateData, {
       where: {
         id,
       },
@@ -92,7 +124,7 @@ class XXXXXX implements CommonManager {
   async del(id: number): Promise<ManagerResponse<any>> {
     const item = await await this._getInfo(id);
     return await sequelize.transaction(async (t: any) => {
-      const result = await XXXXXXDb.destroy({
+      const result = await PointsDb.destroy({
         where: {
           id,
         },
@@ -128,22 +160,22 @@ class XXXXXX implements CommonManager {
   async getList?(
     data: ListFilterInterface,
     config?: RequestConfigInterface
-  ): Promise<ManagerResponse<ListDataInterface>> {
+  ): Promise<ManagerResponse<any>> {
     const { pageSize = 10, pageNo = 1 } = data;
     return await sequelize.transaction(async (t: any) => {
       const listParams = buildCommonListParams({ pageNo, pageSize }, config);
-      const result = await XXXXXXDb.findAndCountAll({
+      const result = await PointsDb.findAndCountAll({
         ...listParams,
       });
       const { count, rows } = result;
-      const XXXXXXList = rows.map((row: any) => {
+      const PointsList = rows.map((row: any) => {
         const data: any = row.toJSON();
         return data;
       });
 
       return new ManagerResponseSuccess({
         data: new ListDataModel({
-          data: XXXXXXList,
+          data: PointsList,
           total: count,
           pageNo,
           pageSize,
@@ -154,4 +186,4 @@ class XXXXXX implements CommonManager {
   }
 }
 
-export default XXXXXX;
+export default Points;

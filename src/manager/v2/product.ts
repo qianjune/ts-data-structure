@@ -16,7 +16,7 @@ import {
   buildCommonListParams,
   CommonManager,
   ListFilterInterface,
-} from "../interface/commonManager";
+} from "@src/manager/interface/commonManager";
 import { RequestConfigInterface } from "../interface/interface";
 
 const placeholder = "商品";
@@ -61,7 +61,7 @@ class ProductManager implements CommonManager {
     name: string;
     shopId: number;
     skuGroup: any[] | string;
-  }): Promise<ManagerResponse> {
+  }): Promise<ManagerResponse<any>> {
     const productInfo = await Product.findOne({
       where: {
         name: data.name,
@@ -95,13 +95,13 @@ class ProductManager implements CommonManager {
       });
     }
   }
-  edit<T>(data: T): Promise<ManagerResponse> {
+  edit<T>(data: T): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  del(id: number): Promise<ManagerResponse> {
+  del(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  async getInfo(id: number): Promise<ManagerResponse> {
+  async getInfo(id: number): Promise<ManagerResponse<any>> {
     const productInfo = await Product.findOne({
       where: {
         id,
@@ -151,7 +151,7 @@ class ProductManager implements CommonManager {
   async getList(
     data: ListFilterInterface & { shopId?: number },
     config?: RequestConfigInterface
-  ): Promise<ManagerResponse> {
+  ): Promise<ManagerResponse<any>> {
     const { pageSize = 10, pageNo = 1, shopId, belong, categoryId } = data;
     const where = global.util.lodash.omitNil({ shopId, belong });
     const listParams = buildCommonListParams({ pageNo, pageSize }, config);

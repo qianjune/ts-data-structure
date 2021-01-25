@@ -40,7 +40,7 @@ class LevelGroup implements CommonManager {
    * 创建
    * @param data
    */
-  async create(data: any): Promise<ManagerResponse> {
+  async create(data: any): Promise<ManagerResponse<any>> {
     const { name } = data;
     const item = await LevelGroupDb.findOne({
       where: { name },
@@ -67,7 +67,7 @@ class LevelGroup implements CommonManager {
    * 编辑
    * @param data
    */
-  async edit(data: any): Promise<ManagerResponse> {
+  async edit(data: any): Promise<ManagerResponse<any>> {
     const { id } = data;
     const item = await this._getInfo(id);
     const updateData = global.util.lodash.omitNil({});
@@ -90,7 +90,7 @@ class LevelGroup implements CommonManager {
    * 删除
    * @param id
    */
-  async del(id: number): Promise<ManagerResponse> {
+  async del(id: number): Promise<ManagerResponse<any>> {
     const item = await await this._getInfo(id);
     return await sequelize.transaction(async (t: any) => {
       const result = await LevelGroupDb.destroy({
@@ -113,7 +113,7 @@ class LevelGroup implements CommonManager {
    * 获取详情
    * @param id
    */
-  async getInfo(id: number): Promise<ManagerResponse> {
+  async getInfo(id: number): Promise<ManagerResponse<any>> {
     const item = await this._getInfo(id);
     return new ManagerResponseSuccess({
       msg: responseMsg.GET_DETAIL_SUCCESS,
@@ -129,7 +129,7 @@ class LevelGroup implements CommonManager {
   async getList?(
     data: ListFilterInterface,
     config?: RequestConfigInterface
-  ): Promise<ManagerResponse> {
+  ): Promise<ManagerResponse<any>> {
     const { pageSize = 10, pageNo = 1 } = data;
     return await sequelize.transaction(async (t: any) => {
       const listParams = buildCommonListParams({ pageNo, pageSize }, config);

@@ -28,7 +28,7 @@ class BrowseRecords implements CommonManager {
     }
     return item;
   }
-  async create(data: any): Promise<ManagerResponse> {
+  async create(data: any): Promise<ManagerResponse<any>> {
     const { uid, shopId, productId } = data;
 
     const searchParams = global.util.lodash.omitNil({
@@ -59,7 +59,7 @@ class BrowseRecords implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
     }
   }
-  async edit(data: any): Promise<ManagerResponse> {
+  async edit(data: any): Promise<ManagerResponse<any>> {
     const { id } = data;
     const item = await this._getInfo(id);
     const d = item.toJSON();
@@ -80,7 +80,7 @@ class BrowseRecords implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.EDIT_FAIL });
     }
   }
-  async del(id: number): Promise<ManagerResponse> {
+  async del(id: number): Promise<ManagerResponse<any>> {
     const item = await await this._getInfo(id);
     const result = await BrowseRecordsDb.destroy({
       where: {
@@ -96,14 +96,14 @@ class BrowseRecords implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.DELETE_FAIL });
     }
   }
-  async getInfo(id: number): Promise<ManagerResponse> {
+  async getInfo(id: number): Promise<ManagerResponse<any>> {
     const item = await this._getInfo(id);
     return new ManagerResponseSuccess({
       msg: responseMsg.GET_DETAIL_SUCCESS,
       data: item,
     });
   }
-  async getList?(data: ListFilterInterface): Promise<ManagerResponse> {
+  async getList?(data: ListFilterInterface): Promise<ManagerResponse<any>> {
     const { pageSize = 10, pageNo = 1 } = data;
     const listParams = buildCommonListParams({ pageNo, pageSize });
     const result = await BrowseRecordsDb.findAndCountAll({

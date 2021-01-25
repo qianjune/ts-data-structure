@@ -1,5 +1,5 @@
 /**
- * @description Level orm
+ * @description Right orm
  */
 
 import {
@@ -14,20 +14,20 @@ import {
   ResponseMsg,
   ManagerResponseFailure,
 } from "@src/manager/response";
-import { LevelDb } from "@src/db/models";
+import { RightDb } from "@src/db/models";
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 
-const placeholder = "Level";
+const placeholder = "Right";
 const responseMsg = ResponseMsg(placeholder);
-class Level implements CommonManager {
+class Right implements CommonManager {
   /**
    * 获取详情（私有）
    * @param id
    * @param config
    */
   async _getInfo(id: number, config?: { msg?: string }): Promise<any> {
-    const item = await LevelDb.findOne({
+    const item = await RightDb.findOne({
       where: { id },
     });
     if (!item) {
@@ -40,9 +40,9 @@ class Level implements CommonManager {
    * 创建
    * @param data
    */
-  async create(data: any): Promise<ManagerResponse> {
+  async create(data: any): Promise<ManagerResponse<any>> {
     const { name } = data;
-    const item = await LevelDb.findOne({
+    const item = await RightDb.findOne({
       where: { name },
     });
     if (item) {
@@ -50,7 +50,7 @@ class Level implements CommonManager {
         msg: responseMsg.CREATE_FAIL_BY_EXISTED,
       });
     }
-    const result = await LevelDb.create(data);
+    const result = await RightDb.create(data);
     if (result) {
       return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_SUCCESS,
@@ -65,11 +65,11 @@ class Level implements CommonManager {
    * 编辑
    * @param data
    */
-  async edit(data: any): Promise<ManagerResponse> {
+  async edit(data: any): Promise<ManagerResponse<any>> {
     const { id } = data;
     const item = await this._getInfo(id);
     const updateData = global.util.lodash.omitNil({});
-    const result = await LevelDb.update(updateData, {
+    const result = await RightDb.update(updateData, {
       where: {
         id,
       },
@@ -88,10 +88,10 @@ class Level implements CommonManager {
    * 删除
    * @param id
    */
-  async del(id: number): Promise<ManagerResponse> {
+  async del(id: number): Promise<ManagerResponse<any>> {
     const item = await await this._getInfo(id);
     return await sequelize.transaction(async (t: any) => {
-      const result = await LevelDb.destroy({
+      const result = await RightDb.destroy({
         where: {
           id,
         },
@@ -111,7 +111,7 @@ class Level implements CommonManager {
    * 获取详情
    * @param id
    */
-  async getInfo(id: number): Promise<ManagerResponse> {
+  async getInfo(id: number): Promise<ManagerResponse<any>> {
     const item = await this._getInfo(id);
     return new ManagerResponseSuccess({
       msg: responseMsg.GET_DETAIL_SUCCESS,
@@ -127,22 +127,22 @@ class Level implements CommonManager {
   async getList?(
     data: ListFilterInterface,
     config?: RequestConfigInterface
-  ): Promise<ManagerResponse> {
+  ): Promise<ManagerResponse<any>> {
     const { pageSize = 10, pageNo = 1 } = data;
     return await sequelize.transaction(async (t: any) => {
       const listParams = buildCommonListParams({ pageNo, pageSize }, config);
-      const result = await LevelDb.findAndCountAll({
+      const result = await RightDb.findAndCountAll({
         ...listParams,
       });
       const { count, rows } = result;
-      const LevelList = rows.map((row: any) => {
+      const RightList = rows.map((row: any) => {
         const data: any = row.toJSON();
         return data;
       });
 
       return new ManagerResponseSuccess({
         data: new ListDataModel({
-          data: LevelList,
+          data: RightList,
           total: count,
           pageNo,
           pageSize,
@@ -153,4 +153,4 @@ class Level implements CommonManager {
   }
 }
 
-export default Level;
+export default Right;

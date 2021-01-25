@@ -11,11 +11,11 @@ export interface ListFilterInterface {
   [keyName: string]: any;
 }
 export interface CommonManager {
-  create(data: any): Promise<ManagerResponse>;
-  edit(data: any): Promise<ManagerResponse>;
-  del(id: number): Promise<ManagerResponse>;
-  getInfo(id: number): Promise<ManagerResponse>;
-  getList?(data: ListFilterInterface): Promise<ManagerResponse>;
+  create(data: any): Promise<ManagerResponse<any>>;
+  edit(data: any): Promise<ManagerResponse<any>>;
+  del(id: number): Promise<ManagerResponse<any>>;
+  getInfo(id: number): Promise<ManagerResponse<any>>;
+  getList?(data: ListFilterInterface): Promise<ManagerResponse<any>>;
 }
 
 export const buildCommonListParams = (

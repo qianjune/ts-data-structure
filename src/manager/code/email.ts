@@ -5,7 +5,7 @@ import { CodeManagerInterface } from './sms'
 import { ManagerResponse } from '@src/manager/response'
 
 class EmailModel implements CodeManagerInterface {
-  async sendCode(user: string, type: string): Promise<ManagerResponse> {
+  async sendCode(user: string, type: string): Promise<ManagerResponse<any>> {
     const transporter = nodemailer.createTransport({
       service: 'qq',
       port: 465,
@@ -34,7 +34,7 @@ class EmailModel implements CodeManagerInterface {
 
     return new ManagerResponse({ success: true, msg: '邮箱验证码发送成功' })
   }
-  async validateCode(user: string, type: string, code: string): Promise<ManagerResponse> {
+  async validateCode(user: string, type: string, code: string): Promise<ManagerResponse<any>> {
     const result = await ValidateCodeModel.validateCode({ user, key: type, code })
     return new ManagerResponse({ success: result, msg: result ? '验证成功' : '验证失败' })
   }

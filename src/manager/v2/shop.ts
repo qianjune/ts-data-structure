@@ -10,11 +10,14 @@ import {
   ManagerResponseFailure,
 } from "@src/manager/response";
 import ShopUserRelation from "@src/db/models/v2/shopUserRelation";
-import { CommonManager, ListFilterInterface } from "../interface/commonManager";
+import {
+  CommonManager,
+  ListFilterInterface,
+} from "@src/manager/interface/commonManager";
 const placeholder = "店铺";
 const responseMsg = ResponseMsg(placeholder);
 class ShopManager implements CommonManager {
-  async create(data: any): Promise<ManagerResponse> {
+  async create(data: any): Promise<ManagerResponse<any>> {
     console.log("data", data);
 
     const shopInfo = await ShopModel.findOne({
@@ -48,13 +51,13 @@ class ShopManager implements CommonManager {
       });
     }
   }
-  edit<T>(data: T): Promise<ManagerResponse> {
+  edit<T>(data: T): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  del(id: number): Promise<ManagerResponse> {
+  del(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  async getInfo(id: number): Promise<ManagerResponse> {
+  async getInfo(id: number): Promise<ManagerResponse<any>> {
     const shopInfo = await ShopModel.findOne({
       where: { id },
       include: [
@@ -78,7 +81,7 @@ class ShopManager implements CommonManager {
       data: shopInfo,
     });
   }
-  async getList?(data: ListFilterInterface): Promise<ManagerResponse> {
+  async getList?(data: ListFilterInterface): Promise<ManagerResponse<any>> {
     const { pageSize = 10, pageNo = 1 } = data;
     const result = await ShopModel.findAndCountAll({
       limit: pageSize,

@@ -30,9 +30,7 @@ interface CommentData {
   children?: CommentData[];
 }
 class CommentManager implements CommonManager {
-  async create(
-    data: CommentData
-  ): Promise<import("@src/manager/response").ManagerResponse> {
+  async create(data: CommentData): Promise<ManagerResponse<any>> {
     // const cloneData = { ...data };
     // const parentId = data.parentId;
     // if (!parentId || parentId === -1) {
@@ -66,15 +64,13 @@ class CommentManager implements CommonManager {
     return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
     // }
   }
-  edit(data: any): Promise<import("@src/manager/response").ManagerResponse> {
+  edit(data: any): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  del(id: number): Promise<import("@src/manager/response").ManagerResponse> {
+  del(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  getInfo(
-    id: number
-  ): Promise<import("@src/manager/response").ManagerResponse> {
+  getInfo(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
   async _findChildren(parentId: number): Promise<CommentData[]> {
@@ -105,7 +101,7 @@ class CommentManager implements CommonManager {
   }
   async getList?(
     data: ListFilterInterface & { underWhich: number }
-  ): Promise<import("@src/manager/response").ManagerResponse> {
+  ): Promise<ManagerResponse<any>> {
     const { pageNo, pageSize, underWhich } = data;
     const list = await CommentModel.findAndCountAll({
       limit: pageSize,

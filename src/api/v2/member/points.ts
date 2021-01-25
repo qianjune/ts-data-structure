@@ -1,78 +1,118 @@
 /**
- * @description 积分 api 路由
- * @author June
+ * @description Points api
  */
 
 import joi from "@hapi/joi";
-import Auth from "@root/middleware/auth";
 import BaseRouter, {
-  get,
   post,
-  middleware,
   parameter,
+  get,
+  summary,
+  del,
   prefix,
-  put,
+  tag,
+  middleware,
 } from "@src/lib/router-decorator";
-import { PointsController } from "@src/controllers/points";
 import { Context } from "koa";
+import PointsService from "@src/services/v2/points";
+import SessionCookieHandler from "@src/utils/session_cookie";
+const pointsService = new PointsService();
 
-const POINTS_TYPE_ENUM = {
-  INCREASE: "increase",
-  REDUCE: "reduce",
-};
-
-@prefix("/v2/points")
-class PointsRouter extends BaseRouter {
+@prefix("/api/points")
+@tag("Points相关服务")
+class PointsApi extends BaseRouter {
   /**
-   * 积分增加
-   * @param {*} ctx
+   * 创建
+   * @param ctx
    */
-  @post("/add")
+  @post("/create")
+  @summary("Points创建")
+  @middleware(SessionCookieHandler.loginCheck)
   @parameter(
     joi.object({
-      memberId: joi.number().required(),
-      pattern: joi.string().required(),
       num: joi.number().required(),
+      type: joi.string().required(),
+      pattern: joi.string().required(),
     }),
     "body"
   )
-  async addPoints(ctx: Context): Promise<void> {
-    console.log("进入");
-    const body = ctx.request.body;
-    body.type = POINTS_TYPE_ENUM.INCREASE;
-    const result = await PointsController.addPoints(body);
-    ctx.body = result;
+  async create(ctx: Context): Promise<void> {
+    // create item
+    const { body } = ctx.request;
+    console.log(global.state.userInfo);
+    await pointsService.create({
+      ...body,
+      memberId: global.state.userInfo?.memberInfo?.id,
+    });
   }
 
   /**
-   * 积分消耗,一般不会直接对外使用，都是连带调用，类似于支付,其他带动消耗
-   * @param {*} ctx
+   * 获取详情
+   * @param ctx
    */
-  @post("/consume")
+  @get("/detail/:id")
+  @summary("Points详情")
   @parameter(
     joi.object({
-      memberId: joi.number().required(),
-      pattern: joi.string().required(),
-      num: joi.string().required(),
+      id: joi.string().required(),
     }),
-    "body"
+    "params"
   )
-  async consumePoints(ctx: Context): Promise<void> {
-    const body = ctx.request.body;
-    body.type = POINTS_TYPE_ENUM.REDUCE;
-    const result = await PointsController.consumePoints(body);
-    ctx.body = result;
+  async getInfo(ctx: Context): Promise<void> {
+    // get info
+    const { id } = ctx.state.parameter;
+    await pointsService.getInfo(id);
   }
 
   /**
-   * 积分过期，一般内部处理
-   * @param {*} ctx
+   * 获取列表
+   * @param ctx
    */
-  async expiredPoints(ctx: Context): Promise<void> {
-    ctx.body = {};
+  @get("/list")
+  @summary("Points列表")
+  @parameter(
+    joi.object({
+      pageSize: joi.number().required(),
+      pageNo: joi.number().required(),
+    }),
+    "query"
+  )
+  async getList(ctx: Context): Promise<void> {
+    // get list
+    const { parameter } = ctx.state;
+    await pointsService.getList(parameter);
+  }
+
+  /**
+   * 删除
+   * @param ctx
+   */
+  @del("/:id")
+  @summary("删除Points")
+  @parameter(
+    joi.object({
+      id: joi.string().required(),
+    }),
+    "params"
+  )
+  async del(ctx: Context): Promise<void> {
+    // del item
+    const { id } = ctx.state.parameter;
+    await pointsService.del(id);
+  }
+
+  /**
+   * 编辑
+   * @param ctx 、
+   */
+  @post("/edit")
+  @summary("Points编辑")
+  @parameter(joi.object({}), "body")
+  async edit(ctx: Context): Promise<void> {
+    // edit item
+    const { body } = ctx.request;
+    await pointsService.edit(body);
   }
 }
 
-const pointsRouter = new PointsRouter();
-
-export default pointsRouter.init();
+export default new PointsApi().init();

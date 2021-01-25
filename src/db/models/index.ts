@@ -19,6 +19,9 @@ import {
   LevelGroupDb,
   Member,
   RightDb,
+  PointsDb,
+  MemberRightRelationDb,
+  MemberPointsRelationDb,
 } from "@src/db/models/v2/member";
 import User from "./user";
 import SpuCategoryRelation from "./v2/product/spu_category_relation";
@@ -163,6 +166,18 @@ RightDb.hasMany(RightsRelationDb, { foreignKey: "rightId" });
 RightPackageDb.hasMany(RightsRelationDb, { foreignKey: "packageId" });
 // right - relation - package 关系表 end
 
+// member - relation - points 关系表 begin 多对多
+PointsDb.belongsToMany(Member, {
+  through: MemberPointsRelationDb,
+  foreignKey: "pointId",
+  otherKey: "memberId",
+});
+MemberPointsRelationDb.belongsTo(PointsDb, { foreignKey: "pointId" });
+MemberPointsRelationDb.belongsTo(Member, { foreignKey: "memberId" });
+Member.hasMany(MemberPointsRelationDb, { foreignKey: "memberId" });
+PointsDb.hasMany(MemberPointsRelationDb, { foreignKey: "pointId" });
+// member - relation - points 关系表 end
+
 export {
   Address,
   // IdCard,
@@ -185,4 +200,7 @@ export {
   SpuCategoryRelation,
   LevelDb,
   LevelGroupDb,
+  PointsDb,
+  MemberRightRelationDb,
+  MemberPointsRelationDb,
 };

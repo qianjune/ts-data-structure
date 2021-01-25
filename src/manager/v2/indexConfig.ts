@@ -20,7 +20,7 @@ import { IndexConfigDb } from "@src/db/models";
 const placeholder = "IndexConfigManager";
 const responseMsg = ResponseMsg(placeholder);
 class IndexConfigManager implements CommonManager {
-  async create(data: any): Promise<ManagerResponse> {
+  async create(data: any): Promise<ManagerResponse<any>> {
     console.log("---data---");
     console.log(data);
 
@@ -37,13 +37,13 @@ class IndexConfigManager implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
     }
   }
-  edit(data: any): Promise<ManagerResponse> {
+  edit(data: any): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  del(id: number): Promise<ManagerResponse> {
+  del(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  async getInfo(id: number): Promise<ManagerResponse> {
+  async getInfo(id: number): Promise<ManagerResponse<any>> {
     let result: any = await IndexConfigDb.findOne({
       where: {
         id,
@@ -60,7 +60,7 @@ class IndexConfigManager implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.GET_DETAIL_FAIL });
     }
   }
-  async getList?(data: ListFilterInterface): Promise<ManagerResponse> {
+  async getList?(data: ListFilterInterface): Promise<ManagerResponse<any>> {
     const { pageSize = 10, pageNo = 1 } = data;
     const listParams = buildCommonListParams({ pageNo, pageSize });
     const result = await IndexConfigDb.findAndCountAll({

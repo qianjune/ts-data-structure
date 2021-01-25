@@ -7,7 +7,10 @@ import {
 } from "@src/manager/response";
 // import sequelize, { inTransaction } from "@root/core/db";
 import { AttributeKey, AttributeValue } from "@src/db/models";
-import { CommonManager, ListFilterInterface } from "../interface/commonManager";
+import {
+  CommonManager,
+  ListFilterInterface,
+} from "@src/manager/interface/commonManager";
 
 export interface AttributeItemInterface {
   key: string;
@@ -16,9 +19,7 @@ export interface AttributeItemInterface {
 const placeholder = "属性名";
 const responseMsg = ResponseMsg(placeholder);
 class AttributeManager implements CommonManager {
-  async create(
-    data: AttributeItemInterface
-  ): Promise<import("@src/manager/response").ManagerResponse> {
+  async create(data: AttributeItemInterface): Promise<ManagerResponse<any>> {
     const { key, values } = data;
     console.log(data);
     const attributeKey = await AttributeKey.findOne({
@@ -64,12 +65,10 @@ class AttributeManager implements CommonManager {
     //   }
     // });
   }
-  edit(data: any): Promise<import("@src/manager/response").ManagerResponse> {
+  edit(data: any): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  async del(
-    id: number
-  ): Promise<import("@src/manager/response").ManagerResponse> {
+  async del(id: number): Promise<ManagerResponse<any>> {
     const attributeKey = await AttributeKey.findOne({
       where: {
         id,
@@ -105,12 +104,10 @@ class AttributeManager implements CommonManager {
     //   }
     // });
   }
-  getInfo(id: number): Promise<ManagerResponse> {
+  getInfo(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  async getList?(
-    data: ListFilterInterface
-  ): Promise<import("@src/manager/response").ManagerResponse> {
+  async getList?(data: ListFilterInterface): Promise<ManagerResponse<any>> {
     const { pageSize = 10, pageNo = 1 } = data;
     const result = await AttributeKey.findAndCountAll({
       limit: pageSize,

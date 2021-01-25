@@ -3,7 +3,7 @@
  */
 import { CommonService } from "@src/services/interface/common";
 import { ResponseHandler } from "@src/utils/responseHandler";
-import LevelGroupManager from "@src/manager/v2/levelGroup";
+import { LevelGroupManager } from "@src/manager/v2/member";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 const levelGroupManager = new LevelGroupManager();
 class LevelGroupService implements CommonService {

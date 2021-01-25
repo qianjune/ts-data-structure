@@ -3,7 +3,7 @@ import {
   CommonManager,
   ListFilterInterface,
   buildCommonListParams,
-} from "../interface/commonManager";
+} from "@src/manager/interface/commonManager";
 import {
   ManagerResponseSuccess,
   ManagerResponseFailure,
@@ -33,9 +33,7 @@ export interface CategoryListParamsInterface extends ListFilterInterface {
 const placeholder = "分类";
 const responseMsg = ResponseMsg(placeholder);
 class CategoryManager implements CommonManager {
-  async create(
-    data: CategoryItemInterface
-  ): Promise<import("../response").ManagerResponse> {
+  async create(data: CategoryItemInterface): Promise<ManagerResponse<any>> {
     const { name, parentId = 0 } = data;
     const category = await ProductCategory.findOne({
       where: {
@@ -80,7 +78,7 @@ class CategoryManager implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
     }
   }
-  async edit(data: { id: number }): Promise<ManagerResponse> {
+  async edit(data: { id: number }): Promise<ManagerResponse<any>> {
     const { id } = data;
     const category = await ProductCategory.findOne({
       where: {
@@ -91,7 +89,7 @@ class CategoryManager implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
     }
   }
-  async del(id: number): Promise<ManagerResponse> {
+  async del(id: number): Promise<ManagerResponse<any>> {
     const category = await ProductCategory.findOne({
       where: {
         id,
@@ -125,13 +123,13 @@ class CategoryManager implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.DELETE_FAIL });
     }
   }
-  getInfo(id: number): Promise<ManagerResponse> {
+  getInfo(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
   async getList?(
     data: CategoryListParamsInterface,
     config?: RequestConfigInterface
-  ): Promise<ManagerResponse> {
+  ): Promise<ManagerResponse<any>> {
     const {
       pageSize = 10,
       pageNo = 1,

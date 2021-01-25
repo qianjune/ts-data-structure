@@ -5,6 +5,8 @@
 import { User } from "@src/db/models";
 // import JwtHandler from "@src/utils/jwt_handler";
 import EncryptBox from "@src/utils/encrypt_box";
+import sequelize from "@root/core/db";
+import moment from "moment";
 import { CommonManagerInterface } from "./interface/interface";
 import {
   ManagerResponseSuccess,
@@ -18,7 +20,8 @@ import {
   ListFilterInterface,
   buildCommonListParams,
 } from "./interface/commonManager";
-
+import { MemberManager } from "./v2/member";
+const memberManager = new MemberManager();
 interface UserBody {
   mobile?: number | string;
   password?: string;
@@ -42,6 +45,9 @@ class UserManager implements CommonManager {
     console.log("--------user-------", data);
     const user = await User.findOne({
       where: data,
+      attributes: {
+        exclude: ["password"],
+      },
     });
     console.log("--------user-------", user);
     if (mode === "self") {
@@ -53,6 +59,11 @@ class UserManager implements CommonManager {
       return new ManagerResponseFailure({ msg: "用户不存在" });
     }
   }
+  /**
+   * 创建账户
+   * 内含会员创建（未来优化目标，用mq去发送，不用包含在账户服务内）
+   * @param data
+   */
   async create(data: UserBody): Promise<any> {
     let user = await this.getValidateData({ mobile: data.mobile }, "self");
     if (user) {
@@ -60,17 +71,27 @@ class UserManager implements CommonManager {
       console.log("用户已存在");
       return user.toJSON();
     }
-    user = await User.create(data);
-    if (user) {
-      // 成功创建
-      console.log("成功创建");
-      return user.toJSON();
-    } else {
-      // 失败
-      return false;
-    }
+    return await sequelize.transaction(async (t: any) => {
+      user = await User.create(data, { transaction: t });
+      // 账户创建完成后，创建相应的会员 begin
+      const member = await memberManager.create(
+        {
+          nickName: `用户${data.mobile}`,
+          birthday: moment(Date.now()).format("YYYY-MM-DD"),
+          userId: user.id,
+        },
+        { transaction: t }
+      );
+      // 账户创建完成后，创建相应的会员 end
+      if (member.success && user) {
+        console.log("成功创建");
+        return user.toJSON();
+      } else {
+        return false;
+      }
+    });
   }
-  async edit(data: UserPutBody): Promise<ManagerResponse> {
+  async edit(data: UserPutBody): Promise<ManagerResponse<any>> {
     const user = await User.findOne({
       where: {
         id: data.id,
@@ -91,7 +112,7 @@ class UserManager implements CommonManager {
       return new ManagerResponseFailure({ msg: "更新失败" });
     }
   }
-  async del(id: number): Promise<ManagerResponse> {
+  async del(id: number): Promise<ManagerResponse<any>> {
     const user = await this.getValidateData({ id }, "self");
     if (user) {
       const result = await User.update(
@@ -108,11 +129,11 @@ class UserManager implements CommonManager {
     }
     return new ManagerResponseFailure({ msg: "销毁账户失败" });
   }
-  getInfo(id: number): Promise<ManagerResponse> {
+  getInfo(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
   // 之后需要运营人员权限
-  async getList?(data: ListFilterInterface): Promise<ManagerResponse> {
+  async getList?(data: ListFilterInterface): Promise<ManagerResponse<any>> {
     const { pageSize, pageNo } = data;
     const result = await User.findAndCountAll({
       ...buildCommonListParams({ pageNo, pageSize }),

@@ -11,8 +11,8 @@ import { ManagerResponse } from '@src/manager/response';
 
 
 export interface CodeManagerInterface {
-  sendCode(user: string, type: CODE_ACTION_TYPE): Promise<ManagerResponse>;
-  validateCode(user: string, type: CODE_ACTION_TYPE, code: string): Promise<ManagerResponse>;
+  sendCode(user: string, type: CODE_ACTION_TYPE): Promise<ManagerResponse<any>>;
+  validateCode(user: string, type: CODE_ACTION_TYPE, code: string): Promise<ManagerResponse<any>>;
 }
 
 // tel_type:smsCode
@@ -24,7 +24,7 @@ class Sms implements CodeManagerInterface {
  * @param {number} mobile 手机号
  * @param {string} message 短信信息
  */
-  async sendCode(user: string, type: string, mock?: boolean): Promise<ManagerResponse> {
+  async sendCode(user: string, type: string, mock?: boolean): Promise<ManagerResponse<any>> {
     let smsCode = CodeBuilder.buildValidateCode()
     const content = this._buildSmsContent(user, smsCode)
 
@@ -62,7 +62,7 @@ class Sms implements CodeManagerInterface {
     }
     return new ManagerResponse({ success: false, msg })
   }
-  async validateCode(user: string, type: string, code: string): Promise<ManagerResponse> {
+  async validateCode(user: string, type: string, code: string): Promise<ManagerResponse<any>> {
     const result = await ValidateCodeModel.validateCode({ user, key: type, code })
     return new ManagerResponse({ success: result, msg: result ? '验证成功' : '验证失败' })
 

@@ -1,5 +1,5 @@
 /**
- * @description XXXXXX api
+ * @description MemberPointsRelation api
  */
 
 import joi from "@hapi/joi";
@@ -13,23 +13,23 @@ import BaseRouter, {
   tag,
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
-import XXXXXXService from "@src/services/v2/xXXXXX";
-const xXXXXXService = new XXXXXXService();
+import MemberPointsRelationService from "@src/services/v2/memberPointsRelation";
+const memberPointsRelationService = new MemberPointsRelationService();
 
-@prefix("/api/xXXXXX")
-@tag("XXXXXX相关服务")
-class XXXXXXApi extends BaseRouter {
+@prefix("/api/memberPointsRelation")
+@tag("MemberPointsRelation相关服务")
+class MemberPointsRelationApi extends BaseRouter {
   /**
    * 创建
    * @param ctx
    */
   @post("/create")
-  @summary("XXXXXX创建")
+  @summary("MemberPointsRelation创建")
   @parameter(joi.object({}), "body")
   async create(ctx: Context): Promise<void> {
     // create item
     const { body } = ctx.request;
-    await xXXXXXService.create(body);
+    await memberPointsRelationService.create(body);
   }
 
   /**
@@ -37,7 +37,7 @@ class XXXXXXApi extends BaseRouter {
    * @param ctx
    */
   @get("/detail/:id")
-  @summary("XXXXXX详情")
+  @summary("MemberPointsRelation详情")
   @parameter(
     joi.object({
       id: joi.string().required(),
@@ -47,7 +47,7 @@ class XXXXXXApi extends BaseRouter {
   async getInfo(ctx: Context): Promise<void> {
     // get info
     const { id } = ctx.state.parameter;
-    await xXXXXXService.getInfo(id);
+    await memberPointsRelationService.getInfo(id);
   }
 
   /**
@@ -55,7 +55,7 @@ class XXXXXXApi extends BaseRouter {
    * @param ctx
    */
   @get("/list")
-  @summary("XXXXXX列表")
+  @summary("MemberPointsRelation列表")
   @parameter(
     joi.object({
       pageSize: joi.number().required(),
@@ -66,7 +66,7 @@ class XXXXXXApi extends BaseRouter {
   async getList(ctx: Context): Promise<void> {
     // get list
     const { parameter } = ctx.state;
-    await xXXXXXService.getList(parameter);
+    await memberPointsRelationService.getList(parameter);
   }
 
   /**
@@ -74,7 +74,7 @@ class XXXXXXApi extends BaseRouter {
    * @param ctx
    */
   @del("/:id")
-  @summary("删除XXXXXX")
+  @summary("删除MemberPointsRelation")
   @parameter(
     joi.object({
       id: joi.string().required(),
@@ -84,7 +84,7 @@ class XXXXXXApi extends BaseRouter {
   async del(ctx: Context): Promise<void> {
     // del item
     const { id } = ctx.state.parameter;
-    await xXXXXXService.del(id);
+    await memberPointsRelationService.del(id);
   }
 
   /**
@@ -92,13 +92,13 @@ class XXXXXXApi extends BaseRouter {
    * @param ctx 、
    */
   @post("/edit")
-  @summary("XXXXXX编辑")
+  @summary("MemberPointsRelation编辑")
   @parameter(joi.object({}), "body")
   async edit(ctx: Context): Promise<void> {
     // edit item
     const { body } = ctx.request;
-    await xXXXXXService.edit(body);
+    await memberPointsRelationService.edit(body);
   }
 }
 
-export default new XXXXXXApi().init();
+export default new MemberPointsRelationApi().init();

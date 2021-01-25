@@ -9,7 +9,7 @@ import {
   buildCommonListParams,
   CommonManager,
   ListFilterInterface,
-} from "../interface/commonManager";
+} from "@src/manager/interface/commonManager";
 
 export interface BrandItemInterface {
   name: string;
@@ -20,7 +20,7 @@ export interface BrandItemInterface {
 const placeholder = "品牌";
 const responseMsg = ResponseMsg(placeholder);
 class BrandManager implements CommonManager {
-  async create(data: BrandItemInterface): Promise<ManagerResponse> {
+  async create(data: BrandItemInterface): Promise<ManagerResponse<any>> {
     const brand = await ProductBrand.findOne({
       where: {
         name: data.name,
@@ -48,16 +48,16 @@ class BrandManager implements CommonManager {
       });
     }
   }
-  edit<T>(data: T): Promise<ManagerResponse> {
+  edit<T>(data: T): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  del(id: number): Promise<ManagerResponse> {
+  del(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  getInfo(id: number): Promise<ManagerResponse> {
+  getInfo(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  async getList?(data: ListFilterInterface): Promise<ManagerResponse> {
+  async getList?(data: ListFilterInterface): Promise<ManagerResponse<any>> {
     const { pageSize = 10, pageNo = 1 } = data;
 
     const listParams = buildCommonListParams({ pageNo, pageSize });

@@ -27,7 +27,7 @@ const city = [...originCity, ...ZhiXiaShi];
 const placeholder = "地址";
 const responseMsg = ResponseMsg(placeholder);
 class AddressManager implements CommonManager {
-  async create(data: AddressItem): Promise<ManagerResponse> {
+  async create(data: AddressItem): Promise<ManagerResponse<any>> {
     const result = await Address.create(data);
     if (result) {
       return new ManagerResponseSuccess({
@@ -38,10 +38,10 @@ class AddressManager implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
     }
   }
-  edit(data: any): Promise<ManagerResponse> {
+  edit(data: any): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  async del(id: number): Promise<ManagerResponse> {
+  async del(id: number): Promise<ManagerResponse<any>> {
     const address = await Address.findOne({
       where: {
         id,
@@ -61,7 +61,7 @@ class AddressManager implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.DELETE_FAIL });
     }
   }
-  getInfo(id: number): Promise<ManagerResponse> {
+  getInfo(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
   _buildAddressName(row: {
@@ -111,7 +111,7 @@ class AddressManager implements CommonManager {
    */
   async getList?(
     data: ListFilterInterface & { userId: number }
-  ): Promise<ManagerResponse> {
+  ): Promise<ManagerResponse<any>> {
     const { pageNo = 1, pageSize = 10, userId } = data;
     const result = await Address.findAndCountAll({
       ...buildCommonListParams({ pageNo, pageSize }),
@@ -136,7 +136,7 @@ class AddressManager implements CommonManager {
   getCommonAddressList(data: {
     id: number;
     type: FetchAddressType;
-  }): ManagerResponse {
+  }): ManagerResponse<any> {
     const { id, type } = data;
     let fetchList = this._getChineseList;
     switch (type) {
@@ -158,7 +158,7 @@ class AddressManager implements CommonManager {
     const result = fetchList(id);
     return result;
   }
-  _getChineseList(id?: number): ManagerResponse {
+  _getChineseList(id?: number): ManagerResponse<any> {
     const result = level;
 
     return new ManagerResponseSuccess({
@@ -166,7 +166,7 @@ class AddressManager implements CommonManager {
       data: result,
     });
   }
-  _getCityList(id?: number): ManagerResponse {
+  _getCityList(id?: number): ManagerResponse<any> {
     let result = [...city];
     if (id) {
       result = result.filter((item) => item.code.startsWith(id.toString()));
@@ -180,7 +180,7 @@ class AddressManager implements CommonManager {
       data: result,
     });
   }
-  _getAreaList(id?: number): ManagerResponse {
+  _getAreaList(id?: number): ManagerResponse<any> {
     let result = area;
     if (id) {
       result = result.filter((item) => item.code.startsWith(id.toString()));
@@ -194,7 +194,7 @@ class AddressManager implements CommonManager {
       data: result,
     });
   }
-  _getProvinceList(id?: number): ManagerResponse {
+  _getProvinceList(id?: number): ManagerResponse<any> {
     let result = province;
     // if (id) {
     //   result = result.filter(item => item.province === id.toString())
@@ -208,7 +208,7 @@ class AddressManager implements CommonManager {
       data: result,
     });
   }
-  _getTownList(id?: number): ManagerResponse {
+  _getTownList(id?: number): ManagerResponse<any> {
     let result = town;
     if (id) {
       result = result.filter((item) => item.code.startsWith(id.toString()));

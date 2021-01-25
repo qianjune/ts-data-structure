@@ -1,5 +1,5 @@
 /**
- * @description Right orm
+ * @description MemberRightRelation orm
  */
 
 import {
@@ -14,20 +14,20 @@ import {
   ResponseMsg,
   ManagerResponseFailure,
 } from "@src/manager/response";
-import { RightDb } from "@src/db/models";
+import { MemberRightRelationDb } from "@src/db/models";
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 
-const placeholder = "Right";
+const placeholder = "MemberRightRelation";
 const responseMsg = ResponseMsg(placeholder);
-class Right implements CommonManager {
+class MemberRightRelation implements CommonManager {
   /**
    * 获取详情（私有）
    * @param id
    * @param config
    */
   async _getInfo(id: number, config?: { msg?: string }): Promise<any> {
-    const item = await RightDb.findOne({
+    const item = await MemberRightRelationDb.findOne({
       where: { id },
     });
     if (!item) {
@@ -40,17 +40,17 @@ class Right implements CommonManager {
    * 创建
    * @param data
    */
-  async create(data: any): Promise<ManagerResponse> {
-    const { name } = data;
-    const item = await RightDb.findOne({
-      where: { name },
+  async create(data: any): Promise<ManagerResponse<any>> {
+    const {} = data;
+    const item = await MemberRightRelationDb.findOne({
+      where: {},
     });
     if (item) {
       return new ManagerResponseFailure({
         msg: responseMsg.CREATE_FAIL_BY_EXISTED,
       });
     }
-    const result = await RightDb.create(data);
+    const result = await MemberRightRelationDb.create(data);
     if (result) {
       return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_SUCCESS,
@@ -65,11 +65,11 @@ class Right implements CommonManager {
    * 编辑
    * @param data
    */
-  async edit(data: any): Promise<ManagerResponse> {
+  async edit(data: any): Promise<ManagerResponse<any>> {
     const { id } = data;
     const item = await this._getInfo(id);
     const updateData = global.util.lodash.omitNil({});
-    const result = await RightDb.update(updateData, {
+    const result = await MemberRightRelationDb.update(updateData, {
       where: {
         id,
       },
@@ -88,10 +88,10 @@ class Right implements CommonManager {
    * 删除
    * @param id
    */
-  async del(id: number): Promise<ManagerResponse> {
+  async del(id: number): Promise<ManagerResponse<any>> {
     const item = await await this._getInfo(id);
     return await sequelize.transaction(async (t: any) => {
-      const result = await RightDb.destroy({
+      const result = await MemberRightRelationDb.destroy({
         where: {
           id,
         },
@@ -111,7 +111,7 @@ class Right implements CommonManager {
    * 获取详情
    * @param id
    */
-  async getInfo(id: number): Promise<ManagerResponse> {
+  async getInfo(id: number): Promise<ManagerResponse<any>> {
     const item = await this._getInfo(id);
     return new ManagerResponseSuccess({
       msg: responseMsg.GET_DETAIL_SUCCESS,
@@ -127,22 +127,22 @@ class Right implements CommonManager {
   async getList?(
     data: ListFilterInterface,
     config?: RequestConfigInterface
-  ): Promise<ManagerResponse> {
+  ): Promise<ManagerResponse<any>> {
     const { pageSize = 10, pageNo = 1 } = data;
     return await sequelize.transaction(async (t: any) => {
       const listParams = buildCommonListParams({ pageNo, pageSize }, config);
-      const result = await RightDb.findAndCountAll({
+      const result = await MemberRightRelationDb.findAndCountAll({
         ...listParams,
       });
       const { count, rows } = result;
-      const RightList = rows.map((row: any) => {
+      const MemberRightRelationList = rows.map((row: any) => {
         const data: any = row.toJSON();
         return data;
       });
 
       return new ManagerResponseSuccess({
         data: new ListDataModel({
-          data: RightList,
+          data: MemberRightRelationList,
           total: count,
           pageNo,
           pageSize,
@@ -153,4 +153,4 @@ class Right implements CommonManager {
   }
 }
 
-export default Right;
+export default MemberRightRelation;

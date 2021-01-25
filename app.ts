@@ -35,7 +35,11 @@ declare global {
       state: {
         userInfo?: {
           id: number;
+          memberInfo?: {
+            id: number;
+          };
         };
+
         mock: boolean;
         [keyName: string]: any;
       };

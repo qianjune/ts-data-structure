@@ -36,7 +36,7 @@ class FavoritesManager implements CommonManager {
     }
     return item;
   }
-  async create(data: FavoritesItem): Promise<ManagerResponse> {
+  async create(data: FavoritesItem): Promise<ManagerResponse<any>> {
     const { type, likeId, uid } = data;
     const item = await FavoritesDb.findOne({
       where: {
@@ -68,10 +68,10 @@ class FavoritesManager implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
     }
   }
-  edit(data: any): Promise<ManagerResponse> {
+  edit(data: any): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  async del(id: number): Promise<ManagerResponse> {
+  async del(id: number): Promise<ManagerResponse<any>> {
     const item = await this._getInfo(id);
     console.log("-------");
 
@@ -94,7 +94,7 @@ class FavoritesManager implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.EDIT_FAIL });
     }
   }
-  getInfo(id: number): Promise<ManagerResponse> {
+  getInfo(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
   async getList?(
@@ -102,7 +102,7 @@ class FavoritesManager implements CommonManager {
       uid: number;
       type: FavoritesItemType;
     }
-  ): Promise<ManagerResponse> {
+  ): Promise<ManagerResponse<any>> {
     const { pageNo, pageSize, uid, type } = data;
     const where = global.util.lodash.omitNil({
       uid,
@@ -123,7 +123,7 @@ class FavoritesManager implements CommonManager {
   async getShopListByUser(data: {
     uid: number;
     type: FavoritesItemType;
-  }): Promise<ManagerResponse> {
+  }): Promise<ManagerResponse<any>> {
     const { uid, type } = data;
 
     const list = await User.findOne({

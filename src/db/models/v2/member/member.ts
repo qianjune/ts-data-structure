@@ -2,6 +2,7 @@ import Sequelize from "sequelize";
 import { Model } from "sequelize";
 import sequelize from "@root/core/db";
 import { TYPES } from "@src/db/types";
+import { sequelizeErrHandler } from "@src/utils/error_handler";
 const { STRING, INTEGER, DECIMAL } = TYPES;
 
 class Member extends Model {
@@ -74,5 +75,5 @@ Member.init(
 );
 Member.sync({
   alter: true,
-});
+}).catch(sequelizeErrHandler);
 export default Member;

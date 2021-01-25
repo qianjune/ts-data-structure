@@ -3,7 +3,7 @@
  */
 import { CommonService } from "@src/services/interface/common";
 import { ResponseHandler } from "@src/utils/responseHandler";
-import RightManager from "@src/manager/v2/right";
+import { RightManager } from "@src/manager/v2/member";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 const rightManager = new RightManager();
 class RightService implements CommonService {
