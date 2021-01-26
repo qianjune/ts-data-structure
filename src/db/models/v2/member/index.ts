@@ -7,6 +7,8 @@ import RightDb from "@src/db/models/v2/member/right";
 import PointsDb from "@src/db/models/v2/member/points";
 import MemberRightRelationDb from "@src/db/models/v2/member/memberRightRelation";
 import MemberPointsRelationDb from "@src/db/models/v2/member/memberPointsRelation";
+import LevelRightsRelationDb from "@src/db/models/v2/member/levelRightsRelation";
+import LevelGroupLevelRelationDb from "@src/db/models/v2/member/levelGroupLevelRelation";
 export {
   RightPackageDb,
   RightsRelationDb,
@@ -17,4 +19,6 @@ export {
   PointsDb,
   MemberRightRelationDb,
   MemberPointsRelationDb,
+  LevelRightsRelationDb,
+  LevelGroupLevelRelationDb,
 };

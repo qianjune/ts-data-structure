@@ -5,4 +5,5 @@ export const levelBody = joi.object({
   levelUpAmount: joi.number(),
   img: joi.string(),
   id: joi.number(),
+  weight: joi.number(),
 });

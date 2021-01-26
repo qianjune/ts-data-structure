@@ -7,8 +7,9 @@ import PointsManager from "./points";
 import RightManager from "./right";
 import RightPackageManager from "./rightPackage";
 import RightsRelationManager from "./rightsRelation";
-
+import LevelRightsRelationManager from "./levelRightsRelation";
 export {
+  LevelRightsRelationManager,
   LevelManager,
   MemberManager,
   LevelGroupManager,

@@ -69,6 +69,11 @@ Right.init(
       type: STRING,
       comment: "",
     }, // 状态这个需要考量一下
+    amount: {
+      type: INTEGER,
+      comment: "初始数量",
+      defaultValue: 0,
+    },
     desc: {
       type: STRING,
       comment: "权益的描述",

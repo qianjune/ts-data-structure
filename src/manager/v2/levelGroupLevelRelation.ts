@@ -1,5 +1,5 @@
 /**
- * @description Level orm
+ * @description LevelGroupLevelRelation orm
  */
 
 import {
@@ -15,37 +15,26 @@ import {
   ManagerResponseFailure,
   ListDataInterface,
 } from "@src/manager/response";
-import { LevelDb, RightDb } from "@src/db/models";
+import { LevelGroupLevelRelationDb } from "@src/db/models";
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 
-const placeholder = "Level";
+const placeholder = "LevelGroupLevelRelation";
 const responseMsg = ResponseMsg(placeholder);
-class Level implements CommonManager {
+class LevelGroupLevelRelation implements CommonManager {
   /**
    * 获取详情（私有）
    * @param id
    * @param config
    */
   async _getInfo(id: number, config?: { msg?: string }): Promise<any> {
-    const item = await LevelDb.findOne({
+    const item = await LevelGroupLevelRelationDb.findOne({
       where: { id },
-      include: [
-        {
-          model: RightDb,
-          through: {
-            where: {
-              levelId: id,
-            },
-            attributes: [],
-          },
-        },
-      ],
     });
     if (!item) {
       return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
     }
-    return item;
+    return item.toJSON();
   }
 
   /**
@@ -53,16 +42,16 @@ class Level implements CommonManager {
    * @param data
    */
   async create(data: any): Promise<ManagerResponse<any>> {
-    const { name } = data;
-    const item = await LevelDb.findOne({
-      where: { name },
+    const { levelGroupId, levelId } = data;
+    const item = await LevelGroupLevelRelationDb.findOne({
+      where: { levelGroupId, levelId },
     });
     if (item) {
       return new ManagerResponseFailure({
         msg: responseMsg.CREATE_FAIL_BY_EXISTED,
       });
     }
-    const result = await LevelDb.create(data);
+    const result = await LevelGroupLevelRelationDb.create(data);
     if (result) {
       return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_SUCCESS,
@@ -81,7 +70,7 @@ class Level implements CommonManager {
     const { id } = data;
     const item = await this._getInfo(id);
     const updateData = global.util.lodash.omitNil({});
-    const result = await LevelDb.update(updateData, {
+    const result = await LevelGroupLevelRelationDb.update(updateData, {
       where: {
         id,
       },
@@ -103,7 +92,7 @@ class Level implements CommonManager {
   async del(id: number): Promise<ManagerResponse<any>> {
     const item = await await this._getInfo(id);
     return await sequelize.transaction(async (t: any) => {
-      const result = await LevelDb.destroy({
+      const result = await LevelGroupLevelRelationDb.destroy({
         where: {
           id,
         },
@@ -143,18 +132,18 @@ class Level implements CommonManager {
     const { pageSize = 10, pageNo = 1 } = data;
     return await sequelize.transaction(async (t: any) => {
       const listParams = buildCommonListParams({ pageNo, pageSize }, config);
-      const result = await LevelDb.findAndCountAll({
+      const result = await LevelGroupLevelRelationDb.findAndCountAll({
         ...listParams,
       });
       const { count, rows } = result;
-      const LevelList = rows.map((row: any) => {
+      const LevelGroupLevelRelationList = rows.map((row: any) => {
         const data: any = row.toJSON();
         return data;
       });
 
       return new ManagerResponseSuccess({
         data: new ListDataModel({
-          data: LevelList,
+          data: LevelGroupLevelRelationList,
           total: count,
           pageNo,
           pageSize,
@@ -165,4 +154,4 @@ class Level implements CommonManager {
   }
 }
 
-export default Level;
+export default LevelGroupLevelRelation;

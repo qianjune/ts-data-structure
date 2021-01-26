@@ -21,7 +21,9 @@ import {
   RightDb,
   PointsDb,
   MemberRightRelationDb,
+  LevelRightsRelationDb,
   MemberPointsRelationDb,
+  LevelGroupLevelRelationDb,
 } from "@src/db/models/v2/member";
 import User from "./user";
 import SpuCategoryRelation from "./v2/product/spu_category_relation";
@@ -178,6 +180,42 @@ Member.hasMany(MemberPointsRelationDb, { foreignKey: "memberId" });
 PointsDb.hasMany(MemberPointsRelationDb, { foreignKey: "pointId" });
 // member - relation - points 关系表 end
 
+// level - relation - rights 关系表 begin 多对多
+RightDb.belongsToMany(LevelDb, {
+  through: LevelRightsRelationDb,
+  foreignKey: "rightId",
+  otherKey: "levelId",
+});
+LevelDb.belongsToMany(RightDb, {
+  through: LevelRightsRelationDb,
+  foreignKey: "levelId",
+  otherKey: "rightId",
+});
+LevelRightsRelationDb.belongsTo(LevelDb, { foreignKey: "levelId" });
+LevelRightsRelationDb.belongsTo(RightDb, { foreignKey: "rightId" });
+RightDb.hasMany(LevelRightsRelationDb, { foreignKey: "rightId" });
+LevelDb.hasMany(LevelRightsRelationDb, { foreignKey: "levelId" });
+// level - relation - rights 关系表 end
+
+// levelGroup - relation - level 关系表 begin 多对多
+LevelGroupDb.belongsToMany(LevelDb, {
+  through: LevelGroupLevelRelationDb,
+  foreignKey: "levelGroupId",
+  otherKey: "levelId",
+});
+LevelDb.belongsToMany(LevelGroupDb, {
+  through: LevelGroupLevelRelationDb,
+  foreignKey: "levelId",
+  otherKey: "levelGroupId",
+});
+LevelGroupLevelRelationDb.belongsTo(LevelDb, { foreignKey: "levelId" });
+LevelGroupLevelRelationDb.belongsTo(LevelGroupDb, {
+  foreignKey: "levelGroupId",
+});
+LevelGroupDb.hasMany(LevelGroupLevelRelationDb, { foreignKey: "levelGroupId" });
+LevelDb.hasMany(LevelGroupLevelRelationDb, { foreignKey: "levelId" });
+// levelGroup - relation - level 关系表 end
+
 export {
   Address,
   // IdCard,
@@ -203,4 +241,6 @@ export {
   PointsDb,
   MemberRightRelationDb,
   MemberPointsRelationDb,
+  LevelRightsRelationDb,
+  LevelGroupLevelRelationDb,
 };

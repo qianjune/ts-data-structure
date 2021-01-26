@@ -19,6 +19,9 @@ import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 import { PointsType } from "@src/db/models/v2/member/points";
 import MemberPointsRelation from "./memberPointsRelation";
+import { LevelGroupManager, MemberManager } from ".";
+const levelGroupManager = new LevelGroupManager();
+const memberManager = new MemberManager();
 const memberPointsRelationManager = new MemberPointsRelation();
 const placeholder = "Points";
 const responseMsg = ResponseMsg(placeholder);
@@ -60,17 +63,42 @@ class Points implements CommonManager {
           const preCurrentSum = preRelation.currentSum;
           const { type, num } = otherData;
           let currentSumHandledFlag = false;
+          // 查更新会员的积分和成长值
+          const memberInfo: any = await memberManager.getInfo(memberId);
+
+          // 积分增加
           if (type === PointsType.INCREASE) {
             currentSum = preCurrentSum + num;
-            // 查更新会员的积分和成长值
-            // 然后去匹配等级 （通过等级要求分数的那一次积分）
-            // 将匹配到的等级里的消耗型 在 MemberRightsRelation 里建立记录
-            // 将匹配到的等级里的状态型 也添加？还是每次去检查？
+            // 获取等级包
+
+            // levelPackageData
+            // 判断成长值前后的变化是否附和某个等级
+            const preGrowthValue = memberInfo.growthValue;
+            memberInfo.growthValue = preGrowthValue + num;
+            const matchLevelResult = await levelGroupManager.matchLevel({
+              id: 7,
+              preValue: preGrowthValue,
+              currentValue: memberInfo.growthValue,
+            });
+            // 如果刚好升级
+            // 查询该等级下的权益，把其中消耗型的权益和member建立关系
+            if (matchLevelResult.isUpgrading) {
+            }
             currentSumHandledFlag = true;
           } else if (type === PointsType.INCREASE && preCurrentSum > num) {
+            // 积分减少
             currentSum = preCurrentSum - num;
             currentSumHandledFlag = true;
           }
+          memberInfo.points = currentSum;
+          const updateMemberResult = await memberManager.edit(memberInfo, {
+            transaction: t,
+          });
+          if (updateMemberResult.success) {
+          }
+          // 然后去匹配等级 （通过等级要求分数的那一次积分）
+          // 将匹配到的等级里的消耗型 在 MemberRightsRelation 里建立记录
+          // 将匹配到的等级里的状态型 也添加？还是每次去检查？
           if (currentSumHandledFlag) {
             // 创建会员和积分的关系
             const memberPointsRelation = await memberPointsRelationManager.create(

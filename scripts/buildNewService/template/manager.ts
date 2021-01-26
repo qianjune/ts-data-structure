@@ -34,7 +34,7 @@ class XXXXXX implements CommonManager {
     if (!item) {
       return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
     }
-    return item;
+    return item.toJSON();
   }
 
   /**

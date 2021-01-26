@@ -14,7 +14,7 @@ import {
   ResponseMsg,
   ManagerResponseFailure,
 } from "@src/manager/response";
-import { LevelGroupDb } from "@src/db/models";
+import { LevelDb, LevelGroupDb } from "@src/db/models";
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 
@@ -29,11 +29,54 @@ class LevelGroup implements CommonManager {
   async _getInfo(id: number, config?: { msg?: string }): Promise<any> {
     const item = await LevelGroupDb.findOne({
       where: { id },
+      order: [[LevelDb, "levelUpAmount", "desc"]],
+      include: [
+        {
+          model: LevelDb,
+          through: {
+            where: {
+              levelGroupId: id,
+            },
+            attributes: [],
+          },
+        },
+      ],
     });
     if (!item) {
       return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
     }
-    return item;
+    const data: any = item.toJSON();
+    return data;
+  }
+
+  /**
+   * 匹配当前用户的等级，并且查看是否这次升级
+   * @param data
+   */
+  async matchLevel(data: {
+    id: number;
+    preValue: number;
+    currentValue: number;
+  }): Promise<{
+    currentLevel: any;
+    isUpgrading: boolean;
+  }> {
+    const groupDetail = await this._getInfo(data.id);
+    const levelGroup = groupDetail.levelGroup;
+    let currentLevel = null;
+    let isUpgrading = false;
+    levelGroup.forEach((d: any) => {
+      if (data.currentValue >= d.levelUpAmount) {
+        currentLevel = d;
+        if (data.preValue < d.levelUpAmount) {
+          isUpgrading = true;
+        }
+      }
+    });
+    return {
+      currentLevel,
+      isUpgrading,
+    };
   }
 
   /**
@@ -53,7 +96,7 @@ class LevelGroup implements CommonManager {
     let result: any = await LevelGroupDb.create(data);
     if (result) {
       result = result.toJSON();
-      result.levelGroup = JSON.parse(result.levelGroup);
+      // result.levelGroup = JSON.parse(result.levelGroup);
       return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_SUCCESS,
         data: result,

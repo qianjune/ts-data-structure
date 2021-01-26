@@ -60,7 +60,12 @@ class MemberManager implements CommonManager {
    * 更新会员信息
    * @param data
    */
-  async edit(data: any): Promise<ManagerResponse<any>> {
+  async edit(
+    data: any,
+    config?: {
+      transaction: any;
+    }
+  ): Promise<ManagerResponse<any>> {
     const { growthValue, id, userId, nickName, sex, tel, birthday } = data;
     console.log("开始更新成长值");
     const updateData = global.util.lodash.omitNil({
@@ -80,10 +85,15 @@ class MemberManager implements CommonManager {
     if (!member) {
       return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
     }
+    const updateConfig: any = {};
+    if (config.transaction) {
+      updateConfig.transaction = config.transaction;
+    }
     const result = await Member.update(updateData, {
       where: {
         id,
       },
+      ...updateConfig,
     });
     console.log(result);
     if (result[0] > 0) {
