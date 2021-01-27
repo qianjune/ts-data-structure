@@ -85,6 +85,20 @@ class LevelGroupApi extends BaseRouter {
     const { body } = ctx.request;
     await levelGroupService.edit(body);
   }
+
+  @get("/test/match/level")
+  @summary("测试匹配等级")
+  @parameter(
+    joi.object({
+      id: joi.number().required(),
+      preValue: joi.number().required(),
+      currentValue: joi.number().required(),
+    }),
+    "query"
+  )
+  async testMatchLevel(ctx: Context): Promise<void> {
+    await levelGroupService.matchLevel(ctx.state.parameter);
+  }
 }
 
 export default new LevelGroupApi().init();

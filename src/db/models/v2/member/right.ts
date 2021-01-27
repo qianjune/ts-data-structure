@@ -10,7 +10,7 @@ export enum RightPattern {
   COUPON = "COUPON",
   DISCOUNT = "DISCOUNT",
 }
-enum RightPatternType {
+export enum RightPatternType {
   CONSUMABLE = "CONSUMABLE", // 消耗型
   STATE_TYPE = "STATE_TYPE", // 状态行
 }
@@ -59,6 +59,11 @@ Right.init(
     pattern: {
       type: STRING,
       comment: "权益类型",
+      allowNull: false,
+    },
+    type: {
+      type: STRING,
+      comment: "权益属性",
       allowNull: false,
     },
     expired: {

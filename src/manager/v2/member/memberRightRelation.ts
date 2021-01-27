@@ -17,6 +17,7 @@ import {
 import { MemberRightRelationDb } from "@src/db/models";
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
+import { omit } from "lodash";
 
 const placeholder = "MemberRightRelation";
 const responseMsg = ResponseMsg(placeholder);
@@ -41,16 +42,20 @@ class MemberRightRelation implements CommonManager {
    * @param data
    */
   async create(data: any): Promise<ManagerResponse<any>> {
-    const {} = data;
-    const item = await MemberRightRelationDb.findOne({
-      where: {},
+    const { memberId, right } = data;
+    const handledRightData = omit(right, "id");
+    // const item = await MemberRightRelationDb.findOne({
+    //   where: {},
+    // });
+    // if (item) {
+    //   return new ManagerResponseFailure({
+    //     msg: responseMsg.CREATE_FAIL_BY_EXISTED,
+    //   });
+    // }
+    const result = await MemberRightRelationDb.create({
+      memberId,
+      ...handledRightData,
     });
-    if (item) {
-      return new ManagerResponseFailure({
-        msg: responseMsg.CREATE_FAIL_BY_EXISTED,
-      });
-    }
-    const result = await MemberRightRelationDb.create(data);
     if (result) {
       return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_SUCCESS,

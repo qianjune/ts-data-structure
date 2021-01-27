@@ -18,6 +18,10 @@ import { PointsDb } from "@src/db/models";
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 import { PointsType } from "@src/db/models/v2/member/points";
+import {
+  RightPatternGroup,
+  RightPatternType,
+} from "@src/db/models/v2/member/right";
 import MemberPointsRelation from "./memberPointsRelation";
 import { LevelGroupManager, MemberManager } from ".";
 const levelGroupManager = new LevelGroupManager();
@@ -83,6 +87,9 @@ class Points implements CommonManager {
             // 如果刚好升级
             // 查询该等级下的权益，把其中消耗型的权益和member建立关系
             if (matchLevelResult.isUpgrading) {
+              matchLevelResult.currentLevel.Rights.filter((r: any) => {
+                r.type === RightPatternType.CONSUMABLE;
+              });
             }
             currentSumHandledFlag = true;
           } else if (type === PointsType.INCREASE && preCurrentSum > num) {

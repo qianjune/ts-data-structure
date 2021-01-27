@@ -16,6 +16,11 @@ class LevelGroupService implements CommonService {
     ResponseHandler.send(result);
   }
 
+  async matchLevel(data: any): Promise<void> {
+    const result = await levelGroupManager.testMatchLevel(data);
+    ResponseHandler.send(result);
+  }
+
   /**
    * 编辑
    * @param data

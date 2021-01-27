@@ -17,6 +17,7 @@ import {
 import { RightDb } from "@src/db/models";
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
+import { RightPatternGroup } from "@src/db/models/v2/member/right";
 
 const placeholder = "Right";
 const responseMsg = ResponseMsg(placeholder);
@@ -50,7 +51,12 @@ class Right implements CommonManager {
         msg: responseMsg.CREATE_FAIL_BY_EXISTED,
       });
     }
-    const result = await RightDb.create(data);
+    const result = await RightDb.create({
+      ...data,
+      type: RightPatternGroup.find((p) => {
+        p.value === data.pattern;
+      }),
+    });
     if (result) {
       return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_SUCCESS,
