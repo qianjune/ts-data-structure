@@ -17,7 +17,6 @@ import {
 import { LevelDb, LevelGroupDb } from "@src/db/models";
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
-import { match } from "ramda";
 import { LevelManager } from ".";
 
 const placeholder = "LevelGroup";
@@ -64,15 +63,18 @@ class LevelGroup implements CommonManager {
     isUpgrading: boolean;
   }> {
     const groupDetail = await this._getInfo(data.id);
+    // if(groupDetail.)
     const levelGroup = groupDetail.LevelDbs;
+
     let currentLevel = null;
     let isUpgrading = false;
-    console.log(groupDetail);
+
     for (let i = 0; i < levelGroup.length; i++) {
       const d = levelGroup[i];
       if (data.currentValue >= d.levelUpAmount) {
         currentLevel = d;
         const levelManager = new LevelManager();
+        console.log(d);
         const levelDetail = await levelManager.getInfo(d.id);
         currentLevel = levelDetail.data;
         if (data.preValue < d.levelUpAmount) {

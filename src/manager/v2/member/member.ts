@@ -1,5 +1,3 @@
-import { ErrorModel, SuccessModel } from "@root/models/ResModel";
-import ErrorInfo from "@root/models/ErrorInfo";
 import {
   ListDataModel,
   ManagerResponse,
@@ -7,7 +5,6 @@ import {
   ManagerResponseSuccess,
   ResponseMsg,
 } from "@src/manager/response";
-import MemberService from "@src/services/v2/member";
 import { Member } from "@src/db/models";
 import { v1 } from "uuid";
 import {
@@ -66,7 +63,16 @@ class MemberManager implements CommonManager {
       transaction: any;
     }
   ): Promise<ManagerResponse<any>> {
-    const { growthValue, id, userId, nickName, sex, tel, birthday } = data;
+    const {
+      growthValue,
+      id,
+      userId,
+      nickName,
+      sex,
+      tel,
+      birthday,
+      points,
+    } = data;
     console.log("开始更新成长值");
     const updateData = global.util.lodash.omitNil({
       nickName,
@@ -74,6 +80,7 @@ class MemberManager implements CommonManager {
       tel,
       birthday,
       growthValue,
+      points,
     });
     const where = global.util.lodash.omitNil({
       userId,
@@ -116,7 +123,7 @@ class MemberManager implements CommonManager {
   async getInfo(id: number): Promise<ManagerResponse<any>> {
     const info = await Member.findOne({
       where: {
-        userId: id,
+        id,
       },
     });
     if (info) {
@@ -149,31 +156,6 @@ class MemberManager implements CommonManager {
   //     return new ErrorModel(ErrorInfo.addMemberFailInfo)
   //   }
   //   return new SuccessModel(result)
-  // }
-  /**
-   *
-   * @param {*} param0 num:增加的数值
-   */
-  // static async addGrowthValueAndPoints({ id, num }: { id: number, num: number }) {
-  //   console.log('memberId', id)
-  //   const growthValueResult = await MemberService.updateGrowthValue({
-  //     id,
-  //     num,
-  //     type: 'increase'
-  //   })
-  //   const pointsResult = await MemberService.updatePoints({
-  //     id,
-  //     num,
-  //     type: 'increase'
-  //   })
-  //   if (growthValueResult && pointsResult) {
-  //     return new SuccessModel()
-  //   }
-  //   return new ErrorModel(ErrorInfo.addMemberGrowthValueInfo)
-  //   // if(!result){
-  //   //   return ErrorModel(ErrorInfo.addMemberGrowthValueInfo)
-  //   // }
-  //   // return SuccessModel(result)
   // }
 }
 

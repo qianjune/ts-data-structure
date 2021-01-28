@@ -49,6 +49,39 @@ class MemberRightRelationApi extends BaseRouter {
   }
 
   /**
+   * 创建
+   * @param ctx 】
+   */
+  @post("/create/group")
+  @summary("MemberRightRelation创建")
+  @parameter(
+    joi.object({
+      data: joi.array().items(
+        joi.object({
+          memberId: joi.number().required(),
+          right: joi.object({
+            id: joi.number(),
+            name: joi.string().required(),
+            num: joi.any(),
+            pattern: joi.string().required(),
+            img: joi.string(),
+            expired: joi.any(),
+            type: joi.string(),
+            desc: joi.string(),
+            amount: joi.number(),
+          }),
+        })
+      ),
+    }),
+    "body"
+  )
+  async createForGroup(ctx: Context): Promise<void> {
+    // create item
+    const { body } = ctx.request;
+    await memberRightRelationService.create(body.data);
+  }
+
+  /**
    * 获取详情
    * @param ctx
    */

@@ -5,6 +5,7 @@ import { CommonService } from "@src/services/interface/common";
 import { ResponseHandler } from "@src/utils/responseHandler";
 import { MemberRightRelationManager } from "@src/manager/v2/member";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
+import { ManagerResponseFailure } from "@src/manager/response";
 const memberRightRelationManager = new MemberRightRelationManager();
 class MemberRightRelationService implements CommonService {
   /**
@@ -12,7 +13,12 @@ class MemberRightRelationService implements CommonService {
    * @param data
    */
   async create(data: any): Promise<void> {
-    const result = await memberRightRelationManager.create(data);
+    let result = new ManagerResponseFailure({ msg: "没成功" });
+    if (Array.isArray(data)) {
+      result = await memberRightRelationManager.createForGroupData(data);
+    } else {
+      result = await memberRightRelationManager.create(data);
+    }
     ResponseHandler.send(result);
   }
 

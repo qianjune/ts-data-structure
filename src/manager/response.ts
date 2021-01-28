@@ -2,6 +2,8 @@
  * @description
  */
 
+import { ResponseHandler } from "@src/utils/responseHandler";
+
 const ResponseMsg = (placeholder: string) => ({
   COMMON_SUCCESS_INFO: "请求成功",
   CREATE_FAIL_BY_NAME_OCCUPIED: `创建${placeholder}失败，${placeholder}名已被占用`,
@@ -64,9 +66,9 @@ class ManagerResponseFailure extends ManagerResponse<any> {
     super({ success: false });
     this.data = data;
     this.msg = msg;
+    ResponseHandler.send(this);
   }
 }
-
 export interface ListDataInterface {
   data: any[];
   total: number;

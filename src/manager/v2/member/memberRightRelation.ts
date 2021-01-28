@@ -21,6 +21,22 @@ import { omit } from "lodash";
 
 const placeholder = "MemberRightRelation";
 const responseMsg = ResponseMsg(placeholder);
+
+export interface createDataInterface {
+  memberId: number;
+  right: {
+    id: number;
+    name: string;
+    num: any;
+    pattern: string;
+    img: string;
+    expired: any;
+    type: string;
+    desc: string;
+    amount: number;
+  };
+}
+
 class MemberRightRelation implements CommonManager {
   /**
    * 获取详情（私有）
@@ -41,7 +57,12 @@ class MemberRightRelation implements CommonManager {
    * 创建
    * @param data
    */
-  async create(data: any): Promise<ManagerResponse<any>> {
+  async create(
+    data: createDataInterface,
+    config?: {
+      transaction: any;
+    }
+  ): Promise<ManagerResponse<any>> {
     const { memberId, right } = data;
     const handledRightData = omit(right, "id");
     // const item = await MemberRightRelationDb.findOne({
@@ -52,10 +73,35 @@ class MemberRightRelation implements CommonManager {
     //     msg: responseMsg.CREATE_FAIL_BY_EXISTED,
     //   });
     // }
-    const result = await MemberRightRelationDb.create({
-      memberId,
-      ...handledRightData,
-    });
+    const result = await MemberRightRelationDb.create(
+      {
+        memberId,
+        ...handledRightData,
+      },
+      config ? { ...config } : {}
+    );
+    if (result) {
+      return new ManagerResponseSuccess({
+        msg: responseMsg.CREATE_SUCCESS,
+        data: result,
+      });
+    } else {
+      return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
+    }
+  }
+
+  /**
+   * 创建-数据源（数组）
+   * @param data
+   */
+  async createForGroupData(
+    data: createDataInterface[],
+    config?: {
+      transaction: any;
+    }
+  ): Promise<ManagerResponse<any>> {
+    const createGroup = data.map((d) => this.create(d, config));
+    const result = await Promise.all(createGroup);
     if (result) {
       return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_SUCCESS,

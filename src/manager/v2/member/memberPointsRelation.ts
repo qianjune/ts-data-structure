@@ -131,14 +131,17 @@ class MemberPointsRelation implements CommonManager {
    * @param config
    */
   async getList?(
-    data: ListFilterInterface,
+    data: ListFilterInterface & { memberId: number },
     config?: RequestConfigInterface
   ): Promise<ManagerResponse<ListDataInterface>> {
-    const { pageSize = 10, pageNo = 1 } = data;
+    const { pageSize = 10, pageNo = 1, memberId } = data;
     return await sequelize.transaction(async (t: any) => {
       const listParams = buildCommonListParams({ pageNo, pageSize }, config);
       const result = await MemberPointsRelationDb.findAndCountAll({
         ...listParams,
+        where: {
+          memberId,
+        },
       });
       const { count, rows } = result;
       const MemberPointsRelationList = rows.map((row: any) => {

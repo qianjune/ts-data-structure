@@ -18,12 +18,13 @@ import { PointsDb } from "@src/db/models";
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 import { PointsType } from "@src/db/models/v2/member/points";
-import {
-  RightPatternGroup,
-  RightPatternType,
-} from "@src/db/models/v2/member/right";
+import { RightPatternType } from "@src/db/models/v2/member/right";
 import MemberPointsRelation from "./memberPointsRelation";
-import { LevelGroupManager, MemberManager } from ".";
+import {
+  LevelGroupManager,
+  MemberManager,
+  MemberRightRelationManager,
+} from ".";
 const levelGroupManager = new LevelGroupManager();
 const memberManager = new MemberManager();
 const memberPointsRelationManager = new MemberPointsRelation();
@@ -52,52 +53,61 @@ class Points implements CommonManager {
   async create(data: any): Promise<ManagerResponse<any>> {
     return await sequelize.transaction(async (t: any) => {
       const { memberId, ...otherData } = data;
-      // 保存这次积分行为
+      // 保存记录下这次积分行为
       const result: any = await PointsDb.create(otherData, { transaction: t });
       if (result?.id) {
-        // 查询上一次的积分总分
+        // 查询上一次该会员的积分列表
         const relationList = await memberPointsRelationManager.getList({
           pageNo: 1,
           pageSize: 1,
+          memberId,
         });
         let currentSum = 0;
         if (relationList.success && relationList.data.total > 0) {
           console.log(relationList.data.data[0]);
+          // 获取会员的最新一条积分记录
           const preRelation = relationList.data.data[0];
+          // 获取会员现有积分数量
           const preCurrentSum = preRelation.currentSum;
           const { type, num } = otherData;
-          let currentSumHandledFlag = false;
           // 查更新会员的积分和成长值
-          const memberInfo: any = await memberManager.getInfo(memberId);
-
-          // 积分增加
+          console.log(memberId);
+          const memberInfo: any = (await memberManager.getInfo(memberId)).data;
+          // 如果是积分增加
           if (type === PointsType.INCREASE) {
             currentSum = preCurrentSum + num;
             // 获取等级包
 
             // levelPackageData
-            // 判断成长值前后的变化是否附和某个等级
+            console.log(memberInfo);
             const preGrowthValue = memberInfo.growthValue;
             memberInfo.growthValue = preGrowthValue + num;
+            // 判断成长值前后的变化是否附和某个等级
             const matchLevelResult = await levelGroupManager.matchLevel({
-              id: 7,
+              id: 8,
               preValue: preGrowthValue,
               currentValue: memberInfo.growthValue,
             });
             // 如果刚好升级
             // 查询该等级下的权益，把其中消耗型的权益和member建立关系
             if (matchLevelResult.isUpgrading) {
-              matchLevelResult.currentLevel.Rights.filter((r: any) => {
-                r.type === RightPatternType.CONSUMABLE;
-              });
+              const consumableRights = matchLevelResult.currentLevel.Rights.filter(
+                (r: any) => {
+                  r.type === RightPatternType.CONSUMABLE;
+                }
+              );
+              const memberRightRelationManager = new MemberRightRelationManager();
+              await memberRightRelationManager.createForGroupData(
+                consumableRights,
+                { transaction: t }
+              );
             }
-            currentSumHandledFlag = true;
-          } else if (type === PointsType.INCREASE && preCurrentSum > num) {
-            // 积分减少
+          } else if (type === PointsType.REDUCE && preCurrentSum > num) {
+            // 如果是积分减少
             currentSum = preCurrentSum - num;
-            currentSumHandledFlag = true;
           }
           memberInfo.points = currentSum;
+          console.log(memberInfo, currentSum);
           const updateMemberResult = await memberManager.edit(memberInfo, {
             transaction: t,
           });
@@ -106,22 +116,20 @@ class Points implements CommonManager {
           // 然后去匹配等级 （通过等级要求分数的那一次积分）
           // 将匹配到的等级里的消耗型 在 MemberRightsRelation 里建立记录
           // 将匹配到的等级里的状态型 也添加？还是每次去检查？
-          if (currentSumHandledFlag) {
-            // 创建会员和积分的关系
-            const memberPointsRelation = await memberPointsRelationManager.create(
-              {
-                memberId,
-                pointId: result?.id,
-                currentSum,
-              },
-              { transaction: t }
-            );
-            if (memberPointsRelation.success) {
-              return new ManagerResponseSuccess({
-                msg: responseMsg.CREATE_SUCCESS,
-                data: result,
-              });
-            }
+          // 创建会员和积分的关系
+          const memberPointsRelation = await memberPointsRelationManager.create(
+            {
+              memberId,
+              pointId: result?.id,
+              currentSum,
+            },
+            { transaction: t }
+          );
+          if (memberPointsRelation.success) {
+            return new ManagerResponseSuccess({
+              msg: responseMsg.CREATE_SUCCESS,
+              data: result,
+            });
           }
         }
       }
