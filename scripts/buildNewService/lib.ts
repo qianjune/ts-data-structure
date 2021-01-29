@@ -21,11 +21,14 @@ const lowerCaseFirstWord = (str: string) => {
   cloneStr = cloneStr.join("");
   return cloneStr;
 };
-const buildFileContent = (
-  filePath: string,
-  replaceName: string,
-  type: FILE_TYPE
-): string => {
+const buildFileContent = (data: {
+  filePath: string;
+  replaceName: string;
+  type: FILE_TYPE;
+  cname?: string;
+}): string => {
+  const { filePath, replaceName } = data;
+  const cname = data.cname || replaceName;
   const buf = fs.readFileSync(filePath);
   let resultStr = buf
     .toString()
@@ -33,7 +36,7 @@ const buildFileContent = (
   resultStr = resultStr
     .toString()
     .replace(/xXXXXX/g, lowerCaseFirstWord(replaceName));
-
+  resultStr = resultStr.toString().replace(/cname/g, lowerCaseFirstWord(cname));
   return resultStr;
 };
 const writeServiceFile = (filePath: string, fileContent: string): void => {

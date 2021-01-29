@@ -1,5 +1,5 @@
 /**
- * @description XXXXXX 数据库模型
+ * @description cname 数据库模型
  */
 import { Model } from "sequelize";
 import sequelize from "@root/core/db";

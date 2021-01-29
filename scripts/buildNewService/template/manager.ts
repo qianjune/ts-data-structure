@@ -1,5 +1,5 @@
 /**
- * @description XXXXXX orm
+ * @description cname orm
  */
 
 import {
@@ -42,7 +42,7 @@ class XXXXXX implements CommonManager {
    * @param data
    */
   async create(data: any): Promise<ManagerResponse<any>> {
-    const {} = data;
+    const { } = data;
     const item = await XXXXXXDb.findOne({
       where: {},
     });

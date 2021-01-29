@@ -1,5 +1,5 @@
 /**
- * @description XXXXXX api
+ * @description cname api
  */
 
 import joi from "@hapi/joi";
@@ -17,14 +17,14 @@ import XXXXXXService from "@src/services/v2/xXXXXX";
 const xXXXXXService = new XXXXXXService();
 
 @prefix("/api/xXXXXX")
-@tag("XXXXXX相关服务")
+@tag("cname相关服务")
 class XXXXXXApi extends BaseRouter {
   /**
    * 创建
    * @param ctx
    */
   @post("/create")
-  @summary("XXXXXX创建")
+  @summary("cname创建")
   @parameter(joi.object({}), "body")
   async create(ctx: Context): Promise<void> {
     // create item
@@ -37,7 +37,7 @@ class XXXXXXApi extends BaseRouter {
    * @param ctx
    */
   @get("/detail/:id")
-  @summary("XXXXXX详情")
+  @summary("cname详情")
   @parameter(
     joi.object({
       id: joi.string().required(),
@@ -55,7 +55,7 @@ class XXXXXXApi extends BaseRouter {
    * @param ctx
    */
   @get("/list")
-  @summary("XXXXXX列表")
+  @summary("cname列表")
   @parameter(
     joi.object({
       pageSize: joi.number().required(),
@@ -74,7 +74,7 @@ class XXXXXXApi extends BaseRouter {
    * @param ctx
    */
   @del("/:id")
-  @summary("删除XXXXXX")
+  @summary("删除cname")
   @parameter(
     joi.object({
       id: joi.string().required(),
@@ -92,7 +92,7 @@ class XXXXXXApi extends BaseRouter {
    * @param ctx 、
    */
   @post("/edit")
-  @summary("XXXXXX编辑")
+  @summary("cname编辑")
   @parameter(joi.object({}), "body")
   async edit(ctx: Context): Promise<void> {
     // edit item

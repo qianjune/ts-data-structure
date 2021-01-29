@@ -1,5 +1,5 @@
 /**
- * @description XXXXXX service
+ * @description cname service
  */
 import { CommonService } from "@src/services/interface/common";
 import { ResponseHandler } from "@src/utils/responseHandler";
