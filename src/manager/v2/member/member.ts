@@ -120,20 +120,19 @@ class MemberManager implements CommonManager {
   del(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  async getInfo(id: number): Promise<ManagerResponse<any>> {
+  async _getInfo(data: { id?: number; userId?: number }): Promise<any> {
     const info = await Member.findOne({
-      where: {
-        id,
-      },
+      where: data,
     });
     if (info) {
-      return new ManagerResponseSuccess({
-        data: info,
-        msg: responseMsg.GET_DETAIL_SUCCESS,
-      });
+      return info;
     } else {
       return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
     }
+  }
+  async getInfo(id: number): Promise<ManagerResponse<any>> {
+    const info = await this._getInfo({ id });
+    return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
   }
   async getList?(data: ListFilterInterface): Promise<ManagerResponse<any>> {
     const { pageNo, pageSize } = data;

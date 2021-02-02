@@ -30,8 +30,15 @@ export class InitManager {
         InitManager.app.use(obj.default.routes());
       }
     };
-    const apiDirectory = `${process.cwd()}/src/api`;
-    requireDirectory(module, apiDirectory, { visit: whenLoadModule });
+    const needToRequireDirectoryGroup = [
+      "",
+      "/micro-services/user-service",
+      "/micro-services/member-service",
+    ];
+    needToRequireDirectoryGroup.forEach((path) => {
+      const apiDirectory = `${process.cwd()}${path}/src/api`;
+      requireDirectory(module, apiDirectory, { visit: whenLoadModule });
+    });
   }
   static loadConfig(): void {
     global.config = config;

@@ -64,7 +64,7 @@ class UserService implements CommonService {
       result = realUser.toJSON();
     }
     if (result?.id) {
-      const memberInfo = await memberManager.getInfo(result?.id);
+      const memberInfo = await memberManager._getInfo(result?.id);
       result.memberInfo = memberInfo.data;
     }
 

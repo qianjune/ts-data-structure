@@ -27,9 +27,12 @@ class XXXXXX implements CommonManager {
    * @param id
    * @param config
    */
-  async _getInfo(id: number, config?: { msg?: string }): Promise<any> {
+  async _getInfo(
+    where: { id: number },
+    config?: { msg?: string }
+  ): Promise<any> {
     const item = await XXXXXXDb.findOne({
-      where: { id },
+      where,
     });
     if (!item) {
       return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
@@ -68,7 +71,7 @@ class XXXXXX implements CommonManager {
    */
   async edit(data: any): Promise<ManagerResponse<any>> {
     const { id } = data;
-    const item = await this._getInfo(id);
+    const item = await this._getInfo({ id });
     const updateData = global.util.lodash.omitNil({});
     const result = await XXXXXXDb.update(updateData, {
       where: {
@@ -90,7 +93,7 @@ class XXXXXX implements CommonManager {
    * @param id
    */
   async del(id: number): Promise<ManagerResponse<any>> {
-    const item = await await this._getInfo(id);
+    const item = await await this._getInfo({ id });
     return await sequelize.transaction(async (t: any) => {
       const result = await XXXXXXDb.destroy({
         where: {
@@ -113,7 +116,7 @@ class XXXXXX implements CommonManager {
    * @param id
    */
   async getInfo(id: number): Promise<ManagerResponse<any>> {
-    const item = await this._getInfo(id);
+    const item = await this._getInfo({ id });
     return new ManagerResponseSuccess({
       msg: responseMsg.GET_DETAIL_SUCCESS,
       data: item,

@@ -25,7 +25,8 @@
     "./models",
     "./tsconfig.json",
     "./app.ts",
-    "./experiment"
+    "./experiment",
+    "./micro-services"
   ],
   "ext": "ts js",
   "inspect": true
