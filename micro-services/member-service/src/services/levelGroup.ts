@@ -1,18 +1,23 @@
 /**
- * @description LevelRightsRelation service
+ * @description LevelGroup service
  */
 import { CommonService } from "@src/services/interface/common";
 import { ResponseHandler } from "@src/utils/responseHandler";
-import { LevelRightsRelationManager } from "@src/manager/v2/member";
+import { LevelGroupManager } from "@root/micro-services/member-service/src/manager";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
-const levelRightsRelationManager = new LevelRightsRelationManager();
-class LevelRightsRelationService implements CommonService {
+const levelGroupManager = new LevelGroupManager();
+class LevelGroupService implements CommonService {
   /**
    * 创建
    * @param data
    */
   async create(data: any): Promise<void> {
-    const result = await levelRightsRelationManager.create(data);
+    const result = await levelGroupManager.create(data);
+    ResponseHandler.send(result);
+  }
+
+  async matchLevel(data: any): Promise<void> {
+    const result = await levelGroupManager.testMatchLevel(data);
     ResponseHandler.send(result);
   }
 
@@ -21,7 +26,7 @@ class LevelRightsRelationService implements CommonService {
    * @param data
    */
   async edit<T>(data: T): Promise<void> {
-    const result = await levelRightsRelationManager.edit(data);
+    const result = await levelGroupManager.edit(data);
     ResponseHandler.send(result);
   }
 
@@ -30,7 +35,7 @@ class LevelRightsRelationService implements CommonService {
    * @param id
    */
   async del(id: number): Promise<void> {
-    const result = await levelRightsRelationManager.del(id);
+    const result = await levelGroupManager.del(id);
     ResponseHandler.send(result);
   }
 
@@ -39,7 +44,7 @@ class LevelRightsRelationService implements CommonService {
    * @param id
    */
   async getInfo(id: number): Promise<void> {
-    const result = await levelRightsRelationManager.getInfo(id);
+    const result = await levelGroupManager.getInfo(id);
     ResponseHandler.send(result);
   }
 
@@ -49,9 +54,9 @@ class LevelRightsRelationService implements CommonService {
    * @param config
    */
   async getList?(data: any, config?: RequestConfigInterface): Promise<void> {
-    const result = await levelRightsRelationManager.getList(data);
+    const result = await levelGroupManager.getList(data);
     ResponseHandler.send(result);
   }
 }
 
-export default LevelRightsRelationService;
+export default LevelGroupService;

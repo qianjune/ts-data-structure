@@ -1,24 +1,18 @@
 /**
- * @description MemberRightRelation service
+ * @description RightsRelation service
  */
 import { CommonService } from "@src/services/interface/common";
 import { ResponseHandler } from "@src/utils/responseHandler";
-import { MemberRightRelationManager } from "@src/manager/v2/member";
+import { RightsRelationManager } from "@root/micro-services/member-service/src/manager";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
-import { ManagerResponseFailure } from "@src/manager/response";
-const memberRightRelationManager = new MemberRightRelationManager();
-class MemberRightRelationService implements CommonService {
+const rightsRelationManager = new RightsRelationManager();
+class RightsRelationService implements CommonService {
   /**
    * 创建
    * @param data
    */
   async create(data: any): Promise<void> {
-    let result = new ManagerResponseFailure({ msg: "没成功" });
-    if (Array.isArray(data)) {
-      result = await memberRightRelationManager.createForGroupData(data);
-    } else {
-      result = await memberRightRelationManager.create(data);
-    }
+    const result = await rightsRelationManager.create(data);
     ResponseHandler.send(result);
   }
 
@@ -27,7 +21,7 @@ class MemberRightRelationService implements CommonService {
    * @param data
    */
   async edit<T>(data: T): Promise<void> {
-    const result = await memberRightRelationManager.edit(data);
+    const result = await rightsRelationManager.edit(data);
     ResponseHandler.send(result);
   }
 
@@ -36,7 +30,7 @@ class MemberRightRelationService implements CommonService {
    * @param id
    */
   async del(id: number): Promise<void> {
-    const result = await memberRightRelationManager.del(id);
+    const result = await rightsRelationManager.del(id);
     ResponseHandler.send(result);
   }
 
@@ -45,7 +39,7 @@ class MemberRightRelationService implements CommonService {
    * @param id
    */
   async getInfo(id: number): Promise<void> {
-    const result = await memberRightRelationManager.getInfo(id);
+    const result = await rightsRelationManager.getInfo(id);
     ResponseHandler.send(result);
   }
 
@@ -55,9 +49,9 @@ class MemberRightRelationService implements CommonService {
    * @param config
    */
   async getList?(data: any, config?: RequestConfigInterface): Promise<void> {
-    const result = await memberRightRelationManager.getList(data);
+    const result = await rightsRelationManager.getList(data);
     ResponseHandler.send(result);
   }
 }
 
-export default MemberRightRelationService;
+export default RightsRelationService;

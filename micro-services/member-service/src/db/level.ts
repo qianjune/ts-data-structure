@@ -5,6 +5,7 @@
 import { Model } from "sequelize";
 import sequelize from "@root/core/db";
 import { TYPES } from "@src/db/types";
+import { sequelizeErrHandler } from "@src/utils/error_handler";
 const { STRING, INTEGER, DECIMAL } = TYPES;
 
 class LevelDb extends Model {
@@ -50,6 +51,6 @@ LevelDb.init(
 
 LevelDb.sync({
   alter: true,
-});
+}).catch(sequelizeErrHandler);
 
 export default LevelDb;

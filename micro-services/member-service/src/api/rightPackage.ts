@@ -13,7 +13,7 @@ import BaseRouter, {
   tag,
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
-import RightPackageService from "@src/services/v2/rightPackage";
+import { RightPackageService } from "@micro-services/member-service/src/services";
 const rightPackageService = new RightPackageService();
 @prefix("/api/rightPackage")
 @tag("RightPackage相关服务")

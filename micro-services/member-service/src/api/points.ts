@@ -14,7 +14,7 @@ import BaseRouter, {
   middleware,
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
-import PointsService from "@src/services/v2/points";
+import { PointsService } from "@micro-services/member-service/src/services";
 import SessionCookieHandler from "@src/utils/session_cookie";
 const pointsService = new PointsService();
 

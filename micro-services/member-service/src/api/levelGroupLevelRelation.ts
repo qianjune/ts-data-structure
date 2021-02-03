@@ -13,7 +13,7 @@ import BaseRouter, {
   tag,
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
-import LevelGroupLevelRelationService from "@src/services/v2/levelGroupLevelRelation";
+import { LevelGroupLevelRelationService } from "@micro-services/member-service/src/services";
 const levelGroupLevelRelationService = new LevelGroupLevelRelationService();
 
 @prefix("/api/levelGroupLevelRelation")

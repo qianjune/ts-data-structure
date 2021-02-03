@@ -28,6 +28,9 @@
       ],
       "@root/*": [
         "*"
+      ],
+      "@micro-services/*": [
+        "micro-services/*"
       ]
     },
     "emitDecoratorMetadata": true,

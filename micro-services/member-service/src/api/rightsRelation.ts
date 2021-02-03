@@ -13,7 +13,7 @@ import BaseRouter, {
   tag,
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
-import RightsRelationService from "@src/services/v2/rightsRelation";
+import { RightsRelationService } from "@micro-services/member-service/src/services";
 const rightsRelationService = new RightsRelationService();
 @prefix("/api/rightsRelation")
 @tag("RightsRelation相关服务")

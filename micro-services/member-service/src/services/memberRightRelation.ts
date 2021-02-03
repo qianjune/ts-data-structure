@@ -1,23 +1,24 @@
 /**
- * @description LevelGroup service
+ * @description MemberRightRelation service
  */
 import { CommonService } from "@src/services/interface/common";
 import { ResponseHandler } from "@src/utils/responseHandler";
-import { LevelGroupManager } from "@src/manager/v2/member";
+import { MemberRightRelationManager } from "@root/micro-services/member-service/src/manager";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
-const levelGroupManager = new LevelGroupManager();
-class LevelGroupService implements CommonService {
+import { ManagerResponseFailure } from "@src/manager/response";
+const memberRightRelationManager = new MemberRightRelationManager();
+class MemberRightRelationService implements CommonService {
   /**
    * 创建
    * @param data
    */
   async create(data: any): Promise<void> {
-    const result = await levelGroupManager.create(data);
-    ResponseHandler.send(result);
-  }
-
-  async matchLevel(data: any): Promise<void> {
-    const result = await levelGroupManager.testMatchLevel(data);
+    let result = new ManagerResponseFailure({ msg: "没成功" });
+    if (Array.isArray(data)) {
+      result = await memberRightRelationManager.createForGroupData(data);
+    } else {
+      result = await memberRightRelationManager.create(data);
+    }
     ResponseHandler.send(result);
   }
 
@@ -26,7 +27,7 @@ class LevelGroupService implements CommonService {
    * @param data
    */
   async edit<T>(data: T): Promise<void> {
-    const result = await levelGroupManager.edit(data);
+    const result = await memberRightRelationManager.edit(data);
     ResponseHandler.send(result);
   }
 
@@ -35,7 +36,7 @@ class LevelGroupService implements CommonService {
    * @param id
    */
   async del(id: number): Promise<void> {
-    const result = await levelGroupManager.del(id);
+    const result = await memberRightRelationManager.del(id);
     ResponseHandler.send(result);
   }
 
@@ -44,7 +45,7 @@ class LevelGroupService implements CommonService {
    * @param id
    */
   async getInfo(id: number): Promise<void> {
-    const result = await levelGroupManager.getInfo(id);
+    const result = await memberRightRelationManager.getInfo(id);
     ResponseHandler.send(result);
   }
 
@@ -54,9 +55,9 @@ class LevelGroupService implements CommonService {
    * @param config
    */
   async getList?(data: any, config?: RequestConfigInterface): Promise<void> {
-    const result = await levelGroupManager.getList(data);
+    const result = await memberRightRelationManager.getList(data);
     ResponseHandler.send(result);
   }
 }
 
-export default LevelGroupService;
+export default MemberRightRelationService;

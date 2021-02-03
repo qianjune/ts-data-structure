@@ -17,7 +17,7 @@ import {
 import { RightDb } from "@src/db/models";
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
-import { RightPatternGroup } from "@src/db/models/v2/member/right";
+import { RightPatternGroup } from "@micro-services/member-service/src/db/right";
 
 const placeholder = "Right";
 const responseMsg = ResponseMsg(placeholder);

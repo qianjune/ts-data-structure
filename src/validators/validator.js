@@ -1,6 +1,6 @@
 import { LinValidator, Rule } from "@root/core/lin-validator-v2";
 import Sms from "@src/manager/code/sms";
-import User from "../db/models/user";
+import User from "@root/micro-services/user-service/src/db/user";
 import { LoginType, BlogType } from "../lib/enum";
 
 const telRule = [

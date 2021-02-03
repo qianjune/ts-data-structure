@@ -24,8 +24,8 @@ import {
   LevelRightsRelationDb,
   MemberPointsRelationDb,
   LevelGroupLevelRelationDb,
-} from "@src/db/models/v2/member";
-import User from "./user";
+} from "@micro-services/member-service/src/db";
+import User from "@root/micro-services/user-service/src/db/user";
 import SpuCategoryRelation from "./v2/product/spu_category_relation";
 
 // import ShopProductRelation from '@src/db/models/v2/shopProductRelation'

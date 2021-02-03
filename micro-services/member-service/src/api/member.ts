@@ -12,7 +12,7 @@ import BaseRouter, {
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
 import SessionCookieHandler from "@src/utils/session_cookie";
-import MemberService from "@src/services/v2/member";
+import { MemberService } from "@micro-services/member-service/src/services";
 const memberService = new MemberService();
 @prefix("/api/member")
 @tag("会员相关服务")

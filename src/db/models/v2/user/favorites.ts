@@ -5,7 +5,7 @@ import { Model } from "sequelize";
 import sequelize from "@root/core/db";
 import { TYPES } from "@src/db/types";
 import { sequelizeErrHandler } from "@src/utils/error_handler";
-import { ShopModel, User } from "../..";
+import { ShopModel, User } from "@src/db/models";
 export enum FavoritesItemType {
   SHOP = "shop",
   PRODUCT = "product",

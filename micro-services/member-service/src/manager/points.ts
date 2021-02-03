@@ -17,8 +17,8 @@ import {
 import { PointsDb } from "@src/db/models";
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
-import { PointsType } from "@src/db/models/v2/member/points";
-import { RightPatternType } from "@src/db/models/v2/member/right";
+import { PointsType } from "@micro-services/member-service/src/db/points";
+import { RightPatternType } from "@micro-services/member-service/src/db/right";
 import MemberPointsRelation from "./memberPointsRelation";
 import {
   LevelGroupManager,

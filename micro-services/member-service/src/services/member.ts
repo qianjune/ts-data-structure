@@ -6,7 +6,7 @@ import {
   ManagerResponseSuccess,
 } from "@src/manager/response";
 import { CommonService } from "@src/services/interface/common";
-import { MemberManager } from "@src/manager/v2/member";
+import { MemberManager } from "@root/micro-services/member-service/src/manager";
 const memberManager = new MemberManager();
 /**
  * @description 会员 service

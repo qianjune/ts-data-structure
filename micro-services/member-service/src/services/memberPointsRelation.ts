@@ -1,18 +1,18 @@
 /**
- * @description Right service
+ * @description MemberPointsRelation service
  */
 import { CommonService } from "@src/services/interface/common";
 import { ResponseHandler } from "@src/utils/responseHandler";
-import { RightManager } from "@src/manager/v2/member";
+import { MemberPointsRelationManager } from "@root/micro-services/member-service/src/manager";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
-const rightManager = new RightManager();
-class RightService implements CommonService {
+const memberPointsRelationManager = new MemberPointsRelationManager();
+class MemberPointsRelationService implements CommonService {
   /**
    * 创建
    * @param data
    */
   async create(data: any): Promise<void> {
-    const result = await rightManager.create(data);
+    const result = await memberPointsRelationManager.create(data);
     ResponseHandler.send(result);
   }
 
@@ -21,7 +21,7 @@ class RightService implements CommonService {
    * @param data
    */
   async edit<T>(data: T): Promise<void> {
-    const result = await rightManager.edit(data);
+    const result = await memberPointsRelationManager.edit(data);
     ResponseHandler.send(result);
   }
 
@@ -30,7 +30,7 @@ class RightService implements CommonService {
    * @param id
    */
   async del(id: number): Promise<void> {
-    const result = await rightManager.del(id);
+    const result = await memberPointsRelationManager.del(id);
     ResponseHandler.send(result);
   }
 
@@ -39,7 +39,7 @@ class RightService implements CommonService {
    * @param id
    */
   async getInfo(id: number): Promise<void> {
-    const result = await rightManager.getInfo(id);
+    const result = await memberPointsRelationManager.getInfo(id);
     ResponseHandler.send(result);
   }
 
@@ -49,9 +49,9 @@ class RightService implements CommonService {
    * @param config
    */
   async getList?(data: any, config?: RequestConfigInterface): Promise<void> {
-    const result = await rightManager.getList(data);
+    const result = await memberPointsRelationManager.getList(data);
     ResponseHandler.send(result);
   }
 }
 
-export default RightService;
+export default MemberPointsRelationService;

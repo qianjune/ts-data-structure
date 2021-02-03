@@ -7,6 +7,7 @@ import { User } from "@src/db/models";
 import EncryptBox from "@src/utils/encrypt_box";
 import sequelize from "@root/core/db";
 import moment from "moment";
+import { MemberManager } from "@root/micro-services/member-service/src/manager";
 import { CommonManagerInterface } from "./interface/interface";
 import {
   ManagerResponseSuccess,
@@ -20,7 +21,6 @@ import {
   ListFilterInterface,
   buildCommonListParams,
 } from "./interface/commonManager";
-import { MemberManager } from "./v2/member";
 const memberManager = new MemberManager();
 interface UserBody {
   mobile?: number | string;

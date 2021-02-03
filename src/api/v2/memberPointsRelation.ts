@@ -13,7 +13,7 @@ import BaseRouter, {
   tag,
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
-import MemberPointsRelationService from "@src/services/v2/memberPointsRelation";
+import MemberPointsRelationService from "@micro-services/member-service/src/services/memberPointsRelation"; // @src/services/v2/memberPointsRelation
 const memberPointsRelationService = new MemberPointsRelationService();
 
 @prefix("/api/memberPointsRelation")

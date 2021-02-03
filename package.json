@@ -15,7 +15,8 @@
   },
   "_moduleAliases": {
     "@src": "src",
-    "@root": "./"
+    "@root": "./",
+    "@micro-services": "micro-services"
   },
   "repository": {
     "type": "git",

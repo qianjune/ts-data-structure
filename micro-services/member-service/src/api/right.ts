@@ -5,7 +5,7 @@
 
 import joi from "@hapi/joi";
 import Auth from "@root/middleware/auth";
-import { RightPatternGroup } from "@src/db/models/v2/member/right";
+import { RightPatternGroup } from "@micro-services/member-service/src/db/right";
 import BaseRouter, {
   get,
   post,
@@ -16,7 +16,7 @@ import BaseRouter, {
   summary,
 } from "@src/lib/router-decorator";
 import { ManagerResponseSuccess } from "@src/manager/response";
-import RightService from "@src/services/v2/right";
+import { RightService } from "@micro-services/member-service/src/services";
 import { ResponseHandler } from "@src/utils/responseHandler";
 import SessionCookieHandler from "@src/utils/session_cookie";
 import { Context } from "koa";

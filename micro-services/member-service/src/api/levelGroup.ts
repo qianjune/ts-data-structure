@@ -14,7 +14,7 @@ import BaseRouter, {
   middleware,
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
-import LevelGroupService from "@src/services/v2/levelGroup";
+import { LevelGroupService } from "@micro-services/member-service/src/services";
 import SessionCookieHandler from "@src/utils/session_cookie";
 import { levelBody } from "./joi_module";
 const levelGroupService = new LevelGroupService();

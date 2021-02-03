@@ -1,18 +1,18 @@
 /**
- * @description Level service
+ * @description Points service
  */
 import { CommonService } from "@src/services/interface/common";
 import { ResponseHandler } from "@src/utils/responseHandler";
-import { LevelManager } from "@src/manager/v2/member";
+import { PointsManager } from "@root/micro-services/member-service/src/manager";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
-const levelManager = new LevelManager();
-class LevelService implements CommonService {
+const pointsManager = new PointsManager();
+class PointsService implements CommonService {
   /**
    * 创建
    * @param data
    */
   async create(data: any): Promise<void> {
-    const result = await levelManager.create(data);
+    const result = await pointsManager.create(data);
     ResponseHandler.send(result);
   }
 
@@ -21,7 +21,7 @@ class LevelService implements CommonService {
    * @param data
    */
   async edit<T>(data: T): Promise<void> {
-    const result = await levelManager.edit(data);
+    const result = await pointsManager.edit(data);
     ResponseHandler.send(result);
   }
 
@@ -30,7 +30,7 @@ class LevelService implements CommonService {
    * @param id
    */
   async del(id: number): Promise<void> {
-    const result = await levelManager.del(id);
+    const result = await pointsManager.del(id);
     ResponseHandler.send(result);
   }
 
@@ -39,7 +39,7 @@ class LevelService implements CommonService {
    * @param id
    */
   async getInfo(id: number): Promise<void> {
-    const result = await levelManager.getInfo(id);
+    const result = await pointsManager.getInfo(id);
     ResponseHandler.send(result);
   }
 
@@ -49,9 +49,9 @@ class LevelService implements CommonService {
    * @param config
    */
   async getList?(data: any, config?: RequestConfigInterface): Promise<void> {
-    const result = await levelManager.getList(data);
+    const result = await pointsManager.getList(data);
     ResponseHandler.send(result);
   }
 }
 
-export default LevelService;
+export default PointsService;

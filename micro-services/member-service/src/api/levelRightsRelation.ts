@@ -14,7 +14,7 @@ import BaseRouter, {
   middleware,
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
-import LevelRightsRelationService from "@src/services/v2/levelRightsRelation";
+import { LevelRightsRelationService } from "@micro-services/member-service/src/services";
 import SessionCookieHandler from "@src/utils/session_cookie";
 const levelRightsRelationService = new LevelRightsRelationService();
 

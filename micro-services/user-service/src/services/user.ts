@@ -1,9 +1,9 @@
 import { UserManager } from "@src/manager/user";
 import JwtHandler from "@src/utils/jwt_handler";
 import { ResponseHandler } from "@src/utils/responseHandler";
-import { MemberManager } from "@src/manager/v2/member";
+import { MemberManager } from "@root/micro-services/member-service/src/manager";
+import { CommonService } from "@src/services/interface/common";
 import CodeService from "./code";
-import { CommonService } from "./interface/common";
 const memberManager = new MemberManager();
 /**
  * @description 用户 service
