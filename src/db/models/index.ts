@@ -1,16 +1,10 @@
 import Address from "@src/db/models/v2/address";
 // import IdCard from './idCard'
 // import Points from './points'
-import ShopModel from "@src/db/models/v2/shop/shop";
 import IndexConfigDb from "@src/db/models/v2/indexConfig";
 import ShopUserRelation from "@src/db/models/v2/shopUserRelation";
-import Product from "@src/db/models/v2/product/product";
-import ShoppingCart from "@src/db/models/v2/shoppingCart";
-import ProductBrand from "@src/db/models/v2/product/brand";
-import ProductCategory from "@src/db/models/v2/product/category";
 import AttributeKey from "@src/db/models/v2/product/attribute_key";
 import AttributeValue from "@src/db/models/v2/product/attribute_value";
-import CommentModel from "@src/db/models/v2/product/comment";
 import FavoritesDb from "@src/db/models/v2/user/favorites";
 import {
   RightPackageDb,
@@ -25,8 +19,16 @@ import {
   MemberPointsRelationDb,
   LevelGroupLevelRelationDb,
 } from "@micro-services/member-service/src/db";
+import {
+  ShopModel,
+  ProductBrand,
+  SpuCategoryRelation,
+  Product,
+  ProductCategory,
+  ShoppingCart,
+} from "@micro-services/mall-service/src/db";
+import { CommentModel } from "@micro-services/common-service/src/db";
 import User from "@root/micro-services/user-service/src/db/user";
-import SpuCategoryRelation from "./v2/product/spu_category_relation";
 
 // import ShopProductRelation from '@src/db/models/v2/shopProductRelation'
 

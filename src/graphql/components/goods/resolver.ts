@@ -3,100 +3,111 @@
  */
 
 import {
-  Resolver, Query, Field, Arg, Args,
-  Int, ObjectType, ArgsType, ID, Float
+  Resolver,
+  Query,
+  Field,
+  Arg,
+  Args,
+  Int,
+  ObjectType,
+  ArgsType,
+  ID,
+  Float,
 } from "type-graphql";
-import ProductManager from "@src/manager/v2/product";
-const productManager = new ProductManager
+import ProductManager from "@micro-services/mall-service/src/manager/product";
+const productManager = new ProductManager();
 
-import { Response, ListBody, ListCommonParams } from '@src/graphql/components/lib/type'
+import {
+  Response,
+  ListBody,
+  ListCommonParams,
+} from "@src/graphql/components/lib/type";
 
 @ObjectType()
 class SkuGroup {
-  @Field(type => Float)
-  salePrice: number
+  @Field((type) => Float)
+  salePrice: number;
   @Field()
-  code: string
+  code: string;
 }
 
 @ObjectType()
 class Goods {
-  @Field(type => ID)
-  id: number
+  @Field((type) => ID)
+  id: number;
   @Field()
-  name: string
+  name: string;
   @Field()
-  mainImage: string
+  mainImage: string;
   @Field()
-  desc: string
-  @Field(type => Float)
-  prince: number
-  @Field(type => [SkuGroup])
-  skuGroup: SkuGroup[]
-  @Field(type => Int)
-  shopId: number
-  @Field(type => Int)
-  belong: number
+  desc: string;
+  @Field((type) => Float)
+  prince: number;
+  @Field((type) => [SkuGroup])
+  skuGroup: SkuGroup[];
+  @Field((type) => Int)
+  shopId: number;
+  @Field((type) => Int)
+  belong: number;
 }
 
 @ObjectType()
 class GoodsListBody extends ListBody {
-  @Field(type => [Goods])
-  data: Goods[]
+  @Field((type) => [Goods])
+  data: Goods[];
 }
 @ObjectType()
 class GoodsListResponse extends Response {
-  @Field(type => GoodsListBody)
-  data: GoodsListBody
+  @Field((type) => GoodsListBody)
+  data: GoodsListBody;
 }
 @ArgsType()
 class GoodsListParams extends ListCommonParams {
-  @Field(type => Int)
-  shopId: number
+  @Field((type) => Int)
+  shopId: number;
 }
 
 @ArgsType()
 class RecommendCategoryGoodsListParams extends ListCommonParams {
-  @Field(type => Int)
-  categoryId: number
+  @Field((type) => Int)
+  categoryId: number;
 }
 @Resolver()
 class GoodsResolver {
-  @Query(retunrs => GoodsListResponse)
+  @Query((retunrs) => GoodsListResponse)
   async getGoodsList(@Args() args: GoodsListParams): Promise<any> {
-    const result = await productManager.getList(args)
-    return result
+    const result = await productManager.getList(args);
+    return result;
   }
-  @Query(returns => Response)
+  @Query((returns) => Response)
   async getGoodsDetail(@Arg("id") id: number): Promise<any> {
-    const result = await productManager.getInfo(id)
-    const cloneResult = { ...result }
-    productManager.skuGroupOriginDataToCodeHandler(cloneResult.data)
-    console.log(cloneResult)
-    return cloneResult
+    const result = await productManager.getInfo(id);
+    const cloneResult = { ...result };
+    productManager.skuGroupOriginDataToCodeHandler(cloneResult.data);
+    console.log(cloneResult);
+    return cloneResult;
   }
-  @Query(returns => GoodsListResponse)
-  async getRecommendCategoryGoodsList(@Args() args: RecommendCategoryGoodsListParams): Promise<any> {
+  @Query((returns) => GoodsListResponse)
+  async getRecommendCategoryGoodsList(
+    @Args() args: RecommendCategoryGoodsListParams
+  ): Promise<any> {
     const result = await productManager.getList({
       pageNo: args.pageNo,
       pageSize: args.pageSize,
-      belong: args.categoryId
-    })
-    const cloneResult = { ...result }
-    const { data: { data: realData } } = cloneResult
+      belong: args.categoryId,
+    });
+    const cloneResult = { ...result };
+    const { data: { data: realData }, } = cloneResult;
     if (realData) {
-      const cloneRealData = [...realData]
+      const cloneRealData = [...realData];
       cloneRealData.forEach((crd: any, index: number) => {
-        productManager.skuGroupOriginDataToCodeHandler(crd)
-      })
+        productManager.skuGroupOriginDataToCodeHandler(crd);
+      });
       // cloneResult.data.data = cloneRealData
     }
 
-    return cloneResult
+    return cloneResult;
   }
 }
 
-
-export {
-  GoodsResolver
-}
+export { GoodsResolver };

@@ -5,9 +5,7 @@ enum CODE_PLATFORM {
   WEB,
   H5,
   DESK,
-  MINI
+  MINI,
 }
 
-export {
-  CODE_PLATFORM
-}
+export { CODE_PLATFORM };

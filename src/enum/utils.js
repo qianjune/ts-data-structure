@@ -1,12 +1,10 @@
-function isThisEnum(val){
-  for(let key in this){
-    if(this[key]===val){
-      return true
+function isThisEnum(val) {
+  for (let key in this) {
+    if (this[key] === val) {
+      return true;
     }
   }
-  return false
+  return false;
 }
 
-export {
-  isThisEnum
-}
+export { isThisEnum };
