@@ -6,5 +6,9 @@ export interface CommonService {
   edit(data: any): Promise<void>;
   del(id: number): Promise<void>;
   getInfo(id: number): Promise<void>;
-  getList?(data: any): Promise<void>
+  getList?(data: any): Promise<void>;
+}
+
+export interface UserInfoInterface {
+  id: number | string;
 }

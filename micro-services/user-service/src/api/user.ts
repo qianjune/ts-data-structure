@@ -14,7 +14,7 @@ import BaseRouter, {
 import Joi from "@hapi/joi";
 import UserService from "@micro-services/user-service/src/services/user";
 import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "@src/enum";
-import CodeManager from "@src/manager/code/code";
+import CodeManager from "@micro-services/user-service/src/manager/code";
 import { Context } from "koa";
 import SessionCookieHandler from "@src/utils/session_cookie";
 const userService = new UserService();

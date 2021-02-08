@@ -2,7 +2,7 @@
  * @description 短信相关 api
  * @author June_end
  */
-import Sms from "@src/manager/code/sms";
+import Sms from "@micro-services/user-service/src/manager/sms";
 import { UserController } from "@micro-services/user-service/src/manager/pre-user";
 import joi from "@hapi/joi";
 import Auth from "@root/middleware/auth";
@@ -16,7 +16,7 @@ import BaseRouter, {
   summary,
   tag,
 } from "@src/lib/router-decorator";
-import { EmailModel } from "@src/manager/code/email";
+import { EmailModel } from "@micro-services/user-service/src/manager/email";
 import { Context } from "koa";
 
 @prefix("/api/user/web")

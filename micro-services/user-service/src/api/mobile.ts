@@ -12,7 +12,7 @@ import BaseRouter, {
   summary,
   tag,
 } from "@src/lib/router-decorator";
-
+import EmailService from "../services/email";
 @prefix("/api/user/mobile")
 @tag("用户中心-手机服务")
 class MobileRouter extends BaseRouter { }

@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import { v1 as uuidv1 } from "uuid";
 import { MemberController } from "@root/micro-services/member-service/src/manager";
-import SmsForMini from "@src/manager/code/sms";
+import SmsForMini from "@micro-services/user-service/src/manager/sms";
 import { set } from "@root/cache/_redis";
 import { User } from "@src/db/models";
 const smsForMiniModel = new SmsForMini();

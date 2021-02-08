@@ -3,7 +3,7 @@
  * @author June_end
  */
 import Router from "koa-router";
-import Sms from "@src/manager/code/sms";
+import Sms from "@micro-services/user-service/src/manager/sms";
 import {
   SendSmsValidator,
   ValidateSmsValidator,

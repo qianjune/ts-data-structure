@@ -28,7 +28,7 @@ class Sms implements CodeManagerInterface {
    * @param {string} message 短信信息
    */
   async sendCode(
-    user: string,
+    user: string | number,
     type: string,
     mock?: boolean
   ): Promise<ManagerResponse<any>> {
@@ -72,7 +72,7 @@ class Sms implements CodeManagerInterface {
     return new ManagerResponse({ success: false, msg });
   }
   async validateCode(
-    user: string,
+    user: string | number,
     type: string,
     code: string
   ): Promise<ManagerResponse<any>> {

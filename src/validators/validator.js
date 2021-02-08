@@ -1,5 +1,5 @@
 import { LinValidator, Rule } from "@root/core/lin-validator-v2";
-import Sms from "@src/manager/code/sms";
+import Sms from "@micro-services/user-service/src/manager/sms";
 import User from "@root/micro-services/user-service/src/db/user";
 import { LoginType, BlogType } from "../lib/enum";
 

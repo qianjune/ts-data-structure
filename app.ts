@@ -35,6 +35,7 @@ declare global {
       state: {
         userInfo?: {
           id: number;
+          email: string;
           memberInfo?: {
             id: number;
           };

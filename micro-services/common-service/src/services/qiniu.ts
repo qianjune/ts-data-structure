@@ -2,9 +2,10 @@ import { CommonService } from "@src/services/interface/common";
 import { ResponseHandler } from "@src/utils/responseHandler";
 import { ListParamsInterface } from "@src/manager/interface";
 import { ManagerResponseSuccess } from "@src/manager/response";
+import qiniu from "qiniu";
 const AK = "2ZCvhBFksrVxcxv8KbOAsMJEZho5IE1pJv8DBnaU";
 const SK = "2fr7-22iOPl1FU47wVyMkdD64xCb2ZNq2uRdh-7N";
-const qiniu = require("qiniu");
+// const qiniu = require("qiniu");
 
 class QiniuService {
   accessKey: string;

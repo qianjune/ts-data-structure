@@ -5,20 +5,24 @@ import { ManagerResponse } from "@src/manager/response";
 import { CodeManagerInterface } from "./sms";
 
 class EmailModel implements CodeManagerInterface {
-  async sendCode(user: string, type: string): Promise<ManagerResponse<any>> {
+  async sendCode(
+    user: string | number,
+    type: string
+  ): Promise<ManagerResponse<any>> {
     const transporter = nodemailer.createTransport({
       service: "qq",
       port: 465,
       secure: false,
       auth: {
         user: "3190741842@qq.com",
-        pass: "jobdnrkxfwrldegb",
+        pass: "rzjcjyylhfqadeje",
       },
     });
     const code = CodeBuilder.buildValidateCode();
+    const email = user?.toString();
     const info = await transporter.sendMail({
       from: "3190741842@qq.com",
-      to: user,
+      to: email,
       // to: 'qjhj8ftn@gmail.com',
       // to: '418694294@qq.com',
       subject: "hello",
@@ -27,14 +31,18 @@ class EmailModel implements CodeManagerInterface {
     });
     // if (info.response.starWith('250')) {
     console.log("进入这里");
-    ValidateCodeModel.saveCode({ user, key: type, code });
+    const result = await ValidateCodeModel.saveCode({ user, key: type, code });
     // }
     console.log(info.messageId);
 
-    return new ManagerResponse({ success: true, msg: "邮箱验证码发送成功" });
+    return new ManagerResponse({
+      success: true,
+      msg: "邮箱验证码发送成功",
+      data: result,
+    });
   }
   async validateCode(
-    user: string,
+    user: string | number,
     type: string,
     code: string
   ): Promise<ManagerResponse<any>> {

@@ -2,7 +2,7 @@
  * @description 验证码服务
  */
 
-import CodeManager from "@src/manager/code/code";
+import CodeManager from "@micro-services/user-service/src/manager/code";
 import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "@src/enum";
 import { ResponseHandler } from "@src/utils/responseHandler";
 import JwtHandler from "@src/utils/jwt_handler";

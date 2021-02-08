@@ -1,6 +1,6 @@
 import { CODE_ACTION_PATH } from '@src/enum';
 import { EmailModel } from '@src/manager/code/email';
-import Sms from '@src/manager/code/sms';
+import Sms from '@micro-services/user-service/src/manager/sms';
 
 class CodeModel {
   sendCode({ user, key, path }: { user: string; key: string; path: string }) {

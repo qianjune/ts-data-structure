@@ -8,7 +8,7 @@ import { EmailModel } from "./email";
 import Sms, { CodeManagerInterface } from "./sms";
 
 interface SendCodeProps {
-  user: string;
+  user: string | number;
   path: CODE_ACTION_PATH;
   type: CODE_ACTION_TYPE;
   platform: CODE_PLATFORM;
@@ -47,7 +47,9 @@ class CodeManager {
   ): string {
     return `${path}_${platform}_${type}`;
   }
-  async sendCode(data: SendCodeProps): Promise<ManagerResponse<any>> {
+  async sendCode(
+    data: SendCodeProps & { email?: string }
+  ): Promise<ManagerResponse<any>> {
     const { user, path, type, platform, mock = false } = data;
     const manager = this._selectManage(path);
     if (!manager) {
