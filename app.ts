@@ -1,6 +1,7 @@
 import path from "path";
 import Koa, { Context } from "koa";
 import parser from "koa-bodyparser";
+import koaBody from "koa-body";
 import { InitManager } from "@root/core/init";
 import catchError from "@root/middleware/exception";
 import cors from "koa2-cors";
@@ -83,12 +84,16 @@ app.use(
 SessionCookieHandler.init(app);
 app.use(serve(path.join(__dirname, "public/")));
 app.use(catchError);
+// app.use(
+//   parser({
+//     enableTypes: ["json", "form", "text"],
+//   })
+// );
 app.use(
-  parser({
-    enableTypes: ["json", "form", "text"],
+  koaBody({
+    multipart: true,
   })
 );
-
 InitManager.initCore(app);
 
 app.use(
