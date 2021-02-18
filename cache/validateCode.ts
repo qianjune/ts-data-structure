@@ -9,6 +9,7 @@ interface ValidateCodeProps {
   user: string | number;
   key: string;
   code: string | number;
+  token?: string;
 }
 
 class ValidateCodeModel {
@@ -32,11 +33,18 @@ class ValidateCodeModel {
     user,
     code,
     key,
+    token,
   }: ValidateCodeProps): Promise<boolean> {
     const saveKey = this._buildSaveKey(user, key);
     console.log(saveKey, "saveKey");
     const savedCode = await get(saveKey);
     // const result = (savedCode || '').toString() === code.toString()
+    if (token) {
+      const isTokenValid = token === (await get(`${saveKey}_token`));
+      if (!isTokenValid) {
+        return false;
+      }
+    }
     const result = EncryptBox.validateEncryptCode(
       code.toString(),
       (savedCode || "").toString()

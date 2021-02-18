@@ -10,5 +10,7 @@ export interface CommonService {
 }
 
 export interface UserInfoInterface {
-  id: number | string;
+  id: number;
+  email: string;
+  mobile: string;
 }

@@ -8,6 +8,7 @@ import EncryptBox from "@src/utils/encrypt_box";
 import sequelize from "@root/core/db";
 import moment from "moment";
 import { MemberManager } from "@root/micro-services/member-service/src/manager";
+import { omit } from "lodash";
 import { CommonManagerInterface } from "./interface/interface";
 import {
   ManagerResponseSuccess,
@@ -28,10 +29,10 @@ interface UserBody {
   email?: string;
 }
 interface UserPutBody {
-  mobile?: number;
+  mobile?: string;
   password?: string;
   email?: string;
-  id: string;
+  id: number;
 }
 type UserServiceInterface = CommonManagerInterface<UserBody, UserPutBody>;
 
@@ -105,9 +106,13 @@ class UserManager implements CommonManager {
       data.password = EncryptBox.buildEncryptCode(data.password);
     }
 
-    const result = await user.update({ ...data });
+    let result: any = await user.update({ ...data });
+    console.log("用户信息更新...");
+    console.log(result);
+    result = result.toJSON();
+    result = omit(result, "password");
     if (result) {
-      return new ManagerResponseSuccess({ msg: "更新成功", data: {} });
+      return new ManagerResponseSuccess({ msg: "更新成功", data: result });
     } else {
       return new ManagerResponseFailure({ msg: "更新失败" });
     }

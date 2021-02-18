@@ -40,6 +40,7 @@
     "bcryptjs": "^2.4.3",
     "class-validator": "^0.12.2",
     "commander": "^7.0.0",
+    "crypto": "^1.0.1",
     "dataloader": "^2.0.0",
     "form-data": "^3.0.0",
     "graphql": "^15.3.0",

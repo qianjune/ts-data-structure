@@ -44,12 +44,14 @@ class EmailModel implements CodeManagerInterface {
   async validateCode(
     user: string | number,
     type: string,
-    code: string
+    code: string,
+    token?: string
   ): Promise<ManagerResponse<any>> {
     const result = await ValidateCodeModel.validateCode({
       user,
       key: type,
       code,
+      token,
     });
     return new ManagerResponse({
       success: result,

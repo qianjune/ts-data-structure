@@ -43,10 +43,22 @@ class EmailRouter extends BaseRouter {
   @post("/unbind")
   @summary("解绑邮箱")
   @middleware(SessionCookieHandler.loginCheck)
-  async unbindEmail(ctx: Context) { }
+  @parameter(
+    Joi.object({
+      token: Joi.string().required(),
+      code: Joi.string().required(),
+    }),
+    "body"
+  )
+  async unbindEmail(ctx: Context) {
+    await emailService.unbind({
+      ...ctx.request.body,
+      userInfo: global.state.userInfo,
+    });
+  }
 
   @post("/code/send/bind")
-  @summary("发送邮箱验证码用于邮箱绑定")
+  @summary("发送邮箱验证码用于邮箱-绑定")
   @middleware(SessionCookieHandler.loginCheck)
   @parameter(
     Joi.object({
@@ -59,6 +71,18 @@ class EmailRouter extends BaseRouter {
     await emailService.sendCode({
       email: body.email,
       type: CODE_ACTION_TYPE.BIND,
+    });
+  }
+
+  @post("/code/send/unbind")
+  @summary("发送邮箱验证码用于邮箱-解绑")
+  @middleware(SessionCookieHandler.loginCheck)
+  @parameter(Joi.object({}), "body")
+  async sendCodeForUnbindEmail(ctx: Context) {
+    console.log(global.state.userInfo);
+    await emailService.sendCode({
+      email: global.state.userInfo.email,
+      type: CODE_ACTION_TYPE.UNBIND,
     });
   }
 
@@ -76,12 +100,26 @@ class EmailRouter extends BaseRouter {
   @post("/code/validate")
   @summary("验证邮箱验证码")
   @middleware(SessionCookieHandler.loginCheck)
-  async validateCode(ctx: Context) { }
+  @parameter(
+    Joi.object({
+      email: Joi.string().required(),
+      token: Joi.string().required(),
+      code: Joi.string().required(),
+    }),
+    "body"
+  )
+  async validateCode(ctx: Context) {
+    await emailService.validateCode({
+      ...ctx.request.body,
+    });
+  }
 
   @post("/reset")
   @summary("重置邮箱")
   @middleware(SessionCookieHandler.loginCheck)
-  async resetEmail(ctx: Context) { }
+  async resetEmail(ctx: Context) {
+    // 重置和解绑的区别在于，解绑要用邮箱验证，重置用手机或者账号密码
+  }
 }
 
 const emailRouter = new EmailRouter();
