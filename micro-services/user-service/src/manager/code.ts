@@ -16,6 +16,7 @@ interface SendCodeProps {
 }
 interface ValidateCodeProps extends SendCodeProps {
   code: string;
+  token?: string;
 }
 
 class CodeManager {
@@ -63,7 +64,7 @@ class CodeManager {
     return result;
   }
   async validateCode(data: ValidateCodeProps): Promise<ManagerResponse<any>> {
-    const { user, path, type, code, platform } = data;
+    const { user, path, type, code, platform, token } = data;
     const manager = this._selectManage(path);
     if (!manager) {
       return;
@@ -71,7 +72,8 @@ class CodeManager {
     const result = await manager.validateCode(
       user,
       this._typeStringBuilder(path, type, platform),
-      code
+      code,
+      token
     );
     return result;
   }

@@ -13,7 +13,7 @@ import BaseRouter, {
   tag,
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
-import CommentService from "@src/services/v2/comment";
+import CommentService from "@micro-services/common-service/src/services/comment";
 const commentService = new CommentService();
 @prefix("/api/comment")
 @tag("评论 - 相关服务")

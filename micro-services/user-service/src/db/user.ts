@@ -38,10 +38,10 @@ User.init(
       comment: "用户状态",
       defaultValue: "active",
     },
-    // openid: {
-    //   type: Sequelize.STRING(64),
-    //   unique: true
-    // }
+    openid: {
+      type: TYPES.STRING,
+      comment: "微信openid",
+    },
   },
   {
     sequelize,
@@ -49,7 +49,7 @@ User.init(
     indexes: [
       {
         unique: true,
-        fields: ["email", "mobile"],
+        fields: ["email", "mobile", "openid"],
       },
     ],
   }

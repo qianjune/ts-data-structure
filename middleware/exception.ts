@@ -1,4 +1,5 @@
 import { Context } from "koa";
+import { isEqual } from "lodash";
 import globalErrors from "../core/http-exception";
 const { HttpException, HttpExceptionForMini } = globalErrors;
 
@@ -47,7 +48,11 @@ const catchError = async (ctx: Context, next: any): Promise<void> => {
 
       if (
         error.session &&
-        (ctx.session.userInfo === null || ctx.session.userInfo === undefined)
+        (ctx.session.userInfo === null ||
+          ctx.session.userInfo === undefined ||
+          (ctx.session.userInfo &&
+            error.session &&
+            !isEqual(ctx.session.userInfo, error.session)))
       ) {
         ctx.session.userInfo = error.session;
       }

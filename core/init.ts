@@ -36,6 +36,7 @@ export class InitManager {
       `/${ms}/user-service`,
       `/${ms}/member-service`,
       `/${ms}/mall-service`,
+      `/${ms}/common-service`,
     ];
     needToRequireDirectoryGroup.forEach((path) => {
       const apiDirectory = `${process.cwd()}${path}/src/api`;

@@ -6,7 +6,9 @@ import { CODE_ACTION_PATH, CODE_ACTION_TYPE, CODE_PLATFORM } from "@src/enum";
 import { ManagerResponseFailure } from "@src/manager/response";
 import { UserManager } from "@src/manager/user";
 import { UserInfoInterface } from "@src/services/interface/common";
+import { passwordRuleCheck } from "@src/utils/password";
 import { ResponseHandler } from "@src/utils/responseHandler";
+import password from "../api/password";
 import CodeManager from "../manager/code";
 const userManager = new UserManager();
 const codeManager = new CodeManager();
@@ -45,11 +47,15 @@ class EmailService {
       ResponseHandler.send(new ManagerResponseFailure(result));
     }
   }
-  async unbind(data: {
+  async modify(data: {
     token: string;
     code: string;
+    password: string;
     userInfo: UserInfoInterface;
   }): Promise<void> {
+    if (!passwordRuleCheck(data.password)) {
+      ResponseHandler.send(new ManagerResponseFailure({ msg: "密码不合规" }));
+    }
     const { token, code, userInfo } = data;
     if (!userInfo.email) {
       ResponseHandler.send(
@@ -59,7 +65,7 @@ class EmailService {
     // 校验验证码和token
     const result = await codeManager.validateCode({
       path: CODE_ACTION_PATH.EMAIL,
-      type: CODE_ACTION_TYPE.UNBIND,
+      type: CODE_ACTION_TYPE.EDIT_PASSWORD,
       platform: CODE_PLATFORM.WEB,
       user: userInfo.email,
       code,
@@ -69,7 +75,7 @@ class EmailService {
       // 更新用户邮箱数据
       const updateResult = await userManager.edit({
         id: userInfo.id,
-        email: null,
+        password: data.password,
       });
       ResponseHandler.send(updateResult, { session: updateResult.data });
     } else {
@@ -99,22 +105,26 @@ class EmailService {
     ResponseHandler.send(result);
   }
   async sendCode({
-    email,
+    userInfo,
     type,
+    path,
   }: {
-    email: string;
+    userInfo: any;
     type: CODE_ACTION_TYPE;
+    path: CODE_ACTION_PATH;
   }): Promise<void> {
-    if (!email) {
+    const sendPath: string = path.toLowerCase();
+    const user = userInfo[sendPath];
+    if (!user) {
       ResponseHandler.send(
-        new ManagerResponseFailure({ msg: "email不能为空" })
+        new ManagerResponseFailure({ msg: `${path}为空，无法发送验证码` })
       );
     }
     const result = await codeManager.sendCode({
-      path: CODE_ACTION_PATH.EMAIL,
+      path,
       type,
       platform: CODE_PLATFORM.WEB,
-      user: email,
+      user,
     });
     console.log(result, "...");
     ResponseHandler.send(result);

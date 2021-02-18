@@ -36,6 +36,7 @@ declare global {
         userInfo?: {
           id: number;
           email: string;
+          mobile: string;
           memberInfo?: {
             id: number;
           };
