@@ -53,10 +53,14 @@ class WxApi extends BaseRouter {
         headers: { "Content-Type": "application/json;charset=UTF8" },
       }
     );
+    console.log(code, "-----------------");
+    console.log(result);
+
     const box = new WXBizDataCrypt(
       config.wx.appId,
       result?.data["session_key"]
     );
+
     const mobileData: any = box.decryptData(encryptedData, iv);
     console.log(mobileData, "mobileData...");
     const { userInfo, session = "" } = await UserService.registerAndLoginForApp(
