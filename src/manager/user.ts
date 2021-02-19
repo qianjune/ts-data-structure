@@ -27,12 +27,14 @@ interface UserBody {
   mobile?: number | string;
   password?: string;
   email?: string;
+  openId?: string;
 }
 interface UserPutBody {
   mobile?: string;
   password?: string;
   email?: string;
   id: number;
+  openid?: string;
 }
 type UserServiceInterface = CommonManagerInterface<UserBody, UserPutBody>;
 

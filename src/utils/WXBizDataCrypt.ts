@@ -1,4 +1,6 @@
 import crypto from "crypto";
+const algorithm = "aes-128-cbc";
+
 class WXBizDataCrypt {
   appId = "";
   sessionKey = "";
@@ -12,19 +14,26 @@ class WXBizDataCrypt {
     const ivBuffer = Buffer.from(iv, "base64");
     let decoded = "";
     try {
-      const decipher = crypto.createDecipheriv(
-        "aes-128-cbc",
-        sessionKey,
-        ivBuffer
-      );
+      const decipher = crypto.createDecipheriv(algorithm, sessionKey, ivBuffer);
+      console.log("1");
+      // decipher.setAutoPadding(true);
+      console.log("2");
       decipher.setAutoPadding(true);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      decoded = decipher.update(encryptedDataBuffer, "binary", "utf8");
-      decoded += decipher.final("utf8");
+      decoded = Buffer.concat([
+        decipher.update(encryptedDataBuffer),
+        decipher.final(),
+      ]);
+      console.log("3");
+      console.log("4");
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      // console.log(decoded.toString("base64"));
       decoded = JSON.parse(decoded);
+      console.log("5");
     } catch (error) {
-      throw new Error("Illegal Buffer");
+      throw new Error(error);
     }
     if ((decoded as any).watermark.appid !== this.appId) {
       throw new Error("Illegal Buffer");

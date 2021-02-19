@@ -130,8 +130,21 @@ class MemberManager implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
     }
   }
+  async getInfoOrCreateMember(userId: number): Promise<ManagerResponse<any>> {
+    const info = await this._getInfo({ userId });
+    if (info) {
+      return new ManagerResponseSuccess({
+        msg: responseMsg.GET_DETAIL_SUCCESS,
+        data: info,
+      });
+    } else {
+      return await this.create({
+        userId,
+      });
+    }
+  }
   async getInfo(id: number): Promise<ManagerResponse<any>> {
-    const info = await this._getInfo({ id });
+    await this._getInfo({ id });
     return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
   }
   async getList?(data: ListFilterInterface): Promise<ManagerResponse<any>> {

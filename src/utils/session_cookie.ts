@@ -29,6 +29,7 @@ class SessionCookieHandler {
     );
   }
   static async loginCheck(ctx: Context, next: () => void): Promise<void> {
+    console.log(ctx.session, "ctx.session...");
     if (ctx.session && ctx.session.userInfo) {
       global.state.userInfo = ctx.session.userInfo;
 

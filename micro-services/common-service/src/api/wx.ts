@@ -19,12 +19,36 @@ import { ResponseHandler } from "@src/utils/responseHandler";
 import { ManagerResponseSuccess } from "@src/manager/response";
 import { set } from "@root/cache/_redis";
 import UserService from "@root/micro-services/user-service/src/services/user";
+import EncryptBox from "@src/utils/encrypt_box";
+import { CODE_PLATFORM } from "@src/enum";
 
 axios.defaults.headers["Content-Type"] = "application/json";
 
 @prefix("/api/v2/wx")
 @tag("微信相关服务")
 class WxApi extends BaseRouter {
+  static async _saveSessionKey(user: string, sessionKey: string) {
+    const session = EncryptBox.buildEncryptCode(sessionKey);
+    set(user, session, 60 * 60 * 24 * 2 + 60 * 60 * 23); // 过期时间设定了3天少1小时
+    return session;
+  }
+  static async _getSessionKey(code: string) {
+    const params = {
+      appid: config.wx.appId,
+      secret: config.wx.appSecret,
+      js_code: code,
+      grant_type: "authorization_code",
+    };
+    const result: any = await axios.get(
+      "https://api.weixin.qq.com/sns/jscode2session",
+      {
+        params,
+        headers: { "Content-Type": "application/json;charset=UTF8" },
+      }
+    );
+    return result?.data;
+  }
+
   /**
    * 通过authToken获得accessToken
    * @param {Object} ctx ctx
@@ -40,35 +64,35 @@ class WxApi extends BaseRouter {
   )
   async login(ctx: Context) {
     const { code, encryptedData, iv } = ctx.request.body;
-    const params = {
-      appid: config.wx.appId,
-      secret: config.wx.appSecret,
-      js_code: code,
-      grant_type: "authorization_code",
-    };
-    const result: any = await axios.get(
-      "https://api.weixin.qq.com/sns/jscode2session",
-      {
-        params,
-        headers: { "Content-Type": "application/json;charset=UTF8" },
-      }
-    );
+    const result = await WxApi._getSessionKey(code);
     console.log(code, "-----------------");
     console.log(result);
 
-    const box = new WXBizDataCrypt(
-      config.wx.appId,
-      result?.data["session_key"]
-    );
+    const box = new WXBizDataCrypt(config.wx.appId, result["session_key"]);
 
     const mobileData: any = box.decryptData(encryptedData, iv);
     console.log(mobileData, "mobileData...");
+    const { phoneNumber } = mobileData;
+    // 这里还应该添加一个保存 手机号和对应的session_key到redis的操作，防止短期内要用到session_key
+    WxApi._saveSessionKey(phoneNumber, result["session_key"]);
+    // 创建一个小程序的的redis操作的box
+
     const { userInfo, session = "" } = await UserService.registerAndLoginForApp(
-      mobileData?.phoneNumber,
-      "session"
+      phoneNumber,
+      "session",
+      {
+        platform: CODE_PLATFORM.MINI,
+        data: {
+          openid: result["openid"],
+        },
+      }
     );
     console.log(userInfo, "userInfo...");
-    const res = new ManagerResponseSuccess({ msg: "登录成功", data: userInfo });
+    const res = new ManagerResponseSuccess({
+      msg: "登录成功",
+      data: EncryptBox.buildEncryptCode(userInfo),
+    });
+
     ResponseHandler.send(res, { session });
 
     // ResponseHandler.send(

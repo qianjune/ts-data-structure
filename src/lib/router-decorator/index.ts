@@ -1,35 +1,39 @@
-export * from './method'
-export * from './middleware'
-export * from './parameter'
-export * from './prefix'
-export * from './swagger'
-import Router from 'koa-router'
-import { set } from 'lodash'
-import baseSchema from '@src/lib/swagger/base'
-
+export * from "./method";
+export * from "./middleware";
+export * from "./parameter";
+export * from "./prefix";
+export * from "./swagger";
+import Router from "koa-router";
+import { set } from "lodash";
+import baseSchema from "@src/lib/swagger/base";
 
 const buildParameters = (parameterGroup: any): { parameters: [] } => {
   if (!parameterGroup) {
     return {
-      parameters: []
-    }
+      parameters: [],
+    };
   }
-  const keys = Object.keys(parameterGroup)
-  const parameters: any = []
-  keys.forEach(key => {
+  const keys = Object.keys(parameterGroup);
+  const parameters: any = [];
+  keys.forEach((key) => {
     const prop = {
-      name: key === 'params' ? parameterGroup[key].required[0] : key,
-      in: key === 'params' ? 'path' : key,
-      schema: parameterGroup[key]
-    }
-    parameters.push(prop)
-  })
+      name: key === "params" ? parameterGroup[key].required[0] : key,
+      in: key === "params" ? "path" : key,
+      schema: parameterGroup[key],
+    };
+    parameters.push(prop);
+  });
   return {
-    parameters
-  }
-}
+    parameters,
+  };
+};
 
-const buildSchema = ({ prefix, apiData, parameters, tag = '' }: {
+const buildSchema = ({
+  prefix,
+  apiData,
+  parameters,
+  tag = "",
+}: {
   prefix: string;
   tag: string;
   parameters: {};
@@ -43,66 +47,72 @@ const buildSchema = ({ prefix, apiData, parameters, tag = '' }: {
 }): any => {
   const schema = {
     // 设置api的描述
-    summary: apiData.swagger && apiData.swagger.summary || `${prefix}${apiData.path}`,
+    summary:
+      (apiData.swagger && apiData.swagger.summary) ||
+      `${prefix}${apiData.path}`,
     // operationId: '',
     responses: {
       200: {
-        description: ""
-      }
+        description: "",
+      },
     },
     tags: [tag || prefix],
-    ...parameters
-  }
-  const result: any = {}
-  result[`${prefix}${apiData.path}`] = {}
-  set(result[`${prefix}${apiData.path}`], apiData.method, schema)
-  return result
-}
-
+    ...parameters,
+  };
+  const result: any = {};
+  result[`${prefix}${apiData.path}`] = {};
+  set(result[`${prefix}${apiData.path}`], apiData.method, schema);
+  return result;
+};
 
 class BaseRouter {
   apis: {
     [propsName: string]: any;
-  }
+  };
   router: {
     [propsName: string]: any;
-  }
-  prefix: string
-  tag: string
+  };
+  prefix: string;
+  tag: string;
   constructor() {
-    this.router = new Router({ prefix: this.prefix })
+    this.router = new Router({ prefix: this.prefix });
   }
   buildSwaggerJson() {
-    let paths = {}
-    this.apis && Object.keys(this.apis).forEach(key => {
-      const api = this.apis[key]
-      const parameters = buildParameters(api.parameter)
-      const schema = buildSchema({ prefix: this.prefix, apiData: api, parameters, tag: this.tag })
-      paths = { ...paths, ...schema }
-    })
+    let paths = {};
+    this.apis &&
+      Object.keys(this.apis).forEach((key) => {
+        const api = this.apis[key];
+        const parameters = buildParameters(api.parameter);
+        const schema = buildSchema({
+          prefix: this.prefix,
+          apiData: api,
+          parameters,
+          tag: this.tag,
+        });
+        paths = { ...paths, ...schema };
+      });
     if (!global.swagger) {
-      global.swagger = {}
+      global.swagger = {};
     }
     if (!global.swagger.schema) {
-      global.swagger.schema = {}
+      global.swagger.schema = {};
     }
-    baseSchema.paths = { ...baseSchema.paths, ...paths }
-    global.swagger.schema = baseSchema
+    baseSchema.paths = { ...baseSchema.paths, ...paths };
+    global.swagger.schema = baseSchema;
   }
   init(name?: string) {
-    this.buildSwaggerJson()
-    this.apis && Object.keys(this.apis).forEach(key => {
-      const api = this.apis[key]
-      this.router[api.method](api.path, ...(api.middleware || []))
-
-
-    })
+    this.buildSwaggerJson();
+    this.apis &&
+      Object.keys(this.apis).forEach((key) => {
+        const api = this.apis[key];
+        this.router[api.method](api.path, ...(api.middleware || []));
+      });
     // 路由加载时显示的路由名字
     if (this.tag) {
-      this.router.otherProps = { tag: this.tag }
+      this.router.otherProps = { tag: this.tag };
     }
-    return this.router
+    return this.router;
   }
 }
 
-export default BaseRouter
+export default BaseRouter;
