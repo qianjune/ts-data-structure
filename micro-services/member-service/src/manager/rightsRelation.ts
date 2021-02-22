@@ -17,6 +17,7 @@ import {
 import { RightsRelationDb } from "@src/db/models";
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
+import { ResponseHandler } from "@src/utils/responseHandler";
 
 const placeholder = "RightsRelation";
 const responseMsg = ResponseMsg(placeholder);
@@ -31,7 +32,9 @@ class RightsRelation implements CommonManager {
       where: { id },
     });
     if (!item) {
-      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
+      ResponseHandler.send(
+        new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
+      );
     }
     return item;
   }

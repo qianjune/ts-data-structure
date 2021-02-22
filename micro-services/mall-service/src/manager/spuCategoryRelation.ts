@@ -16,6 +16,7 @@ import {
 } from "@src/manager/response";
 import { SpuCategoryRelation as SpuCategoryRelationDb } from "@src/db/models";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
+import { ResponseHandler } from "@src/utils/responseHandler";
 
 const placeholder = "SpuCategoryRelation";
 const responseMsg = ResponseMsg(placeholder);
@@ -25,7 +26,9 @@ class SpuCategoryRelation implements CommonManager {
       where: { id },
     });
     if (!item) {
-      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
+      ResponseHandler.send(
+        new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
+      );
     }
     return item;
   }

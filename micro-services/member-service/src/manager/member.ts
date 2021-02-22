@@ -12,6 +12,8 @@ import {
   CommonManager,
   ListFilterInterface,
 } from "@src/manager/interface/commonManager";
+import { ResponseHandler } from "@src/utils/responseHandler";
+import { omit } from "lodash";
 /**
  * @description 会员 controller
  * @author June
@@ -72,6 +74,8 @@ class MemberManager implements CommonManager {
       tel,
       birthday,
       points,
+      avatarUrl,
+      residence,
     } = data;
     console.log("开始更新成长值");
     const updateData = global.util.lodash.omitNil({
@@ -81,6 +85,8 @@ class MemberManager implements CommonManager {
       birthday,
       growthValue,
       points,
+      avatarUrl,
+      residence,
     });
     const where = global.util.lodash.omitNil({
       userId,
@@ -93,7 +99,7 @@ class MemberManager implements CommonManager {
       return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
     }
     const updateConfig: any = {};
-    if (config.transaction) {
+    if (config?.transaction) {
       updateConfig.transaction = config.transaction;
     }
     const result = await Member.update(updateData, {
@@ -120,32 +126,61 @@ class MemberManager implements CommonManager {
   del(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  async _getInfo(data: { id?: number; userId?: number }): Promise<any> {
+  async _getInfo(
+    data: { id?: number; userId?: number },
+    config?: { returnFail?: boolean }
+  ): Promise<any> {
+    const validData = global.util.lodash.omitNil(data);
+    console.log(validData, "validData...");
     const info = await Member.findOne({
-      where: data,
+      where: validData,
     });
+    console.log(info, "info...");
     if (info) {
       return info;
     } else {
-      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
+      if (config.returnFail) {
+        return false;
+      } else {
+        ResponseHandler.send(
+          new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
+        );
+      }
     }
   }
-  async getInfoOrCreateMember(userId: number): Promise<ManagerResponse<any>> {
-    const info = await this._getInfo({ userId });
+  async getInfoOrCreateMember(data: {
+    userId: number;
+    sex?: number;
+    nickName?: string;
+    residence?: string;
+    avatarUrl?: string;
+  }): Promise<ManagerResponse<any>> {
+    const { userId } = data;
+    let info = await this._getInfo({ userId }, { returnFail: true });
     if (info) {
+      const { sex, nickName, residence, avatarUrl } = data;
+      if (nickName || residence || avatarUrl || sex) {
+        const updateData = omit({ id: info.id, ...data });
+        console.log(updateData, "updateData...");
+        info = this.edit(updateData);
+      }
       return new ManagerResponseSuccess({
         msg: responseMsg.GET_DETAIL_SUCCESS,
         data: info,
       });
     } else {
-      return await this.create({
-        userId,
-      });
+      return await this.create(data);
     }
   }
+
   async getInfo(id: number): Promise<ManagerResponse<any>> {
-    await this._getInfo({ id });
-    return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
+    const info = await this._getInfo({ id });
+    if (info) {
+      return new ManagerResponseSuccess({
+        data: info,
+        msg: responseMsg.GET_DETAIL_SUCCESS,
+      });
+    }
   }
   async getList?(data: ListFilterInterface): Promise<ManagerResponse<any>> {
     const { pageNo, pageSize } = data;

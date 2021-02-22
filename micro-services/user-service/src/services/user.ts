@@ -80,7 +80,9 @@ class UserService implements CommonService {
     }
     if (result?.id) {
       // 获取用户会员信息，如果没有就创建会员卡
-      const memberInfo = await memberManager.getInfoOrCreateMember(result?.id);
+      const memberInfo = await memberManager.getInfoOrCreateMember({
+        userId: result?.id,
+      });
       result.memberInfo = memberInfo.data;
     }
 
@@ -106,7 +108,19 @@ class UserService implements CommonService {
    */
   static async registerAndLoginByOpenId(
     user: string,
-    model: "jwt" | "session" = "jwt"
+    model: "jwt" | "session" = "jwt",
+    config?: {
+      data?: {
+        avatarUrl: string;
+        city: string;
+        country: string;
+        gender: number;
+        language: string;
+        nickName: string;
+        province: string;
+      };
+      platform: CODE_PLATFORM;
+    }
   ): Promise<any> {
     // 首先验证验证码，查找是否有该用户
     const realUser = await userManager.getValidateData(
@@ -125,8 +139,22 @@ class UserService implements CommonService {
     } else {
       result = realUser.toJSON();
     }
+    const {
+      city,
+      country,
+      nickName,
+      province,
+      avatarUrl,
+      gender,
+    } = config.data;
     if (result?.id) {
-      const memberInfo = await memberManager._getInfo(result?.id);
+      const memberInfo = await memberManager.getInfoOrCreateMember({
+        userId: result?.id,
+        sex: gender,
+        nickName,
+        residence: `${country}-${province}-${city}`,
+        avatarUrl,
+      });
       result.memberInfo = memberInfo.data;
     }
 

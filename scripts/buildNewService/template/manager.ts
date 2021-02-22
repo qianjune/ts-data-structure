@@ -18,6 +18,7 @@ import {
 import XXXXXXDb from "@src/db/models/v2/xXXXXX";
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
+import { ResponseHandler } from "@src/utils/responseHandler";
 
 const placeholder = "XXXXXX";
 const responseMsg = ResponseMsg(placeholder);
@@ -35,7 +36,9 @@ class XXXXXX implements CommonManager {
       where,
     });
     if (!item) {
-      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
+      ResponseHandler.send(
+        new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
+      );
     }
     return item.toJSON();
   }
@@ -45,7 +48,7 @@ class XXXXXX implements CommonManager {
    * @param data
    */
   async create(data: any): Promise<ManagerResponse<any>> {
-    const { } = data;
+    const {} = data;
     const item = await XXXXXXDb.findOne({
       where: {},
     });

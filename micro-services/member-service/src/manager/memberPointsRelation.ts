@@ -18,6 +18,7 @@ import {
 import { MemberPointsRelationDb } from "@src/db/models";
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
+import { ResponseHandler } from "@src/utils/responseHandler";
 
 const placeholder = "MemberPointsRelation";
 const responseMsg = ResponseMsg(placeholder);
@@ -32,7 +33,9 @@ class MemberPointsRelation implements CommonManager {
       where: { id },
     });
     if (!item) {
-      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
+      ResponseHandler.send(
+        new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
+      );
     }
     return item;
   }

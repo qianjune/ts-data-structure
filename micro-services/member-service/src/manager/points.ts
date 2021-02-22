@@ -19,6 +19,7 @@ import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 import { PointsType } from "@micro-services/member-service/src/db/points";
 import { RightPatternType } from "@micro-services/member-service/src/db/right";
+import { ResponseHandler } from "@src/utils/responseHandler";
 import MemberPointsRelation from "./memberPointsRelation";
 import {
   LevelGroupManager,
@@ -41,7 +42,9 @@ class Points implements CommonManager {
       where: { id },
     });
     if (!item) {
-      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
+      ResponseHandler.send(
+        new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
+      );
     }
     return item;
   }

@@ -8,9 +8,9 @@ import BaseRouter, {
   parameter,
   post,
   tag,
+  summary,
 } from "@src/lib/router-decorator";
 import Joi from "@hapi/joi";
-import moment from "moment";
 import axios from "axios";
 import config from "@root/config/config";
 import { Context } from "koa";
@@ -46,6 +46,7 @@ class WxApi extends BaseRouter {
         headers: { "Content-Type": "application/json;charset=UTF8" },
       }
     );
+    console.log(result, "获取session_key");
     return result?.data;
   }
 
@@ -66,7 +67,7 @@ class WxApi extends BaseRouter {
     const { code, encryptedData, iv } = ctx.request.body;
     const result = await WxApi._getSessionKey(code);
     console.log(code, "-----------------");
-    console.log(result);
+    console.log(result, "合法session_key");
 
     const box = new WXBizDataCrypt(config.wx.appId, result["session_key"]);
 
@@ -94,13 +95,6 @@ class WxApi extends BaseRouter {
     });
 
     ResponseHandler.send(res, { session });
-
-    // ResponseHandler.send(
-    //   new ManagerResponseSuccess({
-    //     msg: "登录成功",
-    //     data: mobileData,
-    //   })
-    // );
   }
 
   @post("/data/crypt")
@@ -118,6 +112,46 @@ class WxApi extends BaseRouter {
     ctx.body = {
       data: result,
     };
+  }
+
+  @post("/login/user/info")
+  @summary("微信登录（带用户信息）")
+  @parameter(
+    Joi.object({
+      code: Joi.string().required(),
+      avatarUrl: Joi.string().required(),
+      city: Joi.string().required(),
+      country: Joi.string().required(),
+      gender: Joi.number().required(),
+      language: Joi.string().required(),
+      nickName: Joi.string().required(),
+      province: Joi.string().required(),
+    }),
+    "body"
+  )
+  async loginWithUserInfo(ctx: Context) {
+    const { body } = ctx.request;
+    const { code, ...otherBody } = body;
+    const result = await WxApi._getSessionKey(code);
+
+    const {
+      userInfo,
+      session = "",
+    } = await UserService.registerAndLoginByOpenId(
+      result["openid"],
+      "session",
+      {
+        platform: CODE_PLATFORM.MINI,
+        data: otherBody,
+      }
+    );
+    console.log(userInfo, "userInfo...");
+    const res = new ManagerResponseSuccess({
+      msg: "登录成功",
+      data: EncryptBox.buildEncryptCode(userInfo),
+    });
+
+    ResponseHandler.send(res, { session });
   }
 }
 

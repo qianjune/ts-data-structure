@@ -67,6 +67,10 @@ Member.init(
       type: TYPES.INTEGER,
       comment: "生份证",
     },
+    avatarUrl: {
+      type: TYPES.STRING,
+      comment: "头像",
+    },
   },
   {
     sequelize,

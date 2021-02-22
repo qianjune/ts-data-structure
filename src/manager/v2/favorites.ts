@@ -18,6 +18,7 @@ import {
 import sequelize from "@root/core/db";
 import { FavoritesDb, ShopModel, User } from "@src/db/models";
 import { FavoritesItemType } from "@src/db/models/v2/user/favorites";
+import { ResponseHandler } from "@src/utils/responseHandler";
 interface FavoritesItem {
   type: FavoritesItemType;
   likeId: number;
@@ -32,7 +33,9 @@ class FavoritesManager implements CommonManager {
       where: { id },
     });
     if (!item) {
-      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
+      ResponseHandler.send(
+        new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
+      );
     }
     return item;
   }

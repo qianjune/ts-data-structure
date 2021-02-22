@@ -15,6 +15,7 @@ import {
   ManagerResponseFailure,
 } from "@src/manager/response";
 import BrowseRecordsDb from "@src/db/models/v2/user/browseRecords";
+import { ResponseHandler } from "@src/utils/responseHandler";
 
 const placeholder = "BrowseRecords";
 const responseMsg = ResponseMsg(placeholder);
@@ -24,7 +25,9 @@ class BrowseRecords implements CommonManager {
       where: { id },
     });
     if (!item) {
-      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
+      ResponseHandler.send(
+        new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
+      );
     }
     return item;
   }

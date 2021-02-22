@@ -17,6 +17,7 @@ import {
 import { LevelDb, LevelGroupDb } from "@src/db/models";
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
+import { ResponseHandler } from "@src/utils/responseHandler";
 import { LevelManager } from ".";
 
 const placeholder = "LevelGroup";
@@ -44,7 +45,9 @@ class LevelGroup implements CommonManager {
       ],
     });
     if (!item) {
-      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
+      ResponseHandler.send(
+        new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
+      );
     }
     const data: any = item.toJSON();
     return data;

@@ -67,8 +67,7 @@ class MemberRouter extends BaseRouter {
   @summary("获取会员信息")
   @middleware(SessionCookieHandler.loginCheck)
   async getDetail(ctx: Context) {
-    console.log("C护发");
-    await memberService.getInfo(global.state.userInfo.id);
+    await memberService.getInfo(global.state.userInfo?.memberInfo?.id);
   }
 }
 

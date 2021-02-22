@@ -17,6 +17,7 @@ import {
 import { RightDb, RightPackageDb } from "@src/db/models";
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
+import { ResponseHandler } from "@src/utils/responseHandler";
 
 const placeholder = "RightPackage";
 const responseMsg = ResponseMsg(placeholder);
@@ -42,7 +43,9 @@ class RightPackage implements CommonManager {
       ],
     });
     if (!item) {
-      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
+      ResponseHandler.send(
+        new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
+      );
     }
     return item;
   }
