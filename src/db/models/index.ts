@@ -82,13 +82,13 @@ Member.belongsTo(User, {
 // });
 // // 店铺 - 用户 - 关系表 end
 
-// Product.belongsTo(ShopModel, {
-//   as: "shopDetail",
-//   foreignKey: "shopId",
-// });
-// // Product.hasMany(ShoppingCartModel, {
-// //   foreignKey: 'productId'
-// // })
+Product.belongsTo(ShopModel, {
+  as: "shopDetail",
+  foreignKey: "shopId",
+});
+// Product.hasMany(ShoppingCartModel, {
+//   foreignKey: 'productId'
+// })
 // // ShoppingCart-User 关系 一对多 begin
 // ShoppingCart.belongsTo(User, {
 //   foreignKey: "userId",

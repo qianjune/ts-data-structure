@@ -148,7 +148,7 @@ class WxApi extends BaseRouter {
     console.log(userInfo, "userInfo...");
     const res = new ManagerResponseSuccess({
       msg: "登录成功",
-      data: EncryptBox.buildEncryptCode(userInfo),
+      data: userInfo,
     });
 
     ResponseHandler.send(res, { session });

@@ -152,13 +152,13 @@ class ProductManager implements CommonManager {
     data: ListFilterInterface & { shopId?: number },
     config?: RequestConfigInterface
   ): Promise<ManagerResponse<any>> {
-    const { pageSize = 10, pageNo = 1, shopId, belong, categoryId } = data;
+    const { pageSize = 10, pageNo = 1, shopId, belong } = data;
     const where = global.util.lodash.omitNil({ shopId, belong });
     const listParams = buildCommonListParams({ pageNo, pageSize }, config);
     let productList: any[] = [];
     let count = 0;
-    if (categoryId) {
-      productList = await this._getListByCategory({ categoryId });
+    if (belong) {
+      productList = await this._getListByCategory({ categoryId: belong });
       count = productList.length;
     } else {
       const result = await Product.findAndCountAll({
@@ -172,7 +172,7 @@ class ProductManager implements CommonManager {
           {
             model: ProductCategory,
             through: {
-              where: { categoryId },
+              where: { categoryId: belong },
             },
             attributes: ["name", "id"],
           },
