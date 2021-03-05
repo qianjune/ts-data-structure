@@ -91,6 +91,7 @@
     "@types/koa-static": "^4.0.1",
     "@types/koa2-cors": "^2.0.1",
     "@types/koa__multer": "^2.0.2",
+    "@types/node-xlsx": "^0.15.1",
     "@types/nodemailer": "^6.4.0",
     "@types/qiniu": "^7.0.1",
     "@types/ramda": "^0.27.11",

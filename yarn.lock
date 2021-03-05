@@ -1156,6 +1156,11 @@
     "@types/node" "*"
     form-data "^3.0.0"
 
+"@types/node-xlsx@^0.15.1":
+  version "0.15.1"
+  resolved "https://registry.npm.taobao.org/@types/node-xlsx/download/@types/node-xlsx-0.15.1.tgz#f5c15d2f7b8e0074d63d699a106da2fcf3c3eb38"
+  integrity sha1-9cFdL3uOAHTWPWmaEG2i/PPD6zg=
+
 "@types/node@*":
   version "14.14.21"
   resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-14.14.21.tgz?cache=0&sync_timestamp=1610658194064&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fnode%2Fdownload%2F%40types%2Fnode-14.14.21.tgz#d934aacc22424fe9622ebf6857370c052eae464e"
