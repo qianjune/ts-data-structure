@@ -12,6 +12,8 @@ import BaseRouter, {
 } from "@src/lib/router-decorator";
 import Joi from "@hapi/joi";
 import { Context } from "koa";
+import { ResponseHandler } from "@src/utils/responseHandler";
+import { ManagerResponseSuccess } from "@src/manager/response";
 
 @prefix("/api/v2/excel")
 @tag("微信相关服务")
@@ -35,7 +37,12 @@ class ExcelApi extends BaseRouter {
           small: arr[4],
         };
       });
-    ctx.body = result;
+    ResponseHandler.send(
+      new ManagerResponseSuccess({
+        data: result,
+        msg: "高德地图地址类型码请求成功",
+      })
+    );
   }
 
   @get("/products")
