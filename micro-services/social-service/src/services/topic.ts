@@ -1,18 +1,18 @@
 /**
- * @description cname service
+ * @description 话题 service
  */
 import { CommonService } from "@src/services/interface/common";
 import { ResponseHandler } from "@src/utils/responseHandler";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
-import XXXXXXManager from "#BASE_LOCATION/manager/xXXXXX";
-const xXXXXXManager = new XXXXXXManager();
-class XXXXXXService implements CommonService {
+import TopicManager from "@micro-services/social-service/src/manager/topic";
+const topicManager = new TopicManager();
+class TopicService implements CommonService {
   /**
    * 创建
    * @param data
    */
   async create(data: any): Promise<void> {
-    const result = await xXXXXXManager.create(data);
+    const result = await topicManager.create(data);
     ResponseHandler.send(result);
   }
 
@@ -21,7 +21,7 @@ class XXXXXXService implements CommonService {
    * @param data
    */
   async edit<T>(data: T): Promise<void> {
-    const result = await xXXXXXManager.edit(data);
+    const result = await topicManager.edit(data);
     ResponseHandler.send(result);
   }
 
@@ -30,7 +30,7 @@ class XXXXXXService implements CommonService {
    * @param id
    */
   async del(id: number): Promise<void> {
-    const result = await xXXXXXManager.del(id);
+    const result = await topicManager.del(id);
     ResponseHandler.send(result);
   }
 
@@ -39,7 +39,7 @@ class XXXXXXService implements CommonService {
    * @param id
    */
   async getInfo(id: number): Promise<void> {
-    const result = await xXXXXXManager.getInfo(id);
+    const result = await topicManager.getInfo(id);
     ResponseHandler.send(result);
   }
 
@@ -49,9 +49,9 @@ class XXXXXXService implements CommonService {
    * @param config
    */
   async getList?(data: any, config?: RequestConfigInterface): Promise<void> {
-    const result = await xXXXXXManager.getList(data);
+    const result = await topicManager.getList(data);
     ResponseHandler.send(result);
   }
 }
 
-export default XXXXXXService;
+export default TopicService;

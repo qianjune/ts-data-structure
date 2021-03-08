@@ -1,5 +1,5 @@
 /**
- * @description cname api
+ * @description 话题 api
  */
 
 import joi from "@hapi/joi";
@@ -13,23 +13,23 @@ import BaseRouter, {
   tag,
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
-import XXXXXXService from "#BASE_LOCATION/services/xXXXXX";
-const xXXXXXService = new XXXXXXService();
+import TopicService from "@micro-services/social-service/src/services/topic";
+const topicService = new TopicService();
 
-@prefix("/api/xXXXXX")
-@tag("cname相关服务")
-class XXXXXXApi extends BaseRouter {
+@prefix("/api/topic")
+@tag("话题相关服务")
+class TopicApi extends BaseRouter {
   /**
    * 创建
    * @param ctx
    */
   @post("/create")
-  @summary("cname创建")
+  @summary("话题创建")
   @parameter(joi.object({}), "body")
   async create(ctx: Context): Promise<void> {
     // create item
     const { body } = ctx.request;
-    await xXXXXXService.create(body);
+    await topicService.create(body);
   }
 
   /**
@@ -37,7 +37,7 @@ class XXXXXXApi extends BaseRouter {
    * @param ctx
    */
   @get("/detail/:id")
-  @summary("cname详情")
+  @summary("话题详情")
   @parameter(
     joi.object({
       id: joi.string().required(),
@@ -47,7 +47,7 @@ class XXXXXXApi extends BaseRouter {
   async getInfo(ctx: Context): Promise<void> {
     // get info
     const { id } = ctx.state.parameter;
-    await xXXXXXService.getInfo(id);
+    await topicService.getInfo(id);
   }
 
   /**
@@ -55,7 +55,7 @@ class XXXXXXApi extends BaseRouter {
    * @param ctx
    */
   @get("/list")
-  @summary("cname列表")
+  @summary("话题列表")
   @parameter(
     joi.object({
       pageSize: joi.number().required(),
@@ -66,7 +66,7 @@ class XXXXXXApi extends BaseRouter {
   async getList(ctx: Context): Promise<void> {
     // get list
     const { parameter } = ctx.state;
-    await xXXXXXService.getList(parameter);
+    await topicService.getList(parameter);
   }
 
   /**
@@ -74,7 +74,7 @@ class XXXXXXApi extends BaseRouter {
    * @param ctx
    */
   @del("/:id")
-  @summary("删除cname")
+  @summary("删除话题")
   @parameter(
     joi.object({
       id: joi.string().required(),
@@ -84,7 +84,7 @@ class XXXXXXApi extends BaseRouter {
   async del(ctx: Context): Promise<void> {
     // del item
     const { id } = ctx.state.parameter;
-    await xXXXXXService.del(id);
+    await topicService.del(id);
   }
 
   /**
@@ -92,13 +92,13 @@ class XXXXXXApi extends BaseRouter {
    * @param ctx 、
    */
   @post("/edit")
-  @summary("cname编辑")
+  @summary("话题编辑")
   @parameter(joi.object({}), "body")
   async edit(ctx: Context): Promise<void> {
     // edit item
     const { body } = ctx.request;
-    await xXXXXXService.edit(body);
+    await topicService.edit(body);
   }
 }
 
-export default new XXXXXXApi().init();
+export default new TopicApi().init();

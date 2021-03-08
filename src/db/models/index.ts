@@ -29,7 +29,11 @@ import {
 } from "@micro-services/mall-service/src/db";
 import { CommentModel } from "@micro-services/common-service/src/db";
 import User from "@root/micro-services/user-service/src/db/user";
-
+import {
+  NoteDB,
+  TopicDB,
+  TopicNoteRelationDB,
+} from "@micro-services/social-service/src/db/index";
 // import ShopProductRelation from '@src/db/models/v2/shopProductRelation'
 
 // Address.belongsTo(User, {
@@ -218,6 +222,9 @@ LevelGroupDb.hasMany(LevelGroupLevelRelationDb, { foreignKey: "levelGroupId" });
 LevelDb.hasMany(LevelGroupLevelRelationDb, { foreignKey: "levelId" });
 // levelGroup - relation - level 关系表 end
 
+// note - relation - topic 关系 begin
+
+// note - relation - topic 关系 end
 export {
   Address,
   // IdCard,

@@ -15,6 +15,11 @@ program
   .description("创建新的服务")
   .option("--name [serviceName]")
   .option("--cname [serviceCname]")
+  .option("--common", "通用服务")
+  .option("--mall", "市场服务")
+  .option("--member", "会员服务")
+  .option("--social", "社交服务")
+  .option("--user", "用户服务")
   .option("--all", "全部")
   .option("--api", "仅api")
   .option("--db", "仅数据库")
@@ -31,6 +36,11 @@ program
         db: false,
         service: false,
         manager: false,
+        common: false,
+        mall: false,
+        member: false,
+        social: false,
+        user: false,
       },
       option
     );
@@ -73,7 +83,41 @@ program
         message: "请输入服务描述",
       });
     }
-
+    if (
+      config.common === false &&
+      config.mall === false &&
+      config.member === false &&
+      config.social === false &&
+      config.user === false
+    ) {
+      promps.push({
+        type: "list",
+        name: "baseLocation",
+        message: "放在哪个微服务中",
+        choices: [
+          {
+            name: "通用",
+            value: "common",
+          },
+          {
+            name: "市场",
+            value: "mall",
+          },
+          {
+            name: "会员",
+            value: "member",
+          },
+          {
+            name: "社交",
+            value: "social",
+          },
+          {
+            name: "用户",
+            value: "user",
+          },
+        ],
+      });
+    }
     if (
       config.all === false &&
       config.api === false &&
@@ -116,6 +160,7 @@ program
 
       config = _.assign(config, answers);
       config[answers["fileType"]] = true;
+      console.log(answers);
       // console.log("process.argv", process.argv);
       // const args = process.argv.slice(2, process.argv.length);
       // console.log("args:", args);
@@ -137,11 +182,16 @@ program
         };
       }
       const basePath = join(__dirname, "../", "../");
-      const srcPath = join(basePath, "src");
-      const dbPath = join(srcPath, "db", "models", "v2");
-      const apiPath = join(srcPath, "api", "v2");
-      const servicePath = join(srcPath, "services", "v2");
-      const managerPath = join(srcPath, "manager", "v2");
+      const baseMicroServicePath = join(
+        "micro-services/",
+        `${answers["baseLocation"]}-service/`,
+        "src"
+      );
+      const srcPath = join(basePath, baseMicroServicePath);
+      const dbPath = join(srcPath, "db");
+      const apiPath = join(srcPath, "api");
+      const servicePath = join(srcPath, "services");
+      const managerPath = join(srcPath, "manager");
       // --db --api --service --manager 根据参数生成文件
       const pathGroup = [
         {
@@ -161,6 +211,8 @@ program
           path: managerPath,
         },
       ];
+      console.log(pathGroup);
+
       const tempPath = join(basePath, "scripts/buildNewService", "template");
       pathGroup.forEach((item) => {
         if (defaultConfig[item.key]) {
@@ -173,13 +225,18 @@ program
           } else {
             console.log(logName, isFileExist);
 
+            const tempFilePath = join(tempPath, item.key + ".ts");
+            const targetFile = join(item.path, serviceName + ".ts");
+
             const fileContent = buildFileContent({
-              filePath: join(tempPath, item.key + ".ts"),
+              filePath: tempFilePath,
               replaceName: serviceName,
               type: item.key,
               cname: config.serviceCname,
+              baseMicroServicePath,
             });
-            writeServiceFile(join(item.path, serviceName + ".ts"), fileContent);
+
+            writeServiceFile(targetFile, fileContent);
           }
         }
       });

@@ -26,8 +26,9 @@ const buildFileContent = (data: {
   replaceName: string;
   type: FILE_TYPE;
   cname?: string;
+  baseMicroServicePath: string;
 }): string => {
-  const { filePath, replaceName } = data;
+  const { filePath, replaceName, baseMicroServicePath } = data;
   const cname = data.cname || replaceName;
   const buf = fs.readFileSync(filePath);
   let resultStr = buf
@@ -36,6 +37,9 @@ const buildFileContent = (data: {
   resultStr = resultStr
     .toString()
     .replace(/xXXXXX/g, lowerCaseFirstWord(replaceName));
+  resultStr = resultStr
+    .toString()
+    .replace(/#BASE_LOCATION/g, `@${baseMicroServicePath}`);
   resultStr = resultStr.toString().replace(/cname/g, lowerCaseFirstWord(cname));
   return resultStr;
 };
