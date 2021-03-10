@@ -22,7 +22,7 @@ import XXXXXXDb from "#BASE_LOCATION/db/xXXXXX";
 
 const placeholder = "XXXXXX";
 const responseMsg = ResponseMsg(placeholder);
-class XXXXXX implements CommonManager {
+class XXXXXXManager implements CommonManager {
   /**
    * 获取详情（私有）
    * @param id

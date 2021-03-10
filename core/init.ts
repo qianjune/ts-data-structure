@@ -24,8 +24,7 @@ export class InitManager {
     const whenLoadModule = (obj: any): void => {
       if (obj.default instanceof Router) {
         ConsoleBox.info(
-          `路由{${
-            (obj.default as any)?.otherProps?.tag ?? ""
+          `路由{${(obj.default as any)?.otherProps?.tag ?? ""
           }}加载中，请耐心等待。。。`
         );
         InitManager.app.use(obj.default.routes());
@@ -38,6 +37,7 @@ export class InitManager {
       `/${ms}/member-service`,
       `/${ms}/mall-service`,
       `/${ms}/common-service`,
+      `/${ms}/social-service`,
     ];
     needToRequireDirectoryGroup.forEach((path) => {
       const apiDirectory = `${process.cwd()}${path}/src/api`;

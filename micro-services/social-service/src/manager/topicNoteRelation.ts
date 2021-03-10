@@ -19,7 +19,8 @@ import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 import { ResponseHandler } from "@src/utils/responseHandler";
 import TopicNoteRelationDb from "@micro-services/social-service/src/db/topicNoteRelation";
-
+import Topic from "./topic";
+const topicManager = new Topic();
 const placeholder = "TopicNoteRelation";
 const responseMsg = ResponseMsg(placeholder);
 class TopicNoteRelation implements CommonManager {
@@ -48,24 +49,27 @@ class TopicNoteRelation implements CommonManager {
    * @param data
    */
   async create(data: any): Promise<ManagerResponse<any>> {
-    const { } = data;
-    const item = await TopicNoteRelationDb.findOne({
-      where: {},
-    });
-    if (item) {
-      return new ManagerResponseFailure({
-        msg: responseMsg.CREATE_FAIL_BY_EXISTED,
-      });
-    }
-    const result = await TopicNoteRelationDb.create(data);
-    if (result) {
-      return new ManagerResponseSuccess({
-        msg: responseMsg.CREATE_SUCCESS,
-        data: result,
-      });
-    } else {
-      return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
-    }
+    const { noteId, topicGroup = [] } = data;
+    // 查询topicGroup是否创建
+    topicManager._handleGroup(topicGroup);
+
+    // const item = await TopicNoteRelationDb.findOne({
+    //   where: {},
+    // });
+    // if (item) {
+    //   return new ManagerResponseFailure({
+    //     msg: responseMsg.CREATE_FAIL_BY_EXISTED,
+    //   });
+    // }
+    // const result = await TopicNoteRelationDb.create(data);
+    // if (result) {
+    //   return new ManagerResponseSuccess({
+    //     msg: responseMsg.CREATE_SUCCESS,
+    //     data: result,
+    //   });
+    // } else {
+    return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
+    // }
   }
 
   /**

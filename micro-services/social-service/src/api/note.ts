@@ -25,7 +25,14 @@ class NoteApi extends BaseRouter {
    */
   @post("/create")
   @summary("笔记创建")
-  @parameter(joi.object({}), "body")
+  @parameter(
+    joi.object({
+      sightMaterials: joi.string().required(),
+      title: joi.string().required(),
+      content: joi.string().required(),
+    }),
+    "body"
+  )
   async create(ctx: Context): Promise<void> {
     // create item
     const { body } = ctx.request;

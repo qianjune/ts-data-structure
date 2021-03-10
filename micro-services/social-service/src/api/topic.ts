@@ -25,7 +25,12 @@ class TopicApi extends BaseRouter {
    */
   @post("/create")
   @summary("话题创建")
-  @parameter(joi.object({}), "body")
+  @parameter(
+    joi.object({
+      name: joi.string().required(),
+    }),
+    "body"
+  )
   async create(ctx: Context): Promise<void> {
     // create item
     const { body } = ctx.request;
@@ -60,6 +65,7 @@ class TopicApi extends BaseRouter {
     joi.object({
       pageSize: joi.number().required(),
       pageNo: joi.number().required(),
+      keywords: joi.string(),
     }),
     "query"
   )

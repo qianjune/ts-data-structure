@@ -19,7 +19,10 @@ import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 import { ResponseHandler } from "@src/utils/responseHandler";
 import NoteDb from "@micro-services/social-service/src/db/note";
-
+import TopicManager from "./topic";
+import TopicNoteRelation from "./topicNoteRelation";
+const topicNoteRelation = new TopicNoteRelation();
+const topicManager = new TopicManager();
 const placeholder = "Note";
 const responseMsg = ResponseMsg(placeholder);
 class Note implements CommonManager {
@@ -48,7 +51,8 @@ class Note implements CommonManager {
    * @param data
    */
   async create(data: any): Promise<ManagerResponse<any>> {
-    const { } = data;
+    const { content } = data;
+
     const item = await NoteDb.findOne({
       where: {},
     });
@@ -57,8 +61,16 @@ class Note implements CommonManager {
         msg: responseMsg.CREATE_FAIL_BY_EXISTED,
       });
     }
-    const result = await NoteDb.create(data);
+    const result: any = await NoteDb.create(data);
     if (result) {
+      const topicGroup = topicManager._analysisTopic(content);
+      if (topicGroup.length > 0) {
+        // 将noteId和topic做处理
+        const bindRelationResult = await topicNoteRelation.create({
+          noteId: result.toJSON().id,
+          topicGroup,
+        });
+      }
       return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_SUCCESS,
         data: result,

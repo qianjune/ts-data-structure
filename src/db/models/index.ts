@@ -223,7 +223,22 @@ LevelDb.hasMany(LevelGroupLevelRelationDb, { foreignKey: "levelId" });
 // levelGroup - relation - level 关系表 end
 
 // note - relation - topic 关系 begin
-
+NoteDB.belongsToMany(TopicDB, {
+  through: TopicNoteRelationDB,
+  foreignKey: "noteId",
+  otherKey: "topicId",
+});
+TopicDB.belongsToMany(NoteDB, {
+  through: TopicNoteRelationDB,
+  foreignKey: "topicId",
+  otherKey: "noteId",
+});
+TopicNoteRelationDB.belongsTo(TopicDB, { foreignKey: "topicId" });
+TopicNoteRelationDB.belongsTo(NoteDB, {
+  foreignKey: "noteId",
+});
+NoteDB.hasMany(TopicNoteRelationDB, { foreignKey: "noteId" });
+TopicDB.hasMany(TopicNoteRelationDB, { foreignKey: "topicId" });
 // note - relation - topic 关系 end
 export {
   Address,

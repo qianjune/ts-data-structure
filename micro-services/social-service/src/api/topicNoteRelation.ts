@@ -25,7 +25,13 @@ class TopicNoteRelationApi extends BaseRouter {
    */
   @post("/create")
   @summary("笔记和话题的关系创建")
-  @parameter(joi.object({}), "body")
+  @parameter(
+    joi.object({
+      noteId: joi.string().required(),
+      topicGroup: joi.array().items(joi.string()).required(),
+    }),
+    "body"
+  )
   async create(ctx: Context): Promise<void> {
     // create item
     const { body } = ctx.request;

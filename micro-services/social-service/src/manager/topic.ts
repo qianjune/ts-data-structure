@@ -19,7 +19,7 @@ import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 import { ResponseHandler } from "@src/utils/responseHandler";
 import TopicDb from "@micro-services/social-service/src/db/topic";
-
+import Sequelize from "sequelize";
 const placeholder = "Topic";
 const responseMsg = ResponseMsg(placeholder);
 class Topic implements CommonManager {
@@ -42,17 +42,61 @@ class Topic implements CommonManager {
     }
     return item.toJSON();
   }
+  /**
+   * 分解出content中的主题,去掉多余的空格和#
+   * @param data
+   */
+  _analysisTopic(data: string): string[] {
+    if (/#[\u4e00-\u9fa5_a-zA-Z0-9]+\s/.test(data)) {
+      const result: string[] = data.match(/#[\u4e00-\u9fa5_a-zA-Z0-9]+\s/g);
 
+      return result.map((topic) => {
+        let cloneTopic = topic;
+        cloneTopic = cloneTopic.trim();
+        cloneTopic = cloneTopic.replace("#", "");
+        return cloneTopic;
+      });
+    }
+    return [];
+  }
+  async _handleGroup(topicGroup: string[]) {
+    const searchGroup = topicGroup.map((topic: string) => {
+      return TopicDb.findOne({
+        where: { name: topic },
+      });
+    });
+    const searchResult = await Promise.all(searchGroup);
+    console.log(searchResult, "searchResult...");
+    const topicIds: string[] = [];
+    const needCreateTopicRequestGroup: Promise<any>[] = [];
+    searchResult.forEach((sr: any, i) => {
+      if (!sr) {
+        needCreateTopicRequestGroup.push(
+          TopicDb.create({ name: topicGroup[i] })
+        );
+      } else {
+        topicIds.push(sr.toJSON().id);
+      }
+    });
+    console.log(needCreateTopicRequestGroup, "needCreateTopicRequestGroup...");
+    const groupCreateResult = await Promise.all(needCreateTopicRequestGroup);
+    groupCreateResult.forEach((sr: any) => {
+      topicIds.push(sr.toJSON().id);
+    });
+    console.log(groupCreateResult, "groupCreateResult...");
+    console.log(topicIds, "topicIds...");
+  }
   /**
    * 创建
    * @param data
    */
   async create(data: any): Promise<ManagerResponse<any>> {
-    const { } = data;
+    const { name } = data;
     const item = await TopicDb.findOne({
-      where: {},
+      where: { name },
     });
     if (item) {
+      // 如果发现是已有的主题，就不需要重新创建，而是将主题和内容做个表关联
       return new ManagerResponseFailure({
         msg: responseMsg.CREATE_FAIL_BY_EXISTED,
       });
@@ -135,11 +179,21 @@ class Topic implements CommonManager {
     data: ListFilterInterface,
     config?: RequestConfigInterface
   ): Promise<ManagerResponse<ListDataInterface>> {
-    const { pageSize = 10, pageNo = 1 } = data;
+    const { pageSize = 10, pageNo = 1, keywords = "" } = data;
     return await sequelize.transaction(async (t: any) => {
       const listParams = buildCommonListParams({ pageNo, pageSize }, config);
+      let where = {};
+      if (keywords) {
+        const Op = Sequelize.Op;
+        where = {
+          name: {
+            [Op.like]: `%${keywords}%`,
+          },
+        };
+      }
       const result = await TopicDb.findAndCountAll({
         ...listParams,
+        where,
       });
       const { count, rows } = result;
       const TopicList = rows.map((row: any) => {
