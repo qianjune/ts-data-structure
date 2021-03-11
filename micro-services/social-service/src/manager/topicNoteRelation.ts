@@ -51,8 +51,27 @@ class TopicNoteRelation implements CommonManager {
   async create(data: any): Promise<ManagerResponse<any>> {
     const { noteId, topicGroup = [] } = data;
     // 查询topicGroup是否创建
-    topicManager._handleGroup(topicGroup);
+    const topicIds = await topicManager._handleGroup(topicGroup);
+    if (Array.isArray(topicIds) && topicIds.length > 0) {
+      // 先去查topicId和noteId有没有做关联，如果有就不重复添加
+      // 这里之后要考虑到修改后提交是否有营销策略可以加入
 
+      // 将未创建的topicId筛选出来，再进行关系创建
+      const relationReqGroup: any = [];
+      topicIds.forEach((topicId) => {
+        relationReqGroup.push(
+          TopicNoteRelationDb.create({
+            topicId,
+            noteId,
+          })
+        );
+      });
+      Promise.all(relationReqGroup);
+    } else {
+      return new ManagerResponseFailure({
+        msg: "未读取到有效主题，请稍后再试",
+      });
+    }
     // const item = await TopicNoteRelationDb.findOne({
     //   where: {},
     // });

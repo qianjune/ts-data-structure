@@ -59,3 +59,5 @@ https://medium.com/@cramirez92/build-a-nodejs-cinema-microservice-and-deploying-
 
 01. 后端服务和前端的server对应自动生成
 02. 通过swagger doc自动生成前端ts文件
+
+### 返回的国际化

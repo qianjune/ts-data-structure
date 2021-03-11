@@ -59,7 +59,7 @@ class Topic implements CommonManager {
     }
     return [];
   }
-  async _handleGroup(topicGroup: string[]) {
+  async _handleGroup(topicGroup: string[]): Promise<string[]> {
     const searchGroup = topicGroup.map((topic: string) => {
       return TopicDb.findOne({
         where: { name: topic },
@@ -85,6 +85,7 @@ class Topic implements CommonManager {
     });
     console.log(groupCreateResult, "groupCreateResult...");
     console.log(topicIds, "topicIds...");
+    return topicIds;
   }
   /**
    * 创建
