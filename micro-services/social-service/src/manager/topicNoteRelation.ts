@@ -18,7 +18,7 @@ import {
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 import { ResponseHandler } from "@src/utils/responseHandler";
-import TopicNoteRelationDb from "@micro-services/social-service/src/db/topicNoteRelation";
+import { TopicNoteRelationDB } from "@src/db/models/index";
 import Topic from "./topic";
 const topicManager = new Topic();
 const placeholder = "TopicNoteRelation";
@@ -33,7 +33,7 @@ class TopicNoteRelation implements CommonManager {
     where: { id: number },
     config?: { msg?: string }
   ): Promise<any> {
-    const item = await TopicNoteRelationDb.findOne({
+    const item = await TopicNoteRelationDB.findOne({
       where,
     });
     if (!item) {
@@ -60,35 +60,23 @@ class TopicNoteRelation implements CommonManager {
       const relationReqGroup: any = [];
       topicIds.forEach((topicId) => {
         relationReqGroup.push(
-          TopicNoteRelationDb.create({
+          TopicNoteRelationDB.create({
             topicId,
             noteId,
           })
         );
       });
-      Promise.all(relationReqGroup);
+      const buildRelationResult = await Promise.all(relationReqGroup);
+      console.log(buildRelationResult, "buildRelationResult...");
+      return new ManagerResponseSuccess({
+        msg: "创建成功",
+        data: buildRelationResult,
+      });
     } else {
       return new ManagerResponseFailure({
         msg: "未读取到有效主题，请稍后再试",
       });
     }
-    // const item = await TopicNoteRelationDb.findOne({
-    //   where: {},
-    // });
-    // if (item) {
-    //   return new ManagerResponseFailure({
-    //     msg: responseMsg.CREATE_FAIL_BY_EXISTED,
-    //   });
-    // }
-    // const result = await TopicNoteRelationDb.create(data);
-    // if (result) {
-    //   return new ManagerResponseSuccess({
-    //     msg: responseMsg.CREATE_SUCCESS,
-    //     data: result,
-    //   });
-    // } else {
-    return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
-    // }
   }
 
   /**
@@ -99,7 +87,7 @@ class TopicNoteRelation implements CommonManager {
     const { id } = data;
     const item = await this._getInfo({ id });
     const updateData = global.util.lodash.omitNil({});
-    const result = await TopicNoteRelationDb.update(updateData, {
+    const result = await TopicNoteRelationDB.update(updateData, {
       where: {
         id,
       },
@@ -121,7 +109,7 @@ class TopicNoteRelation implements CommonManager {
   async del(id: number): Promise<ManagerResponse<any>> {
     const item = await await this._getInfo({ id });
     return await sequelize.transaction(async (t: any) => {
-      const result = await TopicNoteRelationDb.destroy({
+      const result = await TopicNoteRelationDB.destroy({
         where: {
           id,
         },
@@ -161,7 +149,7 @@ class TopicNoteRelation implements CommonManager {
     const { pageSize = 10, pageNo = 1 } = data;
     return await sequelize.transaction(async (t: any) => {
       const listParams = buildCommonListParams({ pageNo, pageSize }, config);
-      const result = await TopicNoteRelationDb.findAndCountAll({
+      const result = await TopicNoteRelationDB.findAndCountAll({
         ...listParams,
       });
       const { count, rows } = result;

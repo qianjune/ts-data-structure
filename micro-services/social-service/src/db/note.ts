@@ -26,8 +26,13 @@ Note.init(
       type: TYPES.STRING,
       comment: "标题",
     },
+    address: {
+      type: TYPES.STRING,
+      comment: "发布时的地址",
+    },
     content: {
       type: TYPES.TEXT,
+      allowNull: false,
       comment: "文字内容",
     },
   },

@@ -18,7 +18,7 @@ import {
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 import { ResponseHandler } from "@src/utils/responseHandler";
-import NoteDb from "@micro-services/social-service/src/db/note";
+import { NoteDB as NoteDb } from "@src/db/models/index";
 import TopicManager from "./topic";
 import TopicNoteRelation from "./topicNoteRelation";
 const topicNoteRelation = new TopicNoteRelation();
@@ -70,14 +70,15 @@ class Note implements CommonManager {
           noteId: result.toJSON().id,
           topicGroup,
         });
+        if (bindRelationResult.success) {
+          return new ManagerResponseSuccess({
+            msg: responseMsg.CREATE_SUCCESS,
+            data: result,
+          });
+        }
       }
-      return new ManagerResponseSuccess({
-        msg: responseMsg.CREATE_SUCCESS,
-        data: result,
-      });
-    } else {
-      return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
     }
+    return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
   }
 
   /**

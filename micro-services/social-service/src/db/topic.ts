@@ -23,6 +23,10 @@ Topic.init(
       comment: "主题名字",
       allowNull: false,
     },
+    heat: {
+      type: TYPES.INTEGER,
+      comment: "热度",
+    },
   },
   {
     sequelize,

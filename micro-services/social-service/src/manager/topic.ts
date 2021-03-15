@@ -18,7 +18,7 @@ import {
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 import { ResponseHandler } from "@src/utils/responseHandler";
-import TopicDb from "@micro-services/social-service/src/db/topic";
+import { TopicDB as TopicDb } from "@src/db/models/index";
 import Sequelize from "sequelize";
 const placeholder = "Topic";
 const responseMsg = ResponseMsg(placeholder);

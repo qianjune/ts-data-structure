@@ -267,4 +267,7 @@ export {
   MemberPointsRelationDb,
   LevelRightsRelationDb,
   LevelGroupLevelRelationDb,
+  NoteDB,
+  TopicDB,
+  TopicNoteRelationDB,
 };

@@ -5,6 +5,7 @@ import { Model } from "sequelize";
 import sequelize from "@root/core/db";
 import { TYPES } from "@src/db/types";
 import { sequelizeErrHandler } from "@src/utils/error_handler";
+import { NoteDB, TopicDB } from ".";
 
 class TopicNoteRelation extends Model {
   // custom property here
@@ -22,11 +23,19 @@ TopicNoteRelation.init(
       type: TYPES.INTEGER,
       allowNull: false,
       comment: "笔记id",
+      references: {
+        model: NoteDB,
+        key: "id",
+      },
     },
     topicId: {
       type: TYPES.INTEGER,
       allowNull: false,
       comment: "话题id",
+      references: {
+        model: TopicDB,
+        key: "id",
+      },
     },
   },
   {
