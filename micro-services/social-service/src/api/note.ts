@@ -30,6 +30,9 @@ class NoteApi extends BaseRouter {
       sightMaterials: joi.string().required(),
       title: joi.string().required(),
       content: joi.string().required(),
+      topics: joi.object({
+        id: joi.number().required(),
+      }),
     }),
     "body"
   )

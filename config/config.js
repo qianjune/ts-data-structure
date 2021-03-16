@@ -43,4 +43,7 @@ export default {
   spring: {
     baseUrl: "http://localhost:8111/imooc/springboot/",
   },
+  qiniu: {
+    host: "http://qiniu.miaolingfei.top/",
+  },
 };
