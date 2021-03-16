@@ -18,7 +18,8 @@ import {
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 import { ResponseHandler } from "@src/utils/responseHandler";
-import { NoteDB as NoteDb } from "@src/db/models/index";
+import { NoteDB as NoteDb, TopicDB } from "@src/db/models/index";
+import topic from "../api/topic";
 import TopicManager from "./topic";
 import TopicNoteRelation from "./topicNoteRelation";
 const topicNoteRelation = new TopicNoteRelation();
@@ -37,6 +38,17 @@ class Note implements CommonManager {
   ): Promise<any> {
     const item = await NoteDb.findOne({
       where,
+      include: [
+        {
+          model: TopicDB,
+          through: {
+            where: {
+              noteId: where.id,
+            },
+            attributes: [],
+          },
+        },
+      ],
     });
     if (!item) {
       ResponseHandler.send(
@@ -50,25 +62,57 @@ class Note implements CommonManager {
    * 创建
    * @param data
    */
-  async create(data: any): Promise<ManagerResponse<any>> {
-    const { content } = data;
+  // async create(data: any): Promise<ManagerResponse<any>> {
+  //   const { content } = data;
 
-    const item = await NoteDb.findOne({
-      where: {},
+  //   const item = await NoteDb.findOne({
+  //     where: {},
+  //   });
+  //   if (item) {
+  //     return new ManagerResponseFailure({
+  //       msg: responseMsg.CREATE_FAIL_BY_EXISTED,
+  //     });
+  //   }
+  //   const result: any = await NoteDb.create(data);
+  //   if (result) {
+  //     const topicGroup = topicManager._analysisTopic(content);
+  //     if (topicGroup.length > 0) {
+  //       // 将noteId和topic做处理
+  //       const bindRelationResult = await topicNoteRelation.create({
+  //         noteId: result.toJSON().id,
+  //         topicGroup,
+  //       });
+  //       if (bindRelationResult.success) {
+  //         return new ManagerResponseSuccess({
+  //           msg: responseMsg.CREATE_SUCCESS,
+  //           data: result,
+  //         });
+  //       }
+  //     }
+  //   }
+  //   return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
+  // }
+  async create(data: any): Promise<ManagerResponse<any>> {
+    const { topics, sightMaterials, ...otherData } = data;
+
+    // const item = await NoteDb.findOne({
+    //   where: {},
+    // });
+    // if (item) {
+    //   return new ManagerResponseFailure({
+    //     msg: responseMsg.CREATE_FAIL_BY_EXISTED,
+    //   });
+    // }
+    const result: any = await NoteDb.create({
+      ...otherData,
+      sightMaterials: JSON.stringify(sightMaterials),
     });
-    if (item) {
-      return new ManagerResponseFailure({
-        msg: responseMsg.CREATE_FAIL_BY_EXISTED,
-      });
-    }
-    const result: any = await NoteDb.create(data);
     if (result) {
-      const topicGroup = topicManager._analysisTopic(content);
-      if (topicGroup.length > 0) {
+      if (Array.isArray(topics) && topics.length > 0) {
         // 将noteId和topic做处理
         const bindRelationResult = await topicNoteRelation.create({
           noteId: result.toJSON().id,
-          topicGroup,
+          topicGroup: topics,
         });
         if (bindRelationResult.success) {
           return new ManagerResponseSuccess({
@@ -77,10 +121,13 @@ class Note implements CommonManager {
           });
         }
       }
+      return new ManagerResponseSuccess({
+        msg: responseMsg.CREATE_SUCCESS,
+        data: result,
+      });
     }
     return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
   }
-
   /**
    * 编辑
    * @param data
@@ -133,9 +180,14 @@ class Note implements CommonManager {
    */
   async getInfo(id: number): Promise<ManagerResponse<any>> {
     const item = await this._getInfo({ id });
+    const { sightMaterials, ...otherData } = item;
+    let cloneSightMaterials = sightMaterials;
+    try {
+      cloneSightMaterials = JSON.parse(sightMaterials);
+    } catch (error) {}
     return new ManagerResponseSuccess({
       msg: responseMsg.GET_DETAIL_SUCCESS,
-      data: item,
+      data: { ...otherData, sightMaterials: cloneSightMaterials },
     });
   }
 

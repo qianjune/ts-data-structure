@@ -27,12 +27,14 @@ class NoteApi extends BaseRouter {
   @summary("笔记创建")
   @parameter(
     joi.object({
-      sightMaterials: joi.string().required(),
+      sightMaterials: joi.array().items(
+        joi.object({
+          url: joi.string().required(),
+        })
+      ),
       title: joi.string().required(),
       content: joi.string().required(),
-      topics: joi.object({
-        id: joi.number().required(),
-      }),
+      topics: joi.array().items(joi.string().required()),
     }),
     "body"
   )
