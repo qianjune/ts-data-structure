@@ -1,9 +1,11 @@
 import Sequelize, { Model, ExclusionConstraintError } from "sequelize";
-import { unset, clone, omit } from "lodash";
+import { unset, clone, omit, difference } from "lodash";
 import config from "@root/config/config";
 import PQueue from "p-queue";
 const { dbName, port, user, password, host } = config.database;
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore: Sequelize
 const sequelize = new Sequelize(dbName, user, password, {
   dialect: "mysql",
   host,
@@ -37,23 +39,35 @@ const sequelize = new Sequelize(dbName, user, password, {
 sequelize.sync({
   // force:true//删除原表并新增
 });
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore: toJSON
 Model.prototype.toJSON = function () {
+  console.log(this.attributes, "delAttributes...");
   const data = clone(this.dataValues); // 存储的是原始的字符串
-  unset(data, "updatedAt");
-  unset(data, "createdAt");
-  unset(data, "deletedAt");
+  const delAttributes = difference(
+    ["updatedAt", "createdAt", "deletedAt"],
+    this.attributes
+  );
+  console.log(delAttributes, "delAttributes...");
+  delAttributes.forEach((delAttribute) => {
+    unset(data, delAttribute);
+  });
+
   // for (key in data) { // 这里key in有问题
   //   if (key === 'image') {
   //     // 处理图片的地址
   //   }
   // }
   if (Array.isArray(this.exclude)) {
-    this.exclude.forEach((ex) => {
+    this.exclude.forEach((ex: any) => {
       unset(data, ex);
     });
   }
+  console.log(data, "data...");
   return data;
 };
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore: exclude
 Model.prototype.exclude = function (excludeProps) {
   if (Array.isArray(excludeProps)) {
     this.dataValues = omit(this.dataValues, excludeProps);

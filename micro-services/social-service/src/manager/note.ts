@@ -19,6 +19,7 @@ import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 import { ResponseHandler } from "@src/utils/responseHandler";
 import { NoteDB as NoteDb, TopicDB } from "@src/db/models/index";
+import { omit } from "lodash";
 import topic from "../api/topic";
 import TopicManager from "./topic";
 import TopicNoteRelation from "./topicNoteRelation";
@@ -26,6 +27,7 @@ const topicNoteRelation = new TopicNoteRelation();
 const topicManager = new TopicManager();
 const placeholder = "Note";
 const responseMsg = ResponseMsg(placeholder);
+(NoteDb.prototype as any).attributes = ["createdAt"];
 class Note implements CommonManager {
   /**
    * 获取详情（私有）
@@ -36,7 +38,7 @@ class Note implements CommonManager {
     where: { id: number },
     config?: { msg?: string }
   ): Promise<any> {
-    const item = await NoteDb.findOne({
+    let item: any = await NoteDb.findOne({
       where,
       include: [
         {
@@ -55,7 +57,12 @@ class Note implements CommonManager {
         new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
       );
     }
-    return item.toJSON();
+    item = item.toJSON();
+    if (item.Topics) {
+      item.topics = item.Topics;
+      item = omit(item, ["Topics"]);
+    }
+    return item;
   }
 
   /**
@@ -184,7 +191,7 @@ class Note implements CommonManager {
     let cloneSightMaterials = sightMaterials;
     try {
       cloneSightMaterials = JSON.parse(sightMaterials);
-    } catch (error) {}
+    } catch (error) { }
     return new ManagerResponseSuccess({
       msg: responseMsg.GET_DETAIL_SUCCESS,
       data: { ...otherData, sightMaterials: cloneSightMaterials },
