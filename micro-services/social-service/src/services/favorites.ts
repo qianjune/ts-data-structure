@@ -3,7 +3,7 @@
  */
 import { CommonService } from "@src/services/interface/common";
 import { ResponseHandler } from "@src/utils/responseHandler";
-import FavoritesManager from "@src/manager/v2/favorites";
+import FavoritesManager from "@micro-services/social-service/src/manager/favorites";
 const favoritesManager = new FavoritesManager();
 class FavoritesService implements CommonService {
   async create(data: any): Promise<void> {

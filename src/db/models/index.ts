@@ -5,7 +5,6 @@ import IndexConfigDb from "@src/db/models/v2/indexConfig";
 import ShopUserRelation from "@src/db/models/v2/shopUserRelation";
 import AttributeKey from "@src/db/models/v2/product/attribute_key";
 import AttributeValue from "@src/db/models/v2/product/attribute_value";
-import FavoritesDb from "@src/db/models/v2/user/favorites";
 import {
   RightPackageDb,
   RightsRelationDb,
@@ -33,6 +32,7 @@ import {
   NoteDB,
   TopicDB,
   TopicNoteRelationDB,
+  FavoriteDB as FavoritesDb,
 } from "@micro-services/social-service/src/db/index";
 // import ShopProductRelation from '@src/db/models/v2/shopProductRelation'
 
@@ -139,6 +139,23 @@ FavoritesDb.belongsTo(ShopModel, { foreignKey: "likeId" });
 User.hasMany(FavoritesDb, { foreignKey: "uid" });
 ShopModel.hasMany(FavoritesDb, { foreignKey: "likeId" });
 // user - relation - shop 关系表 end
+
+// user - relation - note 关系表 begin 多对多
+User.belongsToMany(NoteDB, {
+  through: FavoritesDb,
+  foreignKey: "uid",
+  otherKey: "likeId",
+});
+NoteDB.belongsToMany(User, {
+  through: FavoritesDb,
+  foreignKey: "likeId",
+  otherKey: "uid",
+});
+FavoritesDb.belongsTo(User, { foreignKey: "uid" });
+FavoritesDb.belongsTo(NoteDB, { foreignKey: "likeId" });
+User.hasMany(FavoritesDb, { foreignKey: "uid" });
+NoteDB.hasMany(FavoritesDb, { foreignKey: "likeId" });
+// user - relation - note 关系表 end
 
 // spu - relation - category 关系表 begin 多对多
 Product.belongsToMany(ProductCategory, {

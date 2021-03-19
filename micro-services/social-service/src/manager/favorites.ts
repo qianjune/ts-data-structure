@@ -17,7 +17,7 @@ import {
 
 import sequelize from "@root/core/db";
 import { FavoritesDb, ShopModel, User } from "@src/db/models";
-import { FavoritesItemType } from "@src/db/models/v2/user/favorites";
+import { FavoritesItemType } from "@micro-services/social-service/src/db/favorites";
 import { ResponseHandler } from "@src/utils/responseHandler";
 interface FavoritesItem {
   type: FavoritesItemType;

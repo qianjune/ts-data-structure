@@ -2,7 +2,7 @@
  * @description jwt相关处理
  */
 import jwt from "jsonwebtoken";
-import { UserManager } from "@src/manager/user";
+import { UserManager } from "@micro-services/user-service/src/manager/user";
 import { Context } from "koa";
 const userManager = new UserManager();
 class JwtHandler {

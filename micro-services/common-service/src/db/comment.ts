@@ -1,7 +1,10 @@
 import { Model } from "sequelize";
 import sequelize from "@root/core/db";
 import { TYPES } from "@src/db/types";
-
+export enum CommentedItemType {
+  PRODUCT = "product",
+  NOTE = "note",
+}
 class CommentModel extends Model {
   // custom property here
 }
@@ -13,6 +16,11 @@ CommentModel.init(
       comment: "评论id",
       primaryKey: true,
       autoIncrement: true,
+    },
+    type: {
+      type: TYPES.STRING,
+      comment: "评论的事物的类型",
+      allowNull: false,
     },
     underWhich: {
       type: TYPES.INTEGER,

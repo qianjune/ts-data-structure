@@ -26,6 +26,7 @@ class comment extends BaseRouter {
       userId: joi.number().required(),
       parentId: joi.number(),
       content: joi.string().required(),
+      type: joi.any().allow("product", "note").required(),
     }),
     "body"
   )

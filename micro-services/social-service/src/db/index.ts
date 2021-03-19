@@ -5,5 +5,6 @@
 import NoteDB from "./note";
 import TopicDB from "./topic";
 import TopicNoteRelationDB from "./topicNoteRelation";
-
-export { NoteDB, TopicDB, TopicNoteRelationDB };
+import FavoriteDB from "./favorites";
+import LikeDB from "./like";
+export { NoteDB, TopicDB, TopicNoteRelationDB, FavoriteDB, LikeDB };

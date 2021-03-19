@@ -9,19 +9,19 @@ import sequelize from "@root/core/db";
 import moment from "moment";
 import { MemberManager } from "@root/micro-services/member-service/src/manager";
 import { omit } from "lodash";
-import { CommonManagerInterface } from "./interface/interface";
+import {
+  CommonManager,
+  ListFilterInterface,
+  buildCommonListParams,
+} from "@src/manager/interface/commonManager";
+import { CommonManagerInterface } from "@src/manager/interface/interface";
 import {
   ManagerResponseSuccess,
   ManagerResponseFailure,
   ManagerResponse,
   ResponseMsg,
   ListDataModel,
-} from "./response";
-import {
-  CommonManager,
-  ListFilterInterface,
-  buildCommonListParams,
-} from "./interface/commonManager";
+} from "@src/manager/response";
 const memberManager = new MemberManager();
 interface UserBody {
   mobile?: number | string;

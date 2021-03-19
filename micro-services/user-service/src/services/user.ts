@@ -1,4 +1,4 @@
-import { UserManager } from "@src/manager/user";
+import { UserManager } from "@micro-services/user-service/src/manager/user";
 import JwtHandler from "@src/utils/jwt_handler";
 import { ResponseHandler } from "@src/utils/responseHandler";
 import { MemberManager } from "@root/micro-services/member-service/src/manager";

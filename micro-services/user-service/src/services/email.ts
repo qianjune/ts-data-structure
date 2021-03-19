@@ -4,7 +4,7 @@
 
 import { CODE_ACTION_PATH, CODE_ACTION_TYPE, CODE_PLATFORM } from "@src/enum";
 import { ManagerResponseFailure } from "@src/manager/response";
-import { UserManager } from "@src/manager/user";
+import { UserManager } from "@micro-services/user-service/src/manager/user";
 import { UserInfoInterface } from "@src/services/interface/common";
 import { ResponseHandler } from "@src/utils/responseHandler";
 import CodeManager from "../manager/code";

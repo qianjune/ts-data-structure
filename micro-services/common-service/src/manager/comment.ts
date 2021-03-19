@@ -15,10 +15,11 @@ import {
   ManagerResponse,
 } from "@src/manager/response";
 import ProductManager from "@micro-services/mall-service/src/manager/product";
-
+import { UserManager } from "@micro-services/user-service/src/manager/user";
 const placeholder = "评论";
 const responseMsg = ResponseMsg(placeholder);
 const productManager = new ProductManager();
+const userManager = new UserManager();
 interface CommentData {
   underWhich?: number;
   userId?: number;
@@ -29,38 +30,38 @@ interface CommentData {
 }
 class CommentManager implements CommonManager {
   async create(data: CommentData): Promise<ManagerResponse<any>> {
-    // const cloneData = { ...data };
-    // const parentId = data.parentId;
-    // if (!parentId || parentId === -1) {
-    //   cloneData.parentId = -1;
-    // } else {
-    //   const parentComment = await CommentModel.findOne({
-    //     where: {
-    //       id: cloneData.parentId,
-    //     },
-    //   });
-    //   if (!parentComment) {
-    //     return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
-    //   }
-    // }
-    // const user = await userManager.getValidateData({ id: data.userId });
-    // if (!(user as ManagerResponse).success) {
-    //   return user;
-    // }
-    // const goods = await productManager.getInfo(cloneData.underWhich);
-    // if (!goods.success) {
-    //   return goods;
-    // }
-    // // 找用户
-    // const result = await CommentModel.create(cloneData);
-    // if (result) {
-    //   return new ManagerResponseSuccess({
-    //     msg: responseMsg.CREATE_SUCCESS,
-    //     data: result,
-    //   });
-    // } else {
-    return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
-    // }
+    const cloneData = { ...data };
+    const parentId = data.parentId;
+    if (!parentId || parentId === -1) {
+      cloneData.parentId = -1;
+    } else {
+      const parentComment = await CommentModel.findOne({
+        where: {
+          id: cloneData.parentId,
+        },
+      });
+      if (!parentComment) {
+        return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
+      }
+    }
+    const user = await userManager.getValidateData({ id: data.userId });
+    if (!(user as ManagerResponse<any>).success) {
+      return user;
+    }
+    const goods = await productManager.getInfo(cloneData.underWhich);
+    if (!goods.success) {
+      return goods;
+    }
+    // 找用户
+    const result = await CommentModel.create(cloneData);
+    if (result) {
+      return new ManagerResponseSuccess({
+        msg: responseMsg.CREATE_SUCCESS,
+        data: result,
+      });
+    } else {
+      return new ManagerResponseFailure({ msg: responseMsg.CREATE_FAIL });
+    }
   }
   edit(data: any): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");

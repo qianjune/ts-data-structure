@@ -14,7 +14,7 @@ import BaseRouter, {
   middleware,
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
-import FavoritesService from "@src/services/v2/favorites";
+import FavoritesService from "@micro-services/social-service/src/services/favorites";
 import SessionCookieHandler from "@src/utils/session_cookie";
 const favoritesService = new FavoritesService();
 @prefix("/api/favorite")

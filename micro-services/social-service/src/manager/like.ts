@@ -1,5 +1,5 @@
 /**
- * @description cname orm
+ * @description 点赞 orm
  */
 
 import {
@@ -18,11 +18,11 @@ import {
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 import { ResponseHandler } from "@src/utils/responseHandler";
-import XXXXXXDb from "#BASE_LOCATION/db/xXXXXX";
+import LikeDb from "@micro-services/social-service/src/db/like";
 
-const placeholder = "XXXXXX";
+const placeholder = "Like";
 const responseMsg = ResponseMsg(placeholder);
-class XXXXXXManager implements CommonManager {
+class LikeManager implements CommonManager {
   /**
    * 获取详情（私有）
    * @param id
@@ -32,7 +32,7 @@ class XXXXXXManager implements CommonManager {
     where: { id: number },
     config?: { msg?: string }
   ): Promise<any> {
-    const item = await XXXXXXDb.findOne({
+    const item = await LikeDb.findOne({
       where,
     });
     if (!item) {
@@ -49,7 +49,7 @@ class XXXXXXManager implements CommonManager {
    */
   async create(data: any): Promise<ManagerResponse<any>> {
     const { } = data;
-    const item = await XXXXXXDb.findOne({
+    const item = await LikeDb.findOne({
       where: {},
     });
     if (item) {
@@ -57,7 +57,7 @@ class XXXXXXManager implements CommonManager {
         msg: responseMsg.CREATE_FAIL_BY_EXISTED,
       });
     }
-    const result = await XXXXXXDb.create(data);
+    const result = await LikeDb.create(data);
     if (result) {
       return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_SUCCESS,
@@ -76,7 +76,7 @@ class XXXXXXManager implements CommonManager {
     const { id } = data;
     const item = await this._getInfo({ id });
     const updateData = global.util.lodash.omitNil({});
-    const result = await XXXXXXDb.update(updateData, {
+    const result = await LikeDb.update(updateData, {
       where: {
         id,
       },
@@ -98,7 +98,7 @@ class XXXXXXManager implements CommonManager {
   async del(id: number): Promise<ManagerResponse<any>> {
     const item = await await this._getInfo({ id });
     return await sequelize.transaction(async (t: any) => {
-      const result = await XXXXXXDb.destroy({
+      const result = await LikeDb.destroy({
         where: {
           id,
         },
@@ -138,18 +138,18 @@ class XXXXXXManager implements CommonManager {
     const { pageSize = 10, pageNo = 1 } = data;
     return await sequelize.transaction(async (t: any) => {
       const listParams = buildCommonListParams({ pageNo, pageSize }, config);
-      const result = await XXXXXXDb.findAndCountAll({
+      const result = await LikeDb.findAndCountAll({
         ...listParams,
       });
       const { count, rows } = result;
-      const XXXXXXList = rows.map((row: any) => {
+      const LikeList = rows.map((row: any) => {
         const data: any = row.toJSON();
         return data;
       });
 
       return new ManagerResponseSuccess({
         data: new ListDataModel({
-          data: XXXXXXList,
+          data: LikeList,
           total: count,
           pageNo,
           pageSize,
@@ -160,4 +160,4 @@ class XXXXXXManager implements CommonManager {
   }
 }
 
-export default XXXXXXManager;
+export default LikeManager;
