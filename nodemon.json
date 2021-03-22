@@ -26,7 +26,8 @@
     "./tsconfig.json",
     "./app.ts",
     "./experiment",
-    "./micro-services"
+    "./micro-services",
+    "./websocket"
   ],
   "ext": "ts js",
   "inspect": true

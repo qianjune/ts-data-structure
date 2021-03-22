@@ -45,7 +45,7 @@ const del = (key: string): void => {
  *
  * @param {string} key key
  */
-const get = (key: string): Promise<unknown> => {
+const get = (key: string): Promise<any> => {
   const redisClient = createClient();
   const promise = new Promise((resolve, reject) => {
     redisClient.get(key, (err, val) => {

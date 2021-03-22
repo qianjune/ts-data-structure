@@ -14,6 +14,7 @@ import BaseRouter, {
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
 import NoteService from "@micro-services/social-service/src/services/note";
+import ws from "ws";
 const noteService = new NoteService();
 
 @prefix("/api/note")
@@ -110,6 +111,19 @@ class NoteApi extends BaseRouter {
     // edit item
     const { body } = ctx.request;
     await noteService.edit(body);
+  }
+
+  @post("/websocket")
+  @summary("笔记编辑")
+  @parameter(joi.object({}), "body")
+  async testWebsocket(ctx: Context): Promise<void> {
+    // edit item
+    const { body } = ctx.request;
+
+    // connection.onopen = (event) => {
+    //   console.log("链接成功");
+    //   ctx.body = event;
+    // };
   }
 }
 

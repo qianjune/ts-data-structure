@@ -11,8 +11,8 @@ class SessionCookieHandler {
     app.keys = ["Udke_53098&"];
     app.use(
       session({
-        key: "uc.sid", // cookie name 默认是 `koa.sid`
-        prefix: "uc:sess:", // redis key的前缀，默认是`koa:sess:`
+        key: config.SESSION.key, // cookie name 默认是 `koa.sid`
+        prefix: config.SESSION.prefix, // redis key的前缀，默认是`koa:sess:`
         cookie: {
           path: "/",
           httpOnly: true, // 客户端不能修改cookie

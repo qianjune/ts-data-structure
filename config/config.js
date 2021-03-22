@@ -46,4 +46,8 @@ export default {
   qiniu: {
     host: "http://qiniu.miaolingfei.top/",
   },
+  SESSION: {
+    key: "uc.sid",
+    prefix: "uc:sess:",
+  },
 };

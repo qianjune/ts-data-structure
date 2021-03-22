@@ -40,6 +40,7 @@
     "bcryptjs": "^2.4.3",
     "class-validator": "^0.12.2",
     "commander": "^7.0.0",
+    "cookies": "^0.8.0",
     "crypto": "^1.0.1",
     "dataloader": "^2.0.0",
     "form-data": "^3.0.0",
@@ -75,7 +76,9 @@
     "svg-captcha": "^1.4.0",
     "type-graphql": "^1.1.1",
     "uuid": "^8.2.0",
-    "validator": "^13.1.1"
+    "validator": "^13.1.1",
+    "websocket": "^1.0.33",
+    "ws": "^7.4.4"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
