@@ -63,7 +63,7 @@ const createMessage = (type: string, user: any, data: any) => {
 const onConnect = (params: WsActionParams) => {
   const { wsServer, wss } = params;
   const user = wsServer.user;
-  const msg = createMessage("join", user, `${user.mobile} joined.`);
+  const msg = createMessage("join", user, `${user?.mobile} joined.`);
   wss.broadcast(msg);
   // build user list:
   const users = [...wss.clients].map((client: any) => {
@@ -74,8 +74,13 @@ const onConnect = (params: WsActionParams) => {
 
 const onMessage = (params: WsActionParams, message: string) => {
   const { wsServer, wss } = params;
-  console.log(message);
-  if (message && message.trim()) {
+  console.log("onMessage:", message);
+  // if (message && message.trim()) {
+  //   const msg = createMessage("chat", wsServer.user, message.trim());
+  // wss.broadcast(msg);
+  // }
+  if (message === "sendToClient") {
+    console.log("广播");
     const msg = createMessage("chat", wsServer.user, message.trim());
     wss.broadcast(msg);
   }
@@ -84,7 +89,7 @@ const onMessage = (params: WsActionParams, message: string) => {
 const onClose = (params: WsActionParams) => {
   const { wsServer, wss } = params;
   const user = wsServer.user;
-  const msg = createMessage("left", user, `${user.mobile} is left.`);
+  const msg = createMessage("left", user, `${user?.mobile} is left.`);
   wss.broadcast(msg);
 };
 
@@ -115,7 +120,9 @@ class WebSocketServerBuilder {
     });
 
     this.wss.broadcast = (data: any) => {
+      console.log("广播前");
       this.wss.clients.forEach((client) => {
+        console.log("广播中：", data);
         client.send(data);
       });
     };
@@ -133,10 +140,11 @@ class WebSocketServerBuilder {
         }
         wsServer.user = user;
         wsServer.wss = this.wss;
-        wsServer.on("message", (_: any, data: any) => {
+        wsServer.on("message", (data: any) => {
+          console.log("message:", data);
           onMessage({ wsServer, wss: this.wss }, data);
         });
-        wsServer.on("close", (_: any, code: number, reason: string) => {
+        wsServer.on("close", (code: number, reason: string) => {
           onClose({ wsServer, wss: this.wss }, code, reason);
         });
         wsServer.on("error", onError);

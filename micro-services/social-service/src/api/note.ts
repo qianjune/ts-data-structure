@@ -11,10 +11,13 @@ import BaseRouter, {
   del,
   prefix,
   tag,
+  middleware,
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
 import NoteService from "@micro-services/social-service/src/services/note";
 import ws from "ws";
+import { client as WsClient } from "websocket";
+import SessionCookieHandler from "@src/utils/session_cookie";
 const noteService = new NoteService();
 
 @prefix("/api/note")
@@ -114,16 +117,39 @@ class NoteApi extends BaseRouter {
   }
 
   @post("/websocket")
-  @summary("笔记编辑")
+  @summary("发送单次信息")
+  @middleware(SessionCookieHandler.loginCheck)
   @parameter(joi.object({}), "body")
   async testWebsocket(ctx: Context): Promise<void> {
     // edit item
     const { body } = ctx.request;
+    const client = new WsClient();
+    client.on("connect", (connection) => {
+      console.log("WebSocket Client Connected");
 
-    // connection.onopen = (event) => {
-    //   console.log("链接成功");
-    //   ctx.body = event;
-    // };
+      function sendNumber() {
+        if (connection.connected) {
+          console.log("发送");
+          const number = Math.round(Math.random() * 0xffffff);
+          // connection.sendUTF(number.toString());
+          connection.send("sendToClient");
+          // setTimeout(sendNumber, 1000);
+        }
+      }
+      sendNumber();
+      connection.on("error", function (error) {
+        console.log("Connection Error: " + error.toString());
+      });
+      connection.on("close", function () {
+        console.log("echo-protocol Connection Closed");
+      });
+      connection.on("message", function (message) {
+        if (message.type === "utf8") {
+          console.log("Received: '" + message.utf8Data + "'");
+        }
+      });
+    });
+    client.connect("ws://localhost:3111/test");
   }
 }
 
