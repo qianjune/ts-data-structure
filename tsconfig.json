@@ -34,6 +34,10 @@
       ]
     },
     "emitDecoratorMetadata": true,
+    "types": [
+      "reflect-metadata",
+      "jest"
+    ],
   },
   "exclude": [
     "node_modules",

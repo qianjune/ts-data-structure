@@ -1308,6 +1308,13 @@
   resolved "https://registry.yarnpkg.com/@types/validator/-/validator-13.0.0.tgz#365f1bf936aeaddd0856fc41aa1d6f82d88ee5b3"
   integrity sha512-WAy5txG7aFX8Vw3sloEKp5p/t/Xt8jD3GRD9DacnFv6Vo8ubudAsRTXgxpQwU0mpzY/H8U4db3roDuCMjShBmw==
 
+"@types/websocket@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.npm.taobao.org/@types/websocket/download/@types/websocket-1.0.2.tgz#d2855c6a312b7da73ed16ba6781815bf30c6187a"
+  integrity sha1-0oVcajErfac+0WumeBgVvzDGGHo=
+  dependencies:
+    "@types/node" "*"
+
 "@types/ws@^7.0.0":
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/@types/ws/-/ws-7.4.0.tgz#499690ea08736e05a8186113dac37769ab251a0e"
@@ -4228,6 +4235,11 @@ inquirer@^7.3.3:
     string-width "^4.1.0"
     strip-ansi "^6.0.0"
     through "^2.3.6"
+
+inversify@^5.0.5:
+  version "5.0.5"
+  resolved "https://registry.npm.taobao.org/inversify/download/inversify-5.0.5.tgz#bd1f8e6d8e0f739331acd8ba9bc954635aae0bbf"
+  integrity sha1-vR+ObY4Pc5MxrNi6m8lUY1quC78=
 
 ioredis@^4.14.1:
   version "4.17.3"

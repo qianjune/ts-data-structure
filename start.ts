@@ -3,7 +3,7 @@ import "reflect-metadata";
 import ConsoleBox from "@src/utils/console_box";
 import config from "./config/config";
 import bootstrap from "./src/graphql/index";
-import WebSocketServerBuilder from "./websocket/index";
+import WebSocketServerBuilder from "./websocket-server/index";
 import app from "./app";
 
 const websocketServer = new WebSocketServerBuilder();

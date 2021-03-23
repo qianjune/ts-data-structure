@@ -27,7 +27,7 @@
     "./app.ts",
     "./experiment",
     "./micro-services",
-    "./websocket"
+    "./websocket-server"
   ],
   "ext": "ts js",
   "inspect": true
