@@ -1,6 +1,48 @@
-export default {
-  environment: "dev",
-  port: 3111,
+import {
+  AlipayMiniConfig,
+  IGlobalConfig,
+  SessionConfig,
+  JwtConfig,
+  Database,
+  RedisConfig,
+  ServerConfig,
+  WxMiniConfig,
+  LuosimaoConfig,
+  QiniuConfig,
+} from "./types";
+
+class GlobalConfig implements IGlobalConfig {
+  database: Database;
+  REDIS_CONF: RedisConfig;
+  JWT_CONF: JwtConfig;
+  SERVER_CONF: ServerConfig;
+  wx: WxMiniConfig;
+  luosimao: LuosimaoConfig;
+  alipay: AlipayMiniConfig;
+  qiniu: QiniuConfig;
+  SESSION: SessionConfig;
+
+  constructor(config: IGlobalConfig) {
+    this.database = config.database;
+    this.REDIS_CONF = config.REDIS_CONF;
+    this.JWT_CONF = config.JWT_CONF;
+    this.SERVER_CONF = config.SERVER_CONF;
+    this.wx = config.wx;
+    this.luosimao = config.luosimao;
+    this.alipay = config.alipay;
+    this.qiniu = config.qiniu;
+    this.SESSION = config.SESSION;
+    this.spring = config.spring;
+  }
+  spring: { baseUrl: string };
+}
+
+const config: IGlobalConfig = {
+  SERVER_CONF: {
+    environment: "dev",
+    host: "http://localhost:3000/",
+    port: 3111,
+  },
   database: {
     dbName: "jblog",
     host: "121.43.158.38",
@@ -13,13 +55,15 @@ export default {
     host: "121.43.158.38",
     password: "redis@47896321",
   },
-  security: {
-    secretKey: "abcdefg",
-    expiresIn: 60 * 60 * 24 * 15,
-  },
-  refresh: {
-    secretKey: "hijklmn",
-    expiresIn: 60 * 60 * 24 * 30,
+  JWT_CONF: {
+    security: {
+      secretKey: "abcdefg",
+      expiresIn: 60 * 60 * 24 * 15,
+    },
+    refresh: {
+      secretKey: "hijklmn",
+      expiresIn: 60 * 60 * 24 * 30,
+    },
   },
   wx: {
     appId: "wx85f7c766573a5714",
@@ -27,7 +71,6 @@ export default {
     loginUrl:
       "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",
   },
-  host: "http://localhost:3000/",
   luosimao: {
     smsUrl: "http://sms-api.luosimao.com/v1/send.json",
     password: "4d0c7a0330d9a97ba2417b166dace90a",
@@ -51,3 +94,4 @@ export default {
     prefix: "uc:sess:",
   },
 };
+export default config;

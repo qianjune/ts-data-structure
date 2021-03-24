@@ -34,10 +34,12 @@
       ]
     },
     "emitDecoratorMetadata": true,
-    "types": [
-      "reflect-metadata",
-      "jest"
-    ],
+    // "types": [
+    //   "reflect-metadata",
+    //   "jest",
+    //   "node",
+    //   "koa"
+    // ],
   },
   "exclude": [
     "node_modules",

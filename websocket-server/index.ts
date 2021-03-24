@@ -167,7 +167,7 @@ class WebSocketServerBuilder {
       onMessage,
       onClose
     );
-    console.log(`websocket started at port ${config.port}...`);
+    console.log(`websocket started at port ${config.SERVER_CONF.port}...`);
   }
 }
 

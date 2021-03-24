@@ -10,10 +10,10 @@ const websocketServer = new WebSocketServerBuilder();
 
 bootstrap().then((server) => {
   server.applyMiddleware({ app: app as any });
-  const koaServer = app.listen(config.port);
+  const koaServer = app.listen(config.SERVER_CONF.port);
   websocketServer.init(app, koaServer);
   ConsoleBox.info(
-    `server is running on port ${config.port}${server.graphqlPath}`
+    `server is running on port ${config.SERVER_CONF.port}${server.graphqlPath}`
   );
 });
 

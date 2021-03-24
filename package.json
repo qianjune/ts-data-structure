@@ -36,6 +36,7 @@
     "alipay_sdk2": "^1.0.9",
     "amqplib": "^0.6.0",
     "apollo-server-koa": "^2.15.1",
+    "awilix": "^4.3.3",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "class-validator": "^0.12.2",
