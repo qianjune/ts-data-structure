@@ -69,3 +69,10 @@
 #### 概念
 
 依赖反转：https://www.npmtrends.com/awilix-vs-inversify-koa-utils-vs-typedi-vs-typescript-ioc
+
+#### 通过装饰器 连同 后台组件
+
+## 近期：
+
+1. 内容自动审核，文字黑名单（例如：创建笔记审核内容）
+2. 商品上架后台（sku/价格/状态）

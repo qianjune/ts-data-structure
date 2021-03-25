@@ -8,7 +8,7 @@ module.exports = {
     "plugin:prettier/recommended",
     "plugin:@typescript-eslint/recommended",
   ],
-  plugins: ["prettier", "import", "@typescript-eslint",],
+  plugins: ["prettier", "import", "@typescript-eslint"],
   env: {
     //指定代码的运行环境
     browser: true,
