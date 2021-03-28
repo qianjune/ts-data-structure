@@ -42,12 +42,20 @@ sequelize.sync({
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: toJSON
 Model.prototype.toJSON = function () {
-  console.log(this.attributes, "delAttributes...");
+  console.log(this?.dataParseAttribute, "dataParseAttribute...");
   const data = clone(this.dataValues); // 存储的是原始的字符串
   const delAttributes = difference(
     ["updatedAt", "createdAt", "deletedAt"],
     this.attributes
   );
+  if (
+    Array.isArray(this?.dataParseAttribute) &&
+    this.dataParseAttribute.length > 0
+  ) {
+    this.dataParseAttribute.forEach((attr: string) => {
+      data[attr] = JSON.parse(data[attr]);
+    });
+  }
   console.log(delAttributes, "delAttributes...");
   delAttributes.forEach((delAttribute) => {
     unset(data, delAttribute);

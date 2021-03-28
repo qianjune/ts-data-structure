@@ -26,7 +26,10 @@ import {
   ProductCategory,
   ShoppingCart,
 } from "@micro-services/mall-service/src/db";
-import { CommentModel } from "@micro-services/common-service/src/db";
+import {
+  CommentModel,
+  SafeListDB,
+} from "@micro-services/common-service/src/db";
 import User from "@root/micro-services/user-service/src/db/user";
 import {
   NoteDB,
@@ -287,4 +290,5 @@ export {
   NoteDB,
   TopicDB,
   TopicNoteRelationDB,
+  SafeListDB,
 };

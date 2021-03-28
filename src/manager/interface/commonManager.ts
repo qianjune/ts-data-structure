@@ -12,7 +12,10 @@ export interface ListFilterInterface {
 }
 export interface CommonManager {
   create(data: any): Promise<ManagerResponse<any>>;
-  edit(data: any): Promise<ManagerResponse<any>>;
+  edit(
+    data: any,
+    config?: { [keyName: string]: any }
+  ): Promise<ManagerResponse<any>>;
   del(id: number): Promise<ManagerResponse<any>>;
   getInfo(id: number): Promise<ManagerResponse<any>>;
   getList?(data: ListFilterInterface): Promise<ManagerResponse<any>>;

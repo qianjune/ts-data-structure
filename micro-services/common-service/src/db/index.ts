@@ -1,3 +1,3 @@
 import CommentModel from "./comment";
-
-export { CommentModel };
+import SafeListDB from "./safeList";
+export { CommentModel, SafeListDB };
