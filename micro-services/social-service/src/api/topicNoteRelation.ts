@@ -2,7 +2,7 @@
  * @description 笔记和话题的关系 api
  */
 
-import joi from "@hapi/joi";
+import joi from "joi";
 import BaseRouter, {
   post,
   parameter,

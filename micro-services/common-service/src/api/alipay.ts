@@ -8,7 +8,7 @@ import BaseRouter, {
   parameter,
   post,
 } from "@src/lib/router-decorator";
-import joi from "@hapi/joi";
+import joi from "joi";
 import moment from "moment";
 import axios from "axios";
 import config from "@root/config/config";

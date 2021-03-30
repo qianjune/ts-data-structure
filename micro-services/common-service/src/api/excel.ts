@@ -10,7 +10,7 @@ import BaseRouter, {
   summary,
   tag,
 } from "@src/lib/router-decorator";
-import Joi from "@hapi/joi";
+import Joi from "joi";
 import { Context } from "koa";
 import { ResponseHandler } from "@src/utils/responseHandler";
 import { ManagerResponseSuccess } from "@src/manager/response";

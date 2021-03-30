@@ -1,4 +1,4 @@
-import joi from "@hapi/joi";
+import joi from "joi";
 import Auth from "@root/middleware/auth";
 import BaseRouter, {
   get,

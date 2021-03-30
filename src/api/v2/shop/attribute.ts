@@ -10,7 +10,7 @@ import BaseRouter, {
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
 import SessionCookieHandler from "@src/utils/session_cookie";
-import Joi from "@hapi/joi";
+import Joi from "joi";
 import AttributeService from "@src/services/v2/attribute";
 const attributeService = new AttributeService();
 

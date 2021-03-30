@@ -2,7 +2,7 @@
  * old - 订单校验
  */
 import { LinValidator, Rule } from "@root/core/lin-validator-v2";
-import Joi from "@hapi/joi";
+import Joi from "joi";
 
 const schema = Joi.array()
   .items(

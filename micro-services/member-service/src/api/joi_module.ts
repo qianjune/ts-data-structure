@@ -1,4 +1,4 @@
-import joi from "@hapi/joi";
+import joi from "joi";
 
 export const levelBody = joi.object({
   name: joi.string().required(),

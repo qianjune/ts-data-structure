@@ -9,7 +9,7 @@ import BaseRouter, {
   summary,
   parameter,
 } from "@src/lib/router-decorator";
-import Joi from "@hapi/joi";
+import Joi from "joi";
 import CodeService from "@micro-services/user-service/src/services/code";
 import { CODE_ACTION_TYPE } from "@src/enum";
 import { Context } from "koa";

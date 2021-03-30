@@ -14,7 +14,7 @@ import BaseRouter, {
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
 import SessionCookieHandler from "@src/utils/session_cookie";
-import Joi from "@hapi/joi";
+import Joi from "joi";
 import ShoppingCartService from "../services/shoppingCart";
 const shoppingCartService = new ShoppingCartService();
 @prefix("/api/shoppingCart")

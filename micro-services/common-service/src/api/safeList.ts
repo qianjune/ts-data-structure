@@ -2,7 +2,7 @@
  * @description 安全名单 api
  */
 
-import joi from "@hapi/joi";
+import joi from "joi";
 import BaseRouter, {
   post,
   parameter,

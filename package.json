@@ -29,7 +29,6 @@
   },
   "homepage": "https://github.com/qianjune/JBlog#readme",
   "dependencies": {
-    "@hapi/joi": "17",
     "@koa/multer": "^3.0.0",
     "@koa/router": "^10.0.0",
     "alipay-sdk": "^3.1.1",
@@ -48,7 +47,8 @@
     "graphql": "^15.3.0",
     "http-status": "^1.4.2",
     "inversify": "^5.0.5",
-    "joi-to-json-schema": "^5.1.0",
+    "joi": "^17.4.0",
+    "joi-to-json": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.0",
     "koa-body": "^4.2.0",

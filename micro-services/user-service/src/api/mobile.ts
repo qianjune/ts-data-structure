@@ -2,7 +2,7 @@
  * @description 手机相关
  */
 
-import Joi from "@hapi/joi";
+import Joi from "joi";
 import { CODE_ACTION_TYPE } from "@src/enum";
 import BaseRouter, {
   get,

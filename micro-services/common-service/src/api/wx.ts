@@ -10,7 +10,7 @@ import BaseRouter, {
   tag,
   summary,
 } from "@src/lib/router-decorator";
-import Joi from "@hapi/joi";
+import Joi from "joi";
 import axios from "axios";
 import config from "@root/config/config";
 import { Context } from "koa";

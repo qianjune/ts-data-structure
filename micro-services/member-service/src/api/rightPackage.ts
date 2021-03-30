@@ -2,7 +2,7 @@
  * @description RightPackage api
  */
 
-import joi from "@hapi/joi";
+import joi from "joi";
 import BaseRouter, {
   post,
   parameter,

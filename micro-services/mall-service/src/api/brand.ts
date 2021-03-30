@@ -13,7 +13,7 @@ import BaseRouter, {
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
 import SessionCookieHandler from "@src/utils/session_cookie";
-import Joi from "@hapi/joi";
+import Joi from "joi";
 import BrandService from "../services/brand";
 const brandService = new BrandService();
 @prefix("/api/brand")

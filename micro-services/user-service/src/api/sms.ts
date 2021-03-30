@@ -4,7 +4,7 @@
  */
 import Sms from "@micro-services/user-service/src/manager/sms";
 import { UserController } from "@micro-services/user-service/src/manager/pre-user";
-import joi from "@hapi/joi";
+import joi from "joi";
 import Auth from "@root/middleware/auth";
 import BaseRouter, {
   get,

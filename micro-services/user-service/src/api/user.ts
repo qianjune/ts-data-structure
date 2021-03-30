@@ -11,7 +11,7 @@ import BaseRouter, {
   middleware,
   get,
 } from "@src/lib/router-decorator";
-import Joi from "@hapi/joi";
+import Joi from "joi";
 import UserService from "@micro-services/user-service/src/services/user";
 import { CODE_ACTION_TYPE, CODE_ACTION_PATH, CODE_PLATFORM } from "@src/enum";
 import CodeManager from "@micro-services/user-service/src/manager/code";

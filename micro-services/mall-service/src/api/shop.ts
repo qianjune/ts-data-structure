@@ -7,7 +7,7 @@ import BaseRouter, {
   middleware,
   get,
 } from "@src/lib/router-decorator";
-import Joi from "@hapi/joi";
+import Joi from "joi";
 import { Context } from "koa";
 import JwtHandler from "@src/utils/jwt_handler";
 import SessionCookieHandler from "@src/utils/session_cookie";
