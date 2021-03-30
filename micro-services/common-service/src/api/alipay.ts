@@ -26,7 +26,12 @@ class AliPayApi extends BaseRouter {
    * @param {Object} ctx ctx
    */
   @get("/userInfo_new")
-  @parameter("authCode", joi.string().required(), "query")
+  @parameter(
+    joi.object({
+      authCode: joi.string().required(),
+    }),
+    "query"
+  )
   async getUserInfo(ctx: Context) {
     const { authCode } = ctx.query;
     const params = {
@@ -67,7 +72,12 @@ class AliPayApi extends BaseRouter {
    * @param {Object} ctx ctx
    */
   @get("/accessToken")
-  @parameter("authCode", joi.string().required(), "query")
+  @parameter(
+    joi.object({
+      authCode: joi.string().required(),
+    }),
+    "query"
+  )
   async getUserInfo_old(ctx: Context) {
     const { authCode } = ctx.query;
     const result = await alipay.getAccessToken(authCode);

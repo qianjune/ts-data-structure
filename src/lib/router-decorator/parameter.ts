@@ -13,6 +13,12 @@ import { joiToObject } from "./joi-to-object";
 
 // enum ParamsType={
 
+export enum ParameterType {
+  BODY = "body",
+  PARAMS = "params",
+  QUERY = "query",
+}
+
 // }
 
 /**
@@ -24,7 +30,7 @@ import { joiToObject } from "./joi-to-object";
 const parameter = (
   name: string | ObjectSchema | ArraySchema,
   joiSchema: any,
-  location?: "body" | "params" | "query"
+  location?: ParameterType.BODY | ParameterType.PARAMS | ParameterType.QUERY
 ) => (target: any, key: string, descriptor: any) => {
   // 判断验证验证的是单个参数还是一个body
   if (typeof name !== "string") {
@@ -39,7 +45,6 @@ const parameter = (
     objectSchema[name as string] = joiSchema;
     finalSchema = joi.object(objectSchema);
   }
-  console.log(joiToObject(finalSchema));
   const handleSwaggerParameter = () => {
     // 需要后续处理把Joi转换成JSON
     if (!target.apis) {
@@ -48,9 +53,10 @@ const parameter = (
     if (!target.apis[key]) {
       target.apis[key] = {};
     }
+
     target.apis[key].parameter = {
-      name: location,
-      // params: 'abc'
+      schema: finalSchema,
+      type: location,
     };
   };
 

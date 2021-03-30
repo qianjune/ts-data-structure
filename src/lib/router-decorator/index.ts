@@ -6,25 +6,29 @@ export * from "./swagger";
 import Router from "koa-router";
 import { set } from "lodash";
 import baseSchema from "@src/lib/swagger/base";
+import { joiToObject } from "./joi-to-object";
 
-const buildParameters = (parameterGroup: any): { parameters: [] } => {
-  if (!parameterGroup) {
-    return {
-      parameters: [],
-    };
-  }
-  const keys = Object.keys(parameterGroup);
-  const parameters: any = [];
-  keys.forEach((key) => {
-    const prop = {
-      name: key === "params" ? parameterGroup[key].required[0] : key,
-      in: key === "params" ? "path" : key,
-      schema: parameterGroup[key],
-    };
-    parameters.push(prop);
-  });
+const buildParameters = (
+  parameterGroup: any,
+  path: string
+): { parameters: any[] } => {
+  // if (!parameterGroup) {
+  //   return {
+  //     parameters: [],
+  //   };
+  // }
+  // const keys = Object.keys(parameterGroup);
+  // const parameters: any = [];
+  // keys.forEach((key) => {
+  //   const prop = {
+  //     name: key === "params" ? parameterGroup[key].required[0] : key,
+  //     in: key === "params" ? "path" : key,
+  //     schema: parameterGroup[key],
+  //   };
+  //   parameters.push(prop);
+  // });
   return {
-    parameters,
+    parameters: joiToObject(parameterGroup, path),
   };
 };
 
@@ -32,11 +36,16 @@ const buildSchema = ({
   prefix,
   apiData,
   parameters,
+  consumes,
+  produces,
   tag = "",
 }: {
   prefix: string;
   tag: string;
   parameters: {};
+  consumes?: string[];
+
+  produces: string[];
   apiData: {
     method: string;
     path: string;
@@ -58,6 +67,8 @@ const buildSchema = ({
     },
     tags: [tag || prefix],
     ...parameters,
+    consumes,
+    produces,
   };
   const result: any = {};
   result[`${prefix}${apiData.path}`] = {};
@@ -82,10 +93,20 @@ class BaseRouter {
     this.apis &&
       Object.keys(this.apis).forEach((key) => {
         const api = this.apis[key];
-        const parameters = buildParameters(api.parameter);
+        const parameters = buildParameters(api.parameter, api.path);
+        const extraProps: any = {};
+        if (
+          Array.isArray(parameters) &&
+          parameters.length > 0 &&
+          parameters[0].in === "body"
+        ) {
+          extraProps["consumes"] = '["application/json", "application/xml"]';
+        }
         const schema = buildSchema({
           prefix: this.prefix,
           apiData: api,
+          ...extraProps,
+          produces: ["application/xml", "application/json"],
           parameters,
           tag: this.tag,
         });

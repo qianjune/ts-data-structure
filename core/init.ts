@@ -33,11 +33,11 @@ export class InitManager {
     const ms = "micro-services";
     const needToRequireDirectoryGroup = [
       "",
-      // `/${ms}/user-service`,
-      // `/${ms}/member-service`,
+      `/${ms}/user-service`,
+      `/${ms}/member-service`,
       `/${ms}/mall-service`,
-      // `/${ms}/common-service`,
-      // `/${ms}/social-service`,
+      `/${ms}/common-service`,
+      `/${ms}/social-service`,
     ];
     needToRequireDirectoryGroup.forEach((path) => {
       const apiDirectory = `${process.cwd()}${path}/src/api`;
