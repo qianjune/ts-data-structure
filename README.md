@@ -75,3 +75,7 @@
 ## 近期：
 
 2. 商品上架后台（sku/价格/状态）
+
+https://editor.swagger.io/
+
+https://www.jianshu.com/p/b0051361ecfa 埋点知识
