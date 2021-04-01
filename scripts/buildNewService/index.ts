@@ -1,3 +1,6 @@
+/**
+ * @description 创建 - 服务 - 相关文件模版
+ */
 import { join } from "path";
 import fs from "fs";
 import program from "commander";
@@ -23,7 +26,7 @@ program
   .option("--all", "全部")
   .option("--api", "仅api")
   .option("--db", "仅数据库")
-  .option("--service", "仅service")
+  .option("--services", "仅service")
   .option("--manager", "仅manager")
   .action((option) => {
     let config = _.assign(
@@ -34,7 +37,7 @@ program
         all: false,
         api: false,
         db: false,
-        service: false,
+        services: false,
         manager: false,
         common: false,
         mall: false,
@@ -122,7 +125,7 @@ program
       config.all === false &&
       config.api === false &&
       config.db === false &&
-      config.service === false &&
+      config.services === false &&
       config.manager === false
     ) {
       promps.push({
@@ -143,8 +146,8 @@ program
             value: "db",
           },
           {
-            name: "service",
-            value: "service",
+            name: "services",
+            value: "services",
           },
           {
             name: "manager",
@@ -170,21 +173,21 @@ program
       let defaultConfig = {
         api: config.api,
         db: config.db,
-        service: config.service,
+        services: config.services,
         manager: config.manager,
       };
       if (config.all) {
         defaultConfig = {
           api: true,
           db: true,
-          service: true,
+          services: true,
           manager: true,
         };
       }
       const basePath = join(__dirname, "../", "../");
       const baseMicroServicePath = join(
         "micro-services/",
-        `${answers["baseLocation"]}-service/`,
+        `${answers["baseLocation"]}-services/`,
         "src"
       );
       const srcPath = join(basePath, baseMicroServicePath);
@@ -192,7 +195,7 @@ program
       const apiPath = join(srcPath, "api");
       const servicePath = join(srcPath, "services");
       const managerPath = join(srcPath, "manager");
-      // --db --api --service --manager 根据参数生成文件
+      // --db --api --services --manager 根据参数生成文件
       const pathGroup = [
         {
           key: FILE_TYPE.DB,
@@ -245,6 +248,6 @@ program
   .on("--help", () => {
     console.log("  Examples:");
     console.log("");
-    console.log("$ yarn create-service start");
+    console.log("$ yarn create-services start");
   });
 program.parse(process.argv);

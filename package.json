@@ -11,7 +11,8 @@
     "ts": "nodemon",
     "test": "cross-env NODE_ENV=test jest --config ./jest.config.js --detectOpenHandles --runInBand --forceExit --colors",
     "update": "ncu",
-    "create-service": "ts-node ./scripts/buildNewService/index.ts start"
+    "create-service": "ts-node ./scripts/buildNewService/index.ts start",
+    "new-micro-service": "ts-node ./scripts/createNewMicroService/index.ts start"
   },
   "_moduleAliases": {
     "@src": "src",
@@ -31,8 +32,8 @@
   "dependencies": {
     "@koa/multer": "^3.0.0",
     "@koa/router": "^10.0.0",
-    "alipay-sdk": "^3.1.1",
     "alipay_sdk2": "^1.0.9",
+    "alipay-sdk": "^3.1.1",
     "amqplib": "^0.6.0",
     "apollo-server-koa": "^2.15.1",
     "awilix": "^4.3.3",
@@ -89,13 +90,13 @@
     "@types/jest": "^26.0.4",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/koa": "^2.11.3",
+    "@types/koa__multer": "^2.0.2",
     "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-generic-session": "^1.0.4",
     "@types/koa-redis": "^4.0.0",
     "@types/koa-router": "^7.4.1",
     "@types/koa-static": "^4.0.1",
     "@types/koa2-cors": "^2.0.1",
-    "@types/koa__multer": "^2.0.2",
     "@types/node-xlsx": "^0.15.1",
     "@types/nodemailer": "^6.4.0",
     "@types/qiniu": "^7.0.1",

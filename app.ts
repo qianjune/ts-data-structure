@@ -13,7 +13,9 @@ import SessionCookieHandler from "@src/utils/session_cookie";
 import _, { omitBy, isNil, LoDashStatic } from "lodash";
 import server from "@src/graphql/index";
 import mockMain from "@src/graphql/middleware/auth";
-
+import BuriedPointToolkit from "@mjune/buried-point/src/index";
+const tool = new BuriedPointToolkit("test111");
+tool.say();
 _.mixin({
   omitNil(data) {
     return omitBy(data, isNil);
