@@ -40,4 +40,21 @@ interface BrowsePath{
 }
 ```
 
+
+
+| action       | Desc           |               |
+| ------------ | -------------- | ------------- |
+| navigateTo   | 跳转到下个页面 | current/next  |
+| navigateBack | 回到上个页面   | Current/next  |
+| didShow      | 页面展示       | (Pre)/current |
+| didUnmount   | 页面离开       | (Pre)/current |
+|              |                |               |
+|              |                |               |
+|              |                |               |
+|              |                |               |
+|              |                |               |
+
 页面路径config
+
+
+

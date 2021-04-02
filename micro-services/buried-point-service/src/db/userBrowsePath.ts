@@ -18,6 +18,23 @@ UserBrowsePath.init(
       primaryKey: true,
       comment: "主键id",
     },
+    // preBrowsePageId: {
+    //   type: TYPES.INTEGER,
+    //   comment: "前一个浏览页面id",
+    // },
+    pageId: {
+      type: TYPES.INTEGER,
+      allowNull: false,
+      comment: "当前页面id",
+    },
+    nextBrowsePageId: {
+      type: TYPES.INTEGER,
+      comment: "下一个浏览页面id",
+    },
+    userId: {
+      type: TYPES.INTEGER,
+      comment: "用户id",
+    },
   },
   {
     sequelize,

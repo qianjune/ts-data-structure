@@ -1,5 +1,5 @@
 /**
- * @description 用户浏览路径 orm
+ * @description 用户行为 orm
  */
 
 import {
@@ -18,12 +18,11 @@ import {
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 import { ResponseHandler } from "@src/utils/responseHandler";
-import UserBrowsePathDb from "@micro-services/buried-point-service/src/db/userBrowsePath";
-import PageManager from "./page";
-const pageManager = new PageManager();
-const placeholder = "UserBrowsePath";
+import ActionDb from "@micro-services/buried-point-service/src/db/action";
+
+const placeholder = "Action";
 const responseMsg = ResponseMsg(placeholder);
-class UserBrowsePathManager implements CommonManager {
+class ActionManager implements CommonManager {
   /**
    * 获取详情（私有）
    * @param id
@@ -33,7 +32,7 @@ class UserBrowsePathManager implements CommonManager {
     where: { id: number },
     config?: { msg?: string }
   ): Promise<any> {
-    const item = await UserBrowsePathDb.findOne({
+    const item = await ActionDb.findOne({
       where,
     });
     if (!item) {
@@ -49,26 +48,16 @@ class UserBrowsePathManager implements CommonManager {
    * @param data
    */
   async create(data: any): Promise<ManagerResponse<any>> {
-    const { currentPagePath, nextPagePath, userInfo } = data;
-    const ids = await pageManager.getPagesIdsByPath([
-      currentPagePath,
-      nextPagePath,
-    ]);
-    // 是否id都存在判断
-    console.log(ids, "ids....");
-    // const item = await UserBrowsePathDb.findOne({
-    //   where: {},
-    // });
-    // if (item) {
-    //   return new ManagerResponseFailure({
-    //     msg: responseMsg.CREATE_FAIL_BY_EXISTED,
-    //   });
-    // }
-    const result = await UserBrowsePathDb.create({
-      userId: userInfo.id,
-      pageId: ids[0],
-      nextBrowsePageId: ids[1],
+    const { } = data;
+    const item = await ActionDb.findOne({
+      where: {},
     });
+    if (item) {
+      return new ManagerResponseFailure({
+        msg: responseMsg.CREATE_FAIL_BY_EXISTED,
+      });
+    }
+    const result = await ActionDb.create(data);
     if (result) {
       return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_SUCCESS,
@@ -87,7 +76,7 @@ class UserBrowsePathManager implements CommonManager {
     const { id } = data;
     const item = await this._getInfo({ id });
     const updateData = global.util.lodash.omitNil({});
-    const result = await UserBrowsePathDb.update(updateData, {
+    const result = await ActionDb.update(updateData, {
       where: {
         id,
       },
@@ -109,7 +98,7 @@ class UserBrowsePathManager implements CommonManager {
   async del(id: number): Promise<ManagerResponse<any>> {
     const item = await await this._getInfo({ id });
     return await sequelize.transaction(async (t: any) => {
-      const result = await UserBrowsePathDb.destroy({
+      const result = await ActionDb.destroy({
         where: {
           id,
         },
@@ -149,18 +138,18 @@ class UserBrowsePathManager implements CommonManager {
     const { pageSize = 10, pageNo = 1 } = data;
     return await sequelize.transaction(async (t: any) => {
       const listParams = buildCommonListParams({ pageNo, pageSize }, config);
-      const result = await UserBrowsePathDb.findAndCountAll({
+      const result = await ActionDb.findAndCountAll({
         ...listParams,
       });
       const { count, rows } = result;
-      const UserBrowsePathList = rows.map((row: any) => {
+      const ActionList = rows.map((row: any) => {
         const data: any = row.toJSON();
         return data;
       });
 
       return new ManagerResponseSuccess({
         data: new ListDataModel({
-          data: UserBrowsePathList,
+          data: ActionList,
           total: count,
           pageNo,
           pageSize,
@@ -171,4 +160,4 @@ class UserBrowsePathManager implements CommonManager {
   }
 }
 
-export default UserBrowsePathManager;
+export default ActionManager;

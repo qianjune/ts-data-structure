@@ -1,5 +1,5 @@
 /**
- * @description 用户浏览路径 api
+ * @description 用户行为 api
  */
 
 import joi from "joi";
@@ -11,37 +11,25 @@ import BaseRouter, {
   del,
   prefix,
   tag,
-  middleware,
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
-import UserBrowsePathService from "@micro-services/buried-point-service/src/services/userBrowsePath";
-import SessionCookieHandler from "@src/utils/session_cookie";
-const userBrowsePathService = new UserBrowsePathService();
+import ActionService from "@micro-services/buried-point-service/src/services/action";
+const actionService = new ActionService();
 
-@prefix("/api/userBrowsePath")
-@tag("用户浏览路径相关服务")
-class UserBrowsePathApi extends BaseRouter {
+@prefix("/api/action")
+@tag("用户行为相关服务")
+class ActionApi extends BaseRouter {
   /**
    * 创建
    * @param ctx
    */
   @post("/create")
-  @summary("用户浏览路径创建")
-  @middleware(SessionCookieHandler.loginCheck)
-  @parameter(
-    joi.object({
-      currentPagePath: joi.string().required(),
-      nextPagePath: joi.string(),
-    }),
-    "body"
-  )
+  @summary("用户行为创建")
+  @parameter(joi.object({}), "body")
   async create(ctx: Context): Promise<void> {
     // create item
     const { body } = ctx.request;
-    await userBrowsePathService.create({
-      ...body,
-      userInfo: global.state.userInfo,
-    });
+    await actionService.create(body);
   }
 
   /**
@@ -49,7 +37,7 @@ class UserBrowsePathApi extends BaseRouter {
    * @param ctx
    */
   @get("/detail/:id")
-  @summary("用户浏览路径详情")
+  @summary("用户行为详情")
   @parameter(
     joi.object({
       id: joi.string().required(),
@@ -59,7 +47,7 @@ class UserBrowsePathApi extends BaseRouter {
   async getInfo(ctx: Context): Promise<void> {
     // get info
     const { id } = ctx.state.parameter;
-    await userBrowsePathService.getInfo(id);
+    await actionService.getInfo(id);
   }
 
   /**
@@ -67,7 +55,7 @@ class UserBrowsePathApi extends BaseRouter {
    * @param ctx
    */
   @get("/list")
-  @summary("用户浏览路径列表")
+  @summary("用户行为列表")
   @parameter(
     joi.object({
       pageSize: joi.number().required(),
@@ -78,7 +66,7 @@ class UserBrowsePathApi extends BaseRouter {
   async getList(ctx: Context): Promise<void> {
     // get list
     const { parameter } = ctx.state;
-    await userBrowsePathService.getList(parameter);
+    await actionService.getList(parameter);
   }
 
   /**
@@ -86,7 +74,7 @@ class UserBrowsePathApi extends BaseRouter {
    * @param ctx
    */
   @del("/:id")
-  @summary("删除用户浏览路径")
+  @summary("删除用户行为")
   @parameter(
     joi.object({
       id: joi.string().required(),
@@ -96,7 +84,7 @@ class UserBrowsePathApi extends BaseRouter {
   async del(ctx: Context): Promise<void> {
     // del item
     const { id } = ctx.state.parameter;
-    await userBrowsePathService.del(id);
+    await actionService.del(id);
   }
 
   /**
@@ -104,13 +92,13 @@ class UserBrowsePathApi extends BaseRouter {
    * @param ctx 、
    */
   @post("/edit")
-  @summary("用户浏览路径编辑")
+  @summary("用户行为编辑")
   @parameter(joi.object({}), "body")
   async edit(ctx: Context): Promise<void> {
     // edit item
     const { body } = ctx.request;
-    await userBrowsePathService.edit(body);
+    await actionService.edit(body);
   }
 }
 
-export default new UserBrowsePathApi().init();
+export default new ActionApi().init();
