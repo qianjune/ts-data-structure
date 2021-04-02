@@ -2,7 +2,7 @@ import fs from "fs";
 
 export enum FILE_TYPE {
   API = "api",
-  SERVICE = "service",
+  SERVICE = "services",
   DB = "db",
   MANAGER = "manager",
 }

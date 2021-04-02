@@ -8,10 +8,29 @@ import inquirer from "inquirer";
 import _ from "lodash";
 import chalk from "chalk";
 import { buildFileContent, writeServiceFile, FILE_TYPE } from "./lib";
-
+import { microServiceConfig } from "./static/service-config";
+import { nameHandler } from "./utils/nameHandler";
 // 匹配中英文数字
 // /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/.test('你好a')
 
+const microServiceNameTransformToProgramConfig = () => {
+  const config: any = [];
+  microServiceConfig.forEach((conf) => {
+    config[conf.name] = false;
+  });
+  return config;
+};
+const judeIsBaseLocationValid = (config: any) => {
+  let res = false;
+  for (let i = 0; i < microServiceConfig.length; i++) {
+    if (config[microServiceConfig[i].name]) {
+      res = true;
+      break;
+    }
+  }
+  return res;
+};
+console.log(nameHandler("buriedPoint"));
 program
   .command("start")
   // .alias("")
@@ -22,6 +41,7 @@ program
   .option("--mall", "市场服务")
   .option("--member", "会员服务")
   .option("--social", "社交服务")
+  .option("--buriedPoint", "埋点服务")
   .option("--user", "用户服务")
   .option("--all", "全部")
   .option("--api", "仅api")
@@ -39,11 +59,14 @@ program
         db: false,
         services: false,
         manager: false,
-        common: false,
-        mall: false,
-        member: false,
-        social: false,
-        user: false,
+        // common: false,
+        // mall: false,
+        // member: false,
+        // social: false,
+        // user: false,
+        // buriedPoint: false,
+        // microServiceConfig,
+        ...microServiceNameTransformToProgramConfig(),
       },
       option
     );
@@ -86,39 +109,12 @@ program
         message: "请输入服务描述",
       });
     }
-    if (
-      config.common === false &&
-      config.mall === false &&
-      config.member === false &&
-      config.social === false &&
-      config.user === false
-    ) {
+    if (!judeIsBaseLocationValid(config)) {
       promps.push({
         type: "list",
         name: "baseLocation",
         message: "放在哪个微服务中",
-        choices: [
-          {
-            name: "通用",
-            value: "common",
-          },
-          {
-            name: "市场",
-            value: "mall",
-          },
-          {
-            name: "会员",
-            value: "member",
-          },
-          {
-            name: "社交",
-            value: "social",
-          },
-          {
-            name: "用户",
-            value: "user",
-          },
-        ],
+        choices: microServiceConfig,
       });
     }
     if (
@@ -187,7 +183,7 @@ program
       const basePath = join(__dirname, "../", "../");
       const baseMicroServicePath = join(
         "micro-services/",
-        `${answers["baseLocation"]}-services/`,
+        `${nameHandler(answers["baseLocation"])}-service/`,
         "src"
       );
       const srcPath = join(basePath, baseMicroServicePath);
