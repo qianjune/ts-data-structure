@@ -61,3 +61,6 @@ https://medium.com/@cramirez92/build-a-nodejs-cinema-microservice-and-deploying-
 02. 通过swagger doc自动生成前端ts文件
 
 ### 返回的国际化
+
+https://segmentfault.com/a/1190000019576048
+https://blog.csdn.net/baozhuona/article/details/104299851

@@ -28,6 +28,7 @@ const topicManager = new TopicManager();
 const placeholder = "Note";
 const responseMsg = ResponseMsg(placeholder);
 (NoteDb.prototype as any).attributes = ["createdAt"];
+(NoteDb.prototype as any).dataParseAttribute = ["sightMaterials"];
 class Note implements CommonManager {
   /**
    * 获取详情（私有）
@@ -214,14 +215,18 @@ class Note implements CommonManager {
         ...listParams,
       });
       const { count, rows } = result;
-      const NoteList = rows.map((row: any) => {
+      const noteList = rows.map((row: any) => {
         const data: any = row.toJSON();
+        data.mainMaterial =
+          Array.isArray(data.sightMaterials) && data.sightMaterials.length > 0
+            ? data.sightMaterials[0].url
+            : "";
         return data;
       });
 
       return new ManagerResponseSuccess({
         data: new ListDataModel({
-          data: NoteList,
+          data: noteList,
           total: count,
           pageNo,
           pageSize,

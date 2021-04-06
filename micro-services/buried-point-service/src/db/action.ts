@@ -18,6 +18,21 @@ Action.init(
       primaryKey: true,
       comment: "主键id",
     },
+    pagePath: {
+      type: TYPES.STRING,
+      allowNull: false,
+      comment: "页面路径",
+    },
+    key: {
+      type: TYPES.STRING,
+      allowNull: false,
+      comment: "行为的识别key",
+    },
+    userId: {
+      type: TYPES.INTEGER,
+      allowNull: false,
+      comment: "用户id",
+    },
   },
   {
     sequelize,

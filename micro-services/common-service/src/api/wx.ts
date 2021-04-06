@@ -120,12 +120,12 @@ class WxApi extends BaseRouter {
     Joi.object({
       code: Joi.string().required(),
       avatarUrl: Joi.string().required(),
-      city: Joi.string().required(),
-      country: Joi.string().required(),
+      city: Joi.string().allow(null).allow(""),
+      country: Joi.string().allow(null).allow(""),
       gender: Joi.number().required(),
-      language: Joi.string().required(),
+      language: Joi.string().allow(null).allow(""),
       nickName: Joi.string().required(),
-      province: Joi.string().required(),
+      province: Joi.string().allow(null).allow(""),
     }),
     "body"
   )
@@ -133,7 +133,7 @@ class WxApi extends BaseRouter {
     const { body } = ctx.request;
     const { code, ...otherBody } = body;
     const result = await WxApi._getSessionKey(code);
-
+    console.log(result, "_getSessionKey...");
     const {
       userInfo,
       session = "",

@@ -34,8 +34,8 @@ export class InitManager {
     const needToRequireDirectoryGroup = [
       "",
       `/${ms}/user-service`,
-      // `/${ms}/member-service`,
-      // `/${ms}/mall-service`,
+      `/${ms}/member-service`,
+      `/${ms}/mall-service`,
       `/${ms}/common-service`,
       `/${ms}/social-service`,
       `/${ms}/buried-point-service`,

@@ -25,7 +25,14 @@ class ActionApi extends BaseRouter {
    */
   @post("/create")
   @summary("用户行为创建")
-  @parameter(joi.object({}), "body")
+  @parameter(
+    joi.object({
+      pagePath: joi.string().required(),
+      key: joi.string().required(),
+      userId: joi.number().required(),
+    }),
+    "body"
+  )
   async create(ctx: Context): Promise<void> {
     // create item
     const { body } = ctx.request;

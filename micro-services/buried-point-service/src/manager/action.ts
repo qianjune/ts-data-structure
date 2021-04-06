@@ -48,15 +48,15 @@ class ActionManager implements CommonManager {
    * @param data
    */
   async create(data: any): Promise<ManagerResponse<any>> {
-    const { } = data;
-    const item = await ActionDb.findOne({
-      where: {},
-    });
-    if (item) {
-      return new ManagerResponseFailure({
-        msg: responseMsg.CREATE_FAIL_BY_EXISTED,
-      });
-    }
+    // const { } = data;
+    // const item = await ActionDb.findOne({
+    //   where: {},
+    // });
+    // if (item) {
+    //   return new ManagerResponseFailure({
+    //     msg: responseMsg.CREATE_FAIL_BY_EXISTED,
+    //   });
+    // }
     const result = await ActionDb.create(data);
     if (result) {
       return new ManagerResponseSuccess({
