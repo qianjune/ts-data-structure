@@ -95,8 +95,36 @@ class ProductManager implements CommonManager {
       });
     }
   }
-  edit<T>(data: T): Promise<ManagerResponse<any>> {
-    throw new Error("Method not implemented.");
+  async edit<T>(data: any): Promise<ManagerResponse<any>> {
+    const { id } = data;
+    const productInfo = await Product.findOne({
+      where: {
+        id,
+      },
+      include: [
+        {
+          model: ShopModel,
+          as: "shopDetail",
+          attributes: ["name"],
+        },
+      ],
+    });
+    if (!productInfo) {
+      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
+    }
+    const result = await Product.update(data, {
+      where: {
+        id,
+      },
+    });
+    if (result[0] > 0) {
+      return new ManagerResponseSuccess({
+        data: null,
+        msg: responseMsg.EDIT_SUCCESS,
+      });
+    } else {
+      return new ManagerResponseFailure({ msg: responseMsg.EDIT_FAIL });
+    }
   }
   del(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
@@ -163,20 +191,20 @@ class ProductManager implements CommonManager {
     } else {
       const result = await Product.findAndCountAll({
         ...listParams,
-        include: [
-          // {
-          //   model: ShopModel,
-          //   as: "shopDetail",
-          //   attributes: ["name"],
-          // },
-          {
-            model: ProductCategory,
-            through: {
-              where: { categoryId: belong },
-            },
-            attributes: ["name", "id"],
-          },
-        ],
+        // include: [
+        //   // {
+        //   //   model: ShopModel,
+        //   //   as: "shopDetail",
+        //   //   attributes: ["name"],
+        //   // },
+        //   {
+        //     model: ProductCategory,
+        //     through: {
+        //       where: { categoryId: belong },
+        //     },
+        //     attributes: ["name", "id"],
+        //   },
+        // ],
         where,
       });
       const { rows, count: originCount } = result;

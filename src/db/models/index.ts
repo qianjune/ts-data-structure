@@ -117,10 +117,10 @@ Product.belongsTo(ShopModel, {
 //   foreignKey: "shopId",
 // });
 
-// AttributeKey.hasMany(AttributeValue, {
-//   as: "values",
-//   foreignKey: "keyId",
-// });
+AttributeKey.hasMany(AttributeValue, {
+  as: "values",
+  foreignKey: "keyId",
+});
 // User.hasMany(CommentModel, {
 //   foreignKey: "userId",
 // });

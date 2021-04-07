@@ -4,6 +4,7 @@
 import { Model } from "sequelize";
 import sequelize from "@root/core/db";
 import { TYPES } from "@src/db/types";
+import { mysqlArrayStringHandler, mysqlJsonHandler } from "@src/lib/common";
 
 class Product extends Model {
   static ONLINE = 1;
@@ -51,6 +52,7 @@ Product.init(
       type: TYPES.TEXT,
       comment: "sku 价格",
       allowNull: false,
+      ...mysqlJsonHandler("skuGroup"),
     },
     offer: {
       // 优惠

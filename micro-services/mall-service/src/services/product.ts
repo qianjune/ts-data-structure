@@ -7,8 +7,9 @@ import { RequestConfigInterface } from "@src/manager/interface/interface";
 const productManager = new ProductManager();
 
 class ProductService implements CommonService {
-  edit(data: any): Promise<void> {
-    throw new Error("Method not implemented.");
+  async edit(data: any): Promise<void> {
+    const result = await productManager.edit(data);
+    ResponseHandler.send(result);
   }
 
   async create(data: any): Promise<void> {

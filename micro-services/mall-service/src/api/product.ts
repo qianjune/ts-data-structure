@@ -43,6 +43,30 @@ class ProductRouter extends BaseRouter {
     await productService.create(cloneData);
   }
 
+  @post("/edit")
+  @summary("产品编辑")
+  @middleware(SessionCookieHandler.loginCheck)
+  @parameter(
+    Joi.object({
+      id: Joi.number().required(),
+      name: Joi.string().required(),
+      shopId: Joi.number(),
+      mainImage: Joi.string(),
+      skuGroup: Joi.array().items(Joi.any()).required(),
+      desc: Joi.string(),
+      // belong: Joi.number().required(),
+    }),
+    "body"
+  )
+  async editProduct(ctx: Context): Promise<void> {
+    const { body } = ctx.request;
+    console.log(body);
+    const cloneData = { ...body };
+    if (!cloneData.shopId) {
+      cloneData.shopId = 1;
+    }
+    await productService.edit(cloneData);
+  }
   @get("/list")
   @summary("产品列表")
   @parameter(
