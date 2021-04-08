@@ -14,7 +14,9 @@ import {
   ResponseMsg,
   ManagerResponseFailure,
 } from "@src/manager/response";
-import OrderDb, { OrderStatus } from "@src/db/models/v2/order";
+import OrderDb, {
+  OrderStatus,
+} from "@micro-services/mall-service/src/db/order";
 interface OrderInterface {
   shippingAddress: { [keyName: string]: any };
   goods: { [keyName: string]: any }[];
@@ -28,6 +30,15 @@ class OrderManager implements CommonManager {
     r.goods = JSON.parse(r.goods);
     return r;
   }
+  _buildOrderNumber = (data: {
+    platform: number;
+    payPath: number;
+    businessType: number;
+    timestap: string;
+  }): string => {
+    const { platform, payPath, businessType, timestap } = data;
+    return `${platform}${payPath}${businessType}${timestap}`;
+  };
   async create(data: OrderInterface): Promise<ManagerResponse<any>> {
     let order: any = await OrderDb.create(data);
     console.log(order.toJSON());

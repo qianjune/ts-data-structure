@@ -3,7 +3,7 @@ export const nameHandler = (name: string): string => {
     console.error("参数必须为string");
     return name;
   }
-  let finalWords = "";
+  let finalWords = name;
   const firstMatchIndex = name.match(/([A-Z]+)/)?.index || -1;
   let firstWords = "";
   if (firstMatchIndex > 0) {

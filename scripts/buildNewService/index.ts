@@ -21,6 +21,7 @@ const microServiceNameTransformToProgramConfig = () => {
   return config;
 };
 const judeIsBaseLocationValid = (config: any) => {
+  console.log(config, "config...");
   let res = false;
   for (let i = 0; i < microServiceConfig.length; i++) {
     if (config[microServiceConfig[i].name]) {
