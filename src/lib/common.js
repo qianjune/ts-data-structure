@@ -18,11 +18,19 @@ const mysqlJsonHandler = (key) => {
   return {
     get() {
       console.log("get触发");
-      return JSON.parse(this.getDataValue(key));
+      let result = this.getDataValue(key);
+      if (typeof result === "string") {
+        result = JSON.parse(this.getDataValue(key));
+      }
+      return result;
     },
     set(val) {
-      const handledData = JSON.stringify(val);
-      console.log(handledData);
+      let handledData = val;
+      if (typeof val !== "string") {
+        handledData = JSON.stringify(val);
+        console.log(handledData);
+      }
+
       this.setDataValue(key, handledData);
     },
   };

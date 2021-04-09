@@ -145,7 +145,6 @@ class WxApi extends BaseRouter {
         data: otherBody,
       }
     );
-    console.log(userInfo, "userInfo...");
     const res = new ManagerResponseSuccess({
       msg: "登录成功",
       data: userInfo,

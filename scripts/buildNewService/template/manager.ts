@@ -72,7 +72,12 @@ class XXXXXXManager implements CommonManager {
    * 编辑
    * @param data
    */
-  async edit(data: any): Promise<ManagerResponse<any>> {
+  async edit(
+    data: any,
+    config?: {
+      transaction?: any;
+    }
+  ): Promise<ManagerResponse<any>> {
     const { id } = data;
     const item = await this._getInfo({ id });
     const updateData = global.util.lodash.omitNil({});

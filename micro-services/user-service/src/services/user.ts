@@ -26,9 +26,7 @@ class UserService implements CommonService {
     ResponseHandler.send(result);
   }
   static async login(user: string, code: string): Promise<void> {
-    console.log(user, code);
     const result = await userManager.create({ mobile: user });
-    console.log("最后得到的用户", result);
     // if(!result) throw global.errs.
   }
   async edit(data: any): Promise<void> {
@@ -56,8 +54,6 @@ class UserService implements CommonService {
       { mobile: user },
       "self"
     );
-    console.log("------realUser-----");
-    console.log(realUser);
     let result;
     // 如果没有就创建新用户
     if (!realUser) {
@@ -88,7 +84,6 @@ class UserService implements CommonService {
 
     // 调用登录，返回session或者jwt
     if (model === "jwt") {
-      console.log(realUser);
       // return userManager.loginJwt((realUser.toJSON() as any).id)
       return {
         userInfo: JwtHandler.encrypt(result),
@@ -127,8 +122,7 @@ class UserService implements CommonService {
       { openId: user },
       "self"
     );
-    console.log("------realUser-----");
-    console.log(realUser);
+
     let result;
     // 如果没有就创建新用户
     if (!realUser) {
@@ -137,7 +131,9 @@ class UserService implements CommonService {
         throw new global.errs.FailForMini("创建用户失败，请稍后再试");
       result = createdUser;
     } else {
-      result = realUser.toJSON();
+      result = realUser.toJSON({
+        timeAttributes: ["createdAt"],
+      });
     }
     const {
       city,
@@ -160,7 +156,6 @@ class UserService implements CommonService {
 
     // 调用登录，返回session或者jwt
     if (model === "jwt") {
-      console.log(realUser);
       // return userManager.loginJwt((realUser.toJSON() as any).id)
       return {
         userInfo: JwtHandler.encrypt(result),

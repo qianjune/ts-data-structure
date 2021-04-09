@@ -63,12 +63,15 @@ class OrderApi extends BaseRouter {
   )
   async create(ctx: Context): Promise<void> {
     // create api
-    console.log(ctx.state.parameter);
+
+    console.log(ctx.headers, "ctx.headers...");
+    console.log(global.state.userInfo, "ctx.headers...");
     const { id } = global.state.userInfo;
     await orderService.create({
       ...ctx.state.parameter,
       address: ctx.state.parameter.shippingAddress,
-      userId: id,
+      user: global.state.userInfo,
+      platform: ctx.headers?.platform,
     });
   }
 

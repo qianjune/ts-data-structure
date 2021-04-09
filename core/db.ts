@@ -41,12 +41,13 @@ sequelize.sync({
 });
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: toJSON
-Model.prototype.toJSON = function () {
+Model.prototype.toJSON = function (config?: { timeAttributes?: string[] }) {
   console.log(this?.dataParseAttribute, "dataParseAttribute...");
   const data = clone(this.dataValues); // 存储的是原始的字符串
+  console.log(config, "config...");
   const delAttributes = difference(
     ["updatedAt", "createdAt", "deletedAt"],
-    this.attributes
+    [...(this.attributes || []), ...(config?.timeAttributes || [])]
   );
   if (
     Array.isArray(this?.dataParseAttribute) &&

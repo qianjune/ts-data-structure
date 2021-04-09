@@ -19,7 +19,10 @@ import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 import { ResponseHandler } from "@src/utils/responseHandler";
 import PayOrderDb from "@micro-services/mall-service/src/db/payOrder";
-
+import { OrderStatus } from "../db/order";
+import { OrderNumberBuilder } from "../enum/order-number";
+import OrderManager from "./order";
+const orderManager = new OrderManager();
 const placeholder = "PayOrder";
 const responseMsg = ResponseMsg(placeholder);
 class PayOrderManager implements CommonManager {
@@ -29,7 +32,7 @@ class PayOrderManager implements CommonManager {
    * @param config
    */
   async _getInfo(
-    where: { id: number },
+    where: { id?: number; orderCode?: string; orderId?: number },
     config?: { msg?: string }
   ): Promise<any> {
     const item = await PayOrderDb.findOne({
@@ -48,16 +51,67 @@ class PayOrderManager implements CommonManager {
    * @param data
    */
   async create(data: any): Promise<ManagerResponse<any>> {
-    const { } = data;
-    const item = await PayOrderDb.findOne({
-      where: {},
+    const { orderId, orderCode, payPath, userInfo } = data;
+    const orderInfo = await orderManager._getInfo({
+      id: orderId,
+      code: orderCode,
     });
-    if (item) {
-      return new ManagerResponseFailure({
-        msg: responseMsg.CREATE_FAIL_BY_EXISTED,
+    console.log(orderInfo, "orderInfo...");
+    let result = null;
+    // https://cloud.tencent.com/developer/article/1522935
+    // 获取商品订单详情
+    // 判断订单status是否是PENDING_PAYMENT
+    if (orderInfo.status === OrderStatus.PENDING_PAYMENT) {
+      // 如果是则生成新的支付订单，并且修改商品订单状态未PAY_PROCESS
+      result = await sequelize.transaction(async (t: any) => {
+        const payOrder = await PayOrderDb.create(
+          {
+            code: OrderNumberBuilder.buildPayOrderNumber({
+              orderCode,
+              userInfo,
+              payPath,
+            }),
+            orderCode,
+            orderId,
+            totalPrice: orderInfo.totalPrice,
+            userId: userInfo.id,
+          },
+          { transaction: t }
+        );
+        if (payOrder) {
+          // transaction 需要 事物处理
+          const orderStatusEditResult = await orderManager.edit(
+            {
+              id: orderInfo.id,
+              status: OrderStatus.PAY_PROCESS,
+            },
+            { transaction: t }
+          );
+          if (orderStatusEditResult) {
+            return payOrder;
+          }
+        }
+        return null;
       });
     }
-    const result = await PayOrderDb.create(data);
+
+    // 如果订单status是PAY_PROCESS，贼查询到该订单相应的支付订单，返回
+    else if (orderInfo.status === OrderStatus.PAY_PROCESS) {
+      result = await this._getInfo({
+        orderCode,
+        orderId,
+      });
+    }
+    // 如果支付订单被取消，贼将相应的商品订单改变状体或者隐藏
+    // const item = await PayOrderDb.findOne({
+    //   where: {},
+    // });
+    // if (item) {
+    //   return new ManagerResponseFailure({
+    //     msg: responseMsg.CREATE_FAIL_BY_EXISTED,
+    //   });
+    // }
+
     if (result) {
       return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_SUCCESS,

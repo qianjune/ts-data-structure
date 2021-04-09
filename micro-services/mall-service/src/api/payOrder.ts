@@ -11,9 +11,11 @@ import BaseRouter, {
   del,
   prefix,
   tag,
+  middleware,
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
 import PayOrderService from "@micro-services/mall-service/src/services/payOrder";
+import SessionCookieHandler from "@src/utils/session_cookie";
 const payOrderService = new PayOrderService();
 
 @prefix("/api/payOrder")
@@ -25,11 +27,22 @@ class PayOrderApi extends BaseRouter {
    */
   @post("/create")
   @summary("支付订单创建")
-  @parameter(joi.object({}), "body")
+  @middleware(SessionCookieHandler.loginCheck)
+  @parameter(
+    joi.object({
+      orderCode: joi.string().required(),
+      orderId: joi.number().required(),
+      payPath: joi.string().required(),
+    }),
+    "body"
+  )
   async create(ctx: Context): Promise<void> {
     // create item
     const { body } = ctx.request;
-    await payOrderService.create(body);
+    await payOrderService.create({
+      ...body,
+      userInfo: global.state.userInfo,
+    });
   }
 
   /**
