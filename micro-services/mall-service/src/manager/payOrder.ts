@@ -18,7 +18,9 @@ import {
 import sequelize from "@root/core/db";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
 import { ResponseHandler } from "@src/utils/responseHandler";
-import PayOrderDb from "@micro-services/mall-service/src/db/payOrder";
+import PayOrderDb, {
+  PayOrderStatus,
+} from "@micro-services/mall-service/src/db/payOrder";
 import { OrderStatus } from "../db/order";
 import { OrderNumberBuilder } from "../enum/order-number";
 import OrderManager from "./order";
@@ -127,21 +129,29 @@ class PayOrderManager implements CommonManager {
    * @param data
    */
   async edit(data: any): Promise<ManagerResponse<any>> {
-    const { id } = data;
+    const { id, status } = data;
     const item = await this._getInfo({ id });
-    const updateData = global.util.lodash.omitNil({});
+    const updateData = global.util.lodash.omitNil(data);
+    let msg = responseMsg.EDIT_FAIL;
+    // 退款处理 (先确认该支付订单是否已经支付成功)
+    if (item["status"] === PayOrderStatus.PAID && status === "refund") {
+      // 1. 调用退款流程（第三方/自带服务) 之后退款成功后调用支付订单修改状态为 已退款
+      // 2. 修改订单状态成 退款中
+      updateData["status"] = PayOrderStatus.REFUNDING;
+    }
     const result = await PayOrderDb.update(updateData, {
       where: {
         id,
       },
     });
     if (result[0] > 0) {
+      msg = responseMsg.EDIT_SUCCESS;
       return new ManagerResponseSuccess({
         data: null,
-        msg: responseMsg.EDIT_SUCCESS,
+        msg,
       });
     } else {
-      return new ManagerResponseFailure({ msg: responseMsg.EDIT_FAIL });
+      return new ManagerResponseFailure({ msg });
     }
   }
 

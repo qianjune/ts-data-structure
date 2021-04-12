@@ -106,11 +106,36 @@ class PayOrderApi extends BaseRouter {
    */
   @post("/edit")
   @summary("支付订单编辑")
-  @parameter(joi.object({}), "body")
+  @parameter(
+    joi.object({
+      payCode: joi.string().required(),
+      id: joi.number().required(),
+    }),
+    "body"
+  )
   async edit(ctx: Context): Promise<void> {
     // edit item
     const { body } = ctx.request;
     await payOrderService.edit(body);
+  }
+
+  /**
+   * 取消订单
+   * @param ctx 、
+   */
+  @post("/edit")
+  @summary("支付订单编辑")
+  @parameter(
+    joi.object({
+      payCode: joi.string().required(),
+      id: joi.number().required(),
+    }),
+    "body"
+  )
+  async cancel(ctx: Context): Promise<void> {
+    // edit item
+    const { body } = ctx.request;
+    await payOrderService.edit({ ...body, status: "refund" });
   }
 }
 

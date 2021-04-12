@@ -80,7 +80,7 @@ class XXXXXXManager implements CommonManager {
   ): Promise<ManagerResponse<any>> {
     const { id } = data;
     const item = await this._getInfo({ id });
-    const updateData = global.util.lodash.omitNil({});
+    const updateData = global.util.lodash.omitNil(data);
     const result = await XXXXXXDb.update(updateData, {
       where: {
         id,
