@@ -1239,10 +1239,10 @@
   "resolved" "https://registry.npm.taobao.org/@types/node-xlsx/download/@types/node-xlsx-0.15.1.tgz"
   "version" "0.15.1"
 
-"@types/node@*":
-  "integrity" "sha1-2TSqzCJCT+liLr9oVzcMBS6uRk4="
-  "resolved" "https://registry.npm.taobao.org/@types/node/download/@types/node-14.14.21.tgz?cache=0&sync_timestamp=1610658194064&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fnode%2Fdownload%2F%40types%2Fnode-14.14.21.tgz"
-  "version" "14.14.21"
+"@types/node@*", "@types/node@^14.14.37":
+  "integrity" "sha512-XYmBiy+ohOR4Lh5jE379fV2IU+6Jn4g5qASinhitfyO71b/sCo6MKsMLF5tc7Zf2CE8hViVQyYSobJNke8OvUw=="
+  "resolved" "https://registry.npmjs.org/@types/node/-/node-14.14.37.tgz"
+  "version" "14.14.37"
 
 "@types/node@^10.1.0":
   "integrity" "sha512-YZ1mMAdUPouBZCdeugjV8y1tqqr28OyL8DYbH5ePCfe9zcXtvbh1wDBy7uzlHkXo3Qi07kpzXfvycvrkby/jXw=="
@@ -1371,7 +1371,7 @@
   "resolved" "https://registry.npmjs.org/@types/uuid/-/uuid-8.3.0.tgz"
   "version" "8.3.0"
 
-"@types/validator@*":
+"@types/validator@*", "@types/validator@^13.1.3":
   "integrity" "sha1-Nms5SqP77tI5K/CiDe1gb6Sj014="
   "resolved" "https://registry.npm.taobao.org/@types/validator/download/@types/validator-13.1.3.tgz"
   "version" "13.1.3"
@@ -4029,7 +4029,7 @@
   dependencies:
     "is-glob" "^4.0.1"
 
-"glob@^7.1.1", "glob@^7.1.2", "glob@^7.1.4", "glob@^7.1.6":
+"glob@^7.1.1", "glob@^7.1.2", "glob@^7.1.4", "glob@^7.1.6", "glob@7.1.6":
   "integrity" "sha1-FB8zuBp8JJLhJVlDB0gMRmeSeKY="
   "resolved" "https://registry.npm.taobao.org/glob/download/glob-7.1.6.tgz"
   "version" "7.1.6"
@@ -6991,7 +6991,7 @@
     "redis-errors" "^1.2.0"
     "redis-parser" "^3.0.0"
 
-"reflect-metadata@^0.1.13":
+"reflect-metadata@*", "reflect-metadata@^0.1.13":
   "integrity" "sha1-Z648pXyXKiqhZCsQ/jY/4y1J3Ag="
   "resolved" "https://registry.npm.taobao.org/reflect-metadata/download/reflect-metadata-0.1.13.tgz"
   "version" "0.1.13"
@@ -7413,7 +7413,14 @@
   "resolved" "https://registry.npm.taobao.org/sequelize-pool/download/sequelize-pool-6.1.0.tgz"
   "version" "6.1.0"
 
-"sequelize@^6.3.3":
+"sequelize-typescript@^2.1.0":
+  "integrity" "sha512-wwPxydBQ/wIZ92pFxDQEAhW8uRHqwFZGm6JkPmpsCjrODWrH8TANZiOCjwGouygFMgBwCNK91RNwLe5TYoy5pg=="
+  "resolved" "https://registry.npmjs.org/sequelize-typescript/-/sequelize-typescript-2.1.0.tgz"
+  "version" "2.1.0"
+  dependencies:
+    "glob" "7.1.6"
+
+"sequelize@^6.3.3", "sequelize@>=6.2.0":
   "integrity" "sha1-gOPbesi3bZjEXKkzNBl+tuIzUVg="
   "resolved" "https://registry.npm.taobao.org/sequelize/download/sequelize-6.3.5.tgz"
   "version" "6.3.5"
