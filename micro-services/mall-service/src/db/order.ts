@@ -1,12 +1,14 @@
 /**
  * @description OrderDb 数据库模型
  */
-import { Model } from "sequelize";
+// import { Model } from "sequelize";
 import sequelize from "@root/core/db";
 import { TYPES } from "@src/db/types";
 import { mysqlJsonHandler } from "@src/lib/common";
 import { sequelizeErrHandler } from "@src/utils/error_handler";
-import { Table, Column } from "sequelize-typescript";
+import { Column, Table, Model, init } from "@src/lib/sequelize-ts";
+import { Select } from "@src/lib/converter-ts";
+// import { Table, Column, Model } from "sequelize-typescript";
 export enum OrderStatus {
   PENDING_PAYMENT = 0, // 待支付
   PAY_PROCESS = 1, // 进入支付订单的流程
@@ -58,6 +60,7 @@ interface WantToBuyGoodsGroupInterface {
 
 @Table({
   tableName: "order",
+  sequelize,
 })
 class OrderDb extends Model {
   @Column({
@@ -112,6 +115,34 @@ class OrderDb extends Model {
     comment: "购买总价",
   })
   totalPrice: number;
+  @Select({
+    label: "状态",
+    name: "status",
+    customProps: {
+      options: [
+        {
+          label: "待支付",
+          value: "0",
+        },
+        {
+          label: "已付款",
+          value: "1",
+        },
+        {
+          label: "已发货",
+          value: "2",
+        },
+        {
+          label: "已收货",
+          value: "3",
+        },
+        {
+          label: "待评价",
+          value: "4",
+        },
+      ],
+    },
+  })
   @Column({
     type: TYPES.INTEGER,
     allowNull: false,
@@ -121,14 +152,7 @@ class OrderDb extends Model {
   status: number;
 }
 
-// OrderDb.init(
-//   {},
-//   {
-//     sequelize,
-//     tableName: "order",
-//   }
-// );
-
+init(OrderDb);
 OrderDb.sync({
   alter: true,
 }).catch(sequelizeErrHandler);
