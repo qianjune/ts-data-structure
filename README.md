@@ -70,8 +70,6 @@
 
 依赖反转：https://www.npmtrends.com/awilix-vs-inversify-koa-utils-vs-typedi-vs-typescript-ioc
 
-#### 通过装饰器 连同 后台组件
-
 ## 近期：
 
 2. 商品上架后台（sku/价格/状态）
@@ -79,3 +77,19 @@
 https://editor.swagger.io/
 
 https://www.jianshu.com/p/b0051361ecfa 埋点知识
+
+### chagelog doc
+
+### serverless
+
+使用 Node.js 快速开启 ServerLess Functions：入门实践指南
+https://juejin.cn/post/6844904025935052807
+
+https://juejin.cn/post/6844904082088411144
+
+https://serverlesscloud.cn/
+
+https://www.openfaas.com/
+
+Tencent Koa
+https://www.serverless.com/cn/components/tencent-koa/
