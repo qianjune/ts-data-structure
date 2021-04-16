@@ -79,6 +79,7 @@
     "sequelize": "^6.3.3",
     "sequelize-typescript": "^2.1.0",
     "svg-captcha": "^1.4.0",
+    "tencentcloud-sdk-nodejs": "^4.0.99",
     "type-graphql": "^1.1.1",
     "uuid": "^8.2.0",
     "validator": "^13.1.1",
