@@ -1,82 +1,91 @@
 import Sequelize from "sequelize";
-import { Model } from "sequelize";
+// import { Model } from "sequelize";
 import sequelize from "@root/core/db";
 import { TYPES } from "@src/db/types";
 import { sequelizeErrHandler } from "@src/utils/error_handler";
-const { STRING, INTEGER, DECIMAL } = TYPES;
+import { Column, Table, Model, init } from "@src/lib/sequelize-ts";
 
+const { STRING, INTEGER, DECIMAL } = TYPES;
+@Table({
+  sequelize,
+  tableName: "member",
+})
 class Member extends Model {
-  // custom property here
+  @Column({
+    autoIncrement: true,
+    type: TYPES.INTEGER,
+    primaryKey: true,
+    comment: "会员id",
+  })
+  id: number;
+  @Column({
+    allowNull: false,
+    type: INTEGER,
+    comment: "用户id",
+  })
+  userId: number;
+  @Column({
+    type: STRING,
+    comment: "昵称",
+    allowNull: false,
+  })
+  nickName: string;
+  @Column({
+    type: DECIMAL,
+    allowNull: false,
+    comment: "性别(1.男性 2.女性 3.保密)",
+    defaultValue: 3,
+  })
+  sex: number;
+  @Column({
+    type: STRING,
+    allowNull: false,
+    comment: "会员卡号",
+  })
+  memberCardCode: string;
+  @Column({
+    type: INTEGER,
+    comment: "成长值",
+    allowNull: false,
+    defaultValue: 0,
+  })
+  growthValue: number;
+  @Column({
+    comment: "当前积分",
+    defaultValue: 0,
+    type: INTEGER,
+  })
+  points: number;
+
+  @Column({
+    type: STRING,
+    comment: "姓名",
+  })
+  realName: string;
+  @Column({
+    type: TYPES.DATE,
+    comment: "生日",
+    defaultValue: Sequelize.NOW,
+  })
+  birthday: string;
+  @Column({
+    type: STRING,
+    comment: "常居地",
+  })
+  residence: string;
+  @Column({
+    type: TYPES.INTEGER,
+    comment: "生份证",
+  })
+  idCard: number;
+  @Column({
+    type: TYPES.STRING,
+    comment: "头像",
+  })
+  avatarUrl: string;
 }
 
-Member.init(
-  {
-    id: {
-      autoIncrement: true,
-      type: TYPES.INTEGER,
-      primaryKey: true,
-      comment: "会员id",
-    },
-    userId: {
-      allowNull: false,
-      type: INTEGER,
-      comment: "用户id",
-    },
-    nickName: {
-      type: STRING,
-      comment: "昵称",
-      allowNull: false,
-    },
-    sex: {
-      type: DECIMAL,
-      allowNull: false,
-      comment: "性别(1.男性 2.女性 3.保密)",
-      defaultValue: 3,
-    },
-    memberCardCode: {
-      type: STRING,
-      allowNull: false,
-      comment: "会员卡号",
-    },
-    growthValue: {
-      type: INTEGER,
-      comment: "成长值",
-      allowNull: false,
-      defaultValue: 0,
-    },
-    points: {
-      comment: "当前积分",
-      defaultValue: 0,
-      type: INTEGER,
-    },
-
-    realName: {
-      type: STRING,
-      comment: "姓名",
-    },
-    birthday: {
-      type: TYPES.DATE,
-      comment: "生日",
-      defaultValue: Sequelize.NOW,
-    },
-    residence: {
-      type: STRING,
-      comment: "常居地",
-    },
-    idCard: {
-      type: TYPES.INTEGER,
-      comment: "生份证",
-    },
-    avatarUrl: {
-      type: TYPES.STRING,
-      comment: "头像",
-    },
-  },
-  {
-    sequelize,
-    tableName: "member",
-  }
-);
+init(Member);
 Member.sync({
   alter: true,
 }).catch(sequelizeErrHandler);

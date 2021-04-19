@@ -2,10 +2,12 @@
  * @description 积分 变化 表
  */
 
-import { Model } from "sequelize";
+// import { Model } from "sequelize";
 import sequelize from "@root/core/db";
 import { TYPES } from "@src/db/types";
 import { sequelizeErrHandler } from "@src/utils/error_handler";
+import { Column, Table, Model, init } from "@src/lib/sequelize-ts";
+
 const { STRING, INTEGER, DECIMAL } = TYPES;
 
 export enum PointsType {
@@ -21,43 +23,44 @@ export enum PointsPattern {
   MOCK = "MOCK", // 测试使用
 }
 
+@Table({
+  sequelize,
+  tableName: "points",
+})
 class Points extends Model {
-  // custom property here
+  @Column({
+    type: INTEGER,
+    comment: "主键id",
+    autoIncrement: true,
+    primaryKey: true,
+  })
+  id: number;
+  @Column({
+    type: INTEGER,
+    comment: "数值",
+    allowNull: false,
+  })
+  num: number;
+  @Column({
+    type: STRING,
+    comment: "变化方式（increase 增加，reduce 减少）",
+    allowNull: false,
+  })
+  type: string;
+  @Column({
+    type: STRING,
+    comment: "变化种类",
+    allowNull: false,
+  })
+  pattern: string;
+  @Column({
+    type: INTEGER,
+    comment: "过期时长",
+  })
+  expired: number;
 }
 
-Points.init(
-  {
-    id: {
-      type: INTEGER,
-      comment: "主键id",
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    num: {
-      type: INTEGER,
-      comment: "数值",
-      allowNull: false,
-    },
-    type: {
-      type: STRING,
-      comment: "变化方式（increase 增加，reduce 减少）",
-      allowNull: false,
-    },
-    pattern: {
-      type: STRING,
-      comment: "变化种类",
-      allowNull: false,
-    },
-    expired: {
-      type: INTEGER,
-      comment: "过期时长",
-    },
-  },
-  {
-    sequelize,
-    tableName: "points",
-  }
-);
+init(Points);
 Points.sync({
   alter: true,
 }).catch(sequelizeErrHandler);

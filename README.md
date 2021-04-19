@@ -98,3 +98,9 @@ https://www.serverless.com/cn/components/tencent-koa/
 
 reflect-metadata的研究 https://juejin.cn/post/6844904152812748807#heading-14
 深入理解 TypeScript-Reflect Metadata  https://jkchao.github.io/typescript-book-chinese/tips/metadata.html#%E5%9F%BA%E7%A1%80
+
+### NAPI
+
+### AST
+
+https://mp.weixin.qq.com/s/iAApf1IcOe0sb3Uto6X3KA

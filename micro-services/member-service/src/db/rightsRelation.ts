@@ -1,46 +1,49 @@
-import { Model } from "sequelize";
+// import { Model } from "sequelize";
 import sequelize from "@root/core/db";
 import { TYPES } from "@src/db/types";
 import { sequelizeErrHandler } from "@src/utils/error_handler";
+import { Column, Table, Model, init } from "@src/lib/sequelize-ts";
+
 const { STRING, INTEGER, DECIMAL } = TYPES;
 
+@Table({
+  sequelize,
+  tableName: "rightRelation",
+})
 class RightsRelation extends Model {
-  // custom property here
+  @Column({
+    type: INTEGER,
+    comment: "主键id",
+    primaryKey: true,
+    autoIncrement: true,
+  })
+  id: number;
+  @Column({
+    type: INTEGER,
+    comment: "权益包id",
+    allowNull: false,
+  })
+  packageId: number;
+  @Column({
+    type: INTEGER,
+    comment: "权益id",
+    allowNull: false,
+  })
+  rightId: number;
+  @Column({
+    type: INTEGER,
+    comment: "权益包中某个权益的数量",
+    defaultValue: 0,
+  })
+  amount: number;
+  @Column({
+    type: INTEGER,
+    comment: "权重",
+  })
+  weight: number;
 }
 
-RightsRelation.init(
-  {
-    id: {
-      type: INTEGER,
-      comment: "主键id",
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    packageId: {
-      type: INTEGER,
-      comment: "权益包id",
-      allowNull: false,
-    },
-    rightId: {
-      type: INTEGER,
-      comment: "权益id",
-      allowNull: false,
-    },
-    amount: {
-      type: INTEGER,
-      comment: "权益包中某个权益的数量",
-      defaultValue: 0,
-    },
-    weight: {
-      type: INTEGER,
-      comment: "权重",
-    },
-  },
-  {
-    sequelize,
-    tableName: "rightRelation",
-  }
-);
+init(RightsRelation);
 RightsRelation.sync({
   alter: true,
 }).catch(sequelizeErrHandler);
