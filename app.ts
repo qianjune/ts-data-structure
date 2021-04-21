@@ -34,6 +34,7 @@ declare global {
       config: any;
       errs: GlobalErrorInterface;
       swagger: any;
+      convert: any;
       status: HttpStatus;
       state: {
         userInfo?: {

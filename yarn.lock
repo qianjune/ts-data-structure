@@ -551,7 +551,10 @@
   "resolved" "file:../github/buried-point"
   "version" "0.0.2"
   dependencies:
+    "antd" "^4.15.2"
     "axios" "^0.21.1"
+    "react" "^17.0.2"
+    "react-dom" "^17.0.2"
 
 "@nodelib/fs.scandir@2.1.4":
   "integrity" "sha1-1LNUml213iaD4MEHGrTxQJBLv2k="
@@ -7981,9 +7984,9 @@
     "string-width" "^3.0.0"
 
 "tencentcloud-sdk-nodejs@^4.0.99":
-  "integrity" "sha512-2wIAPamKjXFcL1wBLaUtfzqCdZRV/OpULx150/HDWynU/Y8D4vR3HcegxjKhO0uaukhWPuC6AR6Jrmb17kWh6g=="
-  "resolved" "https://registry.npmjs.org/tencentcloud-sdk-nodejs/-/tencentcloud-sdk-nodejs-4.0.100.tgz"
-  "version" "4.0.100"
+  "integrity" "sha512-A+X+ZJRwOWcil8rLlJPrmUKAL9ax5qn6cmtFjlBc/eoPPMA24Qo/unr5GlrNiY3MzqWrA30VzChubIWtpE4N6A=="
+  "resolved" "https://registry.npmjs.org/tencentcloud-sdk-nodejs/-/tencentcloud-sdk-nodejs-4.0.101.tgz"
+  "version" "4.0.101"
   dependencies:
     "babel-eslint" "^10.0.2"
     "eslint-plugin-react" "^7.17.0"

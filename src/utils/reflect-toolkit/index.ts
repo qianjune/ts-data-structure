@@ -11,7 +11,7 @@ class ReflectToolkit {
    */
   static getAttributes(target: any, nameSymbol: symbol): any | undefined {
     const attributes = Reflect.getMetadata(nameSymbol, target);
-
+    return cloneDeep(attributes);
     if (attributes) {
       return Object.keys(attributes).reduce((copy, key) => {
         const cloneCopy: { [keyName: string]: any } = cloneDeep(copy);
@@ -47,6 +47,7 @@ class ReflectToolkit {
       attributes = {};
     }
     attributes[propertyKey] = { ...options };
+    // console.log(attributes);
     ReflectToolkit.setAttributes(target, attributes, nameSymbol);
   }
 }

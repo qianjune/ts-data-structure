@@ -6,6 +6,7 @@ export * from "./swagger";
 import Router from "koa-router";
 import { set } from "lodash";
 import baseSchema from "@src/lib/swagger/base";
+import { saveConvertData } from "@src/utils/trantor/saveConvertData";
 import { joiToObject } from "./joi-to-object";
 
 const buildParameters = (
@@ -110,6 +111,12 @@ class BaseRouter {
           parameters,
           tag: this.tag,
         });
+        if (Object.keys(schema)[0]?.includes("/list")) {
+          // console.log(schema["/api/brand/list"].get?.parameters);
+          console.log(schema);
+          saveConvertData(Object.keys(schema)[0], schema);
+        }
+
         paths = { ...paths, ...schema };
       });
     if (!global.swagger) {

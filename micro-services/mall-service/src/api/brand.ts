@@ -43,6 +43,7 @@ class BrandRouter extends BaseRouter {
     Joi.object({
       pageSize: Joi.number().required(),
       pageNo: Joi.number().required(),
+      name: Joi.string().required(),
     }),
     "query"
   )

@@ -1,59 +1,65 @@
-import { Model } from "sequelize";
+// import { Model } from "sequelize";
 import sequelize from "@root/core/db";
 import bcrypt from "bcryptjs";
 import { TYPES } from "@src/db/types";
 import { sequelizeErrHandler } from "@src/utils/error_handler";
-
+import { Column, Table, Model, init } from "@src/lib/sequelize-ts";
+@Table({
+  sequelize,
+  tableName: "spuCategoryRelation",
+})
+@Table({
+  sequelize,
+  tableName: "user",
+  // indexes: [
+  //   {
+  //     unique: true,
+  //     fields: ["email", "mobile", "openid"],
+  //   },
+  // ],
+})
 class User extends Model {
-  // custom property here
+  @Column({
+    type: TYPES.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    comment: "用户id",
+  })
+  id: number;
+  @Column({
+    type: TYPES.BIGINT(11 as any),
+    comment: "用户手机号",
+  })
+  mobile: number;
+  @Column({
+    type: TYPES.STRING,
+    set(val: string) {
+      const salt = bcrypt.genSaltSync(10);
+      const psw = bcrypt.hashSync(val, salt);
+      this.setDataValue("password", psw);
+    },
+    comment: "用户密码",
+  })
+  password: string;
+  @Column({
+    type: TYPES.STRING,
+    comment: "用户邮箱",
+  })
+  email: string;
+  @Column({
+    type: TYPES.STRING,
+    comment: "用户状态",
+    defaultValue: "active",
+  })
+  status: string;
+  @Column({
+    type: TYPES.STRING,
+    comment: "微信openid",
+  })
+  openid: string;
 }
 
-User.init(
-  {
-    id: {
-      type: TYPES.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-      comment: "用户id",
-    },
-    mobile: {
-      type: TYPES.BIGINT(11 as any),
-      comment: "用户手机号",
-    },
-    password: {
-      type: TYPES.STRING,
-      set(val: string) {
-        const salt = bcrypt.genSaltSync(10);
-        const psw = bcrypt.hashSync(val, salt);
-        this.setDataValue("password", psw);
-      },
-      comment: "用户密码",
-    },
-    email: {
-      type: TYPES.STRING,
-      comment: "用户邮箱",
-    },
-    status: {
-      type: TYPES.STRING,
-      comment: "用户状态",
-      defaultValue: "active",
-    },
-    openid: {
-      type: TYPES.STRING,
-      comment: "微信openid",
-    },
-  },
-  {
-    sequelize,
-    tableName: "user",
-    indexes: [
-      {
-        unique: true,
-        fields: ["email", "mobile", "openid"],
-      },
-    ],
-  }
-);
+init(User);
 
 User.sync({
   alter: true,
