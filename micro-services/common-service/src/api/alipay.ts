@@ -80,7 +80,7 @@ class AliPayApi extends BaseRouter {
   )
   async getUserInfo_old(ctx: Context) {
     const { authCode } = ctx.query;
-    const result = await alipay.getAccessToken(authCode);
+    const result = await alipay.getAccessToken(authCode as any);
     console.log(result);
     ctx.body = {
       data: result,

@@ -33,10 +33,10 @@ export class InitManager {
     const ms = "micro-services";
     const needToRequireDirectoryGroup = [
       "",
-      // `/${ms}/user-service`,
-      // `/${ms}/member-service`,
+      `/${ms}/user-service`,
+      `/${ms}/member-service`,
       `/${ms}/mall-service`,
-      // `/${ms}/common-service`,
+      `/${ms}/common-service`,
       // `/${ms}/social-service`,
       // `/${ms}/buried-point-service`,
     ];

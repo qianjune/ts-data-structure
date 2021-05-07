@@ -4,19 +4,16 @@ import bcrypt from "bcryptjs";
 import { TYPES } from "@src/db/types";
 import { sequelizeErrHandler } from "@src/utils/error_handler";
 import { Column, Table, Model, init } from "@src/lib/sequelize-ts";
-@Table({
-  sequelize,
-  tableName: "spuCategoryRelation",
-})
+
 @Table({
   sequelize,
   tableName: "user",
-  // indexes: [
-  //   {
-  //     unique: true,
-  //     fields: ["email", "mobile", "openid"],
-  //   },
-  // ],
+  indexes: [
+    {
+      unique: true,
+      fields: ["email", "mobile", "openid"],
+    },
+  ],
 })
 class User extends Model {
   @Column({

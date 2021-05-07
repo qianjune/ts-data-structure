@@ -44,7 +44,7 @@ class SpuCategoryRelation extends Model {
 init(SpuCategoryRelation);
 
 SpuCategoryRelation.sync({
-  // alter: true,
+  alter: true,
 });
 
 export default SpuCategoryRelation;

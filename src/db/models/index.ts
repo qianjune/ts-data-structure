@@ -103,11 +103,11 @@ Product.belongsTo(ShopModel, {
 // User.hasMany(ShoppingCart, {
 //   foreignKey: "userId",
 // });
-// // ShoppingCart-User 关系 一对多 end
-// ShoppingCart.belongsTo(ShopModel, {
-//   as: "shop",
-//   foreignKey: "shopId",
-// });
+// ShoppingCart-User 关系 一对多 end
+ShoppingCart.belongsTo(ShopModel, {
+  as: "shop",
+  foreignKey: "shopId",
+});
 // ShoppingCart.belongsTo(Product, {
 //   as: "product",
 //   foreignKey: "productId",
