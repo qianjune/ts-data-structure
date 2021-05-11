@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import { ValidateCodeModel } from "@root/cache/validateCode";
 import { CodeBuilder } from "@root/cache/codeBuilder";
-import { ManagerResponse } from "@src/manager/response";
+import { ManagerResponse, ManagerResponseSuccess } from "@src/manager/response";
 import { CodeManagerInterface } from "./sms";
 
 class EmailModel implements CodeManagerInterface {
@@ -35,8 +35,7 @@ class EmailModel implements CodeManagerInterface {
     // }
     console.log(info.messageId);
 
-    return new ManagerResponse({
-      success: true,
+    return new ManagerResponseSuccess({
       msg: "邮箱验证码发送成功",
       data: result,
     });

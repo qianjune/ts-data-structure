@@ -26,8 +26,7 @@ class ShopManager implements CommonManager {
       },
     });
     if (shopInfo) {
-      return new ManagerResponse({
-        success: false,
+      return new ManagerResponseFailure({
         msg: responseMsg.CREATE_FAIL_BY_NAME_OCCUPIED,
       });
     }
@@ -38,14 +37,12 @@ class ShopManager implements CommonManager {
       shopId: result.getDataValue("id" as any),
     });
     if (bindRelation) {
-      return new ManagerResponse({
-        success: true,
+      return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_SUCCESS,
         data: result,
       });
     } else {
-      return new ManagerResponse({
-        success: true,
+      return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_FAIL,
         data: result,
       });

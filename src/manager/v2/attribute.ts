@@ -28,8 +28,7 @@ class AttributeManager implements CommonManager {
       },
     });
     if (attributeKey) {
-      return new ManagerResponse({
-        success: false,
+      return new ManagerResponseFailure({
         msg: responseMsg.CREATE_FAIL_BY_NAME_OCCUPIED,
       });
     }
@@ -75,8 +74,7 @@ class AttributeManager implements CommonManager {
       },
     });
     if (!attributeKey) {
-      return new ManagerResponse({
-        success: false,
+      return new ManagerResponseFailure({
         msg: responseMsg.ITEM_NOT_FOUND,
       });
     }

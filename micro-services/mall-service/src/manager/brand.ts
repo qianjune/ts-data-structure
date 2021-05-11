@@ -3,6 +3,7 @@ import {
   ResponseMsg,
   ManagerResponseSuccess,
   ListDataModel,
+  ManagerResponseFailure,
 } from "@src/manager/response";
 import { ShopModel, ProductBrand } from "@src/db/models";
 import {
@@ -27,22 +28,19 @@ class BrandManager implements CommonManager {
       },
     });
     if (brand) {
-      return new ManagerResponse({
-        success: false,
+      return new ManagerResponseFailure({
         msg: responseMsg.CREATE_FAIL_BY_NAME_OCCUPIED,
       });
     }
     const result = await ProductBrand.create(data);
     console.log(result, ".....");
     if (result) {
-      return new ManagerResponse({
-        success: true,
+      return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_SUCCESS,
         data: result,
       });
     } else {
-      return new ManagerResponse({
-        success: true,
+      return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_FAIL,
         data: result,
       });

@@ -69,8 +69,7 @@ class ProductManager implements CommonManager {
       },
     });
     if (productInfo) {
-      return new ManagerResponse({
-        success: false,
+      return new ManagerResponseFailure({
         msg: responseMsg.CREATE_FAIL_BY_NAME_OCCUPIED,
       });
     }
@@ -82,14 +81,12 @@ class ProductManager implements CommonManager {
     //   productId: result.getDataValue('id')
     // }, { transaction: t })
     if (result) {
-      return new ManagerResponse({
-        success: true,
+      return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_SUCCESS,
         data: result,
       });
     } else {
-      return new ManagerResponse({
-        success: true,
+      return new ManagerResponseSuccess({
         msg: responseMsg.CREATE_FAIL,
         data: result,
       });

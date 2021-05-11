@@ -7,7 +7,11 @@ import axios from "axios";
 import { ValidateCodeModel } from "@root/cache/validateCode";
 import { CodeBuilder } from "@root/cache/codeBuilder";
 import { CODE_ACTION_TYPE } from "@src/enum";
-import { ManagerResponse } from "@src/manager/response";
+import {
+  ManagerResponse,
+  ManagerResponseFailure,
+  ManagerResponseSuccess,
+} from "@src/manager/response";
 
 export interface CodeManagerInterface {
   sendCode(user: string, type: CODE_ACTION_TYPE): Promise<ManagerResponse<any>>;
@@ -63,13 +67,13 @@ class Sms implements CodeManagerInterface {
     console.log("短信发送结果", res.data);
     if (res.data.error === 0) {
       ValidateCodeModel.saveCode({ user, key: type, code: smsCode });
-      return new ManagerResponse({ success: true, msg: "短信发送成功" });
+      return new ManagerResponseSuccess({ data: null, msg: "短信发送成功" });
     }
     let msg = "发送失败，请稍后再试";
     if (res.data.error == -42) {
       msg = "发送过于频繁，请稍等";
     }
-    return new ManagerResponse({ success: false, msg });
+    return new ManagerResponseFailure({ msg });
   }
   async validateCode(
     user: string | number,
