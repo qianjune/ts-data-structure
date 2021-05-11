@@ -69,24 +69,24 @@ Member.belongsTo(User, {
 // // });
 
 // // 店铺 - 用户 - 关系表 begin
-// ShopModel.belongsToMany(User, {
-//   through: ShopUserRelation,
-//   foreignKey: "shopId",
-//   otherKey: "uid",
-// });
-// User.belongsToMany(ShopModel, {
-//   through: ShopUserRelation,
-//   foreignKey: "uid",
-//   otherKey: "shopId",
-// });
-// ShopUserRelation.belongsTo(ShopModel, { foreignKey: "shopId" });
-// ShopUserRelation.belongsTo(User, { foreignKey: "uid" });
-// ShopModel.hasMany(ShopUserRelation, {
-//   foreignKey: "shopId",
-// });
-// User.hasMany(ShopUserRelation, {
-//   foreignKey: "uid",
-// });
+ShopModel.belongsToMany(User, {
+  through: ShopUserRelation,
+  foreignKey: "shopId",
+  otherKey: "uid",
+});
+User.belongsToMany(ShopModel, {
+  through: ShopUserRelation,
+  foreignKey: "uid",
+  otherKey: "shopId",
+});
+ShopUserRelation.belongsTo(ShopModel, { foreignKey: "shopId" });
+ShopUserRelation.belongsTo(User, { foreignKey: "uid" });
+ShopModel.hasMany(ShopUserRelation, {
+  foreignKey: "shopId",
+});
+User.hasMany(ShopUserRelation, {
+  foreignKey: "uid",
+});
 // // 店铺 - 用户 - 关系表 end
 
 Product.belongsTo(ShopModel, {

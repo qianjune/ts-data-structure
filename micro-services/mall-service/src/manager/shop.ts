@@ -14,9 +14,42 @@ import {
   CommonManager,
   ListFilterInterface,
 } from "@src/manager/interface/commonManager";
+import { ResponseHandler } from "@src/utils/responseHandler";
 const placeholder = "店铺";
 const responseMsg = ResponseMsg(placeholder);
 class ShopManager implements CommonManager {
+  /**
+   * 获取详情（私有）
+   * @param id
+   * @param config
+   */
+  async _getInfo(
+    data: { id: number },
+    config?: { msg?: string }
+  ): Promise<any> {
+    const { id } = data;
+    const item = await ShopModel.findOne({
+      where: { id },
+      include: [
+        {
+          model: User,
+          through: {
+            where: {
+              likeId: id,
+            },
+            attributes: [],
+          },
+          attributes: ["mobile", "id"],
+        },
+      ],
+    });
+    if (!item) {
+      ResponseHandler.send(
+        new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
+      );
+    }
+    return item;
+  }
   async create(data: any): Promise<ManagerResponse<any>> {
     console.log("data", data);
 
@@ -55,24 +88,7 @@ class ShopManager implements CommonManager {
     throw new Error("Method not implemented.");
   }
   async getInfo(id: number): Promise<ManagerResponse<any>> {
-    const shopInfo = await ShopModel.findOne({
-      where: { id },
-      include: [
-        {
-          model: User,
-          through: {
-            where: {
-              likeId: id,
-            },
-            attributes: [],
-          },
-          attributes: ["mobile"],
-        },
-      ],
-    });
-    if (!shopInfo) {
-      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
-    }
+    const shopInfo = await this._getInfo({ id });
     return new ManagerResponseSuccess({
       msg: responseMsg.GET_DETAIL_SUCCESS,
       data: shopInfo,

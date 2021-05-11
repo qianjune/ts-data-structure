@@ -3,10 +3,10 @@
  */
 
 import { ReflectToolkit } from "@src/utils/reflect-toolkit";
-import { Model } from "sequelize/types";
+import { ModelAttributeColumnOptions } from "sequelize/types";
 export const ATTRIBUTES_KEY = Symbol("sequelize:attributes");
 
-const Column = (options: Model["_attributes"]) => (
+const Column = (options: ModelAttributeColumnOptions) => (
   target: any,
   propertyKey: string
 ) => {

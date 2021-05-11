@@ -18,6 +18,7 @@ import {
   ListFilterInterface,
 } from "@src/manager/interface/commonManager";
 import { RequestConfigInterface } from "@src/manager/interface/interface";
+import { ResponseHandler } from "@src/utils/responseHandler";
 
 const placeholder = "商品";
 const responseMsg = ResponseMsg(placeholder);
@@ -94,26 +95,14 @@ class ProductManager implements CommonManager {
   }
   async edit<T>(data: any): Promise<ManagerResponse<any>> {
     const { id } = data;
-    const productInfo = await Product.findOne({
-      where: {
-        id,
-      },
-      include: [
-        {
-          model: ShopModel,
-          as: "shopDetail",
-          attributes: ["name"],
-        },
-      ],
-    });
-    if (!productInfo) {
-      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
-    }
-    const result = await Product.update(data, {
+    await this._getInfo({ id });
+    const updateData = global.util.lodash.omitNil(data);
+    const result = await Product.update(updateData, {
       where: {
         id,
       },
     });
+
     if (result[0] > 0) {
       return new ManagerResponseSuccess({
         data: null,
@@ -126,8 +115,12 @@ class ProductManager implements CommonManager {
   del(id: number): Promise<ManagerResponse<any>> {
     throw new Error("Method not implemented.");
   }
-  async getInfo(id: number): Promise<ManagerResponse<any>> {
-    const productInfo = await Product.findOne({
+  async _getInfo(
+    data: { id: number },
+    config?: { msg?: string }
+  ): Promise<any> {
+    const { id } = data;
+    const item = await Product.findOne({
       where: {
         id,
       },
@@ -139,15 +132,21 @@ class ProductManager implements CommonManager {
         },
       ],
     });
-    if (!productInfo) {
-      return new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND });
+    if (!item) {
+      ResponseHandler.send(
+        new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
+      );
     }
-    let cloneProduct: any = productInfo.toJSON();
+    let cloneProduct: any = item.toJSON();
     cloneProduct = this._shopInfoHandler(cloneProduct);
     cloneProduct.skuGroup = JSON.parse(cloneProduct.skuGroup);
     this.skuGroupOriginDataToCodeHandler(cloneProduct);
+    return item;
+  }
+  async getInfo(id: number): Promise<ManagerResponse<any>> {
+    const productInfo = await this._getInfo({ id });
     return new ManagerResponseSuccess({
-      data: cloneProduct,
+      data: productInfo,
       msg: responseMsg.GET_DETAIL_SUCCESS,
     });
   }

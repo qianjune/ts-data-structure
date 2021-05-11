@@ -6,6 +6,7 @@ import sequelize from "@root/core/db";
 import { TYPES } from "@src/db/types";
 import { mysqlArrayStringHandler, mysqlJsonHandler } from "@src/lib/common";
 import { Column, Table, Model, init } from "@src/lib/sequelize-ts";
+import { sequelizeErrHandler } from "@src/utils/error_handler";
 @Table({
   sequelize,
   tableName: "product",
@@ -18,11 +19,13 @@ class Product extends Model {
     type: TYPES.INTEGER,
     primaryKey: true,
     autoIncrement: true,
+    comment: "id",
   })
   id: number;
   @Column({
     type: TYPES.STRING,
     allowNull: false,
+    comment: "产品名称",
   })
   name: string;
   @Column({
@@ -37,6 +40,7 @@ class Product extends Model {
   @Column({
     // mysql array的处理方式
     type: TYPES.STRING,
+    comment: "商品组图",
     get() {
       return this.getDataValue("images").split(";");
     },
@@ -48,11 +52,13 @@ class Product extends Model {
   images: string;
   @Column({
     type: TYPES.STRING,
+    comment: "商品描述",
   })
   desc: string;
   @Column({
     type: TYPES.FLOAT,
     defaultValue: 9999999999,
+    comment: "商品展示价格",
   })
   price: number;
   @Column({
@@ -76,6 +82,7 @@ class Product extends Model {
     type: TYPES.INTEGER,
     allowNull: false,
     defaultValue: 1, // 之后删除
+    comment: "所属店铺id",
   })
   shopId: number;
   @Column({
@@ -95,6 +102,12 @@ class Product extends Model {
     comment: "spu识别码（不一定会用）",
   })
   code: string;
+  @Column({
+    type: TYPES.INTEGER,
+    comment: "库存数量",
+    defaultValue: 0,
+  })
+  stock: number;
   // brandId: {
   //   type: TYPES.INTEGER,
   //   comment: '品牌id'
@@ -103,8 +116,8 @@ class Product extends Model {
 
 init(Product);
 Product.sync({
-  // alter: true,
+  alter: true,
   // force: true
-});
+}).catch(sequelizeErrHandler);
 
 export default Product;

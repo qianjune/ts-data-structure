@@ -13,7 +13,7 @@ import BaseRouter, {
 import { Context } from "koa";
 import SessionCookieHandler from "@src/utils/session_cookie";
 import Joi from "joi";
-import config from "@root/config/config";
+import { Product } from "@src/db/models";
 import ProductService from "../services/product";
 const productService = new ProductService();
 @prefix("/api/product")
@@ -122,7 +122,6 @@ class ProductRouter extends BaseRouter {
   }
 
   // 商品简化信息
-
   @get("/customer/app/shop/list")
   @summary("app产品-列表-通过shopId/categoryId")
   @parameter(
@@ -137,6 +136,60 @@ class ProductRouter extends BaseRouter {
   async getListByShopIdAndCategoryId(ctx: Context): Promise<void> {
     await productService.getListForApp(ctx.state.parameter, {
       include: ["id", "name", "mainImage"],
+    });
+  }
+
+  @post("/put/on/shelf")
+  @summary("商品上架")
+  @middleware(SessionCookieHandler.loginCheck)
+  @parameter(
+    Joi.object({
+      id: Joi.string().required(),
+    }),
+    "body"
+  )
+  async putOnTheShelf(ctx: Context): Promise<void> {
+    const { id } = ctx.state.parameter;
+    await productService.putOnTheShelf({
+      id,
+      userId: global.state.userInfo.id,
+      status: Product.ONLINE,
+    });
+  }
+  @post("/put/off/shelf")
+  @summary("商品下架")
+  @middleware(SessionCookieHandler.loginCheck)
+  @parameter(
+    Joi.object({
+      id: Joi.string().required(),
+    }),
+    "body"
+  )
+  async offTheShelf(ctx: Context): Promise<void> {
+    const { id } = ctx.state.parameter;
+    await productService.putOnTheShelf({
+      id,
+      userId: global.state.userInfo.id,
+      status: Product.OFFLINE,
+    });
+  }
+
+  @post("/put/off/shelf")
+  @summary("修改库存")
+  @middleware(SessionCookieHandler.loginCheck)
+  @parameter(
+    Joi.object({
+      id: Joi.string().required(),
+      stock: Joi.number().required(),
+    }),
+    "body"
+  )
+  async modifyStock(ctx: Context): Promise<void> {
+    const { id, stock } = ctx.state.parameter;
+    await productService.modifyStock({
+      id,
+      userId: global.state.userInfo.id,
+      stock,
     });
   }
 }
