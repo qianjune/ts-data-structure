@@ -22,7 +22,7 @@ import PayOrderDb, {
   PayOrderStatus,
 } from "@micro-services/mall-service/src/db/payOrder";
 import { OrderStatus } from "../db/order";
-import { OrderNumberBuilder } from "../enum/order-number";
+import { OrderNumberBuilder, PayPathNumber } from "../enum/order-number";
 import OrderManager from "./order";
 const orderManager = new OrderManager();
 const placeholder = "PayOrder";
@@ -47,17 +47,45 @@ class PayOrderManager implements CommonManager {
     }
     return item.toJSON();
   }
-
+  async _isCanPay(data: { id: number }): Promise<boolean> {
+    const { id } = data;
+    const item = await this._getInfo({ id });
+    if (item.status === PayOrderStatus.PENDING_PAYMENT) {
+      return true;
+    }
+    return false;
+  }
   /**
    * 创建
    * @param data
    */
-  async create(data: any): Promise<ManagerResponse<any>> {
-    const { orderId, orderCode, payPath, userInfo } = data;
-    const orderInfo = await orderManager._getInfo({
-      id: orderId,
-      code: orderCode,
-    });
+  async create(
+    data: any,
+    config?: {
+      fetchOrderDetail: boolean;
+      orderDetail?: {
+        status: OrderStatus;
+        code: string;
+      };
+    }
+  ): Promise<ManagerResponse<any>> {
+    const { fetchOrderDetail = true, orderDetail } = config;
+    const {
+      orderId,
+      // orderCode,
+      payPath,
+      userInfo,
+    } = data;
+    let orderInfo: { [keyName: string]: any } = {};
+    //
+    if (!fetchOrderDetail && orderDetail) {
+      orderInfo = orderDetail;
+    } else {
+      orderInfo = await orderManager._getInfo({
+        id: orderId,
+        // code: orderCode,
+      });
+    }
     console.log(orderInfo, "orderInfo...");
     let result = null;
     // https://cloud.tencent.com/developer/article/1522935
@@ -69,14 +97,15 @@ class PayOrderManager implements CommonManager {
         const payOrder = await PayOrderDb.create(
           {
             code: OrderNumberBuilder.buildPayOrderNumber({
-              orderCode,
+              orderCode: orderInfo.code,
               userInfo,
               payPath,
             }),
-            orderCode,
+            orderCode: orderInfo.code,
             orderId,
             totalPrice: orderInfo.totalPrice,
             userId: userInfo.id,
+            payPath,
           },
           { transaction: t }
         );
@@ -100,7 +129,7 @@ class PayOrderManager implements CommonManager {
     // 如果订单status是PAY_PROCESS，贼查询到该订单相应的支付订单，返回
     else if (orderInfo.status === OrderStatus.PAY_PROCESS) {
       result = await this._getInfo({
-        orderCode,
+        orderCode: orderInfo.code,
         orderId,
       });
     }

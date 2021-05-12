@@ -31,6 +31,8 @@ import {
   SafeListDB,
 } from "@micro-services/common-service/src/db";
 import User from "@root/micro-services/user-service/src/db/user";
+import WalletDb from "@micro-services/user-service/src/db/wallet";
+
 import {
   NoteDB,
   TopicDB,
@@ -291,4 +293,5 @@ export {
   TopicDB,
   TopicNoteRelationDB,
   SafeListDB,
+  WalletDb,
 };

@@ -104,3 +104,8 @@ reflect-metadata的研究 https://juejin.cn/post/6844904152812748807#heading-14
 ### AST
 
 https://mp.weixin.qq.com/s/iAApf1IcOe0sb3Uto6X3KA
+
+### 微信机器人
+
+https://github.com/wechaty/wechaty
+https://shanyue.tech/growth/wechaty-start.html#%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E5%8F%8A%E7%A7%81%E5%9F%9F%E6%B5%81%E9%87%8F

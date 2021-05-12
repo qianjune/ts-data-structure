@@ -28,7 +28,15 @@ interface goodsInfo {
   shopDetail: { name: string };
   [propsName: string]: any;
 }
-
+interface canBuyParams {
+  id: number;
+  wantToBuyAmount: number;
+}
+interface canBuyResponse {
+  success: boolean;
+  name: string;
+  id: number;
+}
 class ProductManager implements CommonManager {
   public skuGroupOriginDataToCodeHandler = (crd: any) => {
     if (crd.skuGroup) {
@@ -57,6 +65,47 @@ class ProductManager implements CommonManager {
     cloneRow.shopName = cloneRow.shopDetail.name;
     delete cloneRow.shopDetail;
     return cloneRow;
+  }
+  /**
+   * 单个物品可购买检测
+   * @param data
+   * @returns
+   */
+  async _canBuy(data: canBuyParams): Promise<canBuyResponse> {
+    const { id, wantToBuyAmount } = data;
+    const item = await this._getInfo({ id });
+    if (!item) {
+      return {
+        success: false,
+        name: item?.name,
+        id,
+      };
+    }
+    if (item?.stock < wantToBuyAmount) {
+      return {
+        success: false,
+        name: item?.name,
+        id,
+      };
+    }
+    return {
+      success: true,
+      name: item?.name,
+      id,
+    };
+  }
+  /**
+   * 一组物品可购买检测
+   * @param data
+   * @returns
+   */
+  async _canBuyForGroup(data: canBuyParams[]): Promise<canBuyResponse[]> {
+    const result = await Promise.all(
+      data.map((d) =>
+        this._canBuy({ id: d.id, wantToBuyAmount: d.wantToBuyAmount })
+      )
+    );
+    return result;
   }
   async create(data: {
     name: string;
@@ -117,9 +166,10 @@ class ProductManager implements CommonManager {
   }
   async _getInfo(
     data: { id: number },
-    config?: { msg?: string }
+    config?: { msg?: string; autoReturnError?: boolean }
   ): Promise<any> {
     const { id } = data;
+    const { autoReturnError = true } = config;
     const item = await Product.findOne({
       where: {
         id,
@@ -133,9 +183,12 @@ class ProductManager implements CommonManager {
       ],
     });
     if (!item) {
-      ResponseHandler.send(
-        new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
-      );
+      if (autoReturnError) {
+        ResponseHandler.send(
+          new ManagerResponseFailure({ msg: responseMsg.ITEM_NOT_FOUND })
+        );
+      }
+      return null;
     }
     let cloneProduct: any = item.toJSON();
     cloneProduct = this._shopInfoHandler(cloneProduct);

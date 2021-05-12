@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import { TYPES } from "@src/db/types";
 import { sequelizeErrHandler } from "@src/utils/error_handler";
 import { Column, Table, Model, init } from "@src/lib/sequelize-ts";
+import EncryptBox from "@src/utils/encrypt_box";
 
 @Table({
   sequelize,
@@ -31,8 +32,7 @@ class User extends Model {
   @Column({
     type: TYPES.STRING,
     set(val: string) {
-      const salt = bcrypt.genSaltSync(10);
-      const psw = bcrypt.hashSync(val, salt);
+      const psw = EncryptBox.buildEncryptCode(val);
       this.setDataValue("password", psw);
     },
     comment: "用户密码",

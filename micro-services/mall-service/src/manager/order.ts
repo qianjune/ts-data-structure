@@ -63,7 +63,14 @@ class OrderManager implements CommonManager {
     const { platform, payPath, businessType, timestap } = data;
     return `${platform}${payPath}${businessType}${timestap}`;
   };
-  async create(data: OrderInterface): Promise<ManagerResponse<any>> {
+  async create(
+    data: OrderInterface
+  ): Promise<
+    ManagerResponse<{
+      id: number;
+      [keyName: string]: any;
+    }>
+  > {
     const cloneData: any = omit(cloneDeep(data), "user");
     cloneData.userId = data.user.id;
     // 生成订单号

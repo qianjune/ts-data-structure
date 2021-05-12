@@ -1,5 +1,5 @@
 /**
- * @description 支付订单 api
+ * @description 钱包服务 api
  */
 
 import joi from "joi";
@@ -14,36 +14,26 @@ import BaseRouter, {
   middleware,
 } from "@src/lib/router-decorator";
 import { Context } from "koa";
-import PayOrderService from "@micro-services/mall-service/src/services/payOrder";
+import WalletService from "@micro-services/user-service/src/services/wallet";
 import SessionCookieHandler from "@src/utils/session_cookie";
 import { ResponseHandler } from "@src/utils/responseHandler";
-const payOrderService = new PayOrderService();
+const walletService = new WalletService();
 
-@prefix("/api/payOrder")
-@tag("支付订单相关服务")
-class PayOrderApi extends BaseRouter {
+@prefix("/api/wallet")
+@tag("钱包服务相关服务")
+class WalletApi extends BaseRouter {
   /**
    * 创建
    * @param ctx
    */
   @post("/create")
-  @summary("支付订单创建")
+  @summary("钱包服务创建")
   @middleware(SessionCookieHandler.loginCheck)
-  @parameter(
-    joi.object({
-      orderCode: joi.string().required(),
-      orderId: joi.number().required(),
-      payPath: joi.string().required(),
-    }),
-    "body"
-  )
+  @parameter(joi.object({}), "body")
   async create(ctx: Context): Promise<void> {
     // create item
     const { body } = ctx.request;
-    await payOrderService.create({
-      ...body,
-      userInfo: global.state.userInfo,
-    });
+    await walletService.create({ userId: global.state.userInfo.id });
   }
 
   /**
@@ -51,7 +41,8 @@ class PayOrderApi extends BaseRouter {
    * @param ctx
    */
   @get("/detail/:id")
-  @summary("支付订单详情")
+  @summary("钱包服务详情")
+  @middleware(SessionCookieHandler.loginCheck)
   @parameter(
     joi.object({
       id: joi.string().required(),
@@ -61,7 +52,7 @@ class PayOrderApi extends BaseRouter {
   async getInfo(ctx: Context): Promise<void> {
     // get info
     const { id } = ctx.state.parameter;
-    await payOrderService.getInfo(id);
+    await walletService.getInfo(id);
   }
 
   /**
@@ -69,7 +60,8 @@ class PayOrderApi extends BaseRouter {
    * @param ctx
    */
   @get("/list")
-  @summary("支付订单列表")
+  @summary("钱包服务列表")
+  @middleware(SessionCookieHandler.loginCheck)
   @parameter(
     joi.object({
       pageSize: joi.number().required(),
@@ -80,7 +72,7 @@ class PayOrderApi extends BaseRouter {
   async getList(ctx: Context): Promise<void> {
     // get list
     const { parameter } = ctx.state;
-    await payOrderService.getList(parameter);
+    await walletService.getList(parameter);
   }
 
   /**
@@ -88,7 +80,8 @@ class PayOrderApi extends BaseRouter {
    * @param ctx
    */
   @del("/:id")
-  @summary("删除支付订单")
+  @summary("删除钱包服务")
+  @middleware(SessionCookieHandler.loginCheck)
   @parameter(
     joi.object({
       id: joi.string().required(),
@@ -98,7 +91,7 @@ class PayOrderApi extends BaseRouter {
   async del(ctx: Context): Promise<void> {
     // del item
     const { id } = ctx.state.parameter;
-    await payOrderService.del(id);
+    await walletService.del(id);
   }
 
   /**
@@ -106,51 +99,69 @@ class PayOrderApi extends BaseRouter {
    * @param ctx 、
    */
   @post("/edit")
-  @summary("支付订单编辑")
-  @parameter(
-    joi.object({
-      payCode: joi.string().required(),
-      id: joi.number().required(),
-    }),
-    "body"
-  )
+  @summary("钱包服务编辑")
+  @middleware(SessionCookieHandler.loginCheck)
+  @parameter(joi.object({}), "body")
   async edit(ctx: Context): Promise<void> {
     // edit item
     const { body } = ctx.request;
-    await payOrderService.edit(body);
+    await walletService.edit(body);
   }
 
   /**
-   * 取消订单
+   * 钱包充值
    * @param ctx 、
    */
-  @post("/edit")
-  @summary("支付订单编辑")
-  @parameter(
-    joi.object({
-      payCode: joi.string().required(),
-      id: joi.number().required(),
-    }),
-    "body"
-  )
-  async cancel(ctx: Context): Promise<void> {
-    // edit item
-    const { body } = ctx.request;
-    await payOrderService.edit({ ...body, status: "refund" });
-  }
-
-  /**
-   * 支付订单
-   * @param ctx 、
-   */
-  @post("/pay")
-  @summary("支付订单")
+  @post("/recharge")
+  @summary("钱包充值服务")
   @middleware(SessionCookieHandler.loginCheck)
   @parameter(
     joi.object({
-      // payCode: joi.string().required(),
-      id: joi.number().required(),
-      payPath: joi.string().required(),
+      amount: joi.number().required(),
+    }),
+    "body"
+  )
+  async recharge(ctx: Context): Promise<void> {
+    // edit item
+    const { body } = ctx.request;
+    await walletService.recharge({ ...body, userId: global.state.userInfo.id });
+  }
+
+  /**
+   * 钱包修改支付密码
+   * @param ctx 、
+   */
+  @post("/modify/password")
+  @summary("钱包修改支付密码")
+  @middleware(SessionCookieHandler.loginCheck)
+  @parameter(
+    joi.object({
+      password: joi.string().required(),
+      confirmPassword: joi.string().required(),
+      // 验证码
+      // 验证token
+    }),
+    "body"
+  )
+  async modifyPassword(ctx: Context): Promise<void> {
+    // edit item
+    const { body } = ctx.request;
+    await walletService.modifyPassword({
+      ...body,
+      userId: global.state.userInfo.id,
+    });
+  }
+
+  /**
+   * 钱包支付
+   * @param ctx 、
+   */
+  @post("/pay")
+  @summary("钱包支付服务")
+  @middleware(SessionCookieHandler.loginCheck)
+  @parameter(
+    joi.object({
+      amount: joi.number().required(),
       password: joi.string().required(),
     }),
     "body"
@@ -159,9 +170,9 @@ class PayOrderApi extends BaseRouter {
     // edit item
     const { body } = ctx.request;
     ResponseHandler.send(
-      await payOrderService.pay({ ...body, userId: global.state.userInfo.id })
+      await walletService.pay({ ...body, userId: global.state.userInfo.id })
     );
   }
 }
 
-export default new PayOrderApi().init();
+export default new WalletApi().init();

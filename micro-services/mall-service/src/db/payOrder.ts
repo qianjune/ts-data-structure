@@ -58,6 +58,13 @@ class PayOrder extends Model {
     comment: "支付订单号",
   })
   code: string;
+
+  @Column({
+    type: TYPES.STRING,
+    allowNull: false,
+    comment: "支付途径",
+  })
+  payPath: string;
 }
 
 init(PayOrder);

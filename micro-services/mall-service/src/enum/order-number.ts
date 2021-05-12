@@ -15,17 +15,20 @@ const PlatformNumber: { [keyName: string]: string } = {
   QQ: "07",
   JD: "08",
 };
-const PayPathNumber: { [keyName: string]: string } = {
+
+export const PayPathNumber = {
   WECHAT: "01",
   ALIPAY: "02",
   OTHER: "03",
+  SELF: "04",
+  NOT_SELECTED: "00",
 };
 class OrderNumberBuilder {
   static _buildPlatformNumber(platform: string): string {
     return PlatformNumber[platform];
   }
-  static _buildPayPathNumber(platform: string): string {
-    return PayPathNumber[platform];
+  static _buildPayPathNumber(pathNumber: string): string {
+    return pathNumber;
   }
   static _buildBusinessTypeNumber() { }
   static _buildUserIdEncryNumber(userInfo: {
@@ -69,7 +72,7 @@ class OrderNumberBuilder {
     };
     payPath: string;
   }): string {
-    const { orderCode, userInfo, payPath } = data;
+    const { orderCode, userInfo, payPath = "NOT_SELECTED" } = data;
     return (
       orderCode +
       this._buildPayPathNumber(payPath) +

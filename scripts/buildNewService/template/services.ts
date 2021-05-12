@@ -13,7 +13,7 @@ class XXXXXXService implements CommonService {
    */
   async create(data: any): Promise<void> {
     const result = await xXXXXXManager.create(data);
-    ResponseHandler.send(result);
+    return result;
   }
 
   /**
@@ -22,7 +22,7 @@ class XXXXXXService implements CommonService {
    */
   async edit<T>(data: T): Promise<void> {
     const result = await xXXXXXManager.edit(data);
-    ResponseHandler.send(result);
+    return result;
   }
 
   /**
@@ -31,7 +31,7 @@ class XXXXXXService implements CommonService {
    */
   async del(id: number): Promise<void> {
     const result = await xXXXXXManager.del(id);
-    ResponseHandler.send(result);
+    return result;
   }
 
   /**
@@ -40,7 +40,7 @@ class XXXXXXService implements CommonService {
    */
   async getInfo(id: number): Promise<void> {
     const result = await xXXXXXManager.getInfo(id);
-    ResponseHandler.send(result);
+    return result;
   }
 
   /**
@@ -50,7 +50,7 @@ class XXXXXXService implements CommonService {
    */
   async getList?(data: any, config?: RequestConfigInterface): Promise<void> {
     const result = await xXXXXXManager.getList(data);
-    ResponseHandler.send(result);
+    return result;
   }
 }
 
