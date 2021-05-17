@@ -19,6 +19,11 @@ class XXXXXX extends Model {
     comment: "主键id",
   })
   id: number;
+  @Column({
+    type: TYPES.STRING,
+    comment: "额外数据，用于不破坏表结构增加内容",
+  })
+  extra: string;
 }
 
 init(XXXXXX);
