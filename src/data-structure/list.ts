@@ -1,6 +1,7 @@
 /**
  * @description 数据结构 - List
  * https://zihengcat.github.io/2019/05/04/java-tutorial-for-language-adavanced-list-interface-and-implementations/
+ * https://blog.csdn.net/liyaxin2010/article/details/83544834
  */
 
 interface List<E> {
