@@ -20,7 +20,9 @@ class ArrayList<E> implements List<E> {
     this.list = originList;
     this.len = originList.length;
   }
-
+  public get size(): number {
+    return this.len;
+  }
   public add(index: number, element: E): void {
     if (index < 0) {
       throw new Error("index illegal");
@@ -37,6 +39,7 @@ class ArrayList<E> implements List<E> {
 
     this.len = this.list.length;
   }
+
   public remove(index: number): E {
     if (index >= this.len || index < 0) {
       throw new Error("index illegal");
