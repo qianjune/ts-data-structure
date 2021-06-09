@@ -1,7 +1,8 @@
 import "module-alias/register";
 import "reflect-metadata";
-import app from "./app";
+import {quickSort,QuickSort} from "@src/algorithm/quick-sort";
 
+QuickSort.sort<number>([4, 6, 5, 2, 3, 8, 7, 1])
 
 // rx 学习
 // import './experiment/rx-dev/index'
