@@ -1,5 +1,6 @@
 /**
  * @description 插入排序
+ * 把已经过的i的内容做出正确的排序
  */
 
 import JUtil from "@src/util";
