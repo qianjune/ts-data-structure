@@ -1,5 +1,6 @@
 /**
  * @description 快速排序法
+ * 复杂度：n+n/2+n/4+n/8...+1=2n = O(n)
  */
 
 class QuickSort {
