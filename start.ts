@@ -7,5 +7,8 @@ import "reflect-metadata";
 // import './experiment/rx-dev/index'
 // 算法
 // import './experiment/algorithm/index'
-import { BinarySearch } from "@src/algorithm/binary-search";
-BinarySearch.search();
+// import { BinarySearch } from "@src/algorithm/binary-search";
+// BinarySearch.search();
+import { EnvelopeNesting } from "@src/question/envelope-nesting";
+
+EnvelopeNesting.nesting();
