@@ -1,47 +1,60 @@
 /**
  * @description 二分搜索树
+ * 存储的元素必须可以比较
+ * 每个节点都大于它左边的左右的子节点，小于右边的子节点
  */
 
-class Node {
-  key: number;
-  value: number;
-  left: Node;
-  right: Node;
+class Node<E> {
+  e: E;
+  left: Node<E>;
+  right: Node<E>;
   // 构造函数重载
-  constructor({
-    key,
-    value,
-    left,
-    right,
-  }: {
-    key: number;
-    value: number;
-    left: Node;
-    right: Node;
-  });
-  constructor({ key, value, left, right }: Node) {
-    this.key = key;
-    this.value = value;
-    this.left = left;
-    this.right = right;
+  constructor(e: E) {
+    this.e = e;
+    this.left = null;
+    this.right = null;
   }
 }
 
-class BTS {
-  root: Node;
-  count: number;
+class BTS<E>{
+  private root: Node<E>;
+  private size: number;
   constructor() {
     this.root = null;
-    this.count = 0;
+    this.size = 0;
   }
-  size(): number {
-    return this.count;
+
+  public getSize(): number {
+    return this.size
   }
+
   isEmpty(): boolean {
-    return this.count === 0;
+    return this.size === 0;
   }
-  insert(node: Node, key: number, value: string) {
-    if (node === null) {
+  public add(e: E) {
+    if (this.root === null) {
+      this.root = new Node(e)
+      this.size++
+    } else {
+      this._add(this.root, e)
+    }
+  }
+  private _add(node: Node<E>, e: E) {
+    if (node.e === e) {
+      return
+    } else if (e < node.e && node.left === null) {
+      node.left = new Node(e)
+      this.size++
+      return
+    } else if (e > node.e && node.right === null) {
+      node.right = new Node(e)
+      this.size++
+      return
+    }
+    if (e > node.e) {
+      this._add(node.right, e)
+    } else {
+      this._add(node.left, e)
     }
   }
   contain() { }
