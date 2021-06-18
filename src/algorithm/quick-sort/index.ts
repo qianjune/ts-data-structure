@@ -4,7 +4,6 @@
  */
 
 class QuickSort {
-  constructor() { }
   public static sort<E>(arr: E[]) {
     this._sort(arr, 0, arr.length - 1);
     console.log(arr);
