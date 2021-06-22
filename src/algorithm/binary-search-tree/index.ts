@@ -60,3 +60,5 @@ class BTS<E>{
   contain() { }
   search() { }
 }
+
+export {Node}

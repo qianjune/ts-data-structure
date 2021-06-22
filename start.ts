@@ -7,5 +7,16 @@ import "reflect-metadata";
 // import './experiment/rx-dev/index'
 // 算法
 // import './experiment/algorithm/index'
-import { BinarySearch } from "@src/algorithm/binary-search";
-BinarySearch.search();
+// import { BinarySearch } from "@src/algorithm/binary-search";
+// BinarySearch.search();
+import { BTS2 } from "@src/algorithm/binary-search-tree/index2";
+
+const myBTS = new BTS2<number>()
+myBTS.add(5)
+myBTS.add(3)
+myBTS.add(2)
+myBTS.add(4)
+myBTS.add(6)
+myBTS.add(8)
+console.log(myBTS)
+console.log(myBTS.toString())
