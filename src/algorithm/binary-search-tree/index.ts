@@ -61,4 +61,4 @@ class BTS<E> {
   search() { }
 }
 
-export {Node}
+export { Node };

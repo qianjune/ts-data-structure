@@ -4,6 +4,8 @@
  * 适合用于统计
  */
 
+import { BTS2 } from "@src/algorithm/binary-search-tree/index2";
+
 export interface Set<E> {
   add(e: E): void;
   remove(e: E): void;
