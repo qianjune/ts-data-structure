@@ -16,7 +16,7 @@ class Node<E> {
   }
 }
 
-class BTS<E>{
+class BTS<E> {
   private root: Node<E>;
   private size: number;
   constructor() {
@@ -25,7 +25,7 @@ class BTS<E>{
   }
 
   public getSize(): number {
-    return this.size
+    return this.size;
   }
 
   isEmpty(): boolean {
@@ -33,28 +33,28 @@ class BTS<E>{
   }
   public add(e: E) {
     if (this.root === null) {
-      this.root = new Node(e)
-      this.size++
+      this.root = new Node(e);
+      this.size++;
     } else {
-      this._add(this.root, e)
+      this._add(this.root, e);
     }
   }
   private _add(node: Node<E>, e: E) {
     if (node.e === e) {
-      return
+      return;
     } else if (e < node.e && node.left === null) {
-      node.left = new Node(e)
-      this.size++
-      return
+      node.left = new Node(e);
+      this.size++;
+      return;
     } else if (e > node.e && node.right === null) {
-      node.right = new Node(e)
-      this.size++
-      return
+      node.right = new Node(e);
+      this.size++;
+      return;
     }
     if (e > node.e) {
-      this._add(node.right, e)
+      this._add(node.right, e);
     } else {
-      this._add(node.left, e)
+      this._add(node.left, e);
     }
   }
   contain() { }
