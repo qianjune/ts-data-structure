@@ -8,6 +8,9 @@ class Node<E> {
   e: E;
   left: Node<E>;
   right: Node<E>;
+  size: number; // 所有节点数包含自己，用雨rank和select
+  depth: number; // 维护该节点在第几层
+  count: number; // 可以用于存储重复元素，存储的个数
   // 构造函数重载
   constructor(e: E) {
     this.e = e;
@@ -57,8 +60,6 @@ class BTS<E> {
       this._add(node.left, e);
     }
   }
-  contain() { }
-  search() { }
 }
 
 export { Node };

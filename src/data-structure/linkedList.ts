@@ -96,7 +96,7 @@ class LinkedList<E> {
     return this.get(0);
   }
   public getLast(): E {
-    return this.get(this.size);
+    return;
   }
   public set(e: E, index: number): void {
     this.getNode(index).e = e;

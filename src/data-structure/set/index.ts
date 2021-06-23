@@ -1,7 +1,7 @@
 /**
  * @description Set
  * 不能添加重复元素
- * 适合用于统计
+ * 适合用于统计，分词
  */
 
 import { BTS2 } from "@src/algorithm/binary-search-tree/index2";
@@ -20,13 +20,15 @@ class BSTSet<E> implements Set<E> {
     this.bst = new BTS2<E>();
   }
   add(e: E): void {
-    this.bst.add(e);
+    if (!this.bst.contains(e)) {
+      this.bst.add(e);
+    }
   }
   remove(e: E): void {
-    throw new Error("Method not implemented.");
+    this.bst.remove(e);
   }
   contains(e: E): boolean {
-    throw new Error("Method not implemented.");
+    return this.bst.contains(e);
   }
   isEmpty(): boolean {
     return this.bst.getSize() === 0;
