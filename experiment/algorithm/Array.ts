@@ -108,7 +108,17 @@ class JArray<E> {
   public getLast(): E {
     return this.get(this.size - 1);
   }
-
+  public set(index: number, e: E): void {
+    this.data[index] = e;
+  }
+  public swap(i: number, j: number): void {
+    if (i < 0 || i >= this.size || j < 0 || j >= this.size || i === j) {
+      throw new Error("i or j is not valid, please check it");
+    }
+    const store = this.data[i];
+    this.data[i] = this.data[j];
+    this.data[j] = store;
+  }
   public toString(): string {
     let res = "";
     res += `Array: size = ${this.size}, capacity = ${this.data.length}\n`;
