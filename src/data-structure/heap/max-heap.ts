@@ -1,6 +1,12 @@
 /**
  * @description 最大堆
  * 时间复杂度都是log(n)
+ * h代表层数
+ * -----------heapify---------------
+ * 最多节点数：1+2+4+8+...+2的h-1次方 = 1(1-2的h-1次方)/(1-2) 等价于 2的h次方-1
+ * 非叶子节点最多 2的h-1次方-1
+ * heapify的算法复杂度为n，最后一层节点就为n/2，最后一层不参与heapify，heapfiy是从非叶子节点里找 n/2*0
+ * 倒数第二层节点数n/4，至多交换一次 n/4*1
  */
 
 import JArray from "@root/experiment/algorithm/Array";
@@ -58,9 +64,15 @@ class MaxHeap<E> {
     const leftChildIndex = this.leftChild(index);
     const rightChildIndex = this.rightChild(index);
     const biggerChildIndex =
-      this.data.get(leftChildIndex) > this.data.get(rightChildIndex)
+      (this.data.get(leftChildIndex) ?? 0) >
+        (this.data.get(rightChildIndex) ?? 0)
         ? leftChildIndex
         : rightChildIndex;
+    console.log(
+      `biggerChildIndex:${biggerChildIndex},${this.data.get(
+        leftChildIndex
+      )},${this.data.get(rightChildIndex)}`
+    );
     if (this.data.get(biggerChildIndex) > this.data.get(index)) {
       return biggerChildIndex;
     }
@@ -68,8 +80,15 @@ class MaxHeap<E> {
   }
   private siftDown(index: number) {
     let curIndex = index;
-    while (this.leftChild(curIndex) < this.data.getSize() - 1) {
+
+    while (this.leftChild(curIndex) <= this.data.getSize() - 1) {
+      console.log(
+        `swapIndex: ${this.leftChild(
+          curIndex
+        )}, curIndex: ${curIndex}, this.data.getSize(): ${this.data.getSize()}`
+      );
       const swapIndex = this.compareWithChild(curIndex);
+      console.log(`swapIndex: ${swapIndex}`);
       if (swapIndex === null) {
         break;
       }
@@ -88,7 +107,15 @@ class MaxHeap<E> {
    * 把一个数组整理成最大堆
    * 时间复杂度n
    */
-  public heapify(): void { }
+  public heapify(arr: E[]): void {
+    this.data = new JArray<E>();
+    this.data.from(arr);
+    console.log(this.data.getSize());
+    for (let i = this.parent(this.data.getSize() - 1); i >= 0; i--) {
+      console.log(`i: ${i}`);
+      this.siftDown(i);
+    }
+  }
   public toString(): string {
     return this.data.toString();
   }
@@ -105,6 +132,10 @@ myMaxHeap.add(19);
 myMaxHeap.add(17);
 myMaxHeap.add(15);
 myMaxHeap.add(52);
-myMaxHeap.extractMax();
-console.log(myMaxHeap.toString());
+// myMaxHeap.extractMax();
+// console.log(myMaxHeap.toString());
+
+myMaxHeap.heapify([13, 15, 17, 19, 22, 28, 30, 41, 52, 62]);
+console.log(`heapify: ${myMaxHeap.toString()}`);
+
 export { MaxHeap };

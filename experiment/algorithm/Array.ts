@@ -5,11 +5,14 @@ class JArray<E> {
   private data: E[];
   private size: number;
 
-  constructor(capacity: number) {
+  constructor(capacity?: number) {
     this.data = Array.from({ length: capacity || 10 });
     this.size = 0;
   }
-
+  public from(arr: E[]): void {
+    this.data = [...arr];
+    this.size = arr.length;
+  }
   public getSize(): number {
     return this.size;
   }
