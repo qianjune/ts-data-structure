@@ -116,6 +116,7 @@ class JArray<E> {
   }
   public swap(i: number, j: number): void {
     if (i < 0 || i >= this.size || j < 0 || j >= this.size || i === j) {
+      console.log(`illegal: i: ${i}, j: ${j}`);
       throw new Error("i or j is not valid, please check it");
     }
     const store = this.data[i];

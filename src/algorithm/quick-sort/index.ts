@@ -1,10 +1,11 @@
 /**
  * @description 快速排序法
- * 复杂度：n+n/2+n/4+n/8...+1=2n = O(n)
+ * 时间复杂度：n+n/2+n/4+n/8...+1=2n = O(n)
+//  * 空间复杂度：O(1)
  */
 
 class QuickSort {
-  public static sort<E>(arr: E[]) {
+  public static sort<E>(arr: E[]): void {
     this._sort(arr, 0, arr.length - 1);
     console.log(arr);
   }

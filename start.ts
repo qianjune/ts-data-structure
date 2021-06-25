@@ -15,5 +15,6 @@ import "reflect-metadata";
 // BinarySearch.search();
 // import { EnvelopeNesting } from "@src/question/envelope-nesting";
 // EnvelopeNesting.nesting();
-import "@src/data-structure/heap/max-heap";
+// import "@src/data-structure/heap/max-heap";
+import "@src/data-structure/heap/heap-sort";
 // BiscuitsSort.sort();

@@ -47,7 +47,7 @@ class MaxHeap<E> {
       curIndex = this.parent(curIndex);
     }
   }
-  private findMax(): E {
+  public findMax(): E {
     if (this.data.getSize() === 0) {
       throw new Error("can not findMax when the heap is empty");
     }
@@ -60,35 +60,39 @@ class MaxHeap<E> {
     this.siftDown(0);
     return maxElement;
   }
-  private compareWithChild(index: number): number {
+  public swap(i: number, j: number): void {
+    this.data.swap(i, j);
+  }
+  private compareWithChild(index: number, size?: number): number {
     const leftChildIndex = this.leftChild(index);
     const rightChildIndex = this.rightChild(index);
+
     const biggerChildIndex =
       (this.data.get(leftChildIndex) ?? 0) >
-        (this.data.get(rightChildIndex) ?? 0)
+        ((rightChildIndex <= size && this.data.get(rightChildIndex)) ?? 0)
         ? leftChildIndex
         : rightChildIndex;
-    console.log(
-      `biggerChildIndex:${biggerChildIndex},${this.data.get(
-        leftChildIndex
-      )},${this.data.get(rightChildIndex)}`
-    );
+    // console.log(
+    //   `biggerChildIndex:${biggerChildIndex},${this.data.get(
+    //     leftChildIndex
+    //   )},${this.data.get(rightChildIndex)}`
+    // );
     if (this.data.get(biggerChildIndex) > this.data.get(index)) {
       return biggerChildIndex;
     }
     return null;
   }
-  private siftDown(index: number) {
-    let curIndex = index;
 
-    while (this.leftChild(curIndex) <= this.data.getSize() - 1) {
-      console.log(
-        `swapIndex: ${this.leftChild(
-          curIndex
-        )}, curIndex: ${curIndex}, this.data.getSize(): ${this.data.getSize()}`
-      );
-      const swapIndex = this.compareWithChild(curIndex);
-      console.log(`swapIndex: ${swapIndex}`);
+  public siftDown(index: number, size = this.data.getSize() - 1): void {
+    let curIndex = index;
+    while (this.leftChild(curIndex) <= size) {
+      // console.log(
+      //   `swapIndex: ${this.leftChild(
+      //     curIndex
+      //   )}, curIndex: ${curIndex}, size: ${size}`
+      // );
+      const swapIndex = this.compareWithChild(curIndex, size);
+      // console.log(`swapIndex: ${swapIndex}`);
       if (swapIndex === null) {
         break;
       }
@@ -106,6 +110,7 @@ class MaxHeap<E> {
   /**
    * 把一个数组整理成最大堆
    * 时间复杂度n
+   * 如果一次单个添加元素复杂度是nlog(n)
    */
   public heapify(arr: E[]): void {
     this.data = new JArray<E>();
@@ -135,7 +140,9 @@ myMaxHeap.add(52);
 // myMaxHeap.extractMax();
 // console.log(myMaxHeap.toString());
 
-myMaxHeap.heapify([13, 15, 17, 19, 22, 28, 30, 41, 52, 62]);
+// myMaxHeap.heapify([13, 15, 17, 19, 22, 28, 30, 41, 52, 62]);
+myMaxHeap.heapify([17, 22, 28, 19, 15, 13, 30]);
+
 console.log(`heapify: ${myMaxHeap.toString()}`);
 
 export { MaxHeap };
