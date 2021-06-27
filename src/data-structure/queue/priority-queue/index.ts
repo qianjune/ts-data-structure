@@ -1,5 +1,5 @@
-import { MaxHeap } from "../heap/max-heap";
-import { Queue } from "../interface/Queue";
+import { MaxHeap } from "../../heap/max-heap";
+import { Queue } from "../../interface/Queue";
 
 /**
  * @description 优先队列

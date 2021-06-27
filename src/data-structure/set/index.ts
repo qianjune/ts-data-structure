@@ -4,7 +4,7 @@
  * 适合用于统计，分词
  */
 
-import { BTS2 } from "@src/algorithm/binary-search-tree/index2";
+import { BTS2 } from "@src/data-structure/tree/binary-search-tree/index2";
 
 export interface Set<E> {
   add(e: E): void;
