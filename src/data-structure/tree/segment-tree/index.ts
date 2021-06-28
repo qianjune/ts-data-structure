@@ -8,6 +8,8 @@
  * 每一个节点存储的是一个区间的内容
  * 线段树不是完全二叉树，但是是平衡二叉树
  * 存储空间：有n的元素的话，需要4n的空间来存储
+ * ----------------
+ * 题目：303/307
  */
 
 import { Merger } from "@src/data-structure/interface/merger";
@@ -34,6 +36,28 @@ class SegmentTree<E> {
     console.log(`mid: ${mid}`);
     this.buildSegmentTree(leftChildIndex, l, mid);
     this.buildSegmentTree(rightChildIndex, mid + 1, r);
+    this.tree[treeIndex] = this.merger.merge(
+      this.tree[leftChildIndex],
+      this.tree[rightChildIndex]
+    );
+  }
+  public set(index: number, e: E): void {
+    this.data[index] = e;
+    this._set(0, 0, this.data.length - 1, index, e);
+  }
+  private _set(treeIndex: number, l: number, r: number, index: number, e: E) {
+    if (l === r) {
+      this.tree[treeIndex] = e;
+      return;
+    }
+    const leftChildIndex = this.leftChild(treeIndex);
+    const rightChildIndex = this.rightChild(treeIndex);
+    const mid = l + Math.floor((r - l) / 2);
+    if (index >= mid + 1) {
+      this._set(rightChildIndex, mid + 1, r, index, e);
+    } else {
+      this._set(leftChildIndex, 0, mid, index, e);
+    }
     this.tree[treeIndex] = this.merger.merge(
       this.tree[leftChildIndex],
       this.tree[rightChildIndex]
