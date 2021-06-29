@@ -3,6 +3,11 @@
  */
 
 class JUtil {
+  public static isPositionValid(p: number, length: number): void {
+    if (p >= length || p < 0) {
+      throw new Error("index illegal");
+    }
+  }
   public static swap<E>(arr: E[], i: number, j: number): void {
     const store = arr[j];
     arr[j] = arr[i];
