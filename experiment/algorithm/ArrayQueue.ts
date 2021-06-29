@@ -1,8 +1,8 @@
 /**
  * @description 队列 类
  */
+import { Queue } from "@src/data-structure/interface/Queue";
 import JArray from "./Array";
-import { Queue } from "./Queue";
 
 class ArrayQueue<E> implements Queue<E> {
   array: JArray<E>;

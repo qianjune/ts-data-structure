@@ -18,4 +18,5 @@ import "reflect-metadata";
 // import "@src/data-structure/heap/max-heap";
 // import "@src/data-structure/heap/heap-sort";
 // BiscuitsSort.sort();
-import "@src/data-structure/tree/segment-tree/index";
+// import "@src/data-structure/tree/segment-tree/index";
+import "@src/data-structure/tree/AVL/index";
