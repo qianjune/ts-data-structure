@@ -3,6 +3,9 @@
  * 存储的元素必须可以比较
  * 每个节点都大于它左边的左右的子节点，小于右边的子节点
  * 右旋转：1-4
+ * 时间复杂度logn,绝对不会退化成链表，因为有左右旋转处理高度
+ * 优化角度：
+ * 1. 当高度不变时，父节点及祖先节点就不需要检查重新维护了
  */
 
 import ArrayQueue from "@root/experiment/algorithm/ArrayQueue";
@@ -53,14 +56,56 @@ class AVLTree<K, V> {
    */
   private getBalanceFactor(node: Node<K, V>): number {
     if (node === null) return 0;
-    return Math.abs(this.getHeight(node.left) - this.getHeight(node.right));
+    return this.getHeight(node.left) - this.getHeight(node.right);
   }
   isEmpty(): boolean {
     return this.size === 0;
   }
+
+  /**
+   * LL：不平衡的点在左孩子的左侧
+   * 对节点进行向右旋转，返回旋转后的新节点
+   *       y                           x
+   *      / \                         /  \
+   *     x   T4    向右旋转（y）       z    y
+   *    / \       ----------->      / \  / \
+   *   z  T3                       T1 T2 T3 T4
+   *  / \
+   * T1  T2
+   */
+  private rightRotato(y: Node<K, V>): Node<K, V> {
+    const x = y.left;
+    const T3 = x.right;
+    x.right = y;
+    y.left = T3;
+    y.height = Math.max(this.getHeight(y.left), this.getHeight(y.right)) + 1;
+    x.height = Math.max(this.getHeight(x.left), y.height) + 1;
+    return x;
+  }
+
+  /**
+   * RR：不平衡的点在右孩子的右侧
+   * 对节点进行向左旋转，返回旋转后的新节点
+   *       y                            x
+   *      / \                          /  \
+   *     T1  x    向左旋转（y）         y    z
+   *        / \    ----------->      / \  / \
+   *      T2   z                    T1 T2 T3 T4
+   *          / \
+   *         T3 T4
+   */
+  private leftRotato(y: Node<K, V>): Node<K, V> {
+    const x = y.right;
+    const T2 = x.left;
+    x.left = y;
+    y.right = T2;
+    y.height = Math.max(this.getHeight(y.left), this.getHeight(y.right)) + 1;
+    x.height = Math.max(this.getHeight(x.right), y.height) + 1;
+    return x;
+  }
   /**
    * 添加元素
-   * @param e
+   * @param key
    */
   public add(key: K, value: V): void {
     this.root = this._add(this.root, key, value);
@@ -79,15 +124,31 @@ class AVLTree<K, V> {
     node.height =
       Math.max(this.getHeight(node.left), this.getHeight(node.right)) + 1;
     const balanceFactor = this.getBalanceFactor(node);
-    if (balanceFactor > 1) {
+    if (Math.abs(balanceFactor) > 1) {
       console.log(`balanceFactor: ${balanceFactor}, unbalanced`);
+    }
+    // 平衡维护
+    if (balanceFactor > 1 && this.getBalanceFactor(node.left) >= 0) {
+      // LL,左侧层级过深,进行右旋转
+      return this.rightRotato(node);
+    } else if (balanceFactor < -1 && this.getBalanceFactor(node.right) <= 0) {
+      // RR,右侧层级过深,进行左旋转
+      return this.leftRotato(node);
+    } else if (balanceFactor < -1 && this.getBalanceFactor(node.right) >= 0) {
+      // RL 右子树的左孩子
+      node.right = this.rightRotato(node.right);
+      return this.leftRotato(node);
+    } else if (balanceFactor > 1 && this.getBalanceFactor(node.left) <= 0) {
+      // LR 左子树的右孩子
+      node.left = this.leftRotato(node.left);
+      return this.rightRotato(node);
     }
     //  不处理值相同的情况
     return node;
   }
   /**
    * 查看某个元素是否包含
-   * @param e
+   * @param key
    * @returns
    */
   public contains(key: K): boolean {
@@ -105,30 +166,51 @@ class AVLTree<K, V> {
       return this._contains(node.right, key);
     }
   }
+  private getNode(node = this.root, key: K): Node<K, V> {
+    if (node === null) {
+      return null;
+    }
+    if (node.key === key) {
+      return node;
+    } else if (key < node.key) {
+      return this.getNode(node.left, key);
+    } else {
+      return this.getNode(node.right, key);
+    }
+  }
+  public get(key: K): V {
+    return this.getNode(this.root, key)?.value;
+  }
+  public set(key: K, value: V): void {
+    const node = this.getNode(this.root, key);
+    if (node !== null) {
+      node.value = value;
+    }
+  }
   /**
    * 查找值为指定元素的Node
    * @param node
-   * @param e
+   * @param key
    * @returns
    */
-  private _find(node: Node<K, V>, e: K): Node<K, V> {
+  private _find(node: Node<K, V>, key: K): Node<K, V> {
     if (node === null) return null;
-    if (node.key === e) {
+    if (node.key === key) {
       return node;
-    } else if (e < node.key) {
-      return this._find(node.left, e);
+    } else if (key < node.key) {
+      return this._find(node.left, key);
     } else {
-      return this._find(node.right, e);
+      return this._find(node.right, key);
     }
   }
-  private _findPre(node: Node<K, V>, e: K): Node<K, V> {
+  private _findPre(node: Node<K, V>, key: K): Node<K, V> {
     if (node === null) return null;
-    if (node.key === e) {
+    if (node.key === key) {
       return node;
-    } else if (e < node.key) {
-      return this._find(node.left, e);
+    } else if (key < node.key) {
+      return this._find(node.left, key);
     } else {
-      return this._find(node.right, e);
+      return this._find(node.right, key);
     }
   }
   // 前序遍历
@@ -277,45 +359,84 @@ class AVLTree<K, V> {
   /**
    * 删除某个元素
    * 对于有左右子树的元素来说，找右子树里最小的那个数来代替被删除元素
-   * @param e
+   * @param key
    */
-  public remove(e: K): void {
-    this.root = this._remove(this.root, e);
+  public remove(key: K): void {
+    this.root = this._remove(this.root, key);
   }
-  private _remove(node: Node<K, V>, e: K): Node<K, V> {
+  private _remove(node: Node<K, V>, key: K): Node<K, V> {
     // 1. 找到要被删除的元素
     if (node === null) return null;
-    if (e < node.key) {
-      node.left = this._remove(node.left, e);
-      return node;
-    } else if (e > node.key) {
-      node.right = this._remove(node.right, e);
-      return node;
+    let retNode;
+    if (key < node.key) {
+      // 找左子树
+      node.left = this._remove(node.left, key);
+      retNode = node;
+    } else if (key > node.key) {
+      // 找右子树
+      node.right = this._remove(node.right, key);
+      retNode = node;
     } else {
+      // 2. 判断是否有左右两个子树
+      // 3. 如果是单子树
+      // 4. 如果是双子树
       if (node.left === null) {
+        // 左子树为空
         const rightNode = node.right;
         node.right = null;
         this.size--;
-        return rightNode;
+        retNode = rightNode;
       } else if (node.right === null) {
+        // 右子树为空
         const leftNode = node.left;
         node.left = null;
         this.size--;
-        return leftNode;
+        retNode = leftNode;
       } else {
+        // 左右子树都存在
         const successor = this._minimumNode(node.right);
         console.log(successor.key);
-        successor.right = this._removeMin(node.right);
+        // successor.right = this._removeMin(node.right); // 在removeMin中也添加平衡维护，或者
+        successor.right = this._remove(node.right, successor.key);
         successor.left = node.left;
         node.left = node.right = null;
-        return successor;
+        retNode = successor;
       }
+      if (retNode === null) return null; // 删除的是叶子节点的情况
+      // 更新深度
+      retNode.height = Math.max(
+        this.getHeight(retNode.left),
+        this.getHeight(retNode.right)
+      );
+      const balanceFactor = this.getBalanceFactor(retNode);
+      // 平衡维护
+      if (balanceFactor > 1 && this.getBalanceFactor(retNode.left) >= 0) {
+        // LL,左侧层级过深,进行右旋转
+        return this.rightRotato(retNode);
+      } else if (
+        balanceFactor < -1 &&
+        this.getBalanceFactor(retNode.right) <= 0
+      ) {
+        // RR,右侧层级过深,进行左旋转
+        return this.leftRotato(retNode);
+      } else if (
+        balanceFactor < -1 &&
+        this.getBalanceFactor(retNode.right) >= 0
+      ) {
+        // RL 右子树的左孩子
+        retNode.right = this.rightRotato(retNode.right);
+        return this.leftRotato(retNode);
+      } else if (
+        balanceFactor > 1 &&
+        this.getBalanceFactor(retNode.left) <= 0
+      ) {
+        // LR 左子树的右孩子
+        retNode.left = this.leftRotato(retNode.left);
+        return this.rightRotato(retNode);
+      }
+      // 不需要调整的情况
+      return retNode;
     }
-    return node;
-
-    // 2. 判断是否有左右两个子树
-    // 3. 如果是单子树
-    // 4. 如果是双子树
   }
   public maximum(): K {
     let cur = this.root;
@@ -347,20 +468,20 @@ class AVLTree<K, V> {
   }
   /**
    * 大于e的那个数
-   * @param e
+   * @param key
    */
-  // public floor(e: K): K { }
+  // public floor(key: K): K { }
   /**
    * 小于e的那个数
-   * @param e
+   * @param key
    */
-  // public ceil(e: K): K { }
+  // public ceil(key: K): K { }
 
   /**
    * e的排名
-   * @param e
+   * @param key
    */
-  // public rank(e: K) { }
+  // public rank(key: K) { }
   /**
    * 排名index的e是什么
    * @param index
@@ -373,7 +494,7 @@ myAVLTree.add(28, "a");
 myAVLTree.add(16, "b");
 myAVLTree.add(30, "c");
 myAVLTree.add(13, "d");
-myAVLTree.add(22, "e");
+myAVLTree.add(22, "key");
 myAVLTree.add(29, "f");
 myAVLTree.add(42, "g");
 myAVLTree.add(12, "g");
