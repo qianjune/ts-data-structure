@@ -5,22 +5,52 @@
  * -------
  * hashMap就是一个treeMap的数组
  * hashSet就是一个treeSet的数组
- * 当链表的长度达到一定成都后，java8会把该链表改成一颗红黑树（数据量少的时候，链表快；数据量大的时候，红黑树快）
+ * 当链表的长度达到一定成都后，java8会把该链表改成一颗红黑树
+ * （数据量少的时候，链表快；数据量大的时候，红黑树快，转换的前提是K是可比较类型）
  */
 import * as int from "int32";
 import { AVLMap as TreeMap } from "../tree/AVL/AVL-map";
 // 这里应该用红黑树，但是红黑树没有实现remove，用AVL代替
 class HashTable<K, V> {
+  // 不同数量级采用的素数
+  private static capacity = [
+    53,
+    97,
+    193,
+    389,
+    769,
+    1543,
+    3079,
+    6151,
+    12289,
+    24593,
+    49157,
+    98317,
+    196613,
+    393241,
+    786433,
+    1572869,
+    3145739,
+    6291469,
+    12582917,
+    25165843,
+    50331653,
+    100663319,
+    201326611,
+    402653189,
+    805306457,
+    1610612741,
+  ];
   private static readonly upperTol = 10;
   private static readonly lowerTol = 2;
-  private static readonly initCapacity = 7;
+  private static capacityIndex = 0;
   private hashTable: TreeMap<K, V>[];
   private M: number; // 素数,也代表长度,长度过小会出现很多哈希冲突，影响运行效率
   private size: number;
-  constructor(M?: number) {
-    this.M = M ?? HashTable.initCapacity;
+  constructor() {
+    this.M = HashTable.capacity[HashTable.capacityIndex];
     this.size = 0;
-    for (let i = 0; i < M; i++) {
+    for (let i = 0; i < this.M; i++) {
       this.hashTable[i] = new TreeMap<K, V>();
     }
   }
@@ -52,8 +82,12 @@ class HashTable<K, V> {
       // 添加
       map.add(key, value);
       this.size++;
-      if (this.size >= HashTable.upperTol * this.M) {
-        this.resize(2 * this.M);
+      if (
+        this.size >= HashTable.upperTol * this.M &&
+        HashTable.capacityIndex < HashTable.capacity.length - 1
+      ) {
+        HashTable.capacityIndex++;
+        this.resize(HashTable.capacity[HashTable.capacityIndex]);
       }
     }
   }
@@ -81,9 +115,10 @@ class HashTable<K, V> {
       this.size--;
       if (
         this.size < HashTable.lowerTol * this.M &&
-        this.M / 2 >= HashTable.initCapacity
+        HashTable.capacityIndex >= 1
       ) {
-        this.resize(this.M / 2);
+        HashTable.capacityIndex--;
+        this.resize(HashTable.capacity[HashTable.capacityIndex]);
       }
     }
     return ret;
