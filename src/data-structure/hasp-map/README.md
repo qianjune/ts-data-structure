@@ -1,5 +1,9 @@
 ### 哈希函数
 
+n代表放入的元素
+如果地址是链表复杂度n/m
+如果地址是平衡树复杂度log(n/m)
+
 原则：一致性（同样的x产生同样的y）/高效性（计算哈希值）/均匀性
 
 1. 把“键”转换为索引的函数
@@ -8,6 +12,11 @@
 无限的空间，时间复杂度1
 空间为1，时间复杂度就是n，类似链表
 索引的分布越均匀越好
+
+#### 复杂度分析
+
+对于哈希表来说，当元素从n变成upperTol * n; 空间地址增倍，平均复杂度为O(1)
+同理缩容也是一样
 
 #### 整形哈希函数设计
 
@@ -28,7 +37,7 @@ hash(code) = (c*B^3+o*B^2+d*B^1+e*B^0)%M
 hash(code) = ((((c*B)+o)*B+d)*B+e)%M
 hash(code) = ((((c%M*B)+o%M)*B+d%M)*B+e%M) // 防止整形溢出
 int hash = 0
-for(let i=0;i<str.length;i++){
+for(let i=0; i<str.length; i++){
   hash=(hash*B+str.charAt(i))%M
 }
 
@@ -37,3 +46,18 @@ for(let i=0;i<str.length;i++){
 ### 年月日
 
 当成字符串处理（年，月，日）
+
+### java的hashCode
+
+1. 对于object，如果没有覆盖hashCode，系统会根据内存地址去产生一个hashCode
+2. 覆盖equals
+equals(Object o){
+  if(o===this) return true
+  if(o===null) return false
+  if(o.getClass()!==this.getClass()) return false
+  Student another = (Student)o
+  return this.grade === another.grade &&
+  this.cls === another.cls &&
+  this.firstName === another.firstName &&
+  this.lastName === another.lastName
+}

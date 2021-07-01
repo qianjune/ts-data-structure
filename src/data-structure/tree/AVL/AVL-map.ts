@@ -10,11 +10,14 @@ class AVLMap<K, V> implements Map<K, V> {
   constructor() {
     this.map = new AVLTree<K, V>();
   }
+  keySet(): Set<K> {
+    return this.map.keySet();
+  }
   add(k: K, v: V): void {
     this.map.add(k, v);
   }
-  remove(k: K): void {
-    this.map.remove(k);
+  remove(k: K): V {
+    return this.map.remove(k);
   }
   contains(k: K): boolean {
     return this.map.contains(k);

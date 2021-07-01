@@ -16,12 +16,14 @@ class Node<K, V> {
   left: Node<K, V>;
   right: Node<K, V>;
   height: number;
+
   // 构造函数重载
   constructor(key: K, value: V) {
     this.key = key;
     this.value = value;
     this.left = null;
     this.right = null;
+
     this.height = 1;
   }
 }
@@ -29,9 +31,14 @@ class Node<K, V> {
 class AVLTree<K, V> {
   private root: Node<K, V>;
   private size: number;
+  private keys: Set<K>;
   constructor() {
     this.root = null;
     this.size = 0;
+    this.keys = new Set();
+  }
+  public keySet(): Set<K> {
+    return this.keys;
   }
   /**
    * 判断index是否有效
@@ -109,6 +116,7 @@ class AVLTree<K, V> {
    */
   public add(key: K, value: V): void {
     this.root = this._add(this.root, key, value);
+    this.keys.add(key);
   }
   private _add(node: Node<K, V>, key: K, value: V): Node<K, V> {
     if (node === null) {
@@ -361,8 +369,11 @@ class AVLTree<K, V> {
    * 对于有左右子树的元素来说，找右子树里最小的那个数来代替被删除元素
    * @param key
    */
-  public remove(key: K): void {
+  public remove(key: K): V {
+    const ret = this.get(key);
     this.root = this._remove(this.root, key);
+    this.keys.delete(key);
+    return ret;
   }
   private _remove(node: Node<K, V>, key: K): Node<K, V> {
     // 1. 找到要被删除的元素
