@@ -5,7 +5,7 @@
 import JUtil from "@src/util";
 
 class BubbleSort<E> {
-  public sort(arr: E[]): void {
+  public static sort<E>(arr: E[]): void {
     for (let i = 0; i < arr.length - 1; i++) {
       // arr[n-i，n)已排好
       for (let j = 0; j < arr.length - 1 - i; i++) {
@@ -19,7 +19,7 @@ class BubbleSort<E> {
    * 有序数组的情况是O(n)
    * @param arr
    */
-  public sort2(arr: E[]): void {
+  public static sort2<E>(arr: E[]): void {
     for (let i = 0; i < arr.length - 1; i++) {
       // arr[n-i，n)已排好
       let isSwapped = false;
@@ -33,7 +33,7 @@ class BubbleSort<E> {
     }
   }
 
-  public sort3(arr: E[]): void {
+  public static sort3<E>(arr: E[]): void {
     for (let i = 0; i < arr.length - 1;) {
       // arr[n-i，n)已排好
       let lastSwappedIndex = 0;

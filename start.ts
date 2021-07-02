@@ -20,4 +20,5 @@ import "reflect-metadata";
 // BiscuitsSort.sort();
 // import "@src/data-structure/tree/segment-tree/index";
 // import "@src/data-structure/tree/AVL/index";
-import "@src/data-structure/tree/red-black-tree/index";
+// import "@src/data-structure/tree/red-black-tree/index";
+import "@src/algorithm/sort/base-sort/msd";
