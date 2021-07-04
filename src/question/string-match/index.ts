@@ -1,34 +1,39 @@
 /**
- * @description 暴力搜索
+ * @description
+ * bruteFore: 暴力搜索
  * 最差情况：s*t
  */
 
-class ForceSearch {
-  public static search(source: string, target: string): number {
-    if (source.length < target.length) throw new Error("");
-    let p = -1;
-    let firstMatchSuccess = false;
+class SubstringMatch {
+  /**
+   * 暴力匹配
+   * 时间复杂度n*m
+   * 在特殊情况下会退化特别慢
+   * @param source
+   * @param target
+   * @returns
+   */
+  public static bruteFore(source: string, target: string): number {
+    if (source.length < target.length) return -1;
     for (let i = 0; i < source.length - target.length - 1; i++) {
-      if (firstMatchSuccess) break;
-      let I = i;
-      for (let j = 0; j < target.length; j++) {
-        if (source[I] != target[j]) {
-          p = -1;
+      let j = 0;
+      for (; j < target.length; j++) {
+        if (source[i + j] !== target[j]) {
           break;
         }
-        if (j === 0) {
-          p = i;
-        }
-        if (j === target.length - 1) {
-          firstMatchSuccess = true;
-        }
-        I++;
+      }
+      if (j === target.length) {
+        return i;
       }
     }
-    return p;
+    return -1;
   }
+  /**
+   * leetCode 1147
+   */
+  public static hashMatch() {}
 }
 
-console.log(ForceSearch.search("hello everyone i am liuyubobobo", "bo"));
+console.log(SubstringMatch.bruteFore("hello everyone i am liuyubobobo", "bo"));
 
-export { ForceSearch };
+export { SubstringMatch };
