@@ -22,4 +22,5 @@ import "reflect-metadata";
 // import "@src/data-structure/tree/AVL/index";
 // import "@src/data-structure/tree/red-black-tree/index";
 // import "@src/algorithm/sort/base-sort/msd";
-import "@src/question/string-match/index";
+// import "@src/question/string-match/index";
+import "./app";

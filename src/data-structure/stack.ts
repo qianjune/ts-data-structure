@@ -21,7 +21,7 @@ class StackList<T> implements Stack<T> {
     return this.list.size;
   }
   pop(): T {
-    throw new Error("Method not implemented.");
+    return this.list.remove(this.list.size - 1);
   }
   push(element: T): void {
     this.list.add(this.size(), element);
@@ -30,7 +30,7 @@ class StackList<T> implements Stack<T> {
     return this.list.size === 0;
   }
   peek(): T {
-    throw new Error("Method not implemented.");
+    return this.list.get(this.list.size - 1);
   }
 }
 
