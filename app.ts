@@ -1,1 +1,1 @@
-import "@src/question/07/05/三数之和/index";
+import "@src/question/07/06/找到所有数组中消失的数字/index";
