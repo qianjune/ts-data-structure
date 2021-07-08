@@ -27,6 +27,8 @@ class TreeNode {
 
 // root的左孩子使用前序遍历，有孩子使用后序遍历
 function isSymmetric(root: TreeNode | null): boolean {
+  if (!root) return null;
+
   const left: number[] = [];
   const right: number[] = [];
 
