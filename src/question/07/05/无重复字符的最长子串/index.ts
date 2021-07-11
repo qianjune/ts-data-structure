@@ -3,8 +3,6 @@
  */
 // 给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
 
-import { max } from "rxjs/operator/max";
-
 function lengthOfLongestSubstring(s: string): number {
   if (s === "") return 0;
   let ret = "";
