@@ -1,1 +1,1 @@
-import "@src/question/07/12/62. 不同路径/index";
+import "@src/question/07/13/647. 回文子串/index";

@@ -7,9 +7,8 @@
 
 // 中心点一共有多少个呢？看起来像是和字符串长度相等，但你会发现，如果是这样，上面的例子永远也搜不到 abab，想象一下单个字符的哪个中心点扩展可以得到这个子串？似乎不可能。所以中心点不能只有单个字符构成，还要包括两个字符，比如上面这个子串 abab，就可以有中心点 ba 扩展一次得到，所以最终的中心点由 2 * len - 1 个，分别是 len 个单字符和 len - 1 个双字符。
 
-function countSubstrings(s: string): number {
-  let res = 0;
-
+function longestPalindrome(s: string): string {
+  let res = "";
   for (let center = 0; center < s.length + s.length + 1; center++) {
     // left和right指针和中心点的关系是？
     // 首先是left，有一个很明显的2倍关系的存在，其次是right，可能和left指向同一个（偶数时），也可能往后移动一个（奇数）
@@ -21,10 +20,15 @@ function countSubstrings(s: string): number {
       right < s.length &&
       s.charAt(left) === s.charAt(right)
     ) {
-      res++;
+      const str = s.slice(left, right + 1);
+      if (res.length < str.length) {
+        res = str;
+      }
       left--;
       right++;
     }
   }
   return res;
 }
+longestPalindrome("babad");
+export { longestPalindrome };
