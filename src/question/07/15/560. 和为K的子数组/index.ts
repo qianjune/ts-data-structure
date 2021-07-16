@@ -2,7 +2,7 @@
 // 解题方式：前缀 + 哈希
 function subarraySum(nums: number[], k: number): number {
   const map = new Map();
-  map.set(0, 1);
+  map.set(0, 1); // 前缀重点
   let res = 0,
     pre = 0;
   for (const num of nums) {
