@@ -1,4 +1,10 @@
 // 82. 删除排序链表中的重复元素 II
+// 难度：中等
+// 要点
+// -- 用哈希简单
+// -- 不用哈希注意判断
+import { ListNode } from "@src/labuladong-study/public/linkedList";
+import { LinkedListUtil } from "../util";
 
 /**
  * Definition for singly-linked list.
@@ -15,14 +21,21 @@
 function deleteDuplicates(head: ListNode | null): ListNode | null {
   const dummyhead = new ListNode(null, head);
   let cur = dummyhead;
-  const nxt = dummyhead.next;
-  while (cur && nxt) {
-    const after = nxt.next;
-    while (nxt.val === after.val) {
-      nxt.next = after.next;
+  while (cur.next) {
+    const nxt = cur.next;
+    // console.log(cur.next.val, cur.next.next.val);
+    if (nxt?.val === nxt.next?.val) {
+      while (nxt?.val === nxt.next?.val) {
+        nxt.next = nxt.next.next;
+        cur.next = nxt.next;
+      }
+    } else {
+      // console.log(cur.next);
+      cur = cur.next;
     }
-    cur.next = nxt.next;
-    cur = cur.next;
   }
   return dummyhead.next;
 }
+
+const head = LinkedListUtil.buildByArr([1, 1, 1, 2, 3]);
+LinkedListUtil.loopList(deleteDuplicates(head));

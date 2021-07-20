@@ -33,6 +33,15 @@ class LinkedListUtil {
     res += "null";
     console.log(res);
   }
+  static values(head: ListNode): number[] {
+    const res = [];
+    let cur = head;
+    while (cur) {
+      res.push(cur.val);
+      cur = cur.next;
+    }
+    return res;
+  }
 }
 
 export { LinkedListUtil };
