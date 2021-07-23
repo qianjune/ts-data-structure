@@ -2,7 +2,7 @@
  * @description 反转烧饼
  * 解题方式：递归
  */
-const reverse = () => { };
+const reverse2 = () => { };
 const sort = (cakes: number[], n: number) => {
   // 找到当前最大的一个烧饼
   // 从那个位置反转一次，把最大的放到最上面

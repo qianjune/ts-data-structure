@@ -1,1 +1,1 @@
-import "@src/labuladong-study/linkedList/index";
+import "@src/labuladong-study/高频题/subsequence";

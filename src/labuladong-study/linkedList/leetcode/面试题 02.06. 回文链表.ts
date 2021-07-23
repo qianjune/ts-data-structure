@@ -13,13 +13,16 @@
  * }
  */
 
-function reverse(head: ListNode | null): ListNode {
+function reverse1(head: ListNode | null): ListNode {
   if (!head.next) return head;
-  const last = reverse(head.next);
+  const last = reverse1(head.next);
   head.next.next = head;
   head.next = null;
   return last;
 }
+// 先找到链表中点
+// 然后反转后一半链表
+// 再将前一半和反转的后一半进行对比
 function isPalindrome(head: ListNode | null): boolean {
   if (!head) return true;
   let slow = head;
@@ -29,7 +32,7 @@ function isPalindrome(head: ListNode | null): boolean {
     fast = fast.next.next;
   }
   let left = head;
-  let right = reverse(slow);
+  let right = reverse1(slow);
 
   while (right) {
     if (left.val !== right.val) {
