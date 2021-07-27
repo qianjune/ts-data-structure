@@ -7,7 +7,6 @@
 class QuickSort {
   public static sort<E>(arr: E[]): void {
     this._sort(arr, 0, arr.length - 1);
-    console.log(arr);
   }
 
   private static _sort<E>(arr: E[], l: number, r: number) {
@@ -18,16 +17,17 @@ class QuickSort {
     this._sort(arr, p + 1, r);
   }
   private static partition<E>(arr: E[], l: number, r: number) {
-    let j = l;
+    let anchor = l;
     for (let i = l + 1; i <= r; i++) {
       if (arr[l] > arr[i]) {
-        j++;
-        this.swap(arr, j, i);
+        anchor++;
+        this.swap(arr, anchor, i);
       }
       console.log(arr);
     }
-    this.swap(arr, j, l);
-    return j;
+    this.swap(arr, anchor, l);
+    console.log(`anchor:${anchor}`);
+    return anchor;
   }
   private static swap<E>(arr: E[], i: number, j: number) {
     const store = arr[j];
@@ -35,6 +35,7 @@ class QuickSort {
     arr[i] = store;
   }
 }
+QuickSort.sort([4, 6, 5, 2, 3, 8, 7, 1]);
 
 const quickSort = (arr: number[] = [4, 6, 5, 2, 3, 8, 7, 1]): number[] => {
   if (arr.length <= 1) return arr;

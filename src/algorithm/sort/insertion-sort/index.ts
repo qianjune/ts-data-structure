@@ -3,6 +3,9 @@
  * 把已经过的i的内容做出正确的排序
  */
 
+// 当前i向前比较找到合适的位置
+// i++
+
 import JUtil from "@src/util";
 
 const arr: number[] = [6, 4, 2, 3, 7, 1];

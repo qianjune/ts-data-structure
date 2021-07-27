@@ -9,6 +9,7 @@ const trapWater1 = (height: nunber[]) => { };
 // 带备忘录 的 暴力解法
 const trapWater2 = (height: number[]) => { };
 // 双指针
+// 小的高度决定了容积
 const trapWater3 = (height: number[]) => {
   const len = height.length;
   let left = 0;
