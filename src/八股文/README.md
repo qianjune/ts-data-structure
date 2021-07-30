@@ -13,6 +13,7 @@ https://mp.weixin.qq.com/s/NXeGh2cP5LbW-6YXN4HeGQ (掌握 JS 高级编程基础 
 ### i18
 
 https://mp.weixin.qq.com/s/NC700iM9vfEBWNg35LZPJw (字节前端如何基于 AST 做国际化重构？)
+https://github.com/alibaba/react-intl-universal (git )
 
 ```
 1. 工具包
@@ -53,6 +54,10 @@ https://www.runoob.com/tags/tag-meta.html
 
 闭包
 https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures
+
+### PM2
+
+https://www.jianshu.com/p/6b3b506f7d0a (常用命令)
 
 ### flex
 
@@ -138,14 +143,36 @@ align-self 属性，
 place-self 属性
 ```
 
-webpack
-
-经历：
+### 性能优化
 
 ```
+https://segmentfault.com/a/1190000016705679 (HTTP缓存（Cache-Control、Expires 、ETag）)
+```
+
+### webpack
+
+https://segmentfault.com/a/1190000039231950 （手写一个webpack，看看AST怎么用）
+https://astexplorer.net/ （看ast结构的网站）
+https://juejin.cn/post/6844903703925751822（webpack由浅入深——（ast、loader和plugin））
+
+### Promise
+
+https://segmentfault.com/a/1190000023157856
+
+```
+
+```
+
+经历：
 a. lesscode
 1. 前端页面拖拽配置 https://eevee.app.terminus.io/
+2. https://juejin.cn/post/6844904017487724557#heading-5 (手动搭建一个 SSR 框架)
+3. https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/server-side-rendering-ssr-in-reactjs-part1-d2a11890abfc
+* react-draggable (React SSR | 從零開始實作 SSR — 基礎篇)
 2. 后端接口生成页面
+https://trantor-docs-dev.app.terminus.io/v0.17.x/doc/concept/trantor（官方文档）
+https://www.cnblogs.com/liuxianan/p/chrome-plugin-develop.html （【干货】Chrome插件(扩展)开发全攻略）
+* 接口注解
 
 b. mobile 组件库
 
