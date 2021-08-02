@@ -3,9 +3,25 @@ https://increment.com/development/the-melting-pot-of-javascript/
 https://mp.weixin.qq.com/s/0VDBAgEvqB1xiUs540Fu9A
 https://topic.atatech.org/articles/209395
 
-New 一个funtion发生了什么
+### New 一个funtion发生了什么
+
+```
 https://cloud.tencent.com/developer/article/1653839
 https://blog.csdn.net/qq_17175013/article/details/81915059（一个普通函数的冷僻属性(length、caller、arguments、name、[[Scopes]]和[[FunctionLocation]])）
+
+手作new:
+https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/javascript-new-operator-implementation-8c0d15f2b899
+
+手作instanceof：
+https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/javascript-instanceof-operator-implementation-ee8f40f9e3b6
+
+聊一聊typeof instanceof 实现原理:
+https://juejin.cn/post/6844904199700873223#heading-3
+```
+
+### 深拷贝
+
+https://juejin.cn/post/6844903929705136141#heading-9
 
 es6
 https://mp.weixin.qq.com/s/NXeGh2cP5LbW-6YXN4HeGQ (掌握 JS 高级编程基础 - Reflect Metadata)
@@ -59,9 +75,10 @@ https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures
 
 https://www.jianshu.com/p/6b3b506f7d0a (常用命令)
 
-### flex
+### flex / Grid
 
 https://www.ruanyifeng.com/blog/2015/07/flex-grammar.html
+https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/using-css-grid-to-draw-test-card-7ed24d3559ab
 
 ```
 // 容器属性
@@ -147,6 +164,15 @@ place-self 属性
 
 ```
 https://segmentfault.com/a/1190000016705679 (HTTP缓存（Cache-Control、Expires 、ETag）)
+
+React-memo/useCallBack/useMemo:
+https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/react-optimize-performance-using-memo-usecallback-usememo-a76b6b272df3
+
+小型组件用useState，中大型用useReducer:
+https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/react-hooks-usestate-vs-usereducer-b14966ad37dd
+
+网页性能优化：
+https://juejin.cn/post/6910893471339708429
 ```
 
 ### webpack
@@ -160,15 +186,28 @@ https://juejin.cn/post/6844903703925751822（webpack由浅入深——（ast、l
 https://segmentfault.com/a/1190000023157856
 
 ```
+從 Promises/A+ 規範瞭解 Promise:
+https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/promises-a-plus-330dda203569
 
+為了瞭解原理，那就來實作一個 Promise 吧!:
+https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/implement-promise-aed55f3e84e9
 ```
 
+### 网站安全
+
+https://mp.weixin.qq.com/s/ocozkdPzufTPwnVcH_ah_Q
+
 经历：
-a. lesscode
+
+### Decorator lesscode
+
 1. 前端页面拖拽配置 https://eevee.app.terminus.io/
 2. https://juejin.cn/post/6844904017487724557#heading-5 (手动搭建一个 SSR 框架)
 3. https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/server-side-rendering-ssr-in-reactjs-part1-d2a11890abfc
-* react-draggable (React SSR | 從零開始實作 SSR — 基礎篇)
+
+react-dnd:
+https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/react-dnd-implement-task-board-16ce7f67289c
+
 2. 后端接口生成页面
 https://trantor-docs-dev.app.terminus.io/v0.17.x/doc/concept/trantor（官方文档）
 https://www.cnblogs.com/liuxianan/p/chrome-plugin-develop.html （【干货】Chrome插件(扩展)开发全攻略）
@@ -177,6 +216,7 @@ https://www.cnblogs.com/liuxianan/p/chrome-plugin-develop.html （【干货】Ch
 b. mobile 组件库
 
 c. 工具包 - 用hooks装用户信息全局数据 / 取地址参数 / 常用的format(价格，时间) / i18
+
 ```
 
 扫把发的CV模版参考
@@ -184,3 +224,29 @@ c. 工具包 - 用hooks装用户信息全局数据 / 取地址参数 / 常用的
 技术架构图
 业务架构图
 https://www.google.com.hk/search?q=%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E5%9B%BE&oq=%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84&aqs=chrome.1.69i57j0i512l9.3360j0j7&sourceid=chrome&ie=UTF-8
+```
+
+### 提升
+
+```
+第三方包安全：
+https://juejin.cn/post/6844904047720267784
+
+Electron:
+https://juejin.cn/post/6844903862302670862
+
+Nginx：
+https://juejin.cn/post/6844903793918738440#heading-18
+
+useState更新流程：
+https://juejin.cn/post/6844903781813993486#heading-13
+
+js精度丢失：
+https://juejin.cn/post/6844903789082705934
+
+recoil介绍：
+https://juejin.cn/post/6881493149261250568#heading-7
+
+圈复杂度：
+https://juejin.cn/post/6844903965792927751
+```
