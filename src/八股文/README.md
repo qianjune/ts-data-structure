@@ -1,7 +1,7 @@
 迈入现代 Web 开发（GMTC 2021 演讲《字节跳动的现代 Web 开发实践》全文）
-https://increment.com/development/the-melting-pot-of-javascript/
-https://mp.weixin.qq.com/s/0VDBAgEvqB1xiUs540Fu9A
-https://topic.atatech.org/articles/209395
+<https://increment.com/development/the-melting-pot-of-javascript/>
+<https://mp.weixin.qq.com/s/0VDBAgEvqB1xiUs540Fu9A>
+<https://topic.atatech.org/articles/209395>
 
 ### New 一个funtion发生了什么
 
@@ -21,15 +21,15 @@ https://juejin.cn/post/6844904199700873223#heading-3
 
 ### 深拷贝
 
-https://juejin.cn/post/6844903929705136141#heading-9
+<https://juejin.cn/post/6844903929705136141#heading-9>
 
 es6
-https://mp.weixin.qq.com/s/NXeGh2cP5LbW-6YXN4HeGQ (掌握 JS 高级编程基础 - Reflect Metadata)
+<https://mp.weixin.qq.com/s/NXeGh2cP5LbW-6YXN4HeGQ> (掌握 JS 高级编程基础 - Reflect Metadata)
 
 ### i18
 
-https://mp.weixin.qq.com/s/NC700iM9vfEBWNg35LZPJw (字节前端如何基于 AST 做国际化重构？)
-https://github.com/alibaba/react-intl-universal (git )
+<https://mp.weixin.qq.com/s/NC700iM9vfEBWNg35LZPJw> (字节前端如何基于 AST 做国际化重构？)
+<https://github.com/alibaba/react-intl-universal> (git )
 
 ```
 1. 工具包
@@ -45,7 +45,7 @@ https://github.com/alibaba/react-intl-universal (git )
 ### css BFC
 
 BFC: 块级格式化上下文
-https://www.google.com.hk/search?q=css+bfc%E6%98%AF%E4%BB%80%E4%B9%88&oq=css+bf&aqs=chrome.2.69i57j0l3j0i12l6.4792j0j7&sourceid=chrome&ie=UTF-8
+<https://www.google.com.hk/search?q=css+bfc%E6%98%AF%E4%BB%80%E4%B9%88&oq=css+bf&aqs=chrome.2.69i57j0l3j0i12l6.4792j0j7&sourceid=chrome&ie=UTF-8>
 
 ```
 普通流
@@ -57,28 +57,28 @@ https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context
 ```
 
 前端 - 文章
-https://github.com/toutiaoio/awesome-architecture#%E5%89%8D%E7%AB%AF
+<https://github.com/toutiaoio/awesome-architecture#%E5%89%8D%E7%AB%AF>
 
 数据类型
-https://juejin.cn/post/6844903854882947080
+<https://juejin.cn/post/6844903854882947080>
 
 script defer async
-https://zh.javascript.info/script-async-defer
+<https://zh.javascript.info/script-async-defer>
 
 html meta
-https://www.runoob.com/tags/tag-meta.html
+<https://www.runoob.com/tags/tag-meta.html>
 
 闭包
-https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures
+<https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures>
 
 ### PM2
 
-https://www.jianshu.com/p/6b3b506f7d0a (常用命令)
+<https://www.jianshu.com/p/6b3b506f7d0a> (常用命令)
 
 ### flex / Grid
 
-https://www.ruanyifeng.com/blog/2015/07/flex-grammar.html
-https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/using-css-grid-to-draw-test-card-7ed24d3559ab
+<https://www.ruanyifeng.com/blog/2015/07/flex-grammar.html>
+<https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/using-css-grid-to-draw-test-card-7ed24d3559ab>
 
 ```
 // 容器属性
@@ -100,7 +100,7 @@ align-self：可覆盖父容器的align-items
 
 ### grid
 
-https://www.ruanyifeng.com/blog/2019/03/grid-layout-tutorial.html
+<https://www.ruanyifeng.com/blog/2019/03/grid-layout-tutorial.html>
 
 ```
 // ---- 容器属性 ----
@@ -177,13 +177,21 @@ https://juejin.cn/post/6910893471339708429
 
 ### webpack
 
-https://segmentfault.com/a/1190000039231950 （手写一个webpack，看看AST怎么用）
-https://astexplorer.net/ （看ast结构的网站）
-https://juejin.cn/post/6844903703925751822（webpack由浅入深——（ast、loader和plugin））
+<https://segmentfault.com/a/1190000039231950> （手写一个webpack，看看AST怎么用）
+<https://astexplorer.net/> （看ast结构的网站）
+<https://juejin.cn/post/6844903703925751822（webpack由浅入深——（ast、loader和plugin>））
+性能优化
+<https://juejin.cn/post/6844904067353804814>
+<https://segmentfault.com/a/1190000039249651>
+<https://www.huaweicloud.com/articles/9cda2e0e3f2ef9e1649a426555da04c5.html>
+<https://zhuanlan.zhihu.com/p/150731200>
+<https://www.huaweicloud.com/articles/1a21e34dc2d7145b4d22114858f0fd05.html>
+<https://leetcode-cn.com/circle/discuss/wqMpBQ/>
+<https://cloud.tencent.com/developer/article/1830522>
 
 ### Promise
 
-https://segmentfault.com/a/1190000023157856
+<https://segmentfault.com/a/1190000023157856>
 
 ```
 從 Promises/A+ 規範瞭解 Promise:
@@ -195,22 +203,23 @@ https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/implement-promise-aed55f
 
 ### 网站安全
 
-https://mp.weixin.qq.com/s/ocozkdPzufTPwnVcH_ah_Q
+<https://mp.weixin.qq.com/s/ocozkdPzufTPwnVcH_ah_Q>
 
 经历：
 
 ### Decorator lesscode
 
-1. 前端页面拖拽配置 https://eevee.app.terminus.io/
-2. https://juejin.cn/post/6844904017487724557#heading-5 (手动搭建一个 SSR 框架)
-3. https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/server-side-rendering-ssr-in-reactjs-part1-d2a11890abfc
+1. 前端页面拖拽配置 <https://eevee.app.terminus.io/>
+2. <https://juejin.cn/post/6844904017487724557#heading-5> (手动搭建一个 SSR 框架)
+3. <https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/server-side-rendering-ssr-in-reactjs-part1-d2a11890abfc>
 
 react-dnd:
-https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/react-dnd-implement-task-board-16ce7f67289c
+<https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/react-dnd-implement-task-board-16ce7f67289c>
 
 2. 后端接口生成页面
-https://trantor-docs-dev.app.terminus.io/v0.17.x/doc/concept/trantor（官方文档）
-https://www.cnblogs.com/liuxianan/p/chrome-plugin-develop.html （【干货】Chrome插件(扩展)开发全攻略）
+<https://trantor-docs-dev.app.terminus.io/v0.17.x/doc/concept/trantor>（官方文档）
+<https://www.cnblogs.com/liuxianan/p/chrome-plugin-develop.html> （【干货】Chrome插件(扩展)开发全攻略）
+
 * 接口注解
 
 b. mobile 组件库
@@ -225,6 +234,8 @@ c. 工具包 - 用hooks装用户信息全局数据 / 取地址参数 / 常用的
 业务架构图
 https://www.google.com.hk/search?q=%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E5%9B%BE&oq=%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84&aqs=chrome.1.69i57j0i512l9.3360j0j7&sourceid=chrome&ie=UTF-8
 ```
+
+### setPrototypeOf
 
 ### 提升
 

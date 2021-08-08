@@ -30,7 +30,7 @@ class PromiseJ {
         resolve(undefined);
       });
     }
-    if (this.rejectRes !== STATE.REJECTED && rejectFunc) {
+    if (this.state == STATE.REJECTED && rejectFunc) {
       rejectFunc(this.rejectRes);
       this.rejectRes = undefined;
     }
@@ -46,24 +46,21 @@ class PromiseJ {
   }
 
   resolve = (val: any): void => {
-    console.log(val, "val...");
     this.state = STATE.FULFILLED;
     this.resolveRes = val;
-    return;
   };
   reject(val: any): void {
     this.state = STATE.REJECTED;
     this.rejectRes = val;
-    return;
   }
-  static resolve(val: any) {
+  static resolve(val: any): PromiseJ {
     console.log(val, "1111");
     if (val instanceof PromiseJ) return val;
     return new PromiseJ((resolve) => {
       resolve(val);
     });
   }
-  static all(iterator: any[]) {
+  static all(iterator: any[]): PromiseJ {
     const arrFunc = Array.from(iterator);
     const res: any[] = [];
     let count = 0;
@@ -85,7 +82,7 @@ class PromiseJ {
       }
     });
   }
-  static allSettled(arrFunc: any[]) {
+  static allSettled(arrFunc: any[]): PromiseJ {
     const res: any[] = [];
     let count = 0;
     return new PromiseJ((resolve, reject) => {
@@ -111,10 +108,10 @@ class PromiseJ {
       }
     });
   }
-  static race(arrFunc: []) {
-    return new Promise((resolve, reject) => {
+  static race(arrFunc: []): PromiseJ {
+    return new PromiseJ((resolve, reject) => {
       for (let i = 0; i < arrFunc.length; i++) {
-        Promise.resolve(arrFunc[i])
+        PromiseJ.resolve(arrFunc[i])
           .then((d) => {
             resolve(d);
           })
