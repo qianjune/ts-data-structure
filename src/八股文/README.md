@@ -182,11 +182,10 @@ https://juejin.cn/post/6910893471339708429
 <https://juejin.cn/post/6844903703925751822（webpack由浅入深——（ast、loader和plugin>））
 性能优化
 <https://juejin.cn/post/6844904067353804814>
-<https://segmentfault.com/a/1190000039249651>
-<https://www.huaweicloud.com/articles/9cda2e0e3f2ef9e1649a426555da04c5.html>
+<https://segmentfault.com/a/1190000039249651>（已阅）
+<https://www.huaweicloud.com/articles/9cda2e0e3f2ef9e1649a426555da04c5.html>（已阅）
 <https://zhuanlan.zhihu.com/p/150731200>
-<https://www.huaweicloud.com/articles/1a21e34dc2d7145b4d22114858f0fd05.html>
-<https://leetcode-cn.com/circle/discuss/wqMpBQ/>
+<https://leetcode-cn.com/circle/discuss/wqMpBQ/>（已阅）
 <https://cloud.tencent.com/developer/article/1830522>
 
 ### Promise
