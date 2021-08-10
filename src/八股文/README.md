@@ -24,6 +24,8 @@ https://juejin.cn/post/6844904199700873223#heading-3
 <https://juejin.cn/post/6844903929705136141#heading-9>
 
 es6
+https://mp.weixin.qq.com/s?__biz=MzI0MzU5NjQxNA==&mid=2247483706&idx=1&sn=3ce4266e0182850162afc7c060e94878&scene=21#wechat_redirect
+元编程
 <https://mp.weixin.qq.com/s/NXeGh2cP5LbW-6YXN4HeGQ> (掌握 JS 高级编程基础 - Reflect Metadata)
 
 ### i18
@@ -52,7 +54,7 @@ BFC: 块级格式化上下文
 浮动流
 绝对定位
 // MDN
-https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context
+https://developer.mozilla.org/zh-eCN/docs/Web/Guide/CSS/Block_formatting_context
 
 ```
 
