@@ -264,4 +264,28 @@ https://juejin.cn/post/6844903965792927751
 
 uni api - web和小程序统一api
 https://universal-api.js.org/
+
+ts - 新特性
+https://mp.weixin.qq.com/s/aUD7oVRGjHpJjv5gQKqGNg
+
+ts 类型约束和贬义 - (keyof/is，in，typeof，instanceof)
+https://mp.weixin.qq.com/s/6Mmy4_d11P1iPFSgX7GOBw
+
+react-redux hooks
+https://juejin.cn/post/6844903874197880840#heading-2
+
+美团Serverless平台Nest的探索与实践
+https://mp.weixin.qq.com/s/NlMP4-gf2dqt3foAKJmeQg
+
+计算机原理学习
+https://hansimov.gitbook.io/csapp/ch01-a-tour-of-computer-systems
+
+perf_hooks npm 时间性能测量
+
+lerna npm 包管理
+
+import {
+  TransitionGroup,
+  CSSTransition
+} from "react-transition-group"; npm react动画
 ```
