@@ -288,4 +288,10 @@ import {
   TransitionGroup,
   CSSTransition
 } from "react-transition-group"; npm react动画
+
+精读《Function VS Class 组件》
+https://www.processon.com/mindmap/6123a3d40e3e743b327cfebc
+
 ```
+
+### 待读
