@@ -69,14 +69,9 @@ class MaxHeap<E> {
 
     const biggerChildIndex =
       (this.data.get(leftChildIndex) ?? 0) >
-        ((rightChildIndex <= size && this.data.get(rightChildIndex)) ?? 0)
+      ((rightChildIndex <= size && this.data.get(rightChildIndex)) ?? 0)
         ? leftChildIndex
         : rightChildIndex;
-    // console.log(
-    //   `biggerChildIndex:${biggerChildIndex},${this.data.get(
-    //     leftChildIndex
-    //   )},${this.data.get(rightChildIndex)}`
-    // );
     if (this.data.get(biggerChildIndex) > this.data.get(index)) {
       return biggerChildIndex;
     }
